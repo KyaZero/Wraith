@@ -1,15 +1,19 @@
 # 2DGE
-A 2D game engine :D
+A 2D game engine
 
 # How to build
 ## Requirements
-Have cmake 3.18 or higher.
+Have CMake 3.18 or higher.
 
 ## Steps
-1. Open command line in the repo.
-2. Type this in the command line: `gen`
-3. Wait until it has finished, and then type `cmake --open .build`
+Open cmd
 
-# External libraries
-dear imgui
-stb_image
+```
+gen
+
+cmake --open .build
+```
+
+# External libraries used
+[Dear ImGui](https://github.com/ocornut/imgui)
+[stb_image](https://github.com/nothings/stb#stb_libs)

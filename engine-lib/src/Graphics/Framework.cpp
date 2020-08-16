@@ -164,7 +164,7 @@ namespace fw
 			ResizeBackbuffer();
 		});
 
-		VERBOSE_LOG("Finished initializing DirectX11 Framework!");
+		INFO_LOG("Finished initializing DirectX11 Framework!");
 		return true;
 	}
 
@@ -204,6 +204,7 @@ namespace fw
 			return;
 
 		m_Data->back_buffer.CreateFromTexture(buffer);
+		m_Data->back_buffer.SetAsActiveTarget();
 
 		VERBOSE_LOG("Resized backbuffer to (%d, %d)", m_Window->GetSize().x, m_Window->GetSize().y);
 	}

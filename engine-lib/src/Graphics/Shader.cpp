@@ -2,6 +2,7 @@
 #include "Framework.h"
 #include "DXUtil.h"
 #include "ShaderReflection.h"
+#include "..\Core\Filewatcher.h"
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
@@ -47,7 +48,7 @@ namespace fw
 		return hr;
 	}
 
-	DXGI_FORMAT FormatFromComponentType(BYTE mask, D3D_REGISTER_COMPONENT_TYPE component_type) 
+	DXGI_FORMAT FormatFromComponentType(BYTE mask, D3D_REGISTER_COMPONENT_TYPE component_type)
 	{
 		if (mask == 1)
 		{
@@ -61,7 +62,7 @@ namespace fw
 				return DXGI_FORMAT_R32_FLOAT;
 			}
 		}
-		else if (mask <= 3) 
+		else if (mask <= 3)
 		{
 			switch (component_type)
 			{
@@ -73,7 +74,7 @@ namespace fw
 				return DXGI_FORMAT_R32G32_FLOAT;
 			}
 		}
-		else if (mask <= 7) 
+		else if (mask <= 7)
 		{
 			switch (component_type)
 			{
@@ -85,7 +86,7 @@ namespace fw
 				return DXGI_FORMAT_R32G32B32_FLOAT;
 			}
 		}
-		else if (mask <= 15) 
+		else if (mask <= 15)
 		{
 			switch (component_type)
 			{
@@ -101,30 +102,31 @@ namespace fw
 		return DXGI_FORMAT_UNKNOWN;
 	}
 
-	HRESULT CreateInputLayout(ComPtr<ID3DBlob> vs_blob, ComPtr<ID3D11InputLayout>& input_layout) 
+	HRESULT CreateInputLayout(ComPtr<ID3DBlob> vs_blob, ComPtr<ID3D11InputLayout>& input_layout)
 	{
 		ShaderReflection shaderReflection;
 		shaderReflection.Reflect(vs_blob);
 
 		std::vector<D3D11_INPUT_ELEMENT_DESC> input_element_desciptions;
 
-		shaderReflection.ProcessInputParameters([&](auto param_desc) 
-		{
-			auto element_desc = D3D11_INPUT_ELEMENT_DESC {
-				.SemanticName = param_desc.SemanticName,
-				.SemanticIndex = param_desc.SemanticIndex,
-				.Format = FormatFromComponentType(param_desc.Mask, param_desc.ComponentType),
-				.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT,
-			};
+		shaderReflection.ProcessInputParameters([&](auto param_desc)
+			{
+				auto element_desc = D3D11_INPUT_ELEMENT_DESC{
+					.SemanticName = param_desc.SemanticName,
+					.SemanticIndex = param_desc.SemanticIndex,
+					.Format = FormatFromComponentType(param_desc.Mask, param_desc.ComponentType),
+					.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT,
+				};
 
-			INFO_LOG("Shader Resource: {}", element_desc.SemanticName);
+				if(element_desc.SemanticName)
+					VERBOSE_LOG("Shader Resource: %s", element_desc.SemanticName);
 
-			input_element_desciptions.push_back(element_desc);
-		});
+				input_element_desciptions.push_back(element_desc);
+			});
 
 		HRESULT hr = Framework::GetDevice()->CreateInputLayout(input_element_desciptions.data(), static_cast<UINT>(input_element_desciptions.size()), vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), &input_layout);
 
-		if (FailedCheck("Creating Input Layout", hr)) 
+		if (FailedCheck("Creating Input Layout", hr))
 		{
 			return hr;
 		}
@@ -132,14 +134,15 @@ namespace fw
 		return hr;
 	}
 
-	void CreateResourceBindings(ComPtr<ID3DBlob> ps_blob) 
+	void CreateResourceBindings(ComPtr<ID3DBlob> ps_blob)
 	{
 		ShaderReflection shaderReflection;
 		shaderReflection.Reflect(ps_blob);
 
-		shaderReflection.ProcessBoundResources([](auto resource_desc) 
-		{ 
-			INFO_LOG("Shader Resource: {}", resource_desc.Name);
+		shaderReflection.ProcessBoundResources([](auto resource_desc)
+		{
+			if(resource_desc.Name)
+				VERBOSE_LOG("Shader Resource: %s", resource_desc.Name);
 		});
 	}
 
@@ -182,75 +185,76 @@ namespace fw
 		const auto compile_vertex = [=]()
 		{
 			if (!(m_Data->type & ShaderType::Vertex))
-				return false;
+				return;
 
 			ComPtr<ID3DBlob> vs_blob;
 
-			if (FailedCheck("Compiling Shader", CompileShader(path, "VSMain", "vs_5_0", vs_blob)))
-				return false;
+			if (FailedCheck(CompileShader(path, "VSMain", "vs_5_0", vs_blob)))
+				return;
 
 			auto* device = Framework::GetDevice();
 			HRESULT hr = device->CreateVertexShader(vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), NULL, &m_Data->vertex);
 			if (FailedCheck("Creating Vertex Shader", hr))
 			{
 				hr = device->GetDeviceRemovedReason();
-				return false;
+				return;
 			}
 
 			if (FailedCheck("Creating Input Layout", CreateInputLayout(vs_blob, m_Data->input_layout)))
-				return false;
+				return;
+
+			return;
 		};
 
 		const auto compile_geometry = [=]()
 		{
 			if (!(m_Data->type & ShaderType::Geometry))
-				return false;
+				return;
 
 			ComPtr<ID3DBlob> gs_blob;
 
-			if (FailedCheck("Compiling Shader", CompileShader(path, "GSMain", "gs_5_0", gs_blob)))
-				return false;
+			if (FailedCheck(CompileShader(path, "GSMain", "gs_5_0", gs_blob)))
+				return;
 
 			auto* device = Framework::GetDevice();
 			HRESULT hr = device->CreateGeometryShader(gs_blob->GetBufferPointer(), gs_blob->GetBufferSize(), NULL, &m_Data->geometry);
 			if (FailedCheck("Creating Geometry Shader", hr))
 			{
 				hr = device->GetDeviceRemovedReason();
-				return false;
+				return;
 			}
 		};
 
 		const auto compile_pixel = [=]()
 		{
 			if (!(m_Data->type & ShaderType::Pixel))
-				return false;
+				return;
 
 			ComPtr<ID3DBlob> ps_blob;
 
-			if (FailedCheck("Compiling Shader", CompileShader(path, "PSMain", "ps_5_0", ps_blob)))
-				return false;
+			if (FailedCheck(CompileShader(path, "PSMain", "ps_5_0", ps_blob)))
+				return;
 
 			auto* device = Framework::GetDevice();
 			HRESULT hr = device->CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), NULL, &m_Data->pixel);
 			if (FailedCheck("Creating Pixel Shader", hr))
 			{
 				hr = device->GetDeviceRemovedReason();
-				return false;
+				return;
 			}
 
 			CreateResourceBindings(ps_blob);
 		};
 
-		if (!compile_vertex())
-			return false;
+		compile_vertex();
+		compile_geometry();
+		compile_pixel();
 
-		if (!compile_geometry())
-			return false;
-
-		if (!compile_pixel())
-			return false;
-
-		//TODO: add filewatcher here :)
+		Filewatcher::Get()->Watch(path, [=]() {
+			compile_vertex();
+			compile_geometry();
+			compile_pixel();
+		});
 
 		return true;
 	}

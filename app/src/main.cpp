@@ -7,6 +7,7 @@ int WinMain()
 
         if (!app.Start())
         {
+            system("pause");
             return 1;
         }
 

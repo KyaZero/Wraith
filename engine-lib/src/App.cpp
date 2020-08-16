@@ -2,18 +2,21 @@
 #include "Window/Input.h"
 #include "Core/Logger.h"
 #include "Core/Common.h"
+#include "Core/Filewatcher.h"
 
 namespace fw
 {
 	App::App() : m_Window()
 	{
 		Logger::Create();
+		Filewatcher::Create();
 	}
 
 	App::~App()
 	{
 		delete m_Window;
 
+		Filewatcher::Destroy();
 		Logger::Destroy();
 	}
 
@@ -26,7 +29,11 @@ namespace fw
 				m_Window->Close();
 		});
 
-		m_Framework.Init(m_Window);
+		if (!m_Framework.Init(m_Window))
+			return false;
+
+		if (!m_RenderManager.Init(m_Window))
+			return false;
 
 		//m_Window->SetCursorVisible(false);
 		//m_Window->SetCursorGrabbed(true);
@@ -38,25 +45,37 @@ namespace fw
 	{
 		while (m_Window->IsOpen())
 		{
-			static f32 x, y;
 			Event event;
 			while (m_Window->PollEvent(event))
 			{
 				if (event.type == Event::Closed)
 					m_Window->Close();
-
-				if (event.type == Event::MouseMove)
-				{
-					x = event.mouse_move.x;
-					y = event.mouse_move.y;
-				}
 			}
 
-			auto w = (f32)m_Window->GetSize().x;
-			auto h = (f32)m_Window->GetSize().y;
-			m_Framework.BeginFrame({x / w,((x / w) + (y / h)) / 2.0f,y / h,1});
-
+			m_Framework.BeginFrame({0.2f,0.2f,0.2f,1});
+			m_RenderManager.Render();
+			Filewatcher::Get()->FlushChanges();
 			m_Framework.EndFrame();
+
+			//Calculate average fps and display it on the window title
+			{
+				m_Timer.Update();
+				m_LastTimes.push_back(m_Timer.GetDeltaTime());
+
+				if (m_LastTimes.size() > MaxNumTimesSaved)
+					m_LastTimes.pop_front();
+
+				f32 average_fps = [&]() {
+					f32 accumulator = 0;
+
+					for (auto& delta : m_LastTimes)
+						accumulator += delta;
+
+					return accumulator / m_LastTimes.size();
+				}();
+
+				m_Window->SetTitle("FPS: " + std::to_string((u32)(1.0f / average_fps)));
+			}
 		}
 
 		return true;

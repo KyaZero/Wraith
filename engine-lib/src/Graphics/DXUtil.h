@@ -16,6 +16,15 @@ namespace fw
 		return false;
 	}
 
+	inline bool FailedCheck(HRESULT res)
+	{
+		if (FAILED(res))
+		{
+			return true;
+		}
+		return false;
+	}
+
 	template<typename T>
 	inline void SafeRelease(T** resource)
 	{

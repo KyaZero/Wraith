@@ -1,1 +1,5 @@
 .build
+bin/*.ilk
+bin/*.pdb
+bin/*.exe
+bin/*.lib

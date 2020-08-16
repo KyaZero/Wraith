@@ -1,6 +1,8 @@
 set(target_name "engine-lib")
 
 set(common_files
+    "src/Core/Filewatcher.h"
+    "src/Core/Filewatcher.cpp"
     "src/Core/Logger.h"
     "src/Core/Logger.cpp"
     "src/Core/Common.h"
@@ -8,6 +10,13 @@ set(common_files
     "src/Core/Timer.h")
 
 set(graphics_files
+    "src/Graphics/Sampler.h"
+    "src/Graphics/Sampler.cpp"
+    "src/Graphics/RenderCommand.h"
+    "src/Graphics/SpriteRenderer.h"
+    "src/Graphics/SpriteRenderer.cpp"
+    "src/Graphics/RenderManager.h"
+    "src/Graphics/RenderManager.cpp"
     "src/Graphics/ShaderReflection.h"
     "src/Graphics/ShaderReflection.cpp"
     "src/Graphics/Shader.h"
@@ -70,6 +79,8 @@ PRIVATE
   <cmath>
   <random>
   <filesystem>
+  <variant>
+  <execution>
 
   src/Core/Types.h
   src/Core/Logger.h

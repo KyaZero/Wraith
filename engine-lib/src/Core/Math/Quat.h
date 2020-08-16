@@ -1,5 +1,8 @@
 #pragma once
 #include <algorithm>
+#include "Mat4.h"
+#include "../Common.h"
+
 namespace fw
 {
 	template <class T>
@@ -10,9 +13,6 @@ namespace fw
 
 	template <class T>
 	class Vec3;
-
-#include "../Common.h"
-#include "Mat4.h"
 
 	template <class T>
 	class Quat

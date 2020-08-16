@@ -23,7 +23,11 @@ namespace fw
 
 	Buffer::~Buffer()
 	{
-		SafeRelease(&m_Data->buffer);
+		if (m_Data)
+		{
+			if (m_Data->buffer)
+				SafeRelease(&m_Data->buffer);
+		}
 		delete m_Data;
 	}
 
@@ -58,7 +62,7 @@ namespace fw
 			break;
 		}
 
-		if (flags == BufferType::Constant && usage == BufferUsage::Dynamic && size % 16 == 0)
+		if (flags == BufferType::Constant && usage == BufferUsage::Dynamic && size % 16 != 0)
 		{
 			FATAL_LOG("Misaligned constant buffer!");
 		}
@@ -66,7 +70,7 @@ namespace fw
 		D3D11_SUBRESOURCE_DATA subresource = { };
 		subresource.pSysMem = data;
 
-		FailedCheck("Creating buffer", Framework::GetDevice()->CreateBuffer(&desc, &subresource, &m_Data->buffer));
+		FailedCheck("Creating buffer", Framework::GetDevice()->CreateBuffer(&desc, (data) ? &subresource : nullptr, &m_Data->buffer));
 
 		m_Data->bindFlags = flags;
 		m_Data->stride = stride;

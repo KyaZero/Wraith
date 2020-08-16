@@ -1,6 +1,6 @@
 #pragma once
-#include "Vec3.h"
 #include "../Types.h"
+#include "Vec3.h"
 #include "Quat.h"
 #include <initializer_list>
 #include <cassert>

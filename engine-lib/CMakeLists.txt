@@ -61,6 +61,12 @@ set(window_files
     "src/Window/Window.h"
     "src/Window/Window.cpp")
 
+set(scene_files
+    "src/Scene/Components.h"
+    "src/Scene/Entity.h"
+    "src/Scene/Scene.h"
+    "src/Scene/Scene.cpp")
+
 set(src_files
     "src/Engine.h"
     "src/Engine.cpp"
@@ -68,6 +74,7 @@ set(src_files
     "src/App.cpp")
 
 set(all_files
+    ${scene_files}
     ${graphics_files}
     ${window_files}
     ${common_files}
@@ -105,6 +112,7 @@ target_include_directories(${target_name} PUBLIC "src" "extern")
 source_group("src" FILES ${src_files})
 source_group("src\\Window" FILES ${window_files})
 source_group("src\\Graphics" FILES ${graphics_files})
+source_group("src\\Scene" FILES ${scene_files})
 source_group("src\\Core" FILES ${common_files})
 source_group("src\\Core\\Math" FILES ${math_files})
 

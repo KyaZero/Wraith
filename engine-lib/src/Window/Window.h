@@ -41,6 +41,8 @@ namespace fw
 		void Subscribe(Event::EventType type, std::function<void(const Event&)> callback);
 
 		Vec2u GetSize() const;
+		Vec2f GetSizef() const;
+
 		f32 GetAspectRatio() const;
 
 	private:

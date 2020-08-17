@@ -340,4 +340,9 @@ namespace fw
 	{
 		return m_Data->size;
 	}
+
+	Vec2f Texture::GetSizef() const
+	{
+		return { (f32)m_Data->size.x, (f32)m_Data->size.y };
+	}
 }

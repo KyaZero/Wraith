@@ -1,6 +1,6 @@
 #pragma once
 #include "Core\Math\Mat4.h"
-#include "OrthographicCameraController.h"
+#include "OrthographicCamera.h"
 #include "Window\Window.h"
 #include "Shader.h"
 #include "Buffer.h"
@@ -18,13 +18,14 @@ namespace fw
 
 		bool Init(const Window* window);
 
-		void OnEvent(const Event& e);
-		void Update(f32 dt, f32 total_time);
 		void Submit(const SpriteCommand& sprite);
+		void Submit(const SetCameraCommand& command);
 		void Render();
 
 	private:
 		const Window* m_Window;
+
+		OrthographicCamera* m_CurrentCamera;
 
 		Shader m_SpriteShader;
 
@@ -48,6 +49,5 @@ namespace fw
 
 		std::vector<SpriteCommand> m_SpriteCommands;
 		Sampler m_Sampler;
-		OrthographicCameraController m_Camera;
 	};
 }

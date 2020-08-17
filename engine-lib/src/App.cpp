@@ -15,6 +15,7 @@ namespace fw
 	bool App::Start()
 	{
 		m_Window = new Window(VideoMode(1280, 720), L"App", Style::Default);
+		//m_Window->SetCursorVisible(false);
 
 		if (!m_Engine.Init(m_Window))
 			return false;

@@ -1,11 +1,20 @@
 #pragma once
 #include "Core\Types.h"
+#include <cassert>
 
-#define VERBOSE_LOG(...) ::fw::Logger::Log(::fw::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define INFO_LOG(...) ::fw::Logger::Log(::fw::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define WARNING_LOG(...) ::fw::Logger::Log(::fw::Logger::Level::Warning, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define ERROR_LOG(...) ::fw::Logger::Log(::fw::Logger::Level::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define FATAL_LOG(...) ::fw::Logger::Log(::fw::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define VERBOSE_LOG(...) fw::Logger::Log(::fw::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define INFO_LOG(...) fw::Logger::Log(::fw::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define WARNING_LOG(...) fw::Logger::Log(::fw::Logger::Level::Warning, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define ERROR_LOG(...) fw::Logger::Log(::fw::Logger::Level::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define FATAL_LOG(...) fw::Logger::Log(::fw::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); abort();
+
+#ifdef NDEBUG
+#define ASSERT_LOG(expression) ((void)0)
+
+#else
+#define __ASSERT_LOG(...) fw::Logger::Log(::fw::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), abort()
+#define ASSERT_LOG(expression, ...) (void)((!!(expression)) || (__ASSERT_LOG("Assertion failed: %s", (#expression " " #__VA_ARGS__)), 0))
+#endif
 
 namespace fw
 {

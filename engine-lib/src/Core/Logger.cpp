@@ -78,10 +78,6 @@ namespace fw
 		printf("] %s:%d:%s: ", filename.c_str(), line, func.c_str());
 		SetConsoleTextAttribute(console, WhiteTextColorIndex);
 		printf("%s\n", buffer);
-
-
-
-		if (level == Level::Fatal) abort();
 	}
 
 	bool Logger::Valid()

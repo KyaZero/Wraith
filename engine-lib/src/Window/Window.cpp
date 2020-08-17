@@ -23,8 +23,8 @@ namespace fw
 	}
 
 	Window::Window(VideoMode mode, const std::wstring& title, u32 style) :
-		m_Handle(NULL), 
-		m_Fullscreen((style & Style::Fullscreen) != 0),
+		m_Handle(NULL),
+		m_Fullscreen((style& Style::Fullscreen) != 0),
 		m_KeyRepeatEnabled(false),
 		m_IsOpen(true),
 		m_MouseInside(false),
@@ -499,6 +499,12 @@ namespace fw
 		GetClientRect((HWND)m_Handle, &rect);
 
 		return Vec2u(rect.right - rect.left, rect.bottom - rect.top);
+	}
+
+	Vec2f Window::GetSizef() const
+	{
+		auto& size = GetSize();
+		return { (f32)size.x, (f32)size.y };
 	}
 
 	f32 Window::GetAspectRatio() const

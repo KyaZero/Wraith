@@ -16,9 +16,7 @@ namespace fw
 
 	ContentManager* ContentManager::Get()
 	{
-		if (!s_Instance)
-			FATAL_LOG("ContentManager not created before being used.");
-
+		ASSERT_LOG(s_Instance != nullptr, "TextureManager not created before being used.");
 		return s_Instance;
 	}
 

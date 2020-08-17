@@ -6,7 +6,7 @@
 
 namespace fw
 {
-	SpriteRenderer::SpriteRenderer() : m_Camera()
+	SpriteRenderer::SpriteRenderer() : m_CurrentCamera(nullptr)
 	{
 	}
 
@@ -38,23 +38,17 @@ namespace fw
 
 		m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
 
-		m_Camera.Init(m_Window->GetSize().x, m_Window->GetSize().y);
 		return true;
-	}
-
-	void SpriteRenderer::OnEvent(const Event& e)
-	{
-		m_Camera.OnEvent(e);
-	}
-
-	void SpriteRenderer::Update(f32 dt, f32 total_time)
-	{
-		m_Camera.Update(dt);
 	}
 
 	void SpriteRenderer::Submit(const SpriteCommand& sprite)
 	{
 		m_SpriteCommands.push_back(sprite);
+	}	
+	
+	void SpriteRenderer::Submit(const SetCameraCommand& command)
+	{
+		m_CurrentCamera = command.camera;
 	}
 
 	void SpriteRenderer::Render()
@@ -67,8 +61,8 @@ namespace fw
 		m_Sampler.Bind(0);
 
 		std::sort(std::execution::par, m_SpriteCommands.begin(), m_SpriteCommands.end(), [](auto a, auto b) {
-			return a.position.z > b.position.z;
-			});
+			return a.layer > b.layer;
+		});
 
 		for (auto& sprite : m_SpriteCommands)
 		{
@@ -80,6 +74,8 @@ namespace fw
 
 			context->Draw(6, 0);
 		}
+
+		m_CurrentCamera = nullptr;
 
 		m_SpriteCommands.clear();
 		m_SpriteShader.Unbind();
@@ -93,9 +89,13 @@ namespace fw
 		Vec2f tex_size = { (f32)tex.GetSize().x, (f32)tex.GetSize().y };
 		Vec3f position = { sprite.position.x - (sprite.origin.x * tex_size.x), sprite.position.y - (sprite.origin.y * tex_size.y), 0 };
 
-		m_ConstantBufferData.view_projection = sprite.world_space ? m_Camera.GetCamera().GetViewProjectionMatrix() : m_Camera.GetCamera().GetProjectionMatrix(); //Mat4f::CreateOrthographicProjection(0.0f, size.x, size.y, 0.0f, -1.0f, 1.0f);
+		if (m_CurrentCamera)
+			m_ConstantBufferData.view_projection = sprite.world_space ? m_CurrentCamera->GetViewProjectionMatrix() : m_CurrentCamera->GetProjectionMatrix();
+		else
+			m_ConstantBufferData.view_projection = Mat4f::CreateOrthographicProjection(0, m_Window->GetSize().x, m_Window->GetSize().y, 0, -1, 1);
+
 		m_ConstantBufferData.color = sprite.color;
-		m_ConstantBufferData.position = sprite.position.xy;
+		m_ConstantBufferData.position = sprite.position;
 		m_ConstantBufferData.offset = Vec2f(sprite.origin.x * tex_size.x, sprite.origin.y * tex_size.y);
 		m_ConstantBufferData.scale = sprite.scale;
 		m_ConstantBufferData.size = tex_size;

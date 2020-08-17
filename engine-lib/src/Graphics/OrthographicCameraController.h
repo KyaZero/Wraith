@@ -17,8 +17,8 @@ namespace fw
 		void OnEvent(const Event& e);
 		void Resize(f32 width, f32 height);
 
-		OrthographicCamera& GetCamera() { return m_Camera; }
-		const OrthographicCamera& GetCamera() const { return m_Camera; }
+		OrthographicCamera* GetCamera() { return &m_Camera; }
+		const OrthographicCamera* GetCamera() const { return &m_Camera; }
 
 		f32 GetZoomLevel() const { return m_ZoomLevel; }
 		void SetZoomLevel(f32 level) { m_ZoomLevel = level; }

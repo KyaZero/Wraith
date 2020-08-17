@@ -58,6 +58,7 @@ namespace fw
 		ID3D11RenderTargetView* GetRenderTarget() const;
 		ID3D11ShaderResourceView* GetShaderResourceView() const;
 		Vec2i GetSize() const;
+		Vec2f GetSizef() const;
 
 	private:
 		struct Data;

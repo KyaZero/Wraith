@@ -17,9 +17,7 @@ namespace fw
 
 	TextureManager* TextureManager::Get()
 	{
-		if (!s_Instance)
-			FATAL_LOG("TextureManager not created before being used.");
-
+		ASSERT_LOG(s_Instance != nullptr, "TextureManager not created before being used.");
 		return s_Instance;
 	}
 

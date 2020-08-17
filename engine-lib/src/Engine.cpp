@@ -38,6 +38,9 @@ namespace fw
 		if (!m_RenderManager.Init(m_Window))
 			return false;
 
+		if (!m_Scene.Init(m_Window, &m_RenderManager))
+			return false;
+
 		return true;
 	}
 
@@ -45,7 +48,7 @@ namespace fw
 	{
 		m_Framework.BeginFrame({ 0.2f,0.2f,0.2f,1 });
 
-		m_RenderManager.Update(dt, total_time);
+		m_Scene.Update(dt, total_time);
 		m_RenderManager.Render();
 		Filewatcher::Get()->FlushChanges();
 
@@ -73,6 +76,6 @@ namespace fw
 
 	void Engine::OnEvent(const Event& e)
 	{
-		m_RenderManager.OnEvent(e);
+		m_Scene.OnEvent(e);
 	}
 }

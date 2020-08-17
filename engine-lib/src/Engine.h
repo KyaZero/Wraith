@@ -3,6 +3,7 @@
 #include "Window/Event.h"
 #include "Graphics/Framework.h"
 #include "Graphics/RenderManager.h"
+#include "Scene/Scene.h"
 #include <queue>
 
 namespace fw
@@ -21,6 +22,7 @@ namespace fw
         Window* m_Window;
         Framework m_Framework;
         RenderManager m_RenderManager;
+        Scene m_Scene;
 
         //for averaging out fps
         std::deque<f32> m_LastTimes;

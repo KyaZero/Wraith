@@ -22,7 +22,7 @@ namespace fw
 
 	bool App::Start()
 	{
-		m_Window = new Window(VideoMode(800, 600), L"App", Style::Default);
+		m_Window = new Window(VideoMode(1280, 720), L"App", Style::Default);
 
 		m_Window->Subscribe(Event::KeyPressed, [&](auto& e) {
 			if (e.key.code == Key::Escape)
@@ -45,21 +45,9 @@ namespace fw
 	{
 		while (m_Window->IsOpen())
 		{
-			Event event;
-			while (m_Window->PollEvent(event))
-			{
-				if (event.type == Event::Closed)
-					m_Window->Close();
-			}
-
-			m_Framework.BeginFrame({0.2f,0.2f,0.2f,1});
-			m_RenderManager.Render();
-			Filewatcher::Get()->FlushChanges();
-			m_Framework.EndFrame();
-
+			m_Timer.Update();
 			//Calculate average fps and display it on the window title
 			{
-				m_Timer.Update();
 				m_LastTimes.push_back(m_Timer.GetDeltaTime());
 
 				if (m_LastTimes.size() > MaxNumTimesSaved)
@@ -76,6 +64,18 @@ namespace fw
 
 				m_Window->SetTitle("FPS: " + std::to_string((u32)(1.0f / average_fps)));
 			}
+
+			Event event;
+			while (m_Window->PollEvent(event))
+			{
+				if (event.type == Event::Closed)
+					m_Window->Close();
+			}
+
+			m_Framework.BeginFrame({0.2f,0.2f,0.2f,1});
+			m_RenderManager.Render(m_Timer.GetDeltaTime());
+			Filewatcher::Get()->FlushChanges();
+			m_Framework.EndFrame();
 		}
 
 		return true;

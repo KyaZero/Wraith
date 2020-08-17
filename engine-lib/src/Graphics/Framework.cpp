@@ -175,7 +175,7 @@ namespace fw
 
 	void Framework::EndFrame()
 	{
-		m_Data->swap_chain->Present(1, 0);
+		m_Data->swap_chain->Present(0, 0);
 	}
 
 	ID3D11Device* Framework::GetDevice()

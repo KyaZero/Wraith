@@ -15,7 +15,9 @@ namespace fw
 		m_IsOpen(false),
 		m_MouseInside(false),
 		m_CursorGrabbed(false),
-		m_CursorVisible(true)
+		m_CursorVisible(true),
+		m_LastSize(0, 0),
+		m_Resizing(false)
 	{
 
 	}
@@ -27,7 +29,9 @@ namespace fw
 		m_IsOpen(true),
 		m_MouseInside(false),
 		m_CursorGrabbed(false),
-		m_CursorVisible(true)
+		m_CursorVisible(true),
+		m_LastSize(mode.width, mode.height),
+		m_Resizing(false)
 	{
 		Create(mode, title, style);
 	}
@@ -90,6 +94,7 @@ namespace fw
 		m_Handle = CreateWindowW(class_name, title.c_str(), win32_style, left, top, width, height, NULL, NULL, GetModuleHandle(NULL), this);
 
 		SetSize(Vec2u(mode.width, mode.height));
+		m_LastSize = { mode.width, mode.height };
 
 		if (m_Fullscreen)
 			SwitchToFullscreen(mode);

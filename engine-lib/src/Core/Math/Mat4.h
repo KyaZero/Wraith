@@ -158,6 +158,16 @@ namespace fw
 			return m_Numbers[index];
 		}
 
+		static Mat4<T> CreateOrthographicProjection(T left, T right, T bottom, T top, T near, T far)
+		{
+			return Mat4<T>{
+				2/(right-left), 0, 0, 0,
+				0, 2/(top-bottom), 0, 0,
+				0, 0, 1/(far-near), 0,
+				(left+right)/(left-right), (top+bottom)/(bottom-top), near/(near-far), 1
+			};
+		}
+
 		static Mat4<T> CreateOrthographicProjection(T width, T height, T near, T far)
 		{
 			T B = (T)2.0 / height;
@@ -238,7 +248,29 @@ namespace fw
 				});
 		}
 
-		inline static Mat4<T> CreateTransform(const Vec3<T>& position, const Quat<T>& rotation, const Vec3<T>& scale)
+		inline static Mat4<T> Rotate(const Mat4<T>& matrix, f32 angle, Vec3<T> rotation_axis)
+		{
+			Mat4<T> r =
+				CreateRotationAroundZ(angle * rotation_axis.z) *
+				CreateRotationAroundY(angle * rotation_axis.y) *
+				CreateRotationAroundX(angle * rotation_axis.x);
+
+			return matrix * r;
+		}
+
+		inline static Mat4<T> Translate(const Mat4<T>& matrix, Vec3<T> translation)
+		{
+			Mat4<T> t = {
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				translation.x, translation.y, translation.z, 1
+			};
+
+			return matrix * t;
+		}
+
+		inline static Mat4<T> Scale(const Mat4<T>& matrix, Vec3<T> scale)
 		{
 			Mat4<T> s = {
 				scale.x, 0, 0, 0,
@@ -247,7 +279,22 @@ namespace fw
 				0, 0, 0, 1,
 			};
 
-			Mat4<T> r = rotation.GetRotationMatrix44();
+			return matrix * s;
+		}
+
+		inline static Mat4<T> CreateTransform(const Vec3<T>& position, const Vec3<T>& rotation, const Vec3<T>& scale)
+		{
+			Mat4<T> s = {
+				scale.x, 0, 0, 0,
+				0, scale.y, 0, 0,
+				0, 0, scale.z, 0,
+				0, 0, 0, 1,
+			};
+
+			Mat4<T> r =
+				CreateRotationAroundZ(rotation.z) *
+				CreateRotationAroundY(rotation.y) *
+				CreateRotationAroundX(rotation.x);
 
 			Mat4<T> t = {
 				1, 0, 0, 0,

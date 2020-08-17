@@ -1,4 +1,5 @@
 #pragma once
+#include "Vec2.h"
 #include "Vec3.h"
 #pragma warning(disable: 4201)
 
@@ -184,6 +185,10 @@ namespace fw
 			struct { T x, y, z, w; };
 			struct { T r, g, b, a; };
 
+			struct { Vec2<T> xy; Vec2<T> zw; };
+			struct { Vec2<T> xy; T z; T w; };
+			struct { T x; T y; Vec2<T> zw; };
+			struct { T x; Vec2<T> yz; T w; };
 			struct { Vec3<T> xyz; T w; };
 			struct { T x; Vec3<T> yzw; };
 		};

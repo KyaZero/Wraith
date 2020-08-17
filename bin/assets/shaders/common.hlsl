@@ -1,22 +1,13 @@
 struct VertexInput
 {
-    float4 position : POSITION;
-    float4 uv : TEXCOORD;
-    float4 color : COLOR;
-};
-
-struct GeometryInput
-{
-    float4 position : POSITION;
-    float4 uv : TEXCOORD;
-    float4 color : COLOR;
+    float2 position : POSITION;
+    float2 uv : TEXCOORD;
 };
 
 struct PixelInput
 {
     float4 position : SV_POSITION;
     float2 uv : TEXCOORD;
-    float4 color : COLOR;
 };
 
 struct PixelOutput
@@ -26,10 +17,15 @@ struct PixelOutput
 
 cbuffer BufferData : register(b0)
 {
-    float4x4 ProjectionMatrix;
-    float4 Resolution;
-    float2 Time;
+    float4x4 Projection;
+    float4 Color;
+    float2 Position;
+    float2 Offset;
+    float2 Scale;
     float2 Size;
+    float2 Resolution;
+    float Rotation;
+    float Time;
 }
 
 #define TO_SRGB(_Linear_Color) (pow(_Linear_Color, 1.f / 2.2f))

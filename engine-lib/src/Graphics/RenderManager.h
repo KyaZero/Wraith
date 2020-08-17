@@ -13,9 +13,10 @@ namespace fw
 		bool Init(const Window* window);
 		
 		void Submit(const RenderCommand& command);
-		void Render();
+		void Render(f32 dt);
 
 	private:
+		const Window* m_Window;
 		SpriteRenderer m_SpriteRenderer;
 		std::vector<RenderCommand> m_RenderCommands;
 	};

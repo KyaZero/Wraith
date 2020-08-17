@@ -18,7 +18,9 @@ namespace fw
 
 	bool RenderManager::Init(const Window* window)
 	{
-		if (!m_SpriteRenderer.Init(window))
+		m_Window = window;
+
+		if (!m_SpriteRenderer.Init(m_Window))
 			return false;
 
 		return true;
@@ -29,26 +31,15 @@ namespace fw
 		m_RenderCommands.push_back(command);
 	}
 
-	static std::vector<SpriteCommand> commands;
-
-	void RenderManager::Render()
+	void RenderManager::Render(f32 dt)
 	{
-		static bool done = false;
-		if (!done)
-		{
-			for (size_t i = 0; i < 20; i++)
-			{
-				SpriteCommand cmd;
-				cmd.color = { Rand(),Rand(),Rand(),1 };
-				cmd.uv = { 0,0,1,1 };
-				cmd.position = { Rand11(), Rand11(), RandomRange(1.f, 5.f), 1 };
-				commands.push_back(cmd);
-			}
-			done = true;
-		}
-
-		for(auto& cmd : commands)
-			Submit(cmd);
+		SpriteCommand cmd;
+		cmd.color = { 1,1,1,1 };
+		cmd.origin = { 0.5f, 0.5f };
+		cmd.scale = { 1, 1 };
+		cmd.rotation = 90.0f;
+		cmd.position = { m_Window->GetSize().x * 0.5f, m_Window->GetSize().y * 0.5f, 0, 1 };
+		Submit(cmd);
 
 		for (auto& command : m_RenderCommands)
 		{
@@ -58,6 +49,6 @@ namespace fw
 		}
 		m_RenderCommands.clear();
 
-		m_SpriteRenderer.Render();
+		m_SpriteRenderer.Render(dt);
 	}
 }

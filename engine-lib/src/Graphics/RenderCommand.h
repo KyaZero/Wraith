@@ -7,8 +7,10 @@ namespace fw
 	struct SpriteCommand
 	{
 		Vec4f position;
-		Vec4f uv;
+		Vec2f origin;
+		Vec2f scale;
 		Vec4f color;
+		f32 rotation;
 	};
 
 	using RenderCommand = std::variant<SpriteCommand>;

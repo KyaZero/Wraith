@@ -99,8 +99,8 @@ namespace fw
 
 		if (!std::filesystem::exists(std::filesystem::path(path)))
 		{
-			ERROR_LOG("Texture file '%s' not found", path.c_str());
-			return false;
+			ERROR_LOG("Texture file '%s' not found, attempting to load default texture instead", path.c_str());
+			return LoadFromFile("assets/textures/default.png");
 		}
 
 		if (!m_Data)

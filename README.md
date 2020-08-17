@@ -4,9 +4,6 @@ A 2D game engine
 # How to build and run
 ### Requirements
 Have CMake 3.18 or higher.
-### Steps
-Open cmd
-
 ```
 gen
 

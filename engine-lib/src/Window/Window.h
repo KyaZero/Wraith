@@ -2,7 +2,7 @@
 #include "Event.h"
 #include "VideoMode.h"
 #include "WindowStyle.h"
-#include "..\Core\Math\Vec2.h"
+#include "Core\Math\Vec2.h"
 #include <queue>
 #include <functional>
 
@@ -41,6 +41,7 @@ namespace fw
 		void Subscribe(Event::EventType type, std::function<void(const Event&)> callback);
 
 		Vec2u GetSize() const;
+		f32 GetAspectRatio() const;
 
 	private:
 		Key VKeyCodeToEngineKey(i64 key, i64 flags);

@@ -1,5 +1,5 @@
 #pragma once
-#include "..\Core\Types.h"
+#include "Core\Types.h"
 
 #define VERBOSE_LOG(...) ::fw::Logger::Log(::fw::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 #define INFO_LOG(...) ::fw::Logger::Log(::fw::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);

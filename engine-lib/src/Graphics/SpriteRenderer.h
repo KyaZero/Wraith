@@ -1,6 +1,7 @@
 #pragma once
-#include "..\Core\Math\Mat4.h"
-#include "..\Window\Window.h"
+#include "Core\Math\Mat4.h"
+#include "OrthographicCameraController.h"
+#include "Window\Window.h"
 #include "Shader.h"
 #include "Buffer.h"
 #include "Sampler.h"
@@ -17,8 +18,10 @@ namespace fw
 
 		bool Init(const Window* window);
 
+		void OnEvent(const Event& e);
+		void Update(f32 dt, f32 total_time);
 		void Submit(const SpriteCommand& sprite);
-		void Render(f32 dt);
+		void Render();
 
 	private:
 		const Window* m_Window;
@@ -29,7 +32,7 @@ namespace fw
 
 		struct ConstantBufferData
 		{
-			Mat4f projection_matrix;
+			Mat4f view_projection;
 			Vec4f color;
 			Vec2f position;
 			Vec2f offset;
@@ -41,10 +44,11 @@ namespace fw
 		} m_ConstantBufferData;
 		Buffer m_ConstantBuffer;
 
-		void UpdateConstantBuffer(const SpriteCommand& sprite, f32 dt);
+		void UpdateConstantBuffer(const SpriteCommand& sprite);
 
 		std::vector<SpriteCommand> m_SpriteCommands;
 		Texture m_Texture;
 		Sampler m_Sampler;
+		OrthographicCameraController m_Camera;
 	};
 }

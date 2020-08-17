@@ -1,6 +1,6 @@
 #pragma once
-#include "..\Window\Window.h"
-#include "..\Core\Math\Vec4.h"
+#include "Window\Window.h"
+#include "Core\Math\Vec4.h"
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;

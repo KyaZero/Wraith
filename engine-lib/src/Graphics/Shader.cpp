@@ -2,7 +2,7 @@
 #include "Framework.h"
 #include "DXUtil.h"
 #include "ShaderReflection.h"
-#include "..\Core\Filewatcher.h"
+#include "Core\Filewatcher.h"
 
 #include <d3d11.h>
 #include <d3dcompiler.h>

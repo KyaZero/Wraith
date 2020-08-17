@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include "WindowStyle.h"
 #include "Mouse.h"
-#include "..\Core\Logger.h"
+#include "Core/Logger.h"
 
 namespace fw
 {
@@ -499,6 +499,11 @@ namespace fw
 		GetClientRect((HWND)m_Handle, &rect);
 
 		return Vec2u(rect.right - rect.left, rect.bottom - rect.top);
+	}
+
+	f32 Window::GetAspectRatio() const
+	{
+		return m_Size.x / m_Size.y;
 	}
 
 	void Window::ProcessEvents()

@@ -1,6 +1,7 @@
 #pragma once
 #include <random>
 #include <cmath>
+#include "Core/Types.h"
 
 namespace fw
 {

@@ -1,8 +1,8 @@
 #include "Texture.h"
 #include "DXUtil.h"
-#include "..\Graphics\Framework.h"
+#include "Graphics\Framework.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "..\..\extern\stb_image.h"
+#include "stb_image.h"
 #include <d3d11.h>
 #include <filesystem>
 

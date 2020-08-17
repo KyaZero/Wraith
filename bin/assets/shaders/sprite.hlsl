@@ -19,7 +19,7 @@ void VSMain(in VertexInput input, out PixelInput output)
     input.position *= Scale;
     input.position += Position;
 
-    output.position = mul(Projection, float4(input.position.xy, 0, 1));
+    output.position = mul(ViewProjection, float4(input.position.xy, 0, 1));
     output.uv = input.uv;
 }
 

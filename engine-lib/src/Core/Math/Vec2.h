@@ -1,7 +1,7 @@
 #pragma once
 #pragma warning(disable: 4201)
 
-#include "..\Types.h"
+#include "Core/Types.h"
 
 namespace fw
 {

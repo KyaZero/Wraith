@@ -10,6 +10,10 @@ set(common_files
     "src/Core/Timer.h")
 
 set(graphics_files
+    "src/Graphics/OrthographicCameraController.h"
+    "src/Graphics/OrthographicCameraController.cpp"
+    "src/Graphics/OrthographicCamera.h"
+    "src/Graphics/OrthographicCamera.cpp"
     "src/Graphics/Sampler.h"
     "src/Graphics/Sampler.cpp"
     "src/Graphics/RenderCommand.h"
@@ -53,6 +57,8 @@ set(window_files
     "src/Window/Window.cpp")
 
 set(src_files
+    "src/Engine.h"
+    "src/Engine.cpp"
     "src/App.h"
     "src/App.cpp")
 
@@ -89,7 +95,7 @@ PRIVATE
 )
 
 target_link_libraries(${target_name} PUBLIC d3d11 dxgi d3dcompiler imgui)
-target_include_directories(${target_name} INTERFACE "src")
+target_include_directories(${target_name} PUBLIC "src" "extern")
 
 source_group("src" FILES ${src_files})
 source_group("src\\Window" FILES ${window_files})

@@ -1,5 +1,5 @@
 #pragma once
-#include "..\Core\Logger.h"
+#include "Core\Logger.h"
 #include <d3d11.h>
 
 //This file should only be included in .cpp files so as to not leak d3d11.h into the headers

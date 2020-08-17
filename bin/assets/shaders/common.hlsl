@@ -17,7 +17,7 @@ struct PixelOutput
 
 cbuffer BufferData : register(b0)
 {
-    float4x4 Projection;
+    float4x4 ViewProjection;
     float4 Color;
     float2 Position;
     float2 Offset;

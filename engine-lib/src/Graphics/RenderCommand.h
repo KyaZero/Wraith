@@ -1,5 +1,5 @@
 #pragma once
-#include "..\Core\Math\Vec4.h"
+#include "Core\Math\Vec4.h"
 #include <variant>
 
 namespace fw
@@ -11,6 +11,7 @@ namespace fw
 		Vec2f scale;
 		Vec4f color;
 		f32 rotation;
+		bool world_space = true;
 	};
 
 	using RenderCommand = std::variant<SpriteCommand>;

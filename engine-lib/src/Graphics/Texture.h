@@ -40,7 +40,7 @@ namespace fw
 		void Create(const Vec2i& size, ImageFormat format = ImageFormat::DXGI_FORMAT_R8G8B8A8_UNORM, void* data = nullptr);
 		void Create(const TextureCreateInfo& info);
 		void CreateFromTexture(ID3D11Texture2D* texture);
-		void CreateDepth(const Vec2i& size, ImageFormat format = ImageFormat::DXGI_FORMAT_D32_f32);
+		void CreateDepth(const Vec2i& size, ImageFormat format = ImageFormat::DXGI_FORMAT_D32_FLOAT);
 
 		void Clear(const Vec4f& color = Vec4f());
 		void ClearDepth(f32 depth = 1.0f, u32 stencil = 0);

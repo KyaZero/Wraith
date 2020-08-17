@@ -2,6 +2,8 @@
 #include "Core/Logger.h"
 #include "Core/Common.h"
 #include "Core/Filewatcher.h"
+#include "Graphics/ContentManager.h"
+#include "Graphics/TextureManager.h"
 
 namespace fw
 {
@@ -9,10 +11,14 @@ namespace fw
 	{
 		Logger::Create();
 		Filewatcher::Create();
+		ContentManager::Create();
+		TextureManager::Create();
 	}
 
 	Engine::~Engine()
 	{
+		TextureManager::Destroy();
+		ContentManager::Destroy();
 		Filewatcher::Destroy();
 		Logger::Destroy();
 	}

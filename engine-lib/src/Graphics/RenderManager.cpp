@@ -34,11 +34,21 @@ namespace fw
 	void RenderManager::Update(f32 dt, f32 total_time)
 	{
 		SpriteCommand cmd;
+		cmd.texture = TextureID("assets/textures/test.jpg");
 		cmd.color = { 1, 1, 1, 1 };
 		cmd.origin = { 0.5f, 0.5f };
 		cmd.scale = { 1.0f, 1.0f };
 		cmd.rotation = 0.0f;
 		cmd.position = { (m_Window->GetSize().x / 2.0f) + sin(total_time) * 500.0f, m_Window->GetSize().y / 2.0f, 0, 1 };
+		Submit(cmd);
+
+		cmd.texture = TextureID("assets/textures/default.png");
+		cmd.color = { 1, 0, 0, 1 };
+		cmd.origin = { 0.0f, 1.0f };
+		cmd.scale = { 0.5f, 0.1f };
+		cmd.rotation = 0.0f;
+		cmd.position = { 0, (f32)m_Window->GetSize().y, 0, 1 };
+		cmd.world_space = false;
 		Submit(cmd);
 
 		m_SpriteRenderer.Update(dt, total_time);

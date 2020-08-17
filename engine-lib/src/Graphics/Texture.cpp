@@ -24,7 +24,7 @@ namespace fw
 
 	Texture::Texture()
 	{
-		m_Data = new Data;
+		m_Data = std::make_shared<Data>();
 	}
 
 	Texture::Texture(const std::string& path)
@@ -57,7 +57,6 @@ namespace fw
 		if (m_Data)
 		{
 			Release();
-			delete m_Data;
 		}
 
 		if (!other.m_Data->path.empty())
@@ -73,8 +72,8 @@ namespace fw
 		if (m_Data)
 		{
 			Release();
-			delete m_Data;
 		}
+
 		m_Data = other.m_Data;
 		other.m_Data = nullptr;
 		return *this;
@@ -83,8 +82,6 @@ namespace fw
 	Texture::~Texture()
 	{
 		Release();
-		if (m_Data)
-			delete m_Data;
 	}
 
 	bool Texture::IsValid()
@@ -94,17 +91,17 @@ namespace fw
 
 	bool Texture::LoadFromFile(const std::string& path)
 	{
-		if (path.empty()) 
+		if (path.empty())
 			return false;
 
 		if (!std::filesystem::exists(std::filesystem::path(path)))
 		{
-			ERROR_LOG("Texture file '%s' not found, attempting to load default texture instead", path.c_str());
-			return LoadFromFile("assets/textures/default.png");
+			ERROR_LOG("Texture file '%s' not found", path.c_str());
+			return false;
 		}
 
 		if (!m_Data)
-			m_Data = new Data;
+			m_Data = std::make_shared<Data>();
 
 		m_Data->path = path;
 
@@ -135,7 +132,7 @@ namespace fw
 	void Texture::Create(const TextureCreateInfo& info)
 	{
 		if (!m_Data)
-			m_Data = new Data;
+			m_Data = std::make_shared<Data>();
 
 		m_Data->is_rt = info.render_target;
 		m_Data->format = (DXGI_FORMAT)info.format;

@@ -1,4 +1,5 @@
 #include "SpriteRenderer.h"
+#include "TextureManager.h"
 #include "Framework.h"
 #include <d3d11.h>
 #include <execution>
@@ -35,7 +36,6 @@ namespace fw
 
 		m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
 
-		m_Texture.LoadFromFile("assets/textures/test.jpg");
 		m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
 
 		m_Camera.Init(m_Window->GetSize().x, m_Window->GetSize().y);
@@ -72,7 +72,8 @@ namespace fw
 
 		for (auto& sprite : m_SpriteCommands)
 		{
-			m_Texture.Bind(0);
+			auto& tex = TextureManager::Get()->GetTexture(sprite.texture);
+			tex.Bind(0);
 
 			UpdateConstantBuffer(sprite);
 			m_ConstantBuffer.Bind(0);
@@ -88,7 +89,8 @@ namespace fw
 	void SpriteRenderer::UpdateConstantBuffer(const SpriteCommand& sprite)
 	{
 		auto& size = m_Window->GetSize();
-		Vec2f tex_size = { (f32)m_Texture.GetSize().x, (f32)m_Texture.GetSize().y };
+		auto& tex = TextureManager::Get()->GetTexture(sprite.texture);
+		Vec2f tex_size = { (f32)tex.GetSize().x, (f32)tex.GetSize().y };
 		Vec3f position = { sprite.position.x - (sprite.origin.x * tex_size.x), sprite.position.y - (sprite.origin.y * tex_size.y), 0 };
 
 		m_ConstantBufferData.view_projection = sprite.world_space ? m_Camera.GetCamera().GetViewProjectionMatrix() : m_Camera.GetCamera().GetProjectionMatrix(); //Mat4f::CreateOrthographicProjection(0.0f, size.x, size.y, 0.0f, -1.0f, 1.0f);

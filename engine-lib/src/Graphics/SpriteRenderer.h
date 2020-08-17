@@ -47,7 +47,6 @@ namespace fw
 		void UpdateConstantBuffer(const SpriteCommand& sprite);
 
 		std::vector<SpriteCommand> m_SpriteCommands;
-		Texture m_Texture;
 		Sampler m_Sampler;
 		OrthographicCameraController m_Camera;
 	};

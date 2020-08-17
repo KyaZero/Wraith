@@ -3,6 +3,7 @@
 #include "Core\Math\Vec.h"
 #include "ImageFormat.h"
 #include <string>
+#include <memory>
 
 struct ID3D11Texture2D;
 struct ID3D11ShaderResourceView;
@@ -60,6 +61,6 @@ namespace fw
 
 	private:
 		struct Data;
-		Data* m_Data;
+		std::shared_ptr<Data> m_Data;
 	};
 }

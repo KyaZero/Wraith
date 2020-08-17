@@ -10,6 +10,11 @@ set(common_files
     "src/Core/Timer.h")
 
 set(graphics_files
+    "src/Graphics/ContentManager.h"
+    "src/Graphics/ContentManager.cpp"
+    "src/Graphics/TextureManager.h"
+    "src/Graphics/TextureManager.cpp"
+    "src/Graphics/TextureID.h"
     "src/Graphics/OrthographicCameraController.h"
     "src/Graphics/OrthographicCameraController.cpp"
     "src/Graphics/OrthographicCamera.h"

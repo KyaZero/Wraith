@@ -1,6 +1,9 @@
 #include "Framework.h"
 #include "DXUtil.h"
 #include "Texture.h"
+#include "imgui.h"
+#include "examples/imgui_impl_dx11.h"
+#include "examples/imgui_impl_win32.h"
 #include <d3d11.h>
 
 namespace fw
@@ -25,6 +28,11 @@ namespace fw
 
 	Framework::~Framework()
 	{
+
+		ImGui_ImplDX11_Shutdown();
+		ImGui_ImplWin32_Shutdown();
+		ImGui::DestroyContext();
+
 		if (m_Data)
 		{
 			for (auto* adapter : m_Data->adapters)
@@ -160,9 +168,22 @@ namespace fw
 
 		m_Data->context->RSSetViewports(1, &view);
 
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;        // Enable Gamepad Controls
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+
+		//SetImGuiStyle();
+
+		ImGui_ImplWin32_Init(m_Window->GetHandle());
+		ImGui_ImplDX11_Init(m_Data->device, m_Data->context);
+
 		m_Window->Subscribe(Event::Resized, [&](const Event& e) {
 			ResizeBackbuffer();
-		});
+			});
 
 		INFO_LOG("Finished initializing DirectX11 Framework!");
 		return true;
@@ -170,11 +191,24 @@ namespace fw
 
 	void Framework::BeginFrame(const Vec4f& clear_color)
 	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
 		m_Data->back_buffer.Clear(clear_color);
 	}
 
 	void Framework::EndFrame()
 	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+		ImGuiIO& io = ImGui::GetIO();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+		}
+
 		m_Data->swap_chain->Present(0, 0);
 	}
 

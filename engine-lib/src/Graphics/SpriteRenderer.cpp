@@ -69,7 +69,7 @@ namespace fw
 			auto& tex = TextureManager::Get()->GetTexture(sprite.texture);
 			tex.Bind(0);
 
-			UpdateConstantBuffer(sprite);
+			UpdateConstantBuffer(sprite, tex);
 			m_ConstantBuffer.Bind(0);
 
 			context->Draw(6, 0);
@@ -82,11 +82,10 @@ namespace fw
 		m_Sampler.Unbind(0);
 	}
 
-	void SpriteRenderer::UpdateConstantBuffer(const SpriteCommand& sprite)
+	void SpriteRenderer::UpdateConstantBuffer(const SpriteCommand& sprite, const Texture& texture)
 	{
 		auto& size = m_Window->GetSize();
-		auto& tex = TextureManager::Get()->GetTexture(sprite.texture);
-		Vec2f tex_size = { (f32)tex.GetSize().x, (f32)tex.GetSize().y };
+		Vec2f tex_size = { (f32)texture.GetSize().x, (f32)texture.GetSize().y };
 		Vec3f position = { sprite.position.x - (sprite.origin.x * tex_size.x), sprite.position.y - (sprite.origin.y * tex_size.y), 0 };
 
 		if (m_CurrentCamera)

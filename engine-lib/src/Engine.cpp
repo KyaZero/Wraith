@@ -30,7 +30,7 @@ namespace fw
 		m_Window->Subscribe(Event::KeyPressed, [&](auto& e) {
 			if (e.key.code == Key::Escape)
 				m_Window->Close();
-			});
+		});
 
 		if (!m_Framework.Init(m_Window))
 			return false;

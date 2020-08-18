@@ -45,7 +45,7 @@ namespace fw
 		} m_ConstantBufferData;
 		Buffer m_ConstantBuffer;
 
-		void UpdateConstantBuffer(const SpriteCommand& sprite);
+		void UpdateConstantBuffer(const SpriteCommand& sprite, const Texture& texture);
 
 		std::vector<SpriteCommand> m_SpriteCommands;
 		Sampler m_Sampler;

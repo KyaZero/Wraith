@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Components.h"
 #include "Graphics/TextureManager.h"
+#include "imgui.h"
 
 namespace fw
 {
@@ -19,7 +20,7 @@ namespace fw
 		m_Window = window;
 		m_Camera.Init(m_Window->GetSize().x, m_Window->GetSize().y);
 
-		for (size_t i = 0; i < 100; i++)
+		for (size_t i = 0; i < 20; i++)
 		{
 			auto e = CreateEntity("2B_" + std::to_string(i));
 			auto& sprite = e.AddComponent<SpriteComponent>();
@@ -56,15 +57,18 @@ namespace fw
 
 		m_Renderer->Submit(SetCameraCommand{
 			m_Camera.GetCamera()
-			});
-
+		});
+		ImGui::Begin("OwO");
 		auto transforms = m_Registry.view<TransformComponent>();
 		for (auto& entity : transforms)
 		{
 			auto& transform = transforms.get(entity);
-
 			transform.rotation += dt * 4;
+
+			auto& tag = m_Registry.get<TagComponent>(entity);
+			ImGui::TreeNodeEx(tag.tag.c_str());
 		}
+		ImGui::End();
 
 		auto view = m_Registry.view<TransformComponent, SpriteComponent>();
 		for (auto& entity : view)

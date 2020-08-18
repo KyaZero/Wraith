@@ -15,6 +15,9 @@ namespace fw
 	bool App::Start()
 	{
 		m_Window = new Window(VideoMode(1280, 720), L"App", Style::Default);
+		m_Window->Subscribe(Event::Closed, [&](auto e) { 
+			m_Window->Close(); 
+		});
 		//m_Window->SetCursorVisible(false);
 
 		if (!m_Engine.Init(m_Window))
@@ -28,17 +31,13 @@ namespace fw
 		while (m_Window->IsOpen())
 		{
 			m_Timer.Update();
+			m_Engine.Update(m_Timer.GetDeltaTime(), m_Timer.GetTotalTime());
 			
 			Event event;
 			while (m_Window->PollEvent(event))
 			{
-				if (event.type == Event::Closed)
-					m_Window->Close();
-
 				m_Engine.OnEvent(event);
 			}
-
-			m_Engine.Update(m_Timer.GetDeltaTime(), m_Timer.GetTotalTime());
 		}
 
 		return true;

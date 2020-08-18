@@ -2,7 +2,7 @@
 A 2D game engine
 
 # Current screenshot of engine
-![alt text](https://dragonloli.s-ul.eu/7h2qPCh5.png "Drawing a sprite")
+![alt text](https://dragonloli.s-ul.eu/f9uzFgcp.png "Drawing a sprite")
 
 # How to build and open project
 ```

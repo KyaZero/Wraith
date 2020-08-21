@@ -1,5 +1,6 @@
 #pragma once
 #include "Core\Types.h"
+#include <memory>
 
 namespace fw
 {
@@ -13,7 +14,8 @@ namespace fw
 	{
 		Vertex,
 		Index,
-		Constant
+		Constant,
+		Structured
 	};
 
 	class Buffer
@@ -21,20 +23,20 @@ namespace fw
 	public:
 		Buffer();
 		Buffer(u32 size, BufferUsage usage, BufferType flags, u32 stride = 0, void* data = nullptr);
-		~Buffer();
-		void Init(u32 size, BufferUsage usage, BufferType flags, u32 stride = 0, void* data = nullptr);
+		virtual ~Buffer();
+		virtual void Init(u32 size, BufferUsage usage, BufferType flags, u32 stride = 0, void* data = nullptr);
 
-		void Bind(i32 slot = 0) const;
+		virtual void Bind(i32 slot = 0) const;
 
 		template<typename T>
 		void SetData(T& data);
 
-		void SetData(void* data, u32 size);
-		void* Map();
-		void Unmap();
-	private:
+		virtual void SetData(void* data, u32 size);
+		virtual void* Map();
+		virtual void Unmap();
+	protected:
 		struct Data;
-		Data* m_Data;
+		std::unique_ptr<Data> m_Data;
 	};
 
 	template<typename T>

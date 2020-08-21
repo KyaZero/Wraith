@@ -26,6 +26,9 @@ namespace fw
         const Mat4f& GetViewMatrix() const { return m_ViewMatrix; }
         const Mat4f& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
 
+        const Vec2f& GetBounds() const;
+        const Vec2f Unproject(const Vec2f& pos) const;
+
     private:
         void RecalculateViewMatrix();
 
@@ -34,6 +37,7 @@ namespace fw
         Mat4f m_ViewProjectionMatrix;
 
         Vec3f m_Position = { 0.0f, 0.0f, 0.0f };
+        Vec2f m_Bounds = { 0, 0 };
         f32 m_Rotation = 0.0f;
         f32 m_Scale = 1.0f;
     };

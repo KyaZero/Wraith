@@ -26,6 +26,6 @@ namespace fw
 
         //for averaging out fps
         std::deque<f32> m_LastTimes;
-        constexpr static i32 MaxNumTimesSaved = 50;
+        constexpr static i32 MaxNumTimesSaved = 20;
     };
 }

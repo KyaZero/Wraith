@@ -3,6 +3,19 @@
 Texture2D ColorTexture : register(t0);
 SamplerState DefaultSampler : register(s0);
 
+struct InstanceBuffer
+{
+	float4 Color;
+	float2 Position;
+	float2 Offset;
+	float2 Scale;
+	float2 Size;
+	float Rotation;
+	int WorldSpace;
+};
+
+StructuredBuffer<InstanceBuffer> InstanceData : register(t1);
+
 float2 Rotate(float rotation, float2 position)
 {
 	float c = cos(rotation);
@@ -11,15 +24,16 @@ float2 Rotate(float rotation, float2 position)
 	return mul(position, r);
 }
 
-void VSMain(in VertexInput input, out PixelInput output)
+void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_InstanceID)
 {
-    input.position *= Size;
-    input.position -= Offset;
-    input.position = Rotate(Rotation, input.position);
-    input.position *= Scale;
-    input.position += Position;
+    input.position *= InstanceData[instance_ID].Size;
+    input.position -= InstanceData[instance_ID].Offset;
+    input.position = Rotate(InstanceData[instance_ID].Rotation, input.position);
+    input.position *= InstanceData[instance_ID].Scale;
+    input.position += InstanceData[instance_ID].Position;
 
-    output.position = mul(ViewProjection, float4(input.position.xy, 0, 1));
+    output.position = InstanceData[instance_ID].WorldSpace ? mul(ViewProjection, float4(input.position.xy, 0, 1)) : mul(Projection, float4(input.position.xy, 0, 1));
+    output.color = InstanceData[instance_ID].Color;
     output.uv = input.uv;
 }
 
@@ -29,7 +43,7 @@ void PSMain(in PixelInput input, out PixelOutput output)
     color.rgb = TO_LINEAR(color.rgb);
 
     float4 final_color = color;
-    final_color *= Color;
+    final_color *= input.color;
     final_color.rgb = TO_SRGB(final_color.rgb);
 
     output.color = final_color;

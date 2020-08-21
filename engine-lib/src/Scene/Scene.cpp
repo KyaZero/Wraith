@@ -20,19 +20,20 @@ namespace fw
 		m_Window = window;
 		m_Camera.Init(m_Window->GetSize().x, m_Window->GetSize().y);
 
-		for (size_t i = 0; i < 20; i++)
+		for (size_t i = 0; i < 5000; i++)
 		{
-			auto e = CreateEntity("2B_" + std::to_string(i));
+			auto e = CreateEntity("Sprite_" + std::to_string(i+1));
 			auto& sprite = e.AddComponent<SpriteComponent>();
-			sprite.texture = i % 2 == 0 ? TextureID("assets/textures/test.jpg") : TextureID("assets/textures/default.png");
-			sprite.origin = { Rand(), Rand() };
-			sprite.color = { Rand(),Rand(),Rand(),1 };
+			sprite.texture = TextureID("assets/textures/test.jpg");
+			sprite.origin = { 0.5f, 0.5f };
+			sprite.color = { Rand(), Rand(), Rand(), 1 };
 			sprite.layer = i;
+			sprite.world_space = true;
 
 			auto& transform = e.GetComponent<TransformComponent>();
-			transform.position = { RandomRange(-m_Window->GetSizef().x, m_Window->GetSizef().x) * 3, RandomRange(-m_Window->GetSizef().y, m_Window->GetSizef().y) * 3 };
+			transform.position = { RandomRange(-m_Window->GetSizef().x, m_Window->GetSizef().x) * 64.0f, RandomRange(-m_Window->GetSizef().y, m_Window->GetSizef().y) * 64.0f };
 			transform.rotation = RandomRange(0.f, 360.f);
-			transform.scale = { Rand(), Rand() };
+			transform.scale = Vec2f{ 1, 1 } * 0.02f;
 		}
 		return true;
 	}
@@ -57,16 +58,17 @@ namespace fw
 
 		m_Renderer->Submit(SetCameraCommand{
 			m_Camera.GetCamera()
-		});
-		ImGui::Begin("OwO");
-		auto transforms = m_Registry.view<TransformComponent>();
-		for (auto& entity : transforms)
-		{
-			auto& transform = transforms.get(entity);
-			transform.rotation += dt * 4;
+			});
 
-			auto& tag = m_Registry.get<TagComponent>(entity);
-			ImGui::TreeNodeEx(tag.tag.c_str());
+		ImGui::Begin("Entitites");
+		auto v = m_Registry.view<TransformComponent, TagComponent>();
+		for (auto& entity : v)
+		{
+			auto& [transform, tag] = v.get<TransformComponent, TagComponent>(entity);
+			transform.rotation -= dt * 5.0f;
+			transform.position = Vec2f(cos(total_time * 0.1f + (f32)entity), sin(total_time * 0.1f + (f32)entity)) * (f32)entity;
+			transform.scale = Vec2f(0.01f, 0.01f) * (1.0f + (f32)entity * 0.005f);
+			ImGui::Text(tag.tag.c_str());
 		}
 		ImGui::End();
 

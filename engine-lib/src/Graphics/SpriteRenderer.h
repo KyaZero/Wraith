@@ -29,24 +29,33 @@ namespace fw
 
 		Shader m_SpriteShader;
 
+		Buffer m_IndexBuffer;
 		Buffer m_VertexBuffer;
+		Buffer m_InstanceBuffer;
 
 		struct ConstantBufferData
 		{
 			Mat4f view_projection;
+			Mat4f projection;
+			Vec2f resolution;
+			f32 time;
+		} m_ConstantBufferData;
+		Buffer m_ConstantBuffer;
+
+		struct InstanceData
+		{
 			Vec4f color;
 			Vec2f position;
 			Vec2f offset;
 			Vec2f scale;
 			Vec2f size;
-			Vec2f resolution;
 			f32 rotation;
-			f32 time;
-		} m_ConstantBufferData;
-		Buffer m_ConstantBuffer;
+			i32 world_space;
+		};
 
-		void UpdateConstantBuffer(const SpriteCommand& sprite, const Texture& texture);
+		void UpdateConstantBuffer(/*const SpriteCommand& sprite, const Texture& texture*/);
 
+		constexpr static u32 InstanceCount = 1024;
 		std::vector<SpriteCommand> m_SpriteCommands;
 		Sampler m_Sampler;
 	};

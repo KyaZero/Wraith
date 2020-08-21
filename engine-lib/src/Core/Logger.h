@@ -9,7 +9,7 @@
 #define FATAL_LOG(...) fw::Logger::Log(::fw::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__); abort();
 
 #ifdef NDEBUG
-#define ASSERT_LOG(expression) ((void)0)
+#define ASSERT_LOG(...) ((void)0)
 
 #else
 #define __ASSERT_LOG(...) fw::Logger::Log(::fw::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), abort()

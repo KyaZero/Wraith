@@ -7,6 +7,7 @@ struct VertexInput
 struct PixelInput
 {
     float4 position : SV_POSITION;
+    float4 color : COLOR;
     float2 uv : TEXCOORD;
 };
 
@@ -18,13 +19,8 @@ struct PixelOutput
 cbuffer BufferData : register(b0)
 {
     float4x4 ViewProjection;
-    float4 Color;
-    float2 Position;
-    float2 Offset;
-    float2 Scale;
-    float2 Size;
+    float4x4 Projection;
     float2 Resolution;
-    float Rotation;
     float Time;
 }
 

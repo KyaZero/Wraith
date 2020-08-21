@@ -2,8 +2,10 @@
 #include <Windows.h>
 #include "WindowStyle.h"
 #include "Mouse.h"
+#include "examples/imgui_impl_win32.h"
 #include "Core/Logger.h"
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace fw
 {
 	static LRESULT CALLBACK WindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
@@ -740,6 +742,9 @@ namespace fw
 
 	LRESULT CALLBACK WindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 	{
+		if (ImGui_ImplWin32_WndProcHandler(handle, message, wParam, lParam))
+			return 0;
+
 		if (message == WM_CREATE)
 		{
 			LONG_PTR window = (LONG_PTR)reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams;

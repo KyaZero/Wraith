@@ -8,6 +8,7 @@ namespace fw
 	struct Buffer::Data
 	{
 		ID3D11Buffer* buffer;
+		ID3D11ShaderResourceView* resource_view;
 		BufferType bindFlags;
 		u32 stride;
 	};
@@ -27,13 +28,14 @@ namespace fw
 		{
 			if (m_Data->buffer)
 				SafeRelease(&m_Data->buffer);
+			if (m_Data->resource_view)
+				SafeRelease(&m_Data->resource_view);
 		}
-		delete m_Data;
 	}
 
 	void Buffer::Init(u32 size, BufferUsage usage, BufferType flags, u32 stride, void* data)
 	{
-		m_Data = new Data;
+		m_Data = std::make_unique<Data>();
 
 		D3D11_BUFFER_DESC desc = { };
 		desc.ByteWidth = size;
@@ -60,6 +62,11 @@ namespace fw
 		case BufferType::Constant:
 			desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 			break;
+		case BufferType::Structured:
+			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+			desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+			desc.StructureByteStride = stride;
+			break;
 		}
 
 		if (flags == BufferType::Constant && usage == BufferUsage::Dynamic && size % 16 != 0)
@@ -70,7 +77,20 @@ namespace fw
 		D3D11_SUBRESOURCE_DATA subresource = { };
 		subresource.pSysMem = data;
 
-		FailedCheck("Creating buffer", Framework::GetDevice()->CreateBuffer(&desc, (data) ? &subresource : nullptr, &m_Data->buffer));
+		if (FailedCheck("Creating Buffer", Framework::GetDevice()->CreateBuffer(&desc, (data) ? &subresource : nullptr, &m_Data->buffer)))
+		{
+			ASSERT_LOG(false);
+		}
+
+		if (flags == BufferType::Structured)
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+			ZeroMemory(&srvDesc, sizeof(srvDesc));
+			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+			srvDesc.Buffer.ElementWidth = size / stride;
+			Framework::GetDevice()->CreateShaderResourceView(m_Data->buffer, &srvDesc, &m_Data->resource_view);
+		}
 
 		m_Data->bindFlags = flags;
 		m_Data->stride = stride;
@@ -78,11 +98,7 @@ namespace fw
 
 	void Buffer::Bind(i32 slot) const
 	{
-		if (!m_Data)
-		{
-			ERROR_LOG("Buffer not Inititalized!");
-			return;
-		}
+		ASSERT_LOG(m_Data, "Buffer not Inititalized!");
 
 		auto* context = Framework::GetContext();
 		const u32 offset = 0;
@@ -101,6 +117,12 @@ namespace fw
 			context->VSSetConstantBuffers(slot, 1, &m_Data->buffer);
 			context->PSSetConstantBuffers(slot, 1, &m_Data->buffer);
 			context->GSSetConstantBuffers(slot, 1, &m_Data->buffer);
+			break;
+		case BufferType::Structured:
+			context->VSSetShaderResources(1, 1, &m_Data->resource_view);
+			break;
+		default:
+			ASSERT_LOG(false, "No implemented BufferType");
 			break;
 		}
 	}

@@ -1,4 +1,4 @@
-set(target_name "engine-lib")
+set(target_name "engine")
 
 set(common_files
     "src/Core/Filewatcher.h"

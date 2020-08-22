@@ -20,20 +20,23 @@ namespace fw
 		m_Window = window;
 		m_Camera.Init(m_Window->GetSize().x, m_Window->GetSize().y);
 
-		for (size_t i = 0; i < 50000; i++)
+		for (size_t y = 0; y < 100; ++y)
 		{
-			auto e = CreateEntity("Sprite_" + std::to_string(i+1));
-			auto& sprite = e.AddComponent<SpriteComponent>();
-			sprite.texture = i % 2 == 0 ? TextureID("assets/textures/test.jpg") : TextureID("assets/textures/default.png");
-			sprite.origin = { 0.5f, 0.5f };
-			sprite.color = { Rand(), Rand(), Rand(), 1 };
-			sprite.layer = i;
-			sprite.world_space = true;
+			for (size_t x = 0; x < 100; ++x)
+			{
+				auto e = CreateEntity("Sprite_" + std::to_string(x+y + 1));
+				auto& sprite = e.AddComponent<SpriteComponent>();
+				sprite.texture = TextureID("assets/textures/test.jpg");
+				sprite.origin = { 0.5f, 0.5f };
+				sprite.color = { Rand(), Rand(), Rand(), 1 };
+				sprite.layer = y;
+				sprite.world_space = true;
 
-			auto& transform = e.GetComponent<TransformComponent>();
-			transform.position = { RandomRange(-m_Window->GetSizef().x, m_Window->GetSizef().x) * 32.0f, RandomRange(-m_Window->GetSizef().y, m_Window->GetSizef().y) * 32.0f };
-			transform.rotation = RandomRange(0.0f, 360.0f);
-			transform.scale = Vec2f{ 1, 1 } * 0.2f;
+				auto& transform = e.GetComponent<TransformComponent>();
+				transform.position = { (f32)x * 1000, (f32)y * 1000 };
+				//transform.rotation = RandomRange(0.0f, 360.0f);
+				transform.scale = Vec2f{ 1, 1 } * 1.f;
+			}
 		}
 		return true;
 	}
@@ -65,7 +68,7 @@ namespace fw
 		for (auto& entity : v)
 		{
 			auto& [transform, tag] = v.get<TransformComponent, TagComponent>(entity);
-			transform.rotation -= dt * 5.0f;
+			//transform.rotation -= dt * 5.0f;
 			ImGui::Text(tag.tag.c_str());
 		}
 		ImGui::End();

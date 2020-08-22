@@ -20,20 +20,20 @@ namespace fw
 		m_Window = window;
 		m_Camera.Init(m_Window->GetSize().x, m_Window->GetSize().y);
 
-		for (size_t i = 0; i < 5000; i++)
+		for (size_t i = 0; i < 50000; i++)
 		{
 			auto e = CreateEntity("Sprite_" + std::to_string(i+1));
 			auto& sprite = e.AddComponent<SpriteComponent>();
-			sprite.texture = TextureID("assets/textures/test.jpg");
+			sprite.texture = i % 2 == 0 ? TextureID("assets/textures/test.jpg") : TextureID("assets/textures/default.png");
 			sprite.origin = { 0.5f, 0.5f };
 			sprite.color = { Rand(), Rand(), Rand(), 1 };
 			sprite.layer = i;
 			sprite.world_space = true;
 
 			auto& transform = e.GetComponent<TransformComponent>();
-			transform.position = { RandomRange(-m_Window->GetSizef().x, m_Window->GetSizef().x) * 64.0f, RandomRange(-m_Window->GetSizef().y, m_Window->GetSizef().y) * 64.0f };
-			transform.rotation = RandomRange(0.f, 360.f);
-			transform.scale = Vec2f{ 1, 1 } * 0.02f;
+			transform.position = { RandomRange(-m_Window->GetSizef().x, m_Window->GetSizef().x) * 32.0f, RandomRange(-m_Window->GetSizef().y, m_Window->GetSizef().y) * 32.0f };
+			transform.rotation = RandomRange(0.0f, 360.0f);
+			transform.scale = Vec2f{ 1, 1 } * 0.2f;
 		}
 		return true;
 	}
@@ -66,8 +66,6 @@ namespace fw
 		{
 			auto& [transform, tag] = v.get<TransformComponent, TagComponent>(entity);
 			transform.rotation -= dt * 5.0f;
-			transform.position = Vec2f(cos(total_time * 0.1f + (f32)entity), sin(total_time * 0.1f + (f32)entity)) * (f32)entity;
-			transform.scale = Vec2f(0.01f, 0.01f) * (1.0f + (f32)entity * 0.005f);
 			ImGui::Text(tag.tag.c_str());
 		}
 		ImGui::End();

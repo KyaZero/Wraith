@@ -33,6 +33,15 @@ namespace fw
 			}
 		}
 
+		inline void Visualize()
+		{
+			INFO_LOG("\n[%.2f, %.2f, %.2f, %.2f]\n[%.2f, %.2f, %.2f, %.2f]\n[%.2f, %.2f, %.2f, %.2f]\n[%.2f, %.2f, %.2f, %.2f]",
+				m_Numbers[0], m_Numbers[1], m_Numbers[2], m_Numbers[3],
+				m_Numbers[4], m_Numbers[5], m_Numbers[6], m_Numbers[7],
+				m_Numbers[8], m_Numbers[9], m_Numbers[10], m_Numbers[11],
+				m_Numbers[12], m_Numbers[13], m_Numbers[14], m_Numbers[15]);
+		}
+
 		Mat4(const Mat4<T>& other)
 		{
 			*this = other;
@@ -160,11 +169,14 @@ namespace fw
 
 		static Mat4<T> CreateOrthographicProjection(T left, T right, T bottom, T top, T near, T far)
 		{
+			f32 ReciprocalWidth = 1.0f / (right - left);
+			f32 ReciprocalHeight = 1.0f / (top - bottom);
+			f32 fRange = 1.0f / (far - near);
 			return Mat4<T>{
-				2/(right-left), 0, 0, 0,
-				0, 2/(top-bottom), 0, 0,
-				0, 0, 1/(far-near), 0,
-				(left+right)/(left-right), (top+bottom)/(bottom-top), near/(near-far), 1
+				ReciprocalWidth+ReciprocalWidth,0,0,0,
+				0,ReciprocalHeight+ReciprocalHeight,0,0,
+				0,0,fRange,0,
+				-(left + right) * ReciprocalWidth, -(top + bottom) * ReciprocalHeight, -fRange * near, 1
 			};
 		}
 
@@ -176,9 +188,9 @@ namespace fw
 			T E = near / (near - far);
 			return Mat4<T>{
 				A, 0, 0, 0,
-					0, B, 0, 0,
-					0, 0, C, 0,
-					0, 0, E, 1
+				0, B, 0, 0,
+				0, 0, C, 0,
+				0, 0, E, 1
 			};
 		}
 
@@ -234,7 +246,7 @@ namespace fw
 				});
 		}
 
-		inline Mat4<T> FastInverse(const Mat4<T>& matrix)
+		inline static Mat4<T> FastInverse(const Mat4<T>& matrix)
 		{
 			Mat3<T> transposed(matrix);
 			transposed = Mat3<T>::Transpose(transposed);

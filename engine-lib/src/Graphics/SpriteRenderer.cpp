@@ -33,7 +33,8 @@ namespace fw
 		};
 
 		u32 indices[] = {
-			0, 1, 2, 1, 3, 2
+			0,1,2,1,3,2
+			//2,3,1,2,1,0
 		};
 
 		m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
@@ -85,7 +86,7 @@ namespace fw
 			{
 				current_texture_id = sprite.texture;
 				auto& tex = TextureManager::Get()->GetTexture(current_texture_id);
-				current_texture_size = { (f32)tex.GetSize().x, (f32)tex.GetSize().y };
+				current_texture_size = (Vec2f({ (f32)tex.GetSize().x, (f32)tex.GetSize().y }) /*/ m_Window->GetSizef()*/);
 			}
 
 			InstanceData data;
@@ -131,7 +132,7 @@ namespace fw
 		if (m_CurrentCamera)
 		{
 			m_ConstantBufferData.view_projection = m_CurrentCamera->GetViewProjectionMatrix();
-			m_ConstantBufferData.projection = m_CurrentCamera->GetProjectionMatrix();
+			m_ConstantBufferData.projection = Mat4f::CreateOrthographicProjection(0, m_Window->GetSize().x, m_Window->GetSize().y, 0, -1, 1);
 		}
 		else
 		{

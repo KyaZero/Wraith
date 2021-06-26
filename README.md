@@ -17,3 +17,5 @@ cmake --open .build
 [stb_image](https://github.com/nothings/stb#stb_libs)
 
 [entt](https://github.com/skypjack/entt)
+
+[color-console](https://github.com/imfl/color-console)

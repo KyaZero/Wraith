@@ -18,3 +18,5 @@ open
 [entt](https://github.com/skypjack/entt)
 
 [color-console](https://github.com/imfl/color-console)
+
+[glfw](https://github.com/glfw/glfw)

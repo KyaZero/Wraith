@@ -1,6 +1,8 @@
 #pragma once
-#include "Core\Math\Vec4.h"
+
 #include <memory>
+
+#include "Core/Math/Vec4.h"
 
 namespace fw
 {
@@ -21,7 +23,7 @@ namespace fw
 			Mirror,
 			Border
 		};
-        
+
 		Sampler();
 		Sampler(Filter filter, Address address, Vec4f border = Vec4f());
 		~Sampler();
@@ -34,4 +36,4 @@ namespace fw
 		struct Data;
 		std::unique_ptr<Data> m_Data;
 	};
-}
+}  // namespace fw

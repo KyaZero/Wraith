@@ -1,22 +1,29 @@
 #pragma once
-#include <Core/Types.h>
-#include <vector>
-#include <thread>
-#include <string>
+
 #include <cassert>
 #include <mutex>
 #include <queue>
+#include <string>
+#include <thread>
+#include <vector>
 
-#define VERBOSE_LOG(...) fw::Logger::Get()->Log(::fw::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#include <Core/Types.h>
+
+#define VERBOSE_LOG(...) \
+	fw::Logger::Get()->Log(::fw::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 #define INFO_LOG(...) fw::Logger::Get()->Log(::fw::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define WARNING_LOG(...) fw::Logger::Get()->Log(::fw::Logger::Level::Warning, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define ERROR_LOG(...) fw::Logger::Get()->Log(::fw::Logger::Level::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define WARNING_LOG(...) \
+	fw::Logger::Get()->Log(::fw::Logger::Level::Warning, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define ERROR_LOG(...) \
+	fw::Logger::Get()->Log(::fw::Logger::Level::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 
 #ifdef NDEBUG
 #define ASSERT_LOG(...) ((void)0)
 #else
-#define ___ASSERT_LOG(...) fw::Logger::Get()->Log(::fw::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), abort()
-#define ASSERT_LOG(expression, ...) (void)((!!(expression)) || (___ASSERT_LOG("Assertion failed: %s", (#expression " " #__VA_ARGS__)), 0))
+#define ___ASSERT_LOG(...) \
+	fw::Logger::Get()->Log(::fw::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), abort()
+#define ASSERT_LOG(expression, ...) \
+	(void)((!!(expression)) || (___ASSERT_LOG("Assertion failed: %s", (#expression " " #__VA_ARGS__)), 0))
 #endif
 
 namespace fw
@@ -46,6 +53,7 @@ namespace fw
 		static void SetShouldLogToFile(bool shouldLogToFile);
 
 		void Log(Level level, const char* file, u32 line, const char* function, const char* format, ...);
+
 	private:
 		static Logger* s_Instance;
 		void VerifyLogPath();
@@ -80,4 +88,4 @@ namespace fw
 		bool m_ShouldLogToFile;
 		bool m_MultiThreaded;
 	};
-}
+}  // namespace fw

@@ -1,9 +1,11 @@
 #pragma once
+
+#include <entt/entt.hpp>
+
+#include "Core/Types.h"
 #include "Graphics/OrthographicCameraController.h"
 #include "Graphics/RenderManager.h"
 #include "Window/Window.h"
-#include "Core/Types.h"
-#include <entt/entt.hpp>
 
 namespace fw
 {
@@ -32,4 +34,4 @@ namespace fw
 		friend class Entity;
 		friend class SceneHierarchyPanel;
 	};
-}
+}  // namespace fw

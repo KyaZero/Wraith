@@ -1,4 +1,5 @@
 #include "TextureManager.h"
+
 #include "Core/Filewatcher.h"
 
 namespace fw
@@ -39,8 +40,7 @@ namespace fw
 				return GetDefaultTexture();
 			}
 
-			auto texture_loader = [&]()
-			{
+			auto texture_loader = [&]() {
 				Texture new_texture;
 				if (!new_texture.LoadFromFile(path->string()))
 					return false;
@@ -74,4 +74,4 @@ namespace fw
 
 		m_DefaultTexture.LoadFromFile("assets/textures/default.png");
 	}
-}
+}  // namespace fw

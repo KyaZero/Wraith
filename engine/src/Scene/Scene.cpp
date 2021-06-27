@@ -1,17 +1,16 @@
 #include "Scene.h"
+
+#include "Components.h"
 #include "Entity.h"
 #include "Graphics/TextureManager.h"
-#include "Components.h"
 
 namespace fw
 {
 	Scene::Scene()
-	{
-	}
+	{ }
 
 	Scene::~Scene()
-	{
-	}
+	{ }
 
 	bool Scene::Init(RenderManager* renderer)
 	{
@@ -44,7 +43,7 @@ namespace fw
 				{ transform.scale.x, transform.scale.y },
 				transform.rotation.z,
 				sprite.layer,
-				sprite.world_space
+				sprite.world_space,
 			};
 
 			m_Renderer->Submit(sprite_cmd);
@@ -53,7 +52,7 @@ namespace fw
 
 	void Scene::UpdateRuntime(f32 dt)
 	{
-		//Script Update
+		// Script Update
 		{
 			m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nsc) {
 				if (nsc.instance)
@@ -91,7 +90,7 @@ namespace fw
 					{ transform.scale.x, transform.scale.y },
 					transform.rotation.z,
 					sprite.layer,
-					sprite.world_space
+					sprite.world_space,
 				};
 
 				m_Renderer->Submit(sprite_cmd);
@@ -121,4 +120,4 @@ namespace fw
 			}
 		});
 	}
-}
+}  // namespace fw

@@ -1,12 +1,13 @@
 #pragma once
-#include "Core\Math\Mat4.h"
-#include "OrthographicCamera.h"
-#include "Window\Window.h"
-#include "Shader.h"
+
 #include "Buffer.h"
-#include "Sampler.h"
+#include "Core/Math/Mat4.h"
+#include "OrthographicCamera.h"
 #include "RenderCommand.h"
+#include "Sampler.h"
+#include "Shader.h"
 #include "Texture.h"
+#include "Window/Window.h"
 
 namespace fw
 {
@@ -61,9 +62,9 @@ namespace fw
 
 		void UpdateConstantBuffer(f32 total_time);
 
-		//I found 1024 instances to be the best in terms of performance and drawcalls
+		// I found 1024 instances to be the best in terms of performance and drawcalls
 		constexpr static u32 InstanceCount = 1024;
 		std::vector<SpriteCommand> m_SpriteCommands;
 		Sampler m_Sampler;
 	};
-}
+}  // namespace fw

@@ -1,6 +1,8 @@
 #pragma once
-#include <random>
+
 #include <cmath>
+#include <random>
+
 #include "Core/Types.h"
 
 namespace fw
@@ -44,7 +46,8 @@ namespace fw
 	template <typename T>
 	inline T RandomRange(T min, T max)
 	{
-		if (min == Max(min, max)) std::swap(min, max);
+		if (min == Max(min, max))
+			std::swap(min, max);
 		static std::random_device rd;
 		static std::mt19937 gen(rd());
 		if constexpr (std::is_integral_v<T>)
@@ -59,6 +62,12 @@ namespace fw
 		}
 	}
 
-	inline f32 Rand() { return RandomRange(0.0f, 1.0f); }
-	inline f32 Rand11() { return RandomRange(-1.0f, 1.0f); }
-}
+	inline f32 Rand()
+	{
+		return RandomRange(0.0f, 1.0f);
+	}
+	inline f32 Rand11()
+	{
+		return RandomRange(-1.0f, 1.0f);
+	}
+}  // namespace fw

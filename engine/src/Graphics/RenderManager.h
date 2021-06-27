@@ -1,7 +1,8 @@
 #pragma once
-#include "SpriteRenderer.h"
-#include "RenderCommand.h"
+
 #include "Core/Types.h"
+#include "RenderCommand.h"
+#include "SpriteRenderer.h"
 
 namespace fw
 {
@@ -20,10 +21,9 @@ namespace fw
 		void Resize(u32 width, u32 height);
 
 	private:
-
 		std::shared_ptr<Texture> m_RenderTexture;
 		std::shared_ptr<Window> m_Window;
 		SpriteRenderer m_SpriteRenderer;
 		std::vector<RenderCommand> m_RenderCommands;
 	};
-}
+}  // namespace fw

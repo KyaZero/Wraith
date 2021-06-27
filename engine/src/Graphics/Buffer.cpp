@@ -1,7 +1,9 @@
 #include "Buffer.h"
-#include "Framework.h"
-#include "DXUtil.h"
+
 #include <d3d11.h>
+
+#include "DXUtil.h"
+#include "Framework.h"
 
 namespace fw
 {
@@ -13,9 +15,9 @@ namespace fw
 		u32 stride;
 	};
 
-	Buffer::Buffer() : m_Data(nullptr)
-	{
-	}
+	Buffer::Buffer()
+	    : m_Data(nullptr)
+	{ }
 
 	Buffer::Buffer(u32 size, BufferUsage usage, BufferType flags, u32 stride, void* data)
 	{
@@ -37,7 +39,7 @@ namespace fw
 	{
 		m_Data = std::make_unique<Data>();
 
-		D3D11_BUFFER_DESC desc = { };
+		D3D11_BUFFER_DESC desc = {};
 		desc.ByteWidth = size;
 
 		switch (usage)
@@ -74,10 +76,11 @@ namespace fw
 			ASSERT_LOG(false, "Misaligned constant buffer!");
 		}
 
-		D3D11_SUBRESOURCE_DATA subresource = { };
+		D3D11_SUBRESOURCE_DATA subresource = {};
 		subresource.pSysMem = data;
 
-		if (FailedCheck("Creating Buffer", Framework::GetDevice()->CreateBuffer(&desc, (data) ? &subresource : nullptr, &m_Data->buffer)))
+		if (FailedCheck("Creating Buffer",
+		                Framework::GetDevice()->CreateBuffer(&desc, (data) ? &subresource : nullptr, &m_Data->buffer)))
 		{
 			ASSERT_LOG(false);
 		}
@@ -143,7 +146,8 @@ namespace fw
 		D3D11_MAPPED_SUBRESOURCE subres;
 		memset(&subres, 0, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-		if (FailedCheck("Mapping buffer", Framework::GetContext()->Map(m_Data->buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
+		if (FailedCheck("Mapping buffer",
+		                Framework::GetContext()->Map(m_Data->buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
 			return nullptr;
 
 		return subres.pData;
@@ -158,4 +162,4 @@ namespace fw
 		}
 		Framework::GetContext()->Unmap(m_Data->buffer, 0);
 	}
-}
+}  // namespace fw

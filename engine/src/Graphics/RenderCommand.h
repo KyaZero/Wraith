@@ -1,8 +1,10 @@
 #pragma once
-#include "Core\Math\Vec4.h"
-#include "TextureID.h"
-#include "Camera.h"
+
 #include <variant>
+
+#include "Camera.h"
+#include "Core/Math/Vec4.h"
+#include "TextureID.h"
 
 namespace fw
 {
@@ -25,4 +27,4 @@ namespace fw
 	};
 
 	using RenderCommand = std::variant<SpriteCommand, SetCameraCommand>;
-}
+}  // namespace fw

@@ -1,7 +1,9 @@
 #pragma once
-#include "Core\Math\Vec2.h"
-#include <map>
+
 #include <functional>
+#include <map>
+
+#include "Core/Math/Vec2.h"
 
 struct GLFWwindow;
 
@@ -45,4 +47,4 @@ namespace fw
 		std::string m_CurrentTitle;
 		static std::map<void*, std::function<void(u32, u32)>> s_ResizeCallbacks;
 	};
-}
+}  // namespace fw

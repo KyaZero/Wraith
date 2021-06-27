@@ -30,4 +30,4 @@ namespace fw
 		struct Data;
 		std::shared_ptr<Data> m_Data;
 	};
-}
+}  // namespace fw

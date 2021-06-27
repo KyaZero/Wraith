@@ -1,19 +1,21 @@
 #include "SpriteRenderer.h"
-#include "TextureManager.h"
-#include "Framework.h"
-#include <d3d11.h>
-#include <execution>
+
 #include <array>
+#include <execution>
+
+#include <d3d11.h>
+
+#include "Framework.h"
+#include "TextureManager.h"
 
 namespace fw
 {
-	SpriteRenderer::SpriteRenderer() : m_CurrentCamera()
-	{
-	}
+	SpriteRenderer::SpriteRenderer()
+	    : m_CurrentCamera()
+	{ }
 
 	SpriteRenderer::~SpriteRenderer()
-	{
-	}
+	{ }
 
 	bool SpriteRenderer::Init(std::shared_ptr<Window> window)
 	{
@@ -22,23 +24,22 @@ namespace fw
 		if (!m_SpriteShader.Load(Shader::Vertex | Shader::Pixel, "assets/engine/shaders/sprite.hlsl"))
 			return false;
 
-		m_ConstantBuffer.Init(sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
+		m_ConstantBuffer.Init(
+		    sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
 
 		f32 vertices[] = {
 			// pos      // uv
-			0.0f, 0.0f, 0.0f, 0.0f,
-			1.0f, 0.0f, 1.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 1.0f,
-			1.0f, 1.0f, 1.0f, 1.0f,
+			0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
 		};
 
-		u32 indices[] = {
-			0,1,2,1,3,2
-		};
+		u32 indices[] = { 0, 1, 2, 1, 3, 2 };
 
-		m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
-		m_IndexBuffer.Init(sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
-		m_InstanceBuffer.Init(InstanceCount * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
+		m_VertexBuffer.Init(
+		    sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
+		m_IndexBuffer.Init(
+		    sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
+		m_InstanceBuffer.Init(
+		    InstanceCount * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
 
 		m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
 
@@ -67,10 +68,10 @@ namespace fw
 		m_VertexBuffer.Bind();
 		m_Sampler.Bind(0);
 
-		//Sort by texture, to reduce texture swaps during rendering.
-		//TODO: Should add layer support too. 
-		//edit: this could be fixed easily by using a perspective camera and just having a depth buffer/z position,
-		//but may want to have layers for UI etc?
+		// Sort by texture, to reduce texture swaps during rendering.
+		// TODO: Should add layer support too.
+		// edit: this could be fixed easily by using a perspective camera and just having a depth buffer/z position,
+		// but may want to have layers for UI etc?
 		std::sort(std::execution::par, m_SpriteCommands.begin(), m_SpriteCommands.end(), [](auto a, auto b) {
 			return a.texture > b.texture;
 		});
@@ -81,7 +82,8 @@ namespace fw
 		Vec2f current_texture_size = { 0, 0 };
 		for (auto& sprite : m_SpriteCommands)
 		{
-			//caching, could probably be optimized by storing the textures that are in the current command list, and having them in a lookup table instead of getting them from the TextureManager
+			// caching, could probably be optimized by storing the textures that are in the current command list, and
+			// having them in a lookup table instead of getting them from the TextureManager
 			if (sprite.texture != current_texture_id)
 			{
 				current_texture_id = sprite.texture;
@@ -111,7 +113,8 @@ namespace fw
 
 				u32 num_instances = Min(InstanceCount, (u32)sprites.second.size() - (InstanceCount * i));
 
-				m_InstanceBuffer.SetData(&sprites.second[0] + (InstanceCount * i), num_instances * sizeof(InstanceData));
+				m_InstanceBuffer.SetData(&sprites.second[0] + (InstanceCount * i),
+				                         num_instances * sizeof(InstanceData));
 				m_InstanceBuffer.Bind(1);
 
 				context->DrawIndexedInstanced(6, num_instances, 0, 0, 0);
@@ -136,8 +139,9 @@ namespace fw
 		}
 		else
 		{
-			//For UI, should probably investigate a better solution if it's supposed to run at different resolutions :D
-			m_ConstantBufferData.view_projection = Mat4f::CreateOrthographicProjection(0, m_Window->GetSize().x, m_Window->GetSize().y, 0, -1, 1);
+			// For UI, should probably investigate a better solution if it's supposed to run at different resolutions :D
+			m_ConstantBufferData.view_projection =
+			    Mat4f::CreateOrthographicProjection(0, m_Window->GetSize().x, m_Window->GetSize().y, 0, -1, 1);
 		}
 
 		m_ConstantBufferData.resolution = Vec2f(size.x, size.y);
@@ -145,4 +149,4 @@ namespace fw
 
 		m_ConstantBuffer.SetData(m_ConstantBufferData);
 	}
-}
+}  // namespace fw

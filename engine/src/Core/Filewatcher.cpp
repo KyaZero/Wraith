@@ -4,9 +4,9 @@ namespace fw
 {
 	Filewatcher* Filewatcher::m_Instance = nullptr;
 
-	Filewatcher* Filewatcher::Get() 
+	Filewatcher* Filewatcher::Get()
 	{
-		return m_Instance; 
+		return m_Instance;
 	}
 
 	void Filewatcher::Create()
@@ -85,4 +85,4 @@ namespace fw
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
 	}
-}
+}  // namespace fw

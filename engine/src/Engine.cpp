@@ -1,7 +1,8 @@
 #include "Engine.h"
-#include "Core/Logger.h"
+
 #include "Core/Common.h"
 #include "Core/Filewatcher.h"
+#include "Core/Logger.h"
 #include "Graphics/ContentManager.h"
 #include "Graphics/TextureManager.h"
 
@@ -38,7 +39,7 @@ namespace fw
 
 	void Engine::BeginFrame()
 	{
-		m_Framework.BeginFrame({ 0.2f,0.2f,0.2f,1 });
+		m_Framework.BeginFrame({ 0.2f, 0.2f, 0.2f, 1 });
 	}
 
 	void Engine::EndFrame()
@@ -53,7 +54,7 @@ namespace fw
 		Filewatcher::Get()->FlushChanges();
 		Input::FlushState();
 
-		//Calculate average fps and display it on the window title
+		// Calculate average fps and display it on the window title
 		{
 			static auto original_title = m_Window->GetTitle();
 
@@ -74,4 +75,4 @@ namespace fw
 			m_Window->SetTitle(original_title + " - FPS: " + std::to_string((u32)(1.0f / average_fps)));
 		}
 	}
-}
+}  // namespace fw

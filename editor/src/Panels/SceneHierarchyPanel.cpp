@@ -1,10 +1,13 @@
 #include "SceneHierarchyPanel.h"
+
+#include <imgui.h>
+
 #include "Scene/Components.h"
-#include "imgui.h"
 
 namespace fw
 {
-	SceneHierarchyPanel::SceneHierarchyPanel(std::shared_ptr<Scene> context) : m_SelectionContext()
+	SceneHierarchyPanel::SceneHierarchyPanel(std::shared_ptr<Scene> context)
+	    : m_SelectionContext()
 	{
 		SetContext(context);
 	}
@@ -29,7 +32,7 @@ namespace fw
 
 		ImGui::End();
 
-		//Move this stuff to PropertiesPanel
+		// Move this stuff to PropertiesPanel
 		ImGui::Begin("Properties");
 		if (m_SelectionContext)
 		{
@@ -76,29 +79,33 @@ namespace fw
 
 		if (entity.HasComponent<TransformComponent>())
 		{
-			if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+			if (ImGui::TreeNodeEx(
+			        (void*)typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
 			{
 				auto& transform = entity.GetComponent<TransformComponent>();
 
 				ImGui::DragFloat3("Position", &transform.position.x, 0.01f);
 				ImGui::DragFloat3("Scale", &transform.scale.x, 0.001f, 0.001f, 10.0f);
-				Vec3f rotation_in_degrees = { Degrees(transform.rotation.x), Degrees(transform.rotation.y), Degrees(transform.rotation.z) };
+				Vec3f rotation_in_degrees = { Degrees(transform.rotation.x),
+					                          Degrees(transform.rotation.y),
+					                          Degrees(transform.rotation.z) };
 				ImGui::DragFloat3("Rotation", &rotation_in_degrees.x, 0.1f);
-				transform.rotation = { Radians(rotation_in_degrees.x), Radians(rotation_in_degrees.y), Radians(rotation_in_degrees.z) };
+				transform.rotation = { Radians(rotation_in_degrees.x),
+					                   Radians(rotation_in_degrees.y),
+					                   Radians(rotation_in_degrees.z) };
 				ImGui::TreePop();
 			}
-
 		}
 
 		if (entity.HasComponent<CameraComponent>())
 		{
-			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera Component"))
+			if (ImGui::TreeNodeEx(
+			        (void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera Component"))
 			{
-				//auto& camera_component = entity.GetComponent<CameraComponent>();
+				// auto& camera_component = entity.GetComponent<CameraComponent>();
 
 				ImGui::TreePop();
 			}
-
 		}
 	}
-}
+}  // namespace fw

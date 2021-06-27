@@ -1,7 +1,9 @@
 #pragma once
-#include "Core/Types.h"
+
 #include <filesystem>
 #include <optional>
+
+#include "Core/Types.h"
 
 namespace fw
 {
@@ -23,4 +25,4 @@ namespace fw
 
 		std::unordered_map<IDType, std::filesystem::path> m_Paths;
 	};
-}
+}  // namespace fw

@@ -1,19 +1,22 @@
 #include "Framework.h"
-#include "DXUtil.h"
-#include "Texture.h"
-#include "imgui.h"
-#include "backends/imgui_impl_dx11.h"
-#include "backends/imgui_impl_win32.h"
+
+#include <codecvt>
+#include <locale>
+#include <string>
+
+#include <atlbase.h>
+#include <backends/imgui_impl_dx11.h>
+#include <backends/imgui_impl_win32.h>
 #include <d3d11.h>
 #include <d3d11_1.h>
-#include <atlbase.h>
-#include <locale>
-#include <codecvt>
-#include <string>
+#include <imgui.h>
+
+#include "DXUtil.h"
+#include "Texture.h"
 
 namespace fw
 {
-	//for getters, should figure out a better way to do this
+	// for getters, should figure out a better way to do this
 	static ID3D11Device* s_Device;
 	static ID3D11DeviceContext* s_Context;
 	void* s_Annot = nullptr;
@@ -27,7 +30,8 @@ namespace fw
 		std::vector<IDXGIAdapter*> adapters;
 	};
 
-	Framework::Framework() : m_Window(nullptr)
+	Framework::Framework()
+	    : m_Window(nullptr)
 	{
 		m_Data = new Data;
 	}
@@ -96,7 +100,9 @@ namespace fw
 			DXGI_ADAPTER_DESC adapterDescription;
 			a->GetDesc(&adapterDescription);
 
-			INFO_LOG("Found adapter: %ls VRAM: %umb", adapterDescription.Description, adapterDescription.DedicatedVideoMemory / (1024 * 1024));
+			INFO_LOG("Found adapter: %ls VRAM: %umb",
+			         adapterDescription.Description,
+			         adapterDescription.DedicatedVideoMemory / (1024 * 1024));
 
 			if (adapter)
 			{
@@ -125,15 +131,8 @@ namespace fw
 		creation_flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-		D3D_FEATURE_LEVEL feature_levels[] =
-		{
-			D3D_FEATURE_LEVEL_11_1,
-			D3D_FEATURE_LEVEL_11_0,
-			D3D_FEATURE_LEVEL_10_1,
-			D3D_FEATURE_LEVEL_10_0,
-			D3D_FEATURE_LEVEL_9_3,
-			D3D_FEATURE_LEVEL_9_1
-		};
+		D3D_FEATURE_LEVEL feature_levels[] = { D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_1,
+			                                   D3D_FEATURE_LEVEL_10_0, D3D_FEATURE_LEVEL_9_3,  D3D_FEATURE_LEVEL_9_1 };
 
 		DXGI_SWAP_CHAIN_DESC swapchain_desc = { 0 };
 		swapchain_desc.BufferCount = 1;
@@ -143,7 +142,19 @@ namespace fw
 		swapchain_desc.SampleDesc.Count = 1;
 		swapchain_desc.Windowed = true;
 
-		if (FailedCheck("D3D11CreateDeviceAndSwapChain", D3D11CreateDeviceAndSwapChain(adapter, D3D_DRIVER_TYPE_UNKNOWN, NULL, creation_flags, feature_levels, ARRAYSIZE(feature_levels), D3D11_SDK_VERSION, &swapchain_desc, &m_Data->swap_chain, &m_Data->device, NULL, &m_Data->context)))
+		if (FailedCheck("D3D11CreateDeviceAndSwapChain",
+		                D3D11CreateDeviceAndSwapChain(adapter,
+		                                              D3D_DRIVER_TYPE_UNKNOWN,
+		                                              NULL,
+		                                              creation_flags,
+		                                              feature_levels,
+		                                              ARRAYSIZE(feature_levels),
+		                                              D3D11_SDK_VERSION,
+		                                              &swapchain_desc,
+		                                              &m_Data->swap_chain,
+		                                              &m_Data->device,
+		                                              NULL,
+		                                              &m_Data->context)))
 		{
 			return false;
 		}
@@ -152,7 +163,8 @@ namespace fw
 		s_Context = m_Data->context;
 
 		ID3D11Texture2D* back_buffer;
-		if (FailedCheck("Getting backbuffer texture from swapchain", m_Data->swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&back_buffer)))
+		if (FailedCheck("Getting backbuffer texture from swapchain",
+		                m_Data->swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&back_buffer)))
 		{
 			return false;
 		}
@@ -160,14 +172,12 @@ namespace fw
 		m_Data->back_buffer.CreateFromTexture(back_buffer);
 		m_Data->back_buffer.SetAsActiveTarget();
 
-		D3D11_VIEWPORT view = {
-			.TopLeftX = 0.0f,
-			.TopLeftY = 0.0f,
-			.Width = (f32)m_Window->GetSize().x,
-			.Height = (f32)m_Window->GetSize().y,
-			.MinDepth = 0.0f,
-			.MaxDepth = 0.0f
-		};
+		D3D11_VIEWPORT view = { .TopLeftX = 0.0f,
+			                    .TopLeftY = 0.0f,
+			                    .Width = (f32)m_Window->GetSize().x,
+			                    .Height = (f32)m_Window->GetSize().y,
+			                    .MinDepth = 0.0f,
+			                    .MaxDepth = 0.0f };
 
 		m_Data->context->RSSetViewports(1, &view);
 
@@ -233,13 +243,14 @@ namespace fw
 			s_Annot = annot;
 		}
 
-		//little bit of a hack to convert from std::string to std::wstring using the std library!
+		// little bit of a hack to convert from std::string to std::wstring using the std library!
 		((ID3DUserDefinedAnnotation*)s_Annot)->BeginEvent(std::filesystem::path(name).wstring().c_str());
 	}
 
 	void Framework::EndEvent()
 	{
-		if (!s_Annot) return;
+		if (!s_Annot)
+			return;
 		((ID3DUserDefinedAnnotation*)s_Annot)->EndEvent();
 	}
-}
+}  // namespace fw

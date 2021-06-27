@@ -1,14 +1,18 @@
 #include "Input.h"
-#include <Window/Window.h>
+
 #include <GLFW/glfw3.h>
-#include "imgui.h"
+#include <imgui.h>
+
+#include "Window/Window.h"
 
 namespace fw
 {
 	std::vector<Input*> Input::s_Instances;
 	bool Input::s_UIBlockEvents = false;
 
-	Input::Input() : m_IsEnabled(true), m_ScrollState{ 0, 0 }
+	Input::Input()
+	    : m_IsEnabled(true)
+	    , m_ScrollState{ 0, 0 }
 	{
 		for (i32 i = 0; i < (i32)Key::Count; ++i)
 		{
@@ -23,7 +27,9 @@ namespace fw
 		s_Instances.push_back(this);
 	}
 
-	Input::Input(std::vector<Key> keys, std::vector<MouseButton> buttons) : m_IsEnabled(true), m_ScrollState{ 0, 0 }
+	Input::Input(std::vector<Key> keys, std::vector<MouseButton> buttons)
+	    : m_IsEnabled(true)
+	    , m_ScrollState{ 0, 0 }
 	{
 		for (Key key : keys)
 		{
@@ -254,7 +260,7 @@ namespace fw
 		}
 	}
 
-	void Input::KeyCallback([[maybe_unused]] GLFWwindow* window, i32 key, [[maybe_unused]] i32 scancode, i32 action, [[maybe_unused]] i32 mods)
+	void Input::KeyCallback(GLFWwindow* window, i32 key, i32 scancode, i32 action, i32 mods)
 	{
 		if (s_UIBlockEvents)
 		{
@@ -268,4 +274,4 @@ namespace fw
 			input->SetKeyState((Key)key, action != GLFW_RELEASE);
 		}
 	}
-}
+}  // namespace fw

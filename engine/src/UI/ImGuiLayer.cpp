@@ -1,23 +1,25 @@
 #include "ImGuiLayer.h"
-#include "imgui.h"
 
+#include "GLFW/glfw3.h"
 #include "backends/imgui_impl_dx11.h"
 #include "backends/imgui_impl_win32.h"
-#include "GLFW/glfw3.h"
+#include "imgui.h"
 
 namespace fw
 {
-	ImguiLayer::ImguiLayer(std::shared_ptr<Engine> engine) : m_Engine(engine)
+	ImguiLayer::ImguiLayer(std::shared_ptr<Engine> engine)
+	    : m_Engine(engine)
 	{
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
-		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
+		ImGuiIO& io = ImGui::GetIO();
+		(void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+		// io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;    // Enable Docking
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  // Enable Multi-Viewport / Platform Windows
+		// io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
+		// io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
 		ImGui::StyleColorsDark();
 
@@ -41,7 +43,7 @@ namespace fw
 		ImGui_ImplWin32_Shutdown();
 		ImGui::DestroyContext();
 	}
-	
+
 	void ImguiLayer::Begin()
 	{
 		ImGui_ImplDX11_NewFrame();
@@ -98,4 +100,4 @@ namespace fw
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 	}
-}
+}  // namespace fw

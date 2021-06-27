@@ -1,8 +1,10 @@
 #pragma once
-#include <Core/Types.h>
-#include "Keys.h"
+
 #include <map>
 #include <vector>
+
+#include "Core/Types.h"
+#include "Keys.h"
 
 struct GLFWwindow;
 
@@ -15,7 +17,7 @@ namespace fw
 		// By default it monitors all the keys, useful for debugging etc.
 		// but is slower due to having to check all keys when polling.
 		Input();
-		
+
 		// Pass in vectors of keys you wish to monitor, useful for having
 		// UI Keys and being able to handle them separately for every Input instance
 		Input(std::vector<Key> keys, std::vector<MouseButton> buttons);
@@ -64,4 +66,4 @@ namespace fw
 		bool m_IsEnabled;
 		static bool s_UIBlockEvents;
 	};
-}
+}  // namespace fw

@@ -43,4 +43,4 @@ namespace fw
 
 		return it->second;
 	}
-}
+}  // namespace fw

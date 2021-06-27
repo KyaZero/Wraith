@@ -1,6 +1,8 @@
 #pragma once
-#include "Core\Types.h"
+
 #include <memory>
+
+#include "Core/Types.h"
 
 namespace fw
 {
@@ -28,20 +30,21 @@ namespace fw
 
 		virtual void Bind(i32 slot = 0) const;
 
-		template<typename T>
+		template <typename T>
 		void SetData(T& data);
 
 		virtual void SetData(void* data, u32 size);
 		virtual void* Map();
 		virtual void Unmap();
+
 	protected:
 		struct Data;
 		std::unique_ptr<Data> m_Data;
 	};
 
-	template<typename T>
+	template <typename T>
 	inline void Buffer::SetData(T& data)
 	{
 		SetData(&data, sizeof(data));
 	}
-}
+}  // namespace fw

@@ -1,17 +1,20 @@
 #include "OrthographicCameraController.h"
+
 #include "Window/Window.h"
 
 namespace fw
 {
-	OrthographicCameraController::OrthographicCameraController() : m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(false), m_Input()
-	{
-	}
+	OrthographicCameraController::OrthographicCameraController()
+	    : m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel)
+	    , m_Rotation(false)
+	    , m_Input()
+	{ }
 
-	OrthographicCameraController::OrthographicCameraController(f32 width, f32 height, bool rotation) : 
-		m_AspectRatio(width/height), 
-		m_Camera(0, width, height, 0),
-		m_Rotation(rotation),
-		m_Bounds(width, height)
+	OrthographicCameraController::OrthographicCameraController(f32 width, f32 height, bool rotation)
+	    : m_AspectRatio(width / height)
+	    , m_Camera(0, width, height, 0)
+	    , m_Rotation(rotation)
+	    , m_Bounds(width, height)
 	{
 		SetProjection(width, height);
 		Window::RegisterResizeCallback(this, [&](auto w, auto h) { Resize(w, h); });
@@ -92,4 +95,4 @@ namespace fw
 	{
 		m_Camera.SetProjection(-width * m_ZoomLevel, width * m_ZoomLevel, height * m_ZoomLevel, -height * m_ZoomLevel);
 	}
-}
+}  // namespace fw

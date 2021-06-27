@@ -1,7 +1,9 @@
 #pragma once
+
+#include <map>
+
 #include "Texture.h"
 #include "TextureID.h"
-#include <map>
 
 namespace fw
 {
@@ -24,4 +26,4 @@ namespace fw
 
 		std::map<TextureID, Texture> m_TextureMap;
 	};
-}
+}  // namespace fw

@@ -1,9 +1,11 @@
 #pragma once
-#include "Logger.h"
-#include <functional>
+
 #include <filesystem>
-#include <unordered_map>
+#include <functional>
 #include <thread>
+#include <unordered_map>
+
+#include "Logger.h"
 
 namespace fw
 {
@@ -39,4 +41,4 @@ namespace fw
 		volatile bool m_IsRunning;
 		volatile bool m_HasChanges;
 	};
-}
+}  // namespace fw

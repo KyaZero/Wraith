@@ -1,8 +1,10 @@
 #pragma once
-#include <d3d11.h>
-#include <wrl/client.h>
+
 #include <functional>
+
+#include <d3d11.h>
 #include <d3dcompiler.h>
+#include <wrl/client.h>
 
 using Microsoft::WRL::ComPtr;
 
@@ -20,4 +22,4 @@ namespace fw
 		ComPtr<ID3D11ShaderReflection> m_Reflection;
 		D3D11_SHADER_DESC m_ShaderDesc;
 	};
-}
+}  // namespace fw

@@ -1,7 +1,9 @@
 #pragma once
+
 #include <algorithm>
+
+#include "Core/Common.h"
 #include "Mat4.h"
-#include "../Common.h"
 
 namespace fw
 {
@@ -18,7 +20,6 @@ namespace fw
 	class Quat
 	{
 	public:
-
 		Quat<T>()
 		{
 			w = static_cast<T>(1);
@@ -26,7 +27,12 @@ namespace fw
 			y = static_cast<T>(0);
 			z = static_cast<T>(0);
 		}
-		Quat<T>(const T& w, const T& x, const T& y, const T& z) : w(w), x(x), y(y), z(z) { }
+		Quat<T>(const T& w, const T& x, const T& y, const T& z)
+		    : w(w)
+		    , x(x)
+		    , y(y)
+		    , z(z)
+		{ }
 		Quat<T>(const T& yaw, const T& pitch, const T& roll)
 		{
 			T cy = cos(yaw * T(0.5));
@@ -66,19 +72,27 @@ namespace fw
 			z = vector.z * halfAngleSin;
 		}
 
-		template<typename U>
+		template <typename U>
 		Quat<T>(const Mat4<U>& matrix)
 		{
-			w = std::sqrt(std::max(T(0), T(1) + (T)matrix.m_Numbers[0] + (T)matrix.m_Numbers[5] + (T)matrix.m_Numbers[10])) * T(0.5);
-			x = std::sqrt(std::max(T(0), T(1) + (T)matrix.m_Numbers[0] - (T)matrix.m_Numbers[5] - (T)matrix.m_Numbers[10])) * T(0.5);
-			y = std::sqrt(std::max(T(0), T(1) - (T)matrix.m_Numbers[0] + (T)matrix.m_Numbers[5] - (T)matrix.m_Numbers[10])) * T(0.5);
-			z = std::sqrt(std::max(T(0), T(1) - (T)matrix.m_Numbers[0] - (T)matrix.m_Numbers[5] + (T)matrix.m_Numbers[10])) * T(0.5);
+			w = std::sqrt(
+			        std::max(T(0), T(1) + (T)matrix.m_Numbers[0] + (T)matrix.m_Numbers[5] + (T)matrix.m_Numbers[10])) *
+			    T(0.5);
+			x = std::sqrt(
+			        std::max(T(0), T(1) + (T)matrix.m_Numbers[0] - (T)matrix.m_Numbers[5] - (T)matrix.m_Numbers[10])) *
+			    T(0.5);
+			y = std::sqrt(
+			        std::max(T(0), T(1) - (T)matrix.m_Numbers[0] + (T)matrix.m_Numbers[5] - (T)matrix.m_Numbers[10])) *
+			    T(0.5);
+			z = std::sqrt(
+			        std::max(T(0), T(1) - (T)matrix.m_Numbers[0] - (T)matrix.m_Numbers[5] + (T)matrix.m_Numbers[10])) *
+			    T(0.5);
 			x = std::copysign(x, (T)matrix.m_Numbers[9] - (T)matrix.m_Numbers[6]);
 			y = std::copysign(y, (T)matrix.m_Numbers[2] - (T)matrix.m_Numbers[8]);
 			z = std::copysign(z, (T)matrix.m_Numbers[4] - (T)matrix.m_Numbers[1]);
 		}
 
-		template<typename U>
+		template <typename U>
 		Quat<T>(const Quat<U>& other)
 		{
 			x = (T)other.x;
@@ -125,7 +139,7 @@ namespace fw
 			T pitch = T(0.0);
 			if (abs(sinp) >= T(1))
 			{
-				pitch = copysign(3.1415f * T(0.5), sinp); // Default to 90 degrees if out of range.
+				pitch = copysign(3.1415f * T(0.5), sinp);  // Default to 90 degrees if out of range.
 			}
 			else
 			{
@@ -204,23 +218,17 @@ namespace fw
 
 		inline Vec3<T> GetForwardVector() const
 		{
-			return Vec3<T>(2 * (x * z + w * y),
-				2 * (y * z - w * x),
-				1 - 2 * (x * x + y * y)).GetNormalized();
+			return Vec3<T>(2 * (x * z + w * y), 2 * (y * z - w * x), 1 - 2 * (x * x + y * y)).GetNormalized();
 		}
 
 		inline Vec3<T> GetUpVector() const
 		{
-			return Vec3<T>(2 * (x * y - w * z),
-				1 - 2 * (x * x + z * z),
-				2 * (y * z + w * x)).GetNormalized();
+			return Vec3<T>(2 * (x * y - w * z), 1 - 2 * (x * x + z * z), 2 * (y * z + w * x)).GetNormalized();
 		}
 
 		inline Vec3<T> GetRightVector() const
 		{
-			return Vec3<T>(1 - 2 * (y * y + z * z),
-				2 * (x * y + w * z),
-				2 * (x * z - w * y)).GetNormalized();
+			return Vec3<T>(1 - 2 * (y * y + z * z), 2 * (x * y + w * z), 2 * (x * z - w * y)).GetNormalized();
 		}
 
 		inline static Quat<T> Slerp(const Quat<T>& a, const Quat<T>& b, const T& delta)
@@ -229,7 +237,7 @@ namespace fw
 
 			T cosTheta = a.Dot(b);
 
-			// If cosTheta < 0, the interpolation will take the long wy around the sphere. 
+			// If cosTheta < 0, the interpolation will take the long wy around the sphere.
 			// To fix this, one quat must be negated.
 			if (cosTheta < T(0))
 			{
@@ -238,7 +246,8 @@ namespace fw
 			}
 
 			const T dotThreshold = static_cast<T>(0.9995);
-			// Perform a linear interpolation when cosTheta is close to 1 to avoid side effect of sin(angle) becoming a zero denominator
+			// Perform a linear interpolation when cosTheta is close to 1 to avoid side effect of sin(angle) becoming a
+			// zero denominator
 			if (cosTheta > T(1) - dotThreshold)
 			{
 				// Linear interpolation
@@ -261,12 +270,10 @@ namespace fw
 		template <class T>
 		Quat<T> operator*(const Quat<T>& other)
 		{
-			return Quat<T>(
-				(other.w * w) - (other.x * x) - (other.y * y) - (other.z * z),
-				(other.w * x) + (other.x * w) + (other.y * z) - (other.z * y),
-				(other.w * y) + (other.y * w) + (other.z * x) - (other.x * z),
-				(other.w * z) + (other.z * w) + (other.x * y) - (other.y * x)
-				);
+			return Quat<T>((other.w * w) - (other.x * x) - (other.y * y) - (other.z * z),
+			               (other.w * x) + (other.x * w) + (other.y * z) - (other.z * y),
+			               (other.w * y) + (other.y * w) + (other.z * x) - (other.x * z),
+			               (other.w * z) + (other.z * w) + (other.x * y) - (other.y * x));
 		}
 
 		template <class T>
@@ -329,9 +336,15 @@ namespace fw
 		union
 		{
 			T values[4];
-			struct { T w; T x; T y; T z; };
+			struct
+			{
+				T w;
+				T x;
+				T y;
+				T z;
+			};
 		};
 	};
 
 	typedef Quat<f32> Quatf;
-}
+}  // namespace fw

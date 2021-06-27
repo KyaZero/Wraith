@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Application.h"
-#include "Scene/Scene.h"
-#include "Scene/Entity.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Scene/Entity.h"
+#include "Scene/Scene.h"
 
 namespace fw
 {
@@ -34,4 +34,4 @@ namespace fw
 
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 	};
-}
+}  // namespace fw

@@ -1,16 +1,19 @@
 #include "Window.h"
-#include <Windows.h>
-#include "backends/imgui_impl_win32.h"
-#include "Core/Logger.h"
+
 #include <GLFW/glfw3.h>
+
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
+
+#include "Core/Logger.h"
 #include "Input/Input.h"
+#include "backends/imgui_impl_win32.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 static WNDPROC currentWndProc;
-static LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+static LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
 		return 0;
 
@@ -21,9 +24,9 @@ namespace fw
 {
 	std::map<void*, std::function<void(u32, u32)>> Window::s_ResizeCallbacks;
 
-	Window::Window() : m_Handle()
-	{
-	}
+	Window::Window()
+	    : m_Handle()
+	{ }
 
 	Window::Window(Vec2u resolution, const std::string& title)
 	{
@@ -123,4 +126,4 @@ namespace fw
 			callback.second(width, height);
 		}
 	}
-}
+}  // namespace fw

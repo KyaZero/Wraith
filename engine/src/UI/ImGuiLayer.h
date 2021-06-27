@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Engine.h"
 #include <memory>
+
+#include "Engine.h"
 
 namespace fw
 {
@@ -19,4 +20,4 @@ namespace fw
 	private:
 		std::shared_ptr<Engine> m_Engine;
 	};
-}
+}  // namespace fw

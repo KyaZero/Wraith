@@ -1,7 +1,8 @@
 #pragma once
-#include "Window\Window.h"
-#include "Core\Math\Vec4.h"
+
+#include "Core/Math/Vec4.h"
 #include "Texture.h"
+#include "Window/Window.h"
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;
@@ -26,6 +27,7 @@ namespace fw
 
 		static void BeginEvent(std::string name);
 		static void EndEvent();
+
 	private:
 		void ResizeBackbuffer();
 
@@ -33,4 +35,4 @@ namespace fw
 		struct Data;
 		Data* m_Data;
 	};
-}
+}  // namespace fw

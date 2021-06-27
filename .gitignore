@@ -1,7 +1,7 @@
 .build
-bin/*.ilk
-bin/*.pdb
-bin/*.exe
-bin/*.lib
+*.ilk
+*.pdb
+*.exe
+*.lib
 bin/assets/textures/*.jpg
 bin/saved/*.txt

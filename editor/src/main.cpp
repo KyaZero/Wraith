@@ -9,4 +9,4 @@ namespace fw
 	{
 		return new Editor();
 	}
-}
+}  // namespace fw

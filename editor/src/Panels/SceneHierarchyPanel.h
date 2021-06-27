@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Scene/Scene.h"
 #include "Scene/Entity.h"
+#include "Scene/Scene.h"
 
 namespace fw
 {
@@ -18,10 +18,10 @@ namespace fw
 	private:
 		void DrawEntityNode(Entity entity);
 
-		//Move this stuff to PropertiesPanel
+		// Move this stuff to PropertiesPanel
 		void DrawComponents(Entity entity);
 
 		std::shared_ptr<Scene> m_Context;
 		Entity m_SelectionContext;
 	};
-}
+}  // namespace fw

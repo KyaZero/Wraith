@@ -1,9 +1,12 @@
 #include "Application.h"
+
 #include <imgui.h>
 
 namespace fw
 {
-	Application::Application(const std::string& name) : m_Window(), m_Name(name)
+	Application::Application(const std::string& name)
+	    : m_Window()
+	    , m_Name(name)
 	{
 		m_Window = std::make_shared<Window>(Vec2u(1600, 900), m_Name);
 		m_Engine = std::make_shared<Engine>();
@@ -42,4 +45,4 @@ namespace fw
 		}
 		return true;
 	}
-}
+}  // namespace fw

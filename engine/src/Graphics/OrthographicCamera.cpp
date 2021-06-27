@@ -2,15 +2,15 @@
 
 namespace fw
 {
-	OrthographicCamera::OrthographicCamera(f32 left, f32 right, f32 bottom, f32 top) : Camera(m_Projection)
+	OrthographicCamera::OrthographicCamera(f32 left, f32 right, f32 bottom, f32 top)
+	    : Camera(m_Projection)
 	{
 		SetProjection(left, right, bottom, top);
 		m_ViewProjectionMatrix = m_ViewMatrix * m_Projection;
 	}
 
 	OrthographicCamera::~OrthographicCamera()
-	{
-	}
+	{ }
 
 	void OrthographicCamera::SetProjection(f32 left, f32 right, f32 bottom, f32 top)
 	{
@@ -35,4 +35,4 @@ namespace fw
 		m_ViewMatrix = Mat4f::FastInverse(transform);
 		m_ViewProjectionMatrix = m_ViewMatrix * m_Projection;
 	}
-}
+}  // namespace fw

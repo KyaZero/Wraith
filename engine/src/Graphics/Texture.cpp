@@ -1,10 +1,14 @@
 #include "Texture.h"
-#include "DXUtil.h"
-#include "Graphics\Framework.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-#include <d3d11.h>
+
 #include <filesystem>
+
+#include <d3d11.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
+#include "DXUtil.h"
+#include "Graphics/Framework.h"
 
 namespace fw
 {
@@ -137,7 +141,7 @@ namespace fw
 		m_Data->is_rt = info.render_target;
 		m_Data->format = (DXGI_FORMAT)info.format;
 
-		D3D11_TEXTURE2D_DESC desc = { };
+		D3D11_TEXTURE2D_DESC desc = {};
 		desc.Width = (u32)info.size.x;
 		desc.Height = (u32)info.size.y;
 		desc.MipLevels = info.num_mips;
@@ -162,7 +166,8 @@ namespace fw
 		initial_data.pSysMem = info.data;
 		initial_data.SysMemPitch = info.size.x * (sizeof(u8)) * 4;
 
-		if (FailedCheck("Creating texture", Framework::GetDevice()->CreateTexture2D(&desc, info.data ? &initial_data : nullptr, &texture)))
+		if (FailedCheck("Creating texture",
+		                Framework::GetDevice()->CreateTexture2D(&desc, info.data ? &initial_data : nullptr, &texture)))
 		{
 			Release();
 			return;
@@ -182,9 +187,10 @@ namespace fw
 
 		if (m_Data->is_rt)
 		{
-			if (FailedCheck("Creating Render Target View for texture", Framework::GetDevice()->CreateRenderTargetView(texture, nullptr, &m_Data->render_target)))
+			if (FailedCheck("Creating Render Target View for texture",
+			                Framework::GetDevice()->CreateRenderTargetView(texture, nullptr, &m_Data->render_target)))
 			{
-				//cleanup.
+				// cleanup.
 				Release();
 				return;
 			}
@@ -198,9 +204,10 @@ namespace fw
 			m_Data->size = { (u32)desc.Width, (u32)desc.Height };
 		}
 		m_Data->texture = texture;
-		if (FailedCheck("Creating Shader Resource View for texture", Framework::GetDevice()->CreateShaderResourceView(texture, nullptr, &m_Data->shader_resource)))
+		if (FailedCheck("Creating Shader Resource View for texture",
+		                Framework::GetDevice()->CreateShaderResourceView(texture, nullptr, &m_Data->shader_resource)))
 		{
-			//cleanup.
+			// cleanup.
 			Release();
 			return;
 		}
@@ -208,12 +215,13 @@ namespace fw
 
 	void Texture::CreateDepth(const Vec2u& size, ImageFormat format)
 	{
-		D3D11_TEXTURE2D_DESC desc = { };
+		D3D11_TEXTURE2D_DESC desc = {};
 		desc.Width = (u32)size.x;
 		desc.Height = (u32)size.y;
 		desc.MipLevels = 1;
 		desc.ArraySize = 1;
-		desc.Format = DXGI_FORMAT_R32_TYPELESS; (DXGI_FORMAT)format;
+		desc.Format = DXGI_FORMAT_R32_TYPELESS;
+		(DXGI_FORMAT) format;
 		desc.SampleDesc.Count = 1;
 		desc.SampleDesc.Quality = 0;
 		desc.Usage = D3D11_USAGE_DEFAULT;
@@ -234,21 +242,24 @@ namespace fw
 		sr_desc.Texture2D.MipLevels = 1;
 
 		ID3D11Texture2D* texture = nullptr;
-		if (FailedCheck("Creating Texture2D for depth texture", Framework::GetDevice()->CreateTexture2D(&desc, nullptr, &texture)))
+		if (FailedCheck("Creating Texture2D for depth texture",
+		                Framework::GetDevice()->CreateTexture2D(&desc, nullptr, &texture)))
 		{
 			return;
 		}
 
-		if (FailedCheck("Creating Depth Stencil View for depth texture", Framework::GetDevice()->CreateDepthStencilView(texture, &dsv_desc, &m_Data->depth)))
+		if (FailedCheck("Creating Depth Stencil View for depth texture",
+		                Framework::GetDevice()->CreateDepthStencilView(texture, &dsv_desc, &m_Data->depth)))
 		{
-			//cleanup.
+			// cleanup.
 			Release();
 			return;
 		}
 
-		if (FailedCheck("Creating Shader Resource View for depth texture", Framework::GetDevice()->CreateShaderResourceView(texture, &sr_desc, &m_Data->shader_resource)))
+		if (FailedCheck("Creating Shader Resource View for depth texture",
+		                Framework::GetDevice()->CreateShaderResourceView(texture, &sr_desc, &m_Data->shader_resource)))
 		{
-			//cleanup.
+			// cleanup.
 			Release();
 			return;
 		}
@@ -266,7 +277,8 @@ namespace fw
 
 	void Texture::ClearDepth(f32 depth, u32 stencil)
 	{
-		Framework::GetContext()->ClearDepthStencilView(m_Data->depth, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, depth, (UINT8)stencil);
+		Framework::GetContext()->ClearDepthStencilView(
+		    m_Data->depth, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, depth, (UINT8)stencil);
 	}
 
 	void Texture::Resize(const Vec2u& size, ImageFormat format, void* data)
@@ -361,4 +373,4 @@ namespace fw
 	{
 		return { (f32)m_Data->size.x, (f32)m_Data->size.y };
 	}
-}
+}  // namespace fw

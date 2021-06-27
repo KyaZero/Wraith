@@ -1,9 +1,11 @@
 #pragma once
-#include "Core/Types.h"
-#include "Core\Math\Vec.h"
-#include "ImageFormat.h"
-#include <string>
+
 #include <memory>
+#include <string>
+
+#include "Core/Math/Vec.h"
+#include "Core/Types.h"
+#include "ImageFormat.h"
 
 struct ID3D11Texture2D;
 struct ID3D11ShaderResourceView;
@@ -51,7 +53,8 @@ namespace fw
 		void UnsetActiveTarget();
 		void SetAsActiveTarget(Texture* depth = nullptr);
 		void SetViewport();
-		void SetCustomViewport(f32 top_left_x, f32 top_left_y, f32 width, f32 height, f32 min_depth = 0.0f, f32 max_depth = 0.0f);
+		void SetCustomViewport(
+		    f32 top_left_x, f32 top_left_y, f32 width, f32 height, f32 min_depth = 0.0f, f32 max_depth = 0.0f);
 
 		void Bind(u32 slot) const;
 		void Unbind(u32 slot) const;
@@ -68,4 +71,4 @@ namespace fw
 		struct Data;
 		std::shared_ptr<Data> m_Data;
 	};
-}
+}  // namespace fw

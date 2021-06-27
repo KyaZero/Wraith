@@ -1,12 +1,13 @@
 #include "Shader.h"
-#include "Framework.h"
-#include "DXUtil.h"
-#include "ShaderReflection.h"
-#include "Core\Filewatcher.h"
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <wrl/client.h>
+
+#include "Core/Filewatcher.h"
+#include "DXUtil.h"
+#include "Framework.h"
+#include "ShaderReflection.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -22,7 +23,10 @@ namespace fw
 		ShaderType type;
 	};
 
-	HRESULT CompileShader(const std::string& path, const std::string& entry_point, const std::string& profile, ComPtr<ID3DBlob>& blob)
+	HRESULT CompileShader(const std::string& path,
+	                      const std::string& entry_point,
+	                      const std::string& profile,
+	                      ComPtr<ID3DBlob>& blob)
 	{
 		UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
@@ -33,7 +37,15 @@ namespace fw
 
 		std::wstring w_path(path.begin(), path.end());
 
-		HRESULT hr = D3DCompileFromFile(w_path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, entry_point.c_str(), profile.c_str(), flags, NULL, &shader_blob, &error_blob);
+		HRESULT hr = D3DCompileFromFile(w_path.c_str(),
+		                                nullptr,
+		                                D3D_COMPILE_STANDARD_FILE_INCLUDE,
+		                                entry_point.c_str(),
+		                                profile.c_str(),
+		                                flags,
+		                                NULL,
+		                                &shader_blob,
+		                                &error_blob);
 
 		if (FailedCheck("D3DCompileFromFile: " + path + " | " + entry_point, hr))
 		{
@@ -109,19 +121,22 @@ namespace fw
 
 		std::vector<D3D11_INPUT_ELEMENT_DESC> input_element_desciptions;
 
-		shaderReflection.ProcessInputParameters([&](auto param_desc)
-			{
-				auto element_desc = D3D11_INPUT_ELEMENT_DESC{
-					.SemanticName = param_desc.SemanticName,
-					.SemanticIndex = param_desc.SemanticIndex,
-					.Format = FormatFromComponentType(param_desc.Mask, param_desc.ComponentType),
-					.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT,
-				};
+		shaderReflection.ProcessInputParameters([&](auto param_desc) {
+			auto element_desc = D3D11_INPUT_ELEMENT_DESC{
+				.SemanticName = param_desc.SemanticName,
+				.SemanticIndex = param_desc.SemanticIndex,
+				.Format = FormatFromComponentType(param_desc.Mask, param_desc.ComponentType),
+				.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT,
+			};
 
-				input_element_desciptions.push_back(element_desc);
-			});
+			input_element_desciptions.push_back(element_desc);
+		});
 
-		HRESULT hr = Framework::GetDevice()->CreateInputLayout(input_element_desciptions.data(), static_cast<UINT>(input_element_desciptions.size()), vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), &input_layout);
+		HRESULT hr = Framework::GetDevice()->CreateInputLayout(input_element_desciptions.data(),
+		                                                       static_cast<UINT>(input_element_desciptions.size()),
+		                                                       vs_blob->GetBufferPointer(),
+		                                                       vs_blob->GetBufferSize(),
+		                                                       &input_layout);
 
 		if (FailedCheck("Creating Input Layout", hr))
 		{
@@ -136,9 +151,7 @@ namespace fw
 		ShaderReflection shaderReflection;
 		shaderReflection.Reflect(ps_blob);
 
-		shaderReflection.ProcessBoundResources([](auto resource_desc)
-		{
-		});
+		shaderReflection.ProcessBoundResources([](auto resource_desc) {});
 	}
 
 	Shader::Shader()
@@ -157,8 +170,7 @@ namespace fw
 	}
 
 	Shader::~Shader()
-	{
-	}
+	{ }
 
 	Shader& Shader::operator=(const Shader& other)
 	{
@@ -177,8 +189,7 @@ namespace fw
 	{
 		m_Data->type = static_cast<ShaderType>(shader_type);
 
-		const auto compile_vertex = [=]()
-		{
+		const auto compile_vertex = [=]() {
 			if (!(m_Data->type & ShaderType::Vertex))
 				return;
 
@@ -188,7 +199,8 @@ namespace fw
 				return;
 
 			auto* device = Framework::GetDevice();
-			HRESULT hr = device->CreateVertexShader(vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), NULL, &m_Data->vertex);
+			HRESULT hr = device->CreateVertexShader(
+			    vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), NULL, &m_Data->vertex);
 			if (FailedCheck("Creating Vertex Shader", hr))
 			{
 				hr = device->GetDeviceRemovedReason();
@@ -201,8 +213,7 @@ namespace fw
 			return;
 		};
 
-		const auto compile_geometry = [=]()
-		{
+		const auto compile_geometry = [=]() {
 			if (!(m_Data->type & ShaderType::Geometry))
 				return;
 
@@ -212,7 +223,8 @@ namespace fw
 				return;
 
 			auto* device = Framework::GetDevice();
-			HRESULT hr = device->CreateGeometryShader(gs_blob->GetBufferPointer(), gs_blob->GetBufferSize(), NULL, &m_Data->geometry);
+			HRESULT hr = device->CreateGeometryShader(
+			    gs_blob->GetBufferPointer(), gs_blob->GetBufferSize(), NULL, &m_Data->geometry);
 			if (FailedCheck("Creating Geometry Shader", hr))
 			{
 				hr = device->GetDeviceRemovedReason();
@@ -220,8 +232,7 @@ namespace fw
 			}
 		};
 
-		const auto compile_pixel = [=]()
-		{
+		const auto compile_pixel = [=]() {
 			if (!(m_Data->type & ShaderType::Pixel))
 				return;
 
@@ -231,7 +242,8 @@ namespace fw
 				return;
 
 			auto* device = Framework::GetDevice();
-			HRESULT hr = device->CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), NULL, &m_Data->pixel);
+			HRESULT hr =
+			    device->CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), NULL, &m_Data->pixel);
 			if (FailedCheck("Creating Pixel Shader", hr))
 			{
 				hr = device->GetDeviceRemovedReason();
@@ -295,4 +307,4 @@ namespace fw
 			context->PSSetShader(nullptr, 0, 0);
 		}
 	}
-}
+}  // namespace fw

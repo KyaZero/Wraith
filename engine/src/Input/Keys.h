@@ -8,13 +8,13 @@ namespace fw
 		f64 y_offset;
 	};
 
-    enum class MouseButton
-    {
-        Left,
-        Right,
-        Middle,
+	enum class MouseButton
+	{
+		Left,
+		Right,
+		Middle,
 		Count
-    };
+	};
 
 	enum class Key
 	{
@@ -106,4 +106,4 @@ namespace fw
 		F12 = 0x7B,
 		Count
 	};
-}
+}  // namespace fw

@@ -1,10 +1,11 @@
 #pragma once
-#include "Window/Window.h"
-#include "Core/Timer.h"
-#include "UI/ImguiLayer.h"
-#include "Engine.h"
 
 #include <memory>
+
+#include "Core/Timer.h"
+#include "Engine.h"
+#include "UI/ImguiLayer.h"
+#include "Window/Window.h"
 
 int main(int argc, char** argv);
 
@@ -18,10 +19,15 @@ namespace fw
 
 		bool Run();
 
-		virtual void OnUpdate(f32 dt) { }
-		virtual void OnUIRender() { }
+		virtual void OnUpdate(f32 dt)
+		{ }
+		virtual void OnUIRender()
+		{ }
 
-		std::shared_ptr<ImguiLayer> GetImguiLayer() { return m_ImguiLayer; }
+		std::shared_ptr<ImguiLayer> GetImguiLayer()
+		{
+			return m_ImguiLayer;
+		}
 
 	protected:
 		std::shared_ptr<Window> m_Window;
@@ -33,4 +39,4 @@ namespace fw
 	};
 
 	Application* CreateApplication();
-}
+}  // namespace fw

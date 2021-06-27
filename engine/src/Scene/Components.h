@@ -1,7 +1,8 @@
 #pragma once
+
 #include "Core/Math/Vec.h"
-#include "Graphics/TextureID.h"
 #include "Graphics/Camera.h"
+#include "Graphics/TextureID.h"
 #include "ScriptableEntity.h"
 
 namespace fw
@@ -38,13 +39,16 @@ namespace fw
 		ScriptableEntity* instance = nullptr;
 
 		ScriptableEntity* (*InstantiateScript)();
-		void(*DestroyScript)(NativeScriptComponent*);
+		void (*DestroyScript)(NativeScriptComponent*);
 
-		template<typename T>
+		template <typename T>
 		void Bind()
 		{
 			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
-			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->instance; nsc->instance = nullptr; };
+			DestroyScript = [](NativeScriptComponent* nsc) {
+				delete nsc->instance;
+				nsc->instance = nullptr;
+			};
 		}
 	};
-}
+}  // namespace fw

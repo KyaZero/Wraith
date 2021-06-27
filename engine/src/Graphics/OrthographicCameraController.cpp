@@ -1,9 +1,9 @@
 #include "OrthographicCameraController.h"
-#include "Window/Input.h"
+#include "Window/Window.h"
 
 namespace fw
 {
-	OrthographicCameraController::OrthographicCameraController() : m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(false)
+	OrthographicCameraController::OrthographicCameraController() : m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(false), m_Input()
 	{
 	}
 
@@ -13,10 +13,13 @@ namespace fw
 		m_Rotation(rotation),
 		m_Bounds(width, height)
 	{
+		SetProjection(width, height);
+		Window::RegisterResizeCallback(this, [&](auto w, auto h) { Resize(w, h); });
 	}
 
 	OrthographicCameraController::~OrthographicCameraController()
 	{
+		Window::UnregisterResizeCallback(this);
 	}
 
 	void OrthographicCameraController::Init(f32 width, f32 height, bool rotation)
@@ -29,23 +32,22 @@ namespace fw
 
 	void OrthographicCameraController::Update(f32 dt)
 	{
-		if (Input::IsKeyDown(Key::A))
+		if (m_Input.IsDown(Key::A))
 		{
 			m_CameraPosition.x -= cos(Radians(m_CameraRotation)) * m_CameraTranslationSpeed * dt;
 			m_CameraPosition.y -= sin(Radians(m_CameraRotation)) * m_CameraTranslationSpeed * dt;
 		}
-		else if (Input::IsKeyDown(Key::D))
+		else if (m_Input.IsDown(Key::D))
 		{
 			m_CameraPosition.x += cos(Radians(m_CameraRotation)) * m_CameraTranslationSpeed * dt;
 			m_CameraPosition.y += sin(Radians(m_CameraRotation)) * m_CameraTranslationSpeed * dt;
 		}
-
-		if (Input::IsKeyDown(Key::W))
+		if (m_Input.IsDown(Key::W))
 		{
 			m_CameraPosition.x -= -sin(Radians(m_CameraRotation)) * m_CameraTranslationSpeed * dt;
 			m_CameraPosition.y -= cos(Radians(m_CameraRotation)) * m_CameraTranslationSpeed * dt;
 		}
-		else if (Input::IsKeyDown(Key::S))
+		else if (m_Input.IsDown(Key::S))
 		{
 			m_CameraPosition.x += -sin(Radians(m_CameraRotation)) * m_CameraTranslationSpeed * dt;
 			m_CameraPosition.y += cos(Radians(m_CameraRotation)) * m_CameraTranslationSpeed * dt;
@@ -53,9 +55,9 @@ namespace fw
 
 		if (m_Rotation)
 		{
-			if (Input::IsKeyDown(Key::Q))
+			if (m_Input.IsDown(Key::Q))
 				m_CameraRotation -= m_CameraRotationSpeed * dt;
-			if (Input::IsKeyDown(Key::E))
+			if (m_Input.IsDown(Key::E))
 				m_CameraRotation += m_CameraRotationSpeed * dt;
 
 			if (m_CameraRotation > 180.0f)
@@ -66,18 +68,17 @@ namespace fw
 			m_Camera.SetRotation(m_CameraRotation);
 		}
 
+		if (m_Input.IsScrolling())
+		{
+			auto scroll = m_Input.GetScrollState();
+			m_ZoomLevel -= scroll.y_offset * 0.0025f;
+			m_ZoomLevel = Max(m_ZoomLevel, 0.0025f);
+			SetProjection(m_Bounds.x, m_Bounds.y);
+		}
+
 		m_Camera.SetPosition(m_CameraPosition);
 
 		m_CameraTranslationSpeed = m_CameraTranslationBaseSpeed * m_ZoomLevel;
-	}
-
-	void OrthographicCameraController::OnEvent(const Event& e)
-	{
-		if (e.type == Event::Resized)
-			Resize(e.size.width, e.size.height);
-
-		if (e.type == Event::MouseWheelScrolled)
-			OnMouseScrolled(e);
 	}
 
 	void OrthographicCameraController::Resize(f32 width, f32 height)
@@ -90,12 +91,5 @@ namespace fw
 	void OrthographicCameraController::SetProjection(f32 width, f32 height)
 	{
 		m_Camera.SetProjection(-width * m_ZoomLevel, width * m_ZoomLevel, height * m_ZoomLevel, -height * m_ZoomLevel);
-	}
-
-	void OrthographicCameraController::OnMouseScrolled(const Event& e)
-	{
-		m_ZoomLevel -= e.mousewheel_scroll.delta * 0.25f;
-		m_ZoomLevel = Max(m_ZoomLevel, 0.25f);
-		SetProjection(m_Bounds.x, m_Bounds.y);
 	}
 }

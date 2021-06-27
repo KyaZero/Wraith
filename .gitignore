@@ -4,3 +4,4 @@ bin/*.pdb
 bin/*.exe
 bin/*.lib
 bin/assets/textures/*.jpg
+bin/saved/*.txt

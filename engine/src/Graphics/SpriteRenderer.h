@@ -16,16 +16,22 @@ namespace fw
 		SpriteRenderer();
 		~SpriteRenderer();
 
-		bool Init(const Window* window);
+		bool Init(std::shared_ptr<Window> window);
 
 		void Submit(const SpriteCommand& sprite);
 		void Submit(const SetCameraCommand& command);
-		void Render();
+		void Render(f32 dt, f32 total_time);
 
 	private:
-		const Window* m_Window;
+		std::shared_ptr<Window> m_Window;
 
-		OrthographicCamera* m_CurrentCamera;
+		struct RenderCamera
+		{
+			Mat4f projection;
+			Mat4f view;
+		};
+
+		std::unique_ptr<RenderCamera> m_CurrentCamera;
 
 		Shader m_SpriteShader;
 
@@ -53,8 +59,9 @@ namespace fw
 			i32 world_space;
 		};
 
-		void UpdateConstantBuffer(/*const SpriteCommand& sprite, const Texture& texture*/);
+		void UpdateConstantBuffer(f32 total_time);
 
+		//I found 1024 instances to be the best in terms of performance and drawcalls
 		constexpr static u32 InstanceCount = 1024;
 		std::vector<SpriteCommand> m_SpriteCommands;
 		Sampler m_Sampler;

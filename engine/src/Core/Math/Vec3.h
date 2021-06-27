@@ -5,9 +5,6 @@
 namespace fw
 {
 	template<typename T>
-	class Vec4;
-
-	template<typename T>
 	class Vec3
 	{
 	public:

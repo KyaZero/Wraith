@@ -1,7 +1,7 @@
 #pragma once
-#include "Graphics/OrthographicCamera.h"
 #include "Core\Math\Vec4.h"
 #include "TextureID.h"
+#include "Camera.h"
 #include <variant>
 
 namespace fw
@@ -20,7 +20,8 @@ namespace fw
 
 	struct SetCameraCommand
 	{
-		OrthographicCamera* camera;
+		Camera* camera;
+		Mat4f view;
 	};
 
 	using RenderCommand = std::variant<SpriteCommand, SetCameraCommand>;

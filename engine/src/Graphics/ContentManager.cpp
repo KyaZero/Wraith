@@ -16,7 +16,7 @@ namespace fw
 
 	ContentManager* ContentManager::Get()
 	{
-		ASSERT_LOG(s_Instance != nullptr, "TextureManager not created before being used.");
+		ASSERT_LOG(s_Instance != nullptr, "ContentManager not created before being used.");
 		return s_Instance;
 	}
 
@@ -24,7 +24,7 @@ namespace fw
 	{
 		auto fs_path = std::filesystem::path(path);
 
-		if(std::filesystem::exists(fs_path))
+		if (std::filesystem::exists(fs_path))
 		{
 			auto hash = std::filesystem::hash_value(path);
 			m_Paths[hash] = fs_path;

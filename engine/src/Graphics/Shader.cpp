@@ -118,9 +118,6 @@ namespace fw
 					.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT,
 				};
 
-				if(element_desc.SemanticName)
-					VERBOSE_LOG("Shader Resource: %s", element_desc.SemanticName);
-
 				input_element_desciptions.push_back(element_desc);
 			});
 
@@ -141,8 +138,6 @@ namespace fw
 
 		shaderReflection.ProcessBoundResources([](auto resource_desc)
 		{
-			if(resource_desc.Name)
-				VERBOSE_LOG("Shader Resource: %s", resource_desc.Name);
 		});
 	}
 

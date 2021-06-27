@@ -26,7 +26,7 @@ namespace fw
 		auto it = m_TextureMap.find(id);
 		if (it == m_TextureMap.end())
 		{
-			auto& path = ContentManager::Get()->GetPath(id);
+			auto path = ContentManager::Get()->GetPath(id);
 
 			if (!path)
 			{
@@ -34,9 +34,12 @@ namespace fw
 			}
 
 			if (path->extension() != ".png" && path->extension() != ".jpg")
+			{
+				WARNING_LOG("Unsupported Texture Format '%s'", path->c_str());
 				return GetDefaultTexture();
+			}
 
-			auto texture_loader = [&]() 
+			auto texture_loader = [&]()
 			{
 				Texture new_texture;
 				if (!new_texture.LoadFromFile(path->string()))
@@ -47,7 +50,7 @@ namespace fw
 
 			if (!texture_loader())
 			{
-				ERROR_LOG("Failed to load texture from file: %s", path->string());
+				ERROR_LOG("Failed to load texture from file: %s", path->c_str());
 				return GetDefaultTexture();
 			}
 

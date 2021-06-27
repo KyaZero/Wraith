@@ -1,6 +1,5 @@
 #pragma once
 #include "Core/Types.h"
-#include "Window/Event.h"
 #include "Graphics/Framework.h"
 #include "Graphics/RenderManager.h"
 #include "Scene/Scene.h"
@@ -14,12 +13,19 @@ namespace fw
         Engine();
         ~Engine();
 
-        bool Init(Window* window);
+        bool Init(std::shared_ptr<Window> window);
         void Update(f32 dt, f32 total_time);
-        void OnEvent(const Event& e);
+        //void OnEvent(const Event& e);
+
+        void BeginFrame();
+        void EndFrame();
+
+        RenderManager* GetRenderer() { return &m_RenderManager; }
+        std::shared_ptr<Window> GetWindow() { return m_Window; }
+        Framework* GetFramework() { return &m_Framework; }
 
     private:
-        Window* m_Window;
+        std::shared_ptr<Window> m_Window;
         Framework m_Framework;
         RenderManager m_RenderManager;
         Scene m_Scene;

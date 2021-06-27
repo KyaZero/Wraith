@@ -1,10 +1,9 @@
 #pragma once
-#include "Event.h"
-#include "VideoMode.h"
-#include "WindowStyle.h"
 #include "Core\Math\Vec2.h"
-#include <queue>
+#include <map>
 #include <functional>
+
+struct GLFWwindow;
 
 namespace fw
 {
@@ -15,56 +14,35 @@ namespace fw
 	{
 	public:
 		Window();
-		Window(VideoMode mode, const std::wstring& title, u32 style);
+		Window(Vec2u resolution, const std::string& title);
 		~Window();
 
-		void Create(VideoMode mode, const std::wstring& title, u32 style);
-		void Close();
+		void Create(Vec2u resolution, const std::string& title);
 
-		WindowHandle GetHandle() const;
+		bool ShouldClose();
+		void PollEvents();
 
-		bool IsOpen() const;
-		bool HasFocus() const;
-		bool PollEvent(Event& event);
+		static void RegisterResizeCallback(void* instance, std::function<void(u32, u32)> callback);
+		static void UnregisterResizeCallback(void* instance);
 
-		void ProcessEvent(u32 message, i64 wParam, i64 lParam);
-		void Cleanup();
+		const Vec2u& GetSize() const;
+
+		GLFWwindow* GetHandle() const;
+		void* GetPlatformHandle() const;
+
 		void SetSize(const Vec2u& size);
 		void SetTitle(const std::string& title);
 
-		void SetKeyRepeatEnabled(bool enabled);
-		void SetCursorGrabbed(bool grabbed);
-		void SetCursorVisible(bool visible);
-		void SetVisible(bool visible);
-		void RequestFocus();
-
-		void Subscribe(Event::EventType type, std::function<void(const Event&)> callback);
-
-		Vec2u GetSize() const;
-		Vec2f GetSizef() const;
-
-		f32 GetAspectRatio() const;
+		const std::string& GetTitle() const;
 
 	private:
-		Key VKeyCodeToEngineKey(i64 key, i64 flags);
+		static void HandleResize(GLFWwindow* window, int width, int height);
 
-		bool FilterEvent(const Event& event);
-		void PushEvent(const Event& event);
-		bool PopEvent(Event& event);
-		void ProcessEvents();
-		void SwitchToFullscreen(const VideoMode& mode);
-		void SetTracking(bool track);
-		void GrabCursor(bool grabbed);
+		Vec2u m_Resolution;
 
-		std::queue<Event> m_Events;
+		GLFWwindow* m_Handle;
 
-		Vec2u m_Size;
-		Vec2u m_LastSize;
-
-		WindowHandle m_Handle;
-		bool m_IsOpen, m_Fullscreen, m_Resizing, m_KeyRepeatEnabled, m_MouseInside, m_CursorVisible, m_CursorGrabbed;
-		Handle m_LastCursor;
-
-		std::unordered_map<Event::EventType, std::vector<std::function<void(const Event&)>>> m_Listeners;
+		std::string m_CurrentTitle;
+		static std::map<void*, std::function<void(u32, u32)>> s_ResizeCallbacks;
 	};
 }

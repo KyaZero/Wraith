@@ -1,11 +1,12 @@
 #pragma once
 #include "Core/Math/Mat4.h"
-#include "Core/Math/Vec3.h"
+#include "Core/Math/Vec2.h"
 #include "Core/Types.h"
+#include "Camera.h"
 
 namespace fw
 {
-    class OrthographicCamera
+    class OrthographicCamera : public Camera
     {
     public:
         OrthographicCamera(f32 left, f32 right, f32 bottom, f32 top);
@@ -22,18 +23,16 @@ namespace fw
         f32 GetScale() { return m_Scale; }
         void SetScale(f32 scale) { m_Scale = scale; RecalculateViewMatrix(); }
 
-        const Mat4f& GetProjectionMatrix() const { return m_ProjectionMatrix; }
-        const Mat4f& GetViewMatrix() const { return m_ViewMatrix; }
-        const Mat4f& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
+        const Mat4f& GetView() const { return m_ViewMatrix; }
+        const Mat4f& GetViewProjection() const { return m_ViewProjectionMatrix; }
 
         const Vec2f Unproject(const Vec2f& pos) const;
 
     private:
         void RecalculateViewMatrix();
 
-        Mat4f m_ProjectionMatrix;
-        Mat4f m_ViewMatrix;
         Mat4f m_ViewProjectionMatrix;
+        Mat4f m_ViewMatrix;
 
         Vec3f m_Position = { 0.0f, 0.0f, 0.0f };
         f32 m_Rotation = 0.0f;

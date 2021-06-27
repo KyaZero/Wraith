@@ -18,7 +18,6 @@ namespace fw
 		IDType Register(const std::string& path);
 		std::optional<std::filesystem::path> GetPath(IDType id);
 
-
 	private:
 		static ContentManager* s_Instance;
 

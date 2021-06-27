@@ -2,9 +2,8 @@
 #include "Graphics/OrthographicCameraController.h"
 #include "Graphics/RenderManager.h"
 #include "Window/Window.h"
-#include "Window/Event.h"
 #include "Core/Types.h"
-#include "entt.hpp"
+#include <entt/entt.hpp>
 
 namespace fw
 {
@@ -15,19 +14,22 @@ namespace fw
 		Scene();
 		~Scene();
 
-		bool Init(Window* window, RenderManager* renderer);
+		bool Init(RenderManager* renderer);
 
 		Entity CreateEntity(const std::string& name = std::string());
 
-		void OnEvent(const Event& e);
-		void Update(f32 dt, f32 total_time);
+		void UpdateEditor(f32 dt, OrthographicCamera* editor_camera);
+		void UpdateRuntime(f32 dt);
+
+		void Play();
+		void EndPlay();
 
 	private:
 		RenderManager* m_Renderer;
-		Window* m_Window;
-
-		OrthographicCameraController m_Camera;
+		bool m_IsPlaying;
 		entt::registry m_Registry;
+
 		friend class Entity;
+		friend class SceneHierarchyPanel;
 	};
 }

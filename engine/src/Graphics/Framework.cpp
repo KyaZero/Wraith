@@ -2,36 +2,39 @@
 #include "DXUtil.h"
 #include "Texture.h"
 #include "imgui.h"
-#include "examples/imgui_impl_dx11.h"
-#include "examples/imgui_impl_win32.h"
+#include "backends/imgui_impl_dx11.h"
+#include "backends/imgui_impl_win32.h"
 #include <d3d11.h>
+#include <d3d11_1.h>
+#include <atlbase.h>
+#include <locale>
+#include <codecvt>
+#include <string>
 
 namespace fw
 {
 	//for getters, should figure out a better way to do this
 	static ID3D11Device* s_Device;
 	static ID3D11DeviceContext* s_Context;
+	void* s_Annot = nullptr;
 
 	struct Framework::Data
 	{
-		IDXGISwapChain* swap_chain;
-		ID3D11Device* device;
-		ID3D11DeviceContext* context;
+		IDXGISwapChain* swap_chain = nullptr;
+		ID3D11Device* device = nullptr;
+		ID3D11DeviceContext* context = nullptr;
 		Texture back_buffer;
 		std::vector<IDXGIAdapter*> adapters;
 	};
 
-	Framework::Framework()
+	Framework::Framework() : m_Window(nullptr)
 	{
 		m_Data = new Data;
 	}
 
 	Framework::~Framework()
 	{
-
-		ImGui_ImplDX11_Shutdown();
-		ImGui_ImplWin32_Shutdown();
-		ImGui::DestroyContext();
+		Window::UnregisterResizeCallback(this);
 
 		if (m_Data)
 		{
@@ -78,7 +81,7 @@ namespace fw
 		return adapters;
 	}
 
-	bool Framework::Init(Window* window)
+	bool Framework::Init(std::shared_ptr<Window> window)
 	{
 		if (!window)
 			return false;
@@ -136,7 +139,7 @@ namespace fw
 		swapchain_desc.BufferCount = 1;
 		swapchain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		swapchain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
-		swapchain_desc.OutputWindow = (HWND)m_Window->GetHandle();
+		swapchain_desc.OutputWindow = (HWND)m_Window->GetPlatformHandle();
 		swapchain_desc.SampleDesc.Count = 1;
 		swapchain_desc.Windowed = true;
 
@@ -168,22 +171,7 @@ namespace fw
 
 		m_Data->context->RSSetViewports(1, &view);
 
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;        // Enable Gamepad Controls
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-
-		//SetImGuiStyle();
-
-		ImGui_ImplWin32_Init(m_Window->GetHandle());
-		ImGui_ImplDX11_Init(m_Data->device, m_Data->context);
-
-		m_Window->Subscribe(Event::Resized, [&](const Event& e) {
-			ResizeBackbuffer();
-			});
+		Window::RegisterResizeCallback(this, [&](u32 width, u32 height) { ResizeBackbuffer(); });
 
 		INFO_LOG("Finished initializing DirectX11 Framework!");
 		return true;
@@ -191,25 +179,18 @@ namespace fw
 
 	void Framework::BeginFrame(const Vec4f& clear_color)
 	{
-		ImGui_ImplDX11_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
+		m_Data->back_buffer.SetAsActiveTarget();
 		m_Data->back_buffer.Clear(clear_color);
 	}
 
 	void Framework::EndFrame()
 	{
-		ImGui::Render();
-		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-		ImGuiIO& io = ImGui::GetIO();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
-
 		m_Data->swap_chain->Present(0, 0);
+	}
+
+	void Framework::SetBackbufferAsActiveTarget()
+	{
+		m_Data->back_buffer.SetAsActiveTarget();
 	}
 
 	ID3D11Device* Framework::GetDevice()
@@ -241,5 +222,24 @@ namespace fw
 		m_Data->back_buffer.SetAsActiveTarget();
 
 		VERBOSE_LOG("Resized backbuffer to (%d, %d)", m_Window->GetSize().x, m_Window->GetSize().y);
+	}
+
+	void Framework::BeginEvent(std::string name)
+	{
+		if (!s_Annot)
+		{
+			ID3DUserDefinedAnnotation* annot = nullptr;
+			GetContext()->QueryInterface(__uuidof(ID3DUserDefinedAnnotation), (void**)&annot);
+			s_Annot = annot;
+		}
+
+		//little bit of a hack to convert from std::string to std::wstring using the std library!
+		((ID3DUserDefinedAnnotation*)s_Annot)->BeginEvent(std::filesystem::path(name).wstring().c_str());
+	}
+
+	void Framework::EndEvent()
+	{
+		if (!s_Annot) return;
+		((ID3DUserDefinedAnnotation*)s_Annot)->EndEvent();
 	}
 }

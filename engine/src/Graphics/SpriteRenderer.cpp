@@ -7,7 +7,7 @@
 
 namespace fw
 {
-	SpriteRenderer::SpriteRenderer() : m_CurrentCamera(nullptr)
+	SpriteRenderer::SpriteRenderer() : m_CurrentCamera()
 	{
 	}
 
@@ -15,11 +15,11 @@ namespace fw
 	{
 	}
 
-	bool SpriteRenderer::Init(const Window* window)
+	bool SpriteRenderer::Init(std::shared_ptr<Window> window)
 	{
 		m_Window = window;
 
-		if (!m_SpriteShader.Load(Shader::Vertex | Shader::Pixel, "assets/shaders/sprite.hlsl"))
+		if (!m_SpriteShader.Load(Shader::Vertex | Shader::Pixel, "assets/engine/shaders/sprite.hlsl"))
 			return false;
 
 		m_ConstantBuffer.Init(sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
@@ -34,7 +34,6 @@ namespace fw
 
 		u32 indices[] = {
 			0,1,2,1,3,2
-			//2,3,1,2,1,0
 		};
 
 		m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
@@ -53,15 +52,14 @@ namespace fw
 
 	void SpriteRenderer::Submit(const SetCameraCommand& command)
 	{
-		m_CurrentCamera = command.camera;
+		m_CurrentCamera = std::make_unique<RenderCamera>(command.camera->GetProjection(), command.view);
 	}
 
-	void SpriteRenderer::Render()
+	void SpriteRenderer::Render(f32 dt, f32 total_time)
 	{
 		auto* context = Framework::GetContext();
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		UpdateConstantBuffer();
+		UpdateConstantBuffer(total_time);
 		m_ConstantBuffer.Bind(0);
 
 		m_SpriteShader.Bind();
@@ -69,9 +67,11 @@ namespace fw
 		m_VertexBuffer.Bind();
 		m_Sampler.Bind(0);
 
+		//Sort by texture, to reduce texture swaps during rendering.
+		//TODO: Should add layer support too. 
+		//edit: this could be fixed easily by using a perspective camera and just having a depth buffer/z position,
+		//but may want to have layers for UI etc?
 		std::sort(std::execution::par, m_SpriteCommands.begin(), m_SpriteCommands.end(), [](auto a, auto b) {
-			if(a.texture == b.texture)
-				return a.layer > b.layer;
 			return a.texture > b.texture;
 		});
 
@@ -81,12 +81,12 @@ namespace fw
 		Vec2f current_texture_size = { 0, 0 };
 		for (auto& sprite : m_SpriteCommands)
 		{
-			//caching
+			//caching, could probably be optimized by storing the textures that are in the current command list, and having them in a lookup table instead of getting them from the TextureManager
 			if (sprite.texture != current_texture_id)
 			{
 				current_texture_id = sprite.texture;
 				auto& tex = TextureManager::Get()->GetTexture(current_texture_id);
-				current_texture_size = (Vec2f({ (f32)tex.GetSize().x, (f32)tex.GetSize().y }) /*/ m_Window->GetSizef()*/);
+				current_texture_size = (Vec2f({ (f32)tex.GetSize().x, (f32)tex.GetSize().y }));
 			}
 
 			InstanceData data;
@@ -103,13 +103,13 @@ namespace fw
 
 		for (auto& sprites : instances)
 		{
-			u32 batches = 1 + (sprites.second.size() / InstanceCount);
-			for (i32 i = 0; i < batches; ++i)
+			u32 batches = 1 + ((u32)sprites.second.size() / InstanceCount);
+			for (u32 i = 0; i < batches; ++i)
 			{
 				auto& tex = TextureManager::Get()->GetTexture(sprites.first);
 				tex.Bind(0);
 
-				i32 num_instances = Min(InstanceCount, (i32)sprites.second.size() - (InstanceCount * i));
+				u32 num_instances = Min(InstanceCount, (u32)sprites.second.size() - (InstanceCount * i));
 
 				m_InstanceBuffer.SetData(&sprites.second[0] + (InstanceCount * i), num_instances * sizeof(InstanceData));
 				m_InstanceBuffer.Bind(1);
@@ -125,22 +125,23 @@ namespace fw
 		m_Sampler.Unbind(0);
 	}
 
-	void SpriteRenderer::UpdateConstantBuffer(/*const SpriteCommand& sprite, const Texture& texture*/)
+	void SpriteRenderer::UpdateConstantBuffer(f32 total_time)
 	{
-		auto& size = m_Window->GetSize();
+		auto size = m_Window->GetSize();
 
 		if (m_CurrentCamera)
 		{
-			m_ConstantBufferData.view_projection = m_CurrentCamera->GetViewProjectionMatrix();
-			m_ConstantBufferData.projection = Mat4f::CreateOrthographicProjection(0, m_Window->GetSize().x, m_Window->GetSize().y, 0, -1, 1);
+			m_ConstantBufferData.view_projection = m_CurrentCamera->view * m_CurrentCamera->projection;
+			m_ConstantBufferData.projection = m_CurrentCamera->projection;
 		}
 		else
 		{
+			//For UI, should probably investigate a better solution if it's supposed to run at different resolutions :D
 			m_ConstantBufferData.view_projection = Mat4f::CreateOrthographicProjection(0, m_Window->GetSize().x, m_Window->GetSize().y, 0, -1, 1);
 		}
 
 		m_ConstantBufferData.resolution = Vec2f(size.x, size.y);
-		m_ConstantBufferData.time = 0;
+		m_ConstantBufferData.time = total_time;
 
 		m_ConstantBuffer.SetData(m_ConstantBufferData);
 	}

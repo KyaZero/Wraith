@@ -71,7 +71,7 @@ namespace fw
 
 		if (flags == BufferType::Constant && usage == BufferUsage::Dynamic && size % 16 != 0)
 		{
-			FATAL_LOG("Misaligned constant buffer!");
+			ASSERT_LOG(false, "Misaligned constant buffer!");
 		}
 
 		D3D11_SUBRESOURCE_DATA subresource = { };

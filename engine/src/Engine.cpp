@@ -23,14 +23,9 @@ namespace fw
 		Logger::Destroy();
 	}
 
-	bool Engine::Init(Window* window)
+	bool Engine::Init(std::shared_ptr<Window> window)
 	{
 		m_Window = window;
-
-		m_Window->Subscribe(Event::KeyPressed, [&](auto& e) {
-			if (e.key.code == Key::Escape)
-				m_Window->Close();
-		});
 
 		if (!m_Framework.Init(m_Window))
 			return false;
@@ -38,24 +33,30 @@ namespace fw
 		if (!m_RenderManager.Init(m_Window))
 			return false;
 
-		if (!m_Scene.Init(m_Window, &m_RenderManager))
-			return false;
-
 		return true;
+	}
+
+	void Engine::BeginFrame()
+	{
+		m_Framework.BeginFrame({ 0.2f,0.2f,0.2f,1 });
+	}
+
+	void Engine::EndFrame()
+	{
+		m_Framework.EndFrame();
 	}
 
 	void Engine::Update(f32 dt, f32 total_time)
 	{
-		m_Framework.BeginFrame({ 0.2f,0.2f,0.2f,1 });
-
-		m_Scene.Update(dt, total_time);
-		m_RenderManager.Render();
+		m_RenderManager.Render(dt, total_time);
+		m_Framework.SetBackbufferAsActiveTarget();
 		Filewatcher::Get()->FlushChanges();
-
-		m_Framework.EndFrame();
+		Input::FlushState();
 
 		//Calculate average fps and display it on the window title
 		{
+			static auto original_title = m_Window->GetTitle();
+
 			m_LastTimes.push_back(dt);
 
 			if (m_LastTimes.size() > MaxNumTimesSaved)
@@ -70,12 +71,7 @@ namespace fw
 				return accumulator / m_LastTimes.size();
 			}();
 
-			m_Window->SetTitle("FPS: " + std::to_string((u32)(1.0f / average_fps)));
+			m_Window->SetTitle(original_title + " - FPS: " + std::to_string((u32)(1.0f / average_fps)));
 		}
-	}
-
-	void Engine::OnEvent(const Event& e)
-	{
-		m_Scene.OnEvent(e);
 	}
 }

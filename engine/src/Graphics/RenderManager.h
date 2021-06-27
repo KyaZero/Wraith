@@ -2,7 +2,6 @@
 #include "SpriteRenderer.h"
 #include "RenderCommand.h"
 #include "Core/Types.h"
-#include "Window/Event.h"
 
 namespace fw
 {
@@ -12,13 +11,18 @@ namespace fw
 		RenderManager();
 		~RenderManager();
 
-		bool Init(const Window* window);
+		bool Init(std::shared_ptr<Window> window);
 
 		void Submit(const RenderCommand& command);
-		void Render();
+		void Render(f32 dt, f32 total_time);
+
+		std::shared_ptr<Texture> GetRenderTexture();
+		void Resize(u32 width, u32 height);
 
 	private:
-		const Window* m_Window;
+
+		std::shared_ptr<Texture> m_RenderTexture;
+		std::shared_ptr<Window> m_Window;
 		SpriteRenderer m_SpriteRenderer;
 		std::vector<RenderCommand> m_RenderCommands;
 	};

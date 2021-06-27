@@ -1,5 +1,6 @@
 #pragma once
 #include "../Types.h"
+#include "Vec4.h"
 #include "Vec3.h"
 #include "Quat.h"
 #include <initializer_list>
@@ -33,7 +34,7 @@ namespace fw
 			}
 		}
 
-		inline void Visualize()
+		inline void Visualize() const
 		{
 			INFO_LOG("\n[%.2f, %.2f, %.2f, %.2f]\n[%.2f, %.2f, %.2f, %.2f]\n[%.2f, %.2f, %.2f, %.2f]\n[%.2f, %.2f, %.2f, %.2f]",
 				m_Numbers[0], m_Numbers[1], m_Numbers[2], m_Numbers[3],
@@ -204,9 +205,9 @@ namespace fw
 			T E = -near * far / (far - near);
 			return Mat4<T>{
 				A, 0, 0, 0,
-					0, B, 0, 0,
-					0, 0, C, D,
-					0, 0, E, 0
+				0, B, 0, 0,
+				0, 0, C, D,
+				0, 0, E, 0
 			};
 		}
 

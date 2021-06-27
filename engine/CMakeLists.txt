@@ -1,4 +1,4 @@
-set(target_name "engine")
+set(target_name "Engine")
 
 set(common_files
     "src/Core/Filewatcher.h"
@@ -7,7 +7,8 @@ set(common_files
     "src/Core/Logger.cpp"
     "src/Core/Common.h"
     "src/Core/Types.h"
-    "src/Core/Timer.h")
+    "src/Core/Timer.h"
+    "src/Core/EntryPoint.h")
 
 set(graphics_files
     "src/Graphics/ContentManager.h"
@@ -19,6 +20,9 @@ set(graphics_files
     "src/Graphics/OrthographicCameraController.cpp"
     "src/Graphics/OrthographicCamera.h"
     "src/Graphics/OrthographicCamera.cpp"
+    "src/Graphics/EditorCamera.h"
+    "src/Graphics/EditorCamera.cpp"
+    "src/Graphics/Camera.h"
     "src/Graphics/Sampler.h"
     "src/Graphics/Sampler.cpp"
     "src/Graphics/RenderCommand.h"
@@ -50,30 +54,34 @@ set(math_files
     "src/Core/Math/Mat.h")
 
 set(window_files
-    "src/Window/Mouse.h"
-    "src/Window/Input.h"
-    "src/Window/Input.cpp"
-    "src/Window/Keys.h"
-    "src/Window/WindowStyle.h"
-    "src/Window/VideoMode.h"
-    "src/Window/VideoMode.cpp"
-    "src/Window/Event.h"
     "src/Window/Window.h"
     "src/Window/Window.cpp")
 
+set(ui_files
+    "src/UI/ImGuiLayer.h"
+    "src/UI/ImGuiLayer.cpp")
+
 set(scene_files
+    "src/Scene/ScriptableEntity.h"
     "src/Scene/Components.h"
     "src/Scene/Entity.h"
     "src/Scene/Scene.h"
     "src/Scene/Scene.cpp")
+    
+set(input_files
+    "src/Input/Keys.h"
+    "src/Input/Input.h"
+    "src/Input/Input.cpp")
 
 set(src_files
     "src/Engine.h"
     "src/Engine.cpp"
-    "src/App.h"
-    "src/App.cpp")
+    "src/Application.h"
+    "src/Application.cpp")
 
 set(all_files
+    ${ui_files}
+    ${input_files}
     ${scene_files}
     ${graphics_files}
     ${window_files}
@@ -106,13 +114,15 @@ PRIVATE
   src/Core/Math/Mat.h
 )
 
-target_link_libraries(${target_name} PUBLIC d3d11 dxgi d3dcompiler imgui)
+target_link_libraries(${target_name} PUBLIC d3d11 dxgi d3dcompiler imgui compiler_features compiler_warnings EnTT stb_image glfw color-console)
 target_include_directories(${target_name} PUBLIC "src" "extern")
 
 source_group("src" FILES ${src_files})
 source_group("src\\Window" FILES ${window_files})
 source_group("src\\Graphics" FILES ${graphics_files})
 source_group("src\\Scene" FILES ${scene_files})
+source_group("src\\Input" FILES ${input_files})
+source_group("src\\UI" FILES ${ui_files})
 source_group("src\\Core" FILES ${common_files})
 source_group("src\\Core\\Math" FILES ${math_files})
 

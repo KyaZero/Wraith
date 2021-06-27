@@ -1,6 +1,7 @@
 #pragma once
 #include "Window\Window.h"
 #include "Core\Math\Vec4.h"
+#include "Texture.h"
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;
@@ -13,18 +14,22 @@ namespace fw
 		Framework();
 		~Framework();
 
-		bool Init(Window* window);
+		bool Init(std::shared_ptr<Window> window);
 
 		void BeginFrame(const Vec4f& clear_color);
 		void EndFrame();
 
+		void SetBackbufferAsActiveTarget();
+
 		static ID3D11Device* GetDevice();
 		static ID3D11DeviceContext* GetContext();
 
+		static void BeginEvent(std::string name);
+		static void EndEvent();
 	private:
 		void ResizeBackbuffer();
 
-		Window* m_Window;
+		std::shared_ptr<Window> m_Window;
 		struct Data;
 		Data* m_Data;
 	};

@@ -80,9 +80,7 @@ namespace fw
 			}
 
 			if (m_Changes.size() > 0)
-			{
 				m_HasChanges = true;
-			}
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}

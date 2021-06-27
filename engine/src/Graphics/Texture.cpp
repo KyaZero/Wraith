@@ -15,7 +15,7 @@ namespace fw
 		ID3D11ShaderResourceView* shader_resource = nullptr;
 		ID3D11DepthStencilView* depth = nullptr;
 		ID3D11RenderTargetView* render_target = nullptr;
-		Vec2i size = Vec2i();
+		Vec2u size = Vec2u();
 		D3D11_VIEWPORT viewport = {};
 		DXGI_FORMAT format;
 		bool is_depth = false;
@@ -32,7 +32,7 @@ namespace fw
 		LoadFromFile(path);
 	}
 
-	Texture::Texture(const Vec2i& size, ImageFormat format, void* data)
+	Texture::Texture(const Vec2u& size, ImageFormat format, void* data)
 	{
 		Create(size, format, data);
 	}
@@ -62,7 +62,7 @@ namespace fw
 		if (!other.m_Data->path.empty())
 			LoadFromFile(other.m_Data->path);
 		else
-			ERROR_LOG("Failed to copy texture as this is not implemented");
+			ASSERT_LOG(false, "Copying Textures not implemented!");
 
 		return *this;
 	}
@@ -109,7 +109,7 @@ namespace fw
 		unsigned char* image = stbi_load(m_Data->path.c_str(), &w, &h, &channels, STBI_rgb_alpha);
 		if (image != nullptr)
 		{
-			Create({ w, h }, ImageFormat::DXGI_FORMAT_R8G8B8A8_UNORM, image);
+			Create({ (u32)w, (u32)h }, ImageFormat::R8G8B8A8_UNORM, image);
 		}
 		else
 		{
@@ -120,7 +120,7 @@ namespace fw
 		return true;
 	}
 
-	void Texture::Create(const Vec2i& size, ImageFormat format, void* data)
+	void Texture::Create(const Vec2u& size, ImageFormat format, void* data)
 	{
 		TextureCreateInfo info;
 		info.size = size;
@@ -195,7 +195,7 @@ namespace fw
 			D3D11_TEXTURE2D_DESC desc;
 			texture->GetDesc(&desc);
 			m_Data->viewport = { 0.0f, 0.0f, (f32)desc.Width, (f32)desc.Height, 0.0f, 1.0f };
-			m_Data->size = { (i32)desc.Width, (i32)desc.Height };
+			m_Data->size = { (u32)desc.Width, (u32)desc.Height };
 		}
 		m_Data->texture = texture;
 		if (FailedCheck("Creating Shader Resource View for texture", Framework::GetDevice()->CreateShaderResourceView(texture, nullptr, &m_Data->shader_resource)))
@@ -206,7 +206,7 @@ namespace fw
 		}
 	}
 
-	void Texture::CreateDepth(const Vec2i& size, ImageFormat format)
+	void Texture::CreateDepth(const Vec2u& size, ImageFormat format)
 	{
 		D3D11_TEXTURE2D_DESC desc = { };
 		desc.Width = (u32)size.x;
@@ -269,6 +269,17 @@ namespace fw
 		Framework::GetContext()->ClearDepthStencilView(m_Data->depth, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, depth, (UINT8)stencil);
 	}
 
+	void Texture::Resize(const Vec2u& size, ImageFormat format, void* data)
+	{
+		Release();
+		Create(size, format, data);
+	}
+
+	void Texture::UnsetActiveTarget()
+	{
+		Framework::GetContext()->OMSetRenderTargets(0, nullptr, nullptr);
+	}
+
 	void Texture::SetAsActiveTarget(Texture* depth)
 	{
 		Framework::GetContext()->OMSetRenderTargets(1, &m_Data->render_target, depth ? depth->m_Data->depth : nullptr);
@@ -296,6 +307,11 @@ namespace fw
 	void Texture::Bind(u32 slot) const
 	{
 		Framework::GetContext()->PSSetShaderResources(slot, 1, &m_Data->shader_resource);
+	}
+
+	void Texture::Unbind(u32 slot) const
+	{
+		Framework::GetContext()->PSGetShaderResources(slot, 1, NULL);
 	}
 
 	void Texture::Release()
@@ -336,7 +352,7 @@ namespace fw
 		return m_Data->shader_resource;
 	}
 
-	Vec2i Texture::GetSize() const
+	Vec2u Texture::GetSize() const
 	{
 		return m_Data->size;
 	}

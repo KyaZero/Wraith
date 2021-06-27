@@ -6,18 +6,18 @@
 
 namespace fw
 {
-	class ImguiLayer
-	{
-	public:
-		ImguiLayer(std::shared_ptr<Engine> engine);
-		~ImguiLayer();
+    class ImguiLayer
+    {
+    public:
+        ImguiLayer(std::shared_ptr<Engine> engine);
+        ~ImguiLayer();
 
-		void Begin();
-		void End();
+        void Begin();
+        void End();
 
-		void SetThemeColors();
+        void SetThemeColors();
 
-	private:
-		std::shared_ptr<Engine> m_Engine;
-	};
+    private:
+        std::shared_ptr<Engine> m_Engine;
+    };
 }  // namespace fw

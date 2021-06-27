@@ -6,34 +6,34 @@
 
 namespace fw
 {
-	class Sampler
-	{
-	public:
-		enum class Filter
-		{
-			Linear,
-			Point,
-			Anisotropic
-		};
+    class Sampler
+    {
+    public:
+        enum class Filter
+        {
+            Linear,
+            Point,
+            Anisotropic
+        };
 
-		enum class Address
-		{
-			Clamp,
-			Wrap,
-			Mirror,
-			Border
-		};
+        enum class Address
+        {
+            Clamp,
+            Wrap,
+            Mirror,
+            Border
+        };
 
-		Sampler();
-		Sampler(Filter filter, Address address, Vec4f border = Vec4f());
-		~Sampler();
+        Sampler();
+        Sampler(Filter filter, Address address, Vec4f border = Vec4f());
+        ~Sampler();
 
-		void Init(Filter filter, Address address, Vec4f border = Vec4f());
-		void Bind(u32 slot);
-		void Unbind(u32 slot);
+        void Init(Filter filter, Address address, Vec4f border = Vec4f());
+        void Bind(u32 slot);
+        void Unbind(u32 slot);
 
-	private:
-		struct Data;
-		std::unique_ptr<Data> m_Data;
-	};
+    private:
+        struct Data;
+        std::unique_ptr<Data> m_Data;
+    };
 }  // namespace fw

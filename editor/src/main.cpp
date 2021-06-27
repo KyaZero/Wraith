@@ -5,8 +5,8 @@
 
 namespace fw
 {
-	Application* CreateApplication()
-	{
-		return new Editor();
-	}
+    Application* CreateApplication()
+    {
+        return new Editor();
+    }
 }  // namespace fw

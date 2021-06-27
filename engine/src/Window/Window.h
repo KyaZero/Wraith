@@ -9,42 +9,42 @@ struct GLFWwindow;
 
 namespace fw
 {
-	using Handle = void*;
-	using WindowHandle = Handle;
+    using Handle = void*;
+    using WindowHandle = Handle;
 
-	class Window
-	{
-	public:
-		Window();
-		Window(Vec2u resolution, const std::string& title);
-		~Window();
+    class Window
+    {
+    public:
+        Window();
+        Window(Vec2u resolution, const std::string& title);
+        ~Window();
 
-		void Create(Vec2u resolution, const std::string& title);
+        void Create(Vec2u resolution, const std::string& title);
 
-		bool ShouldClose();
-		void PollEvents();
+        bool ShouldClose();
+        void PollEvents();
 
-		static void RegisterResizeCallback(void* instance, std::function<void(u32, u32)> callback);
-		static void UnregisterResizeCallback(void* instance);
+        static void RegisterResizeCallback(void* instance, std::function<void(u32, u32)> callback);
+        static void UnregisterResizeCallback(void* instance);
 
-		const Vec2u& GetSize() const;
+        const Vec2u& GetSize() const;
 
-		GLFWwindow* GetHandle() const;
-		void* GetPlatformHandle() const;
+        GLFWwindow* GetHandle() const;
+        void* GetPlatformHandle() const;
 
-		void SetSize(const Vec2u& size);
-		void SetTitle(const std::string& title);
+        void SetSize(const Vec2u& size);
+        void SetTitle(const std::string& title);
 
-		const std::string& GetTitle() const;
+        const std::string& GetTitle() const;
 
-	private:
-		static void HandleResize(GLFWwindow* window, int width, int height);
+    private:
+        static void HandleResize(GLFWwindow* window, int width, int height);
 
-		Vec2u m_Resolution;
+        Vec2u m_Resolution;
 
-		GLFWwindow* m_Handle;
+        GLFWwindow* m_Handle;
 
-		std::string m_CurrentTitle;
-		static std::map<void*, std::function<void(u32, u32)>> s_ResizeCallbacks;
-	};
+        std::string m_CurrentTitle;
+        static std::map<void*, std::function<void(u32, u32)>> s_ResizeCallbacks;
+    };
 }  // namespace fw

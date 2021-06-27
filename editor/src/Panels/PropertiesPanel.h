@@ -2,9 +2,9 @@
 
 namespace fw
 {
-	class PropertiesPanel
-	{
-	public:
-	private:
-	};
+    class PropertiesPanel
+    {
+    public:
+    private:
+    };
 }  // namespace fw

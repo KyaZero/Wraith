@@ -9,36 +9,36 @@
 
 namespace fw
 {
-	using WatchCallback = std::function<void()>;
+    using WatchCallback = std::function<void()>;
 
-	class Filewatcher
-	{
-	public:
-		struct FileEntry
-		{
-			WatchCallback callback;
-			std::filesystem::file_time_type last_write_time;
-		};
-		Filewatcher();
-		~Filewatcher();
+    class Filewatcher
+    {
+    public:
+        struct FileEntry
+        {
+            WatchCallback callback;
+            std::filesystem::file_time_type last_write_time;
+        };
+        Filewatcher();
+        ~Filewatcher();
 
-		static Filewatcher* Get();
-		static void Create();
-		static void Destroy();
+        static Filewatcher* Get();
+        static void Create();
+        static void Destroy();
 
-		void Watch(const std::string& path, WatchCallback callback);
-		void FlushChanges();
+        void Watch(const std::string& path, WatchCallback callback);
+        void FlushChanges();
 
-	private:
-		void WatchFiles();
+    private:
+        void WatchFiles();
 
-		std::unordered_map<std::string, FileEntry> m_Entries;
-		std::vector<std::string> m_Changes;
-		std::thread m_Thread;
+        std::unordered_map<std::string, FileEntry> m_Entries;
+        std::vector<std::string> m_Changes;
+        std::thread m_Thread;
 
-		static Filewatcher* m_Instance;
+        static Filewatcher* m_Instance;
 
-		volatile bool m_IsRunning;
-		volatile bool m_HasChanges;
-	};
+        volatile bool m_IsRunning;
+        volatile bool m_HasChanges;
+    };
 }  // namespace fw

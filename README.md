@@ -1,14 +1,13 @@
 # 2DGE
-A 2D game engine
+A 2D game engine, to make a little 2d game for myself i was thinking
 
-# Current screenshot of engine
-![alt text](https://dragonloli.s-ul.eu/f9uzFgcp.png "Drawing a sprite")
+# Current screenshot of project
+![alt text](https://i.imgur.com/A8XyY8j.png "Editor")
 
 # How to build and open project
 ```
 gen
-
-cmake --open .build
+open
 ```
 
 # External libraries used

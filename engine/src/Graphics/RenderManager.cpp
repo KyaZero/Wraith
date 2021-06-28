@@ -13,21 +13,21 @@ struct overload : Ts...
 
 namespace fw
 {
-    RenderManager::RenderManager()
+    RenderManager::RenderManager(Window& window)
+        : m_Window(window)
+        , m_SpriteRenderer(window)
     { }
 
     RenderManager::~RenderManager()
     { }
 
-    bool RenderManager::Init(std::shared_ptr<Window> window)
+    bool RenderManager::Init()
     {
-        m_Window = window;
-
-        if (!m_SpriteRenderer.Init(m_Window))
+        if (!m_SpriteRenderer.Init())
             return false;
 
-        m_RenderTexture = std::make_shared<Texture>();
-        m_RenderTexture->Create(m_Window->GetSize());
+        m_RenderTexture = std::make_unique<Texture>();
+        m_RenderTexture->Create(m_Window.GetSize());
 
         Window::RegisterResizeCallback(this, [&](auto w, auto h) { Resize(w, h); });
         return true;
@@ -58,13 +58,13 @@ namespace fw
         m_RenderTexture->UnsetActiveTarget();
     }
 
-    std::shared_ptr<Texture> RenderManager::GetRenderTexture()
+    Texture& RenderManager::GetRenderTexture()
     {
-        return m_RenderTexture;
+        return *m_RenderTexture;
     }
 
     void RenderManager::Resize(u32 width, u32 height)
     {
-        m_RenderTexture->Resize(m_Window->GetSize());
+        m_RenderTexture->Resize(m_Window.GetSize());
     }
 }  // namespace fw

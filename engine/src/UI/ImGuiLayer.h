@@ -9,7 +9,7 @@ namespace fw
     class ImguiLayer
     {
     public:
-        ImguiLayer(std::shared_ptr<Engine> engine);
+        ImguiLayer(Engine& engine);
         ~ImguiLayer();
 
         void Begin();
@@ -18,6 +18,6 @@ namespace fw
         void SetThemeColors();
 
     private:
-        std::shared_ptr<Engine> m_Engine;
+        Engine& m_Engine;
     };
 }  // namespace fw

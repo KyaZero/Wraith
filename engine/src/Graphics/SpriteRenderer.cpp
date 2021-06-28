@@ -10,27 +10,31 @@
 
 namespace fw
 {
-    SpriteRenderer::SpriteRenderer()
+    SpriteRenderer::SpriteRenderer(Window& window)
         : m_CurrentCamera()
+        , m_Window(window)
     { }
 
     SpriteRenderer::~SpriteRenderer()
     { }
 
-    bool SpriteRenderer::Init(std::shared_ptr<Window> window)
+    bool SpriteRenderer::Init()
     {
-        m_Window = window;
-
         if (!m_SpriteShader.Load(Shader::Vertex | Shader::Pixel, "assets/engine/shaders/sprite.hlsl"))
             return false;
 
         m_ConstantBuffer.Init(
             sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
 
+        // clang-format off
         f32 vertices[] = {
             // pos      // uv
-            0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, 1.0f, 1.0f, 1.0f,
         };
+        // clang-format on
 
         u32 indices[] = { 0, 1, 2, 1, 3, 2 };
 
@@ -130,7 +134,7 @@ namespace fw
 
     void SpriteRenderer::UpdateConstantBuffer(f32 total_time)
     {
-        auto size = m_Window->GetSize();
+        auto size = m_Window.GetSize();
 
         if (m_CurrentCamera)
         {
@@ -141,7 +145,7 @@ namespace fw
         {
             // For UI, should probably investigate a better solution if it's supposed to run at different resolutions :D
             m_ConstantBufferData.view_projection =
-                Mat4f::CreateOrthographicProjection(0, m_Window->GetSize().x, m_Window->GetSize().y, 0, -1, 1);
+                Mat4f::CreateOrthographicProjection(0, m_Window.GetSize().x, m_Window.GetSize().y, 0, -1, 1);
         }
 
         m_ConstantBufferData.resolution = Vec2f(size.x, size.y);

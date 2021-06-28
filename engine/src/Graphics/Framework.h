@@ -12,10 +12,10 @@ namespace fw
     class Framework
     {
     public:
-        Framework();
+        Framework(Window& window);
         ~Framework();
 
-        bool Init(std::shared_ptr<Window> window);
+        bool Init();
 
         void BeginFrame(const Vec4f& clear_color);
         void EndFrame();
@@ -29,9 +29,9 @@ namespace fw
         static void EndEvent();
 
     private:
-        void ResizeBackbuffer();
+        void ResizeBackbuffer(u32 width, u32 height);
 
-        std::shared_ptr<Window> m_Window;
+        Window& m_Window;
         struct Data;
         Data* m_Data;
     };

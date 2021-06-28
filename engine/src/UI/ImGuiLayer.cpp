@@ -7,7 +7,7 @@
 
 namespace fw
 {
-    ImguiLayer::ImguiLayer(std::shared_ptr<Engine> engine)
+    ImguiLayer::ImguiLayer(Engine& engine)
         : m_Engine(engine)
     {
         IMGUI_CHECKVERSION();
@@ -32,9 +32,9 @@ namespace fw
 
         SetThemeColors();
 
-        auto* framework = m_Engine->GetFramework();
-        ImGui_ImplWin32_Init(m_Engine->GetWindow()->GetPlatformHandle());
-        ImGui_ImplDX11_Init(framework->GetDevice(), framework->GetContext());
+        auto& framework = m_Engine.GetFramework();
+        ImGui_ImplWin32_Init(m_Engine.GetWindow().GetPlatformHandle());
+        ImGui_ImplDX11_Init(framework.GetDevice(), framework.GetContext());
     }
 
     ImguiLayer::~ImguiLayer()
@@ -54,7 +54,7 @@ namespace fw
     void ImguiLayer::End()
     {
         ImGuiIO& io = ImGui::GetIO();
-        io.DisplaySize = ImVec2((f32)m_Engine->GetWindow()->GetSize().x, (f32)m_Engine->GetWindow()->GetSize().x);
+        io.DisplaySize = ImVec2((f32)m_Engine.GetWindow().GetSize().x, (f32)m_Engine.GetWindow().GetSize().x);
 
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

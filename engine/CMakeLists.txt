@@ -114,7 +114,17 @@ PRIVATE
   src/Core/Math/Mat.h
 )
 
-target_link_libraries(${target_name} PUBLIC d3d11 dxgi d3dcompiler imgui compiler_features compiler_warnings EnTT stb_image glfw color-console)
+target_link_libraries(${target_name} PUBLIC
+    compiler_features
+    compiler_warnings
+    d3d11
+    dxgi
+    d3dcompiler
+    imgui
+    EnTT
+    stb_image
+    glfw
+    color-console)
 target_include_directories(${target_name} PUBLIC "src" "extern")
 
 source_group("src" FILES ${src_files})

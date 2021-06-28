@@ -39,8 +39,10 @@ namespace fw
         inline void Visualize() const
         {
             INFO_LOG(
-                "\n[%.2f, %.2f, %.2f, %.2f]\n[%.2f, %.2f, %.2f, %.2f]\n[%.2f, %.2f, %.2f, %.2f]\n[%.2f, %.2f, %.2f, "
-                "%.2f]",
+                "\n[{:.2f}, {:.2f}, {:.2f}, {:.2f}]"
+                "\n[{:.2f}, {:.2f}, {:.2f}, {:.2f}]"
+                "\n[{:.2f}, {:.2f}, {:.2f}, {:.2f}]"
+                "\n[{:.2f}, {:.2f}, {:.2f}, {:.2f}]",
                 m_Numbers[0],
                 m_Numbers[1],
                 m_Numbers[2],

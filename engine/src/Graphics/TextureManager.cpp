@@ -36,7 +36,7 @@ namespace fw
 
             if (path->extension() != ".png" && path->extension() != ".jpg")
             {
-                WARNING_LOG("Unsupported Texture Format '%s'", path->c_str());
+                WARNING_LOG("Unsupported Texture Format '{}'", path->string());
                 return GetDefaultTexture();
             }
 
@@ -50,7 +50,7 @@ namespace fw
 
             if (!texture_loader())
             {
-                ERROR_LOG("Failed to load texture from file: %s", path->c_str());
+                ERROR_LOG("Failed to load texture from file: {}", path->string());
                 return GetDefaultTexture();
             }
 

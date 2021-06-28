@@ -1,6 +1,6 @@
 #include "Logger.h"
 
-#include <cstdarg>
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -26,8 +26,7 @@ namespace fw
     Logger* Logger::s_Instance = nullptr;
 
     Logger::Logger()
-        : m_Buffer(nullptr)
-        , m_Queue()
+        : m_Queue()
         , m_Level((char)Level::All)
         , m_Thread(nullptr)
         , m_ShouldLogToFile(true)
@@ -41,9 +40,6 @@ namespace fw
     void Logger::Create(bool multiThreaded)
     {
         s_Instance = new Logger;
-
-        // Sufficiently large to hold very long messages
-        s_Instance->m_Buffer = new char[8192];
 
         s_Instance->m_MultiThreaded = multiThreaded;
         if (s_Instance->m_MultiThreaded)
@@ -86,22 +82,7 @@ namespace fw
         return s_Instance;
     }
 
-    // Date time stuff taken from here:
-    // https://stackoverflow.com/a/46866854
-    inline std::string GetCurrentDateTime(std::string s)
-    {
-        time_t now = time(0);
-        struct tm tstruct;
-        char buf[80] = { 0 };
-        localtime_s(&tstruct, &now);
-        if (s == "now")
-            strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
-        else if (s == "date")
-            strftime(buf, sizeof(buf), "%Y-%m-%d", &tstruct);
-        return std::string(buf);
-    };
-
-    void Logger::Log(Level level, const char* file, u32 line, const char* function, const char* format, ...)
+    void Logger::LogInternal(Level level, const char* file, u32 line, const char* function, std::string text)
     {
         if (!s_Instance)
             return;
@@ -124,18 +105,13 @@ namespace fw
             func = func.substr(pos + 1);
         }
 
-        va_list args;
-        va_start(args, format);
-        vsprintf_s(m_Buffer, 8192, format, args);
-        va_end(args);
-
         if (m_MultiThreaded)
         {
-            m_Queue.push(LogEntry{ filename, func, m_Buffer, line, level });
+            m_Queue.push(LogEntry{ filename, func, text, line, level });
         }
         else
         {
-            Print(s_Instance, LogEntry{ filename, func, m_Buffer, line, level });
+            Print(s_Instance, LogEntry{ filename, func, text, line, level });
         }
 
         // Force log thread to finish
@@ -198,7 +174,7 @@ namespace fw
             fs::create_directory("saved");
 
         // Remove the file if it already exists a log for this date
-        m_LogPath = "saved/log_" + GetCurrentDateTime("date") + ".txt";
+        m_LogPath = std::format("saved/log_{:%F}.txt", std::chrono::utc_clock::now());
         if (fs::exists(m_LogPath))
             fs::remove(m_LogPath);
 
@@ -208,9 +184,8 @@ namespace fw
 
     void Logger::LogToFile(const std::string& msg)
     {
-        std::string now = GetCurrentDateTime("now");
         std::ofstream ofs(m_LogPath.c_str(), std::ios_base::out | std::ios_base::app);
-        ofs << "[" << now << "]\t" << msg;
+        ofs << std::format("[{:%F %H:%M:%OS}]\t", std::chrono::utc_clock::now()) << msg;
         ofs.close();
     }
 

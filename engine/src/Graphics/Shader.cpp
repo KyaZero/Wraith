@@ -50,7 +50,7 @@ namespace fw
         if (FailedCheck("D3DCompileFromFile: " + path + " | " + entry_point, hr))
         {
             if (error_blob)
-                ERROR_LOG("Shader Error:\n%s\n", static_cast<char*>(error_blob->GetBufferPointer()));
+                ERROR_LOG("Shader Error:\n{}\n", static_cast<char*>(error_blob->GetBufferPointer()));
 
             return hr;
         }

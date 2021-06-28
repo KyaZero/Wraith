@@ -52,7 +52,7 @@ namespace fw
 
         for (auto& path : m_Changes)
         {
-            INFO_LOG("Reloading path: '%s'", path.c_str());
+            INFO_LOG("Reloading path: '{}'", path.c_str());
             m_Entries[path].callback();
         }
 

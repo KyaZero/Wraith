@@ -1,7 +1,6 @@
 #include "Framework.h"
 
-#include <codecvt>
-#include <locale>
+#include <filesystem>
 #include <string>
 
 #include <atlbase.h>
@@ -94,8 +93,8 @@ namespace fw
             DXGI_ADAPTER_DESC adapterDescription;
             a->GetDesc(&adapterDescription);
 
-            INFO_LOG("Found adapter: %ls VRAM: %umb",
-                     adapterDescription.Description,
+            INFO_LOG("Found adapter: {} VRAM: {}",
+                     std::filesystem::path(adapterDescription.Description).string(),
                      adapterDescription.DedicatedVideoMemory / (1024 * 1024));
 
             if (adapter)
@@ -225,7 +224,7 @@ namespace fw
         m_Data->back_buffer.CreateFromTexture(buffer);
         m_Data->back_buffer.SetAsActiveTarget();
 
-        VERBOSE_LOG("Resized backbuffer to (%d, %d)", width, height);
+        VERBOSE_LOG("Resized backbuffer to ({}, {})", width, height);
     }
 
     void Framework::BeginEvent(std::string name)

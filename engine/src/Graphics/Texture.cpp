@@ -100,7 +100,7 @@ namespace fw
 
         if (!std::filesystem::exists(std::filesystem::path(path)))
         {
-            ERROR_LOG("Texture file '%s' not found", path.c_str());
+            ERROR_LOG("Texture file '{}' not found", path.c_str());
             return false;
         }
 
@@ -117,7 +117,7 @@ namespace fw
         }
         else
         {
-            ERROR_LOG("Failed to load texture '%s'", m_Data->path.c_str());
+            ERROR_LOG("Failed to load texture '{}'", m_Data->path.c_str());
             return false;
         }
         stbi_image_free(image);

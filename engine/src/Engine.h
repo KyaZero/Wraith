@@ -1,7 +1,5 @@
 #pragma once
 
-#include <queue>
-
 #include "Core/Types.h"
 #include "Graphics/Framework.h"
 #include "Graphics/RenderManager.h"
@@ -41,8 +39,8 @@ namespace fw
         RenderManager m_RenderManager;
         Scene m_Scene;
 
-        // for averaging out fps
-        std::deque<f32> m_LastTimes;
-        constexpr static i32 MaxNumTimesSaved = 20;
+        f32 m_Fps = 0.0f;
+        f32 m_FpsUpdateTimer = 0.0f;
+        constexpr static f32 FpsUpdatesPerSecond = 30.0f;
     };
 }  // namespace fw

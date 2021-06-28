@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <format>
 #include <mutex>
 #include <queue>
 #include <string>
@@ -23,7 +24,7 @@
 #define ___ASSERT_LOG(...) \
     fw::Logger::Get()->Log(::fw::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), abort()
 #define ASSERT_LOG(expression, ...) \
-    (void)((!!(expression)) || (___ASSERT_LOG("Assertion failed: %s", (#expression " " #__VA_ARGS__)), 0))
+    (void)((!!(expression)) || (___ASSERT_LOG("Assertion failed: {}", (#expression " " #__VA_ARGS__)), 0))
 #endif
 
 namespace fw
@@ -52,13 +53,19 @@ namespace fw
         static void SetPrint(bool shouldPrint);
         static void SetShouldLogToFile(bool shouldLogToFile);
 
-        void Log(Level level, const char* file, u32 line, const char* function, const char* format, ...);
+        template <typename... Args>
+        void Log(Level level, const char* file, u32 line, const char* function, const char* format, Args&&... args)
+        {
+            LogInternal(level, file, line, function, std::vformat(format, std::make_format_args(args...)));
+        }
 
     private:
         static Logger* s_Instance;
         void VerifyLogPath();
         void LogToFile(const std::string& msg);
         static void Update(Logger* instance, std::chrono::duration<double, std::milli> interval);
+
+        void LogInternal(Level level, const char* file, u32 line, const char* function, std::string text);
 
 #ifdef _WIN32
         static auto GetLevelString(Level level);
@@ -82,7 +89,6 @@ namespace fw
         std::string m_LogPath;
 
         char m_Level;
-        char* m_Buffer;
 
         bool m_ShouldPrint;
         bool m_ShouldLogToFile;

@@ -5,23 +5,23 @@ SamplerState DefaultSampler : register(s0);
 
 struct InstanceBuffer
 {
-	float4 Color;
-	float2 Position;
-	float2 Offset;
-	float2 Scale;
-	float2 Size;
-	float Rotation;
-	int WorldSpace;
+    float4 Color;
+    float2 Position;
+    float2 Offset;
+    float2 Scale;
+    float2 Size;
+    float Rotation;
+    int WorldSpace;
 };
 
 StructuredBuffer<InstanceBuffer> InstanceData : register(t1);
 
 float2 Rotate(float rotation, float2 position)
 {
-	float c = cos(rotation);
-	float s = sin(rotation);
-	float2x2 r = float2x2(c, -s, s, c);
-	return mul(position, r);
+    float c = cos(rotation);
+    float s = sin(rotation);
+    float2x2 r = float2x2(c, -s, s, c);
+    return mul(position, r);
 }
 
 void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_InstanceID)
@@ -32,7 +32,8 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     input.position *= InstanceData[instance_ID].Scale;
     input.position += InstanceData[instance_ID].Position;
 
-    output.position = InstanceData[instance_ID].WorldSpace ? mul(ViewProjection, float4(input.position.xy, 0, 1)) : mul(Projection, float4(input.position.xy, 0, 1));
+    output.position = InstanceData[instance_ID].WorldSpace ? mul(ViewProjection, float4(input.position.xy, 0, 1))
+                                                           : mul(Projection, float4(input.position.xy, 0, 1));
     output.color = InstanceData[instance_ID].Color;
     output.uv = input.uv;
 }

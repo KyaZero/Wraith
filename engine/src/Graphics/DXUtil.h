@@ -11,7 +11,7 @@ namespace fw
     {
         if (FAILED(res))
         {
-            ERROR_LOG("'%s' failed.", name.c_str());
+            ERROR_LOG("'{}' failed.", name.c_str());
             return true;
         }
         return false;

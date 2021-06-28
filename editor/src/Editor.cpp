@@ -9,7 +9,7 @@ namespace fw
 {
     Editor::Editor()
         : Application("Editor")
-        , m_CameraController(m_Engine->GetWindow()->GetSize().x, m_Engine->GetWindow()->GetSize().y, true)
+        , m_CameraController(m_Engine->GetWindow().GetSize().x, m_Engine->GetWindow().GetSize().y, true)
         , m_ActiveScene(nullptr)
     {
         m_ActiveScene = std::make_shared<Scene>();
@@ -107,9 +107,9 @@ namespace fw
         m_ViewportHovered = ImGui::IsWindowHovered();
         Input::BlockUIEvents(!m_ViewportFocused && !m_ViewportHovered);
 
-        std::shared_ptr<Texture> texture = m_Engine->GetRenderer()->GetRenderTexture();
+        Texture& texture = m_Engine->GetRenderer()->GetRenderTexture();
         // Draw first
-        ImGui::Image(texture->GetShaderResourceView(),
+        ImGui::Image(texture.GetShaderResourceView(),
                      ImVec2{ m_ViewportSize.x, m_ViewportSize.y },
                      ImVec2{ 0, 0 },
                      ImVec2{ 1, 1 });

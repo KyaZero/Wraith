@@ -8,7 +8,10 @@
 
 namespace fw
 {
-    Engine::Engine()
+    Engine::Engine(Window& window)
+        : m_Window(window)
+        , m_Framework(window)
+        , m_RenderManager(window)
     {
         Logger::Create();
         Filewatcher::Create();
@@ -24,14 +27,12 @@ namespace fw
         Logger::Destroy();
     }
 
-    bool Engine::Init(std::shared_ptr<Window> window)
+    bool Engine::Init()
     {
-        m_Window = window;
-
-        if (!m_Framework.Init(m_Window))
+        if (!m_Framework.Init())
             return false;
 
-        if (!m_RenderManager.Init(m_Window))
+        if (!m_RenderManager.Init())
             return false;
 
         return true;
@@ -56,7 +57,7 @@ namespace fw
 
         // Calculate average fps and display it on the window title
         {
-            static auto original_title = m_Window->GetTitle();
+            static auto original_title = m_Window.GetTitle();
 
             constexpr float smoothness = 0.99f;
             m_Fps = (m_Fps * smoothness) + ((1.0f / dt) * (1.0 - smoothness));
@@ -64,7 +65,7 @@ namespace fw
             m_FpsUpdateTimer -= dt;
             if (m_FpsUpdateTimer <= std::numeric_limits<float>::epsilon())
             {
-                m_Window->SetTitle(original_title + " - FPS: " + std::to_string((u32)(m_Fps)));
+                m_Window.SetTitle(original_title + " - FPS: " + std::to_string((u32)(m_Fps)));
                 m_FpsUpdateTimer += 1.f / FpsUpdatesPerSecond;
             }
         }

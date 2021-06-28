@@ -30,8 +30,8 @@ namespace fw
         std::vector<IDXGIAdapter*> adapters;
     };
 
-    Framework::Framework()
-        : m_Window(nullptr)
+    Framework::Framework(Window& window)
+        : m_Window(window)
     {
         m_Data = new Data;
     }
@@ -85,13 +85,8 @@ namespace fw
         return adapters;
     }
 
-    bool Framework::Init(std::shared_ptr<Window> window)
+    bool Framework::Init()
     {
-        if (!window)
-            return false;
-
-        m_Window = window;
-
         m_Data->adapters = EnumerateAdapters();
 
         IDXGIAdapter* adapter = nullptr;
@@ -138,7 +133,7 @@ namespace fw
         swapchain_desc.BufferCount = 1;
         swapchain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
         swapchain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
-        swapchain_desc.OutputWindow = (HWND)m_Window->GetPlatformHandle();
+        swapchain_desc.OutputWindow = (HWND)m_Window.GetPlatformHandle();
         swapchain_desc.SampleDesc.Count = 1;
         swapchain_desc.Windowed = true;
 
@@ -174,14 +169,14 @@ namespace fw
 
         D3D11_VIEWPORT view = { .TopLeftX = 0.0f,
                                 .TopLeftY = 0.0f,
-                                .Width = (f32)m_Window->GetSize().x,
-                                .Height = (f32)m_Window->GetSize().y,
+                                .Width = (f32)m_Window.GetSize().x,
+                                .Height = (f32)m_Window.GetSize().y,
                                 .MinDepth = 0.0f,
                                 .MaxDepth = 0.0f };
 
         m_Data->context->RSSetViewports(1, &view);
 
-        Window::RegisterResizeCallback(this, [&](u32 width, u32 height) { ResizeBackbuffer(); });
+        Window::RegisterResizeCallback(this, [&](u32 width, u32 height) { ResizeBackbuffer(width, height); });
 
         INFO_LOG("Finished initializing DirectX11 Framework!");
         return true;
@@ -213,9 +208,9 @@ namespace fw
         return s_Context;
     }
 
-    void Framework::ResizeBackbuffer()
+    void Framework::ResizeBackbuffer(u32 width, u32 height)
     {
-        if (m_Window->GetSize().x == 0 || m_Window->GetSize().y == 0)
+        if (width == 0 || height == 0)
             return;
 
         m_Data->context->OMSetRenderTargets(0, 0, 0);
@@ -231,7 +226,7 @@ namespace fw
         m_Data->back_buffer.CreateFromTexture(buffer);
         m_Data->back_buffer.SetAsActiveTarget();
 
-        VERBOSE_LOG("Resized backbuffer to (%d, %d)", m_Window->GetSize().x, m_Window->GetSize().y);
+        VERBOSE_LOG("Resized backbuffer to (%d, %d)", width, height);
     }
 
     void Framework::BeginEvent(std::string name)

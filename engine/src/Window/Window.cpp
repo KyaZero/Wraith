@@ -119,6 +119,9 @@ namespace fw
 
     void Window::HandleResize(GLFWwindow* handle, int width, int height)
     {
+        if (width == 0 || height == 0)
+            return;
+
         auto* window = (Window*)glfwGetWindowUserPointer(handle);
         window->m_Resolution = { (u32)width, (u32)height };
         for (auto callback : window->s_ResizeCallbacks)

@@ -10,10 +10,10 @@ namespace fw
     class Engine
     {
     public:
-        Engine();
+        Engine(Window& window);
         ~Engine();
 
-        bool Init(std::shared_ptr<Window> window);
+        bool Init();
         void Update(f32 dt, f32 total_time);
         // void OnEvent(const Event& e);
 
@@ -24,17 +24,17 @@ namespace fw
         {
             return &m_RenderManager;
         }
-        std::shared_ptr<Window> GetWindow()
+        Window& GetWindow()
         {
             return m_Window;
         }
-        Framework* GetFramework()
+        Framework& GetFramework()
         {
-            return &m_Framework;
+            return m_Framework;
         }
 
     private:
-        std::shared_ptr<Window> m_Window;
+        Window& m_Window;
         Framework m_Framework;
         RenderManager m_RenderManager;
         Scene m_Scene;

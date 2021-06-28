@@ -8,15 +8,15 @@ namespace fw
         : m_Window()
         , m_Name(name)
     {
-        m_Window = std::make_shared<Window>(Vec2u(1600, 900), m_Name);
-        m_Engine = std::make_shared<Engine>();
+        m_Window = std::make_unique<Window>(Vec2u(1600, 900), m_Name);
+        m_Engine = std::make_unique<Engine>(*m_Window);
 
-        if (!m_Engine->Init(m_Window))
+        if (!m_Engine->Init())
         {
             ASSERT_LOG(false, "Failed To Initialize Engine.");
         }
 
-        m_ImguiLayer = std::make_shared<ImguiLayer>(m_Engine);
+        m_ImguiLayer = std::make_unique<ImguiLayer>(*m_Engine);
     }
 
     bool Application::Run()

@@ -24,15 +24,15 @@ namespace fw
         virtual void OnUIRender()
         { }
 
-        std::shared_ptr<ImguiLayer> GetImguiLayer()
+        ImguiLayer& GetImguiLayer()
         {
-            return m_ImguiLayer;
+            return *m_ImguiLayer;
         }
 
     protected:
-        std::shared_ptr<Window> m_Window;
-        std::shared_ptr<Engine> m_Engine;
-        std::shared_ptr<ImguiLayer> m_ImguiLayer;
+        std::unique_ptr<Window> m_Window;
+        std::unique_ptr<Engine> m_Engine;
+        std::unique_ptr<ImguiLayer> m_ImguiLayer;
 
         Timer m_Timer;
         std::string m_Name;

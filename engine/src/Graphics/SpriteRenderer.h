@@ -14,17 +14,17 @@ namespace fw
     class SpriteRenderer
     {
     public:
-        SpriteRenderer();
+        SpriteRenderer(Window& window);
         ~SpriteRenderer();
 
-        bool Init(std::shared_ptr<Window> window);
+        bool Init();
 
         void Submit(const SpriteCommand& sprite);
         void Submit(const SetCameraCommand& command);
         void Render(f32 dt, f32 total_time);
 
     private:
-        std::shared_ptr<Window> m_Window;
+        Window& m_Window;
 
         struct RenderCamera
         {

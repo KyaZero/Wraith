@@ -59,21 +59,15 @@ namespace fw
         {
             static auto original_title = m_Window.GetTitle();
 
-            m_LastTimes.push_back(dt);
+            constexpr float smoothness = 0.99f;
+            m_Fps = (m_Fps * smoothness) + ((1.0f / dt) * (1.0 - smoothness));
 
-            if (m_LastTimes.size() > MaxNumTimesSaved)
-                m_LastTimes.pop_front();
-
-            f32 average_fps = [&]() {
-                f32 accumulator = 0;
-
-                for (auto& delta : m_LastTimes)
-                    accumulator += delta;
-
-                return accumulator / m_LastTimes.size();
-            }();
-
-            m_Window.SetTitle(original_title + " - FPS: " + std::to_string((u32)(1.0f / average_fps)));
+            m_FpsUpdateTimer -= dt;
+            if (m_FpsUpdateTimer <= std::numeric_limits<float>::epsilon())
+            {
+                m_Window->SetTitle(original_title + " - FPS: " + std::to_string((u32)(m_Fps)));
+                m_FpsUpdateTimer += 1.f / FpsUpdatesPerSecond;
+            }
         }
     }
 }  // namespace fw

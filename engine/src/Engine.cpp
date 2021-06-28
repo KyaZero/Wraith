@@ -65,7 +65,7 @@ namespace fw
             m_FpsUpdateTimer -= dt;
             if (m_FpsUpdateTimer <= std::numeric_limits<float>::epsilon())
             {
-                m_Window->SetTitle(original_title + " - FPS: " + std::to_string((u32)(m_Fps)));
+                m_Window.SetTitle(original_title + " - FPS: " + std::to_string((u32)(m_Fps)));
                 m_FpsUpdateTimer += 1.f / FpsUpdatesPerSecond;
             }
         }

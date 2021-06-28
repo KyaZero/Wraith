@@ -1,7 +1,5 @@
 #include "Application.h"
 
-#include <imgui.h>
-
 namespace fw
 {
     Application::Application(const std::string& name)

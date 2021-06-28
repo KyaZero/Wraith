@@ -9,7 +9,6 @@
 #include <backends/imgui_impl_win32.h>
 #include <d3d11.h>
 #include <d3d11_1.h>
-#include <imgui.h>
 
 #include "DXUtil.h"
 #include "Texture.h"

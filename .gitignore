@@ -1,7 +1,3 @@
 .build
-*.ilk
-*.pdb
-*.exe
-*.lib
 bin/assets/textures/*.jpg
 bin/saved/*.txt

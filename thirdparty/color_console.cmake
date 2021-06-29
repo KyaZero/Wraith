@@ -11,7 +11,7 @@ FetchContent_Declare(
 FetchContent_GetProperties(color-console)
 if (NOT color-console_POPULATED)
 	FetchContent_Populate(color-console)
-endif()
 
-add_library(color-console INTERFACE)
-target_include_directories(color-console INTERFACE ${color-console_SOURCE_DIR}/include)
+  add_library(color-console INTERFACE)
+  target_include_directories(color-console INTERFACE ${color-console_SOURCE_DIR}/include)
+endif()

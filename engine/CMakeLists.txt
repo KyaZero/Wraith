@@ -91,8 +91,6 @@ set(all_files
 
 add_library(${target_name} STATIC ${all_files})
 
-# set_target_properties(${target_name} PROPERTIES UNITY_BUILD ON)
-
 target_precompile_headers(${target_name}
 PRIVATE
   <string>
@@ -122,10 +120,10 @@ target_link_libraries(${target_name} PUBLIC
     d3dcompiler
     imgui
     EnTT
-    stb_image
+    stb
     glfw
     color-console)
-target_include_directories(${target_name} PUBLIC "src" "extern")
+target_include_directories(${target_name} PUBLIC "src")
 
 source_group("src" FILES ${src_files})
 source_group("src\\Window" FILES ${window_files})
@@ -137,4 +135,3 @@ source_group("src\\Core" FILES ${common_files})
 source_group("src\\Core\\Math" FILES ${math_files})
 
 set_target_properties(${target_name} PROPERTIES FOLDER ${PROJECT_NAME})
-set_target_properties(${target_name} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)

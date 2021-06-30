@@ -20,7 +20,8 @@ source_group("src/Panels" FILES ${panel_files})
 
 add_executable(${target_name} ${all_files})
 
-target_link_libraries(${target_name} Engine
+target_link_libraries(${target_name}
+    Engine
     compiler_features
     compiler_warnings
     imgui)

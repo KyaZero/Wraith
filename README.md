@@ -1,7 +1,7 @@
 [![Windows](https://github.com/KyaZero/2DGE/actions/workflows/windows.yml/badge.svg)](https://github.com/KyaZero/2DGE/actions/workflows/windows.yml)
 
 # 2DGE
-A 2D game engine, to make a little 2d game for myself i was thinking
+A 2D game engine, to make a little 2d game or something
 
 # Current screenshot of project
 ![alt text](https://i.imgur.com/A8XyY8j.png "Editor")

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Logger.h"
+#include "Singleton.h"
 
 namespace fw
 {
     using WatchCallback = std::function<void()>;
 
-    class Filewatcher
+    class Filewatcher : public Singleton<Filewatcher>
     {
     public:
         struct FileEntry
@@ -17,10 +18,6 @@ namespace fw
         Filewatcher();
         ~Filewatcher();
 
-        static Filewatcher* Get();
-        static void Create();
-        static void Destroy();
-
         void Watch(const std::string& path, WatchCallback callback);
         void FlushChanges();
 
@@ -30,8 +27,6 @@ namespace fw
         std::unordered_map<std::string, FileEntry> m_Entries;
         std::vector<std::string> m_Changes;
         std::thread m_Thread;
-
-        static Filewatcher* m_Instance;
 
         volatile bool m_IsRunning;
         volatile bool m_HasChanges;

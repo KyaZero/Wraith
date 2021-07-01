@@ -17,29 +17,19 @@ namespace fs = ::std::filesystem;
 
 namespace fw
 {
-    Logger* Logger::s_Instance = nullptr;
-
-    Logger::Logger()
+    Logger::Logger(bool multiThreaded)
         : m_Queue()
         , m_Level((char)Level::All)
         , m_Thread(nullptr)
         , m_ShouldLogToFile(true)
         , m_ShouldPrint(true)
         , m_MultiThreaded(false)
-    { }
-
-    Logger::~Logger()
-    { }
-
-    void Logger::Create(bool multiThreaded)
     {
-        s_Instance = new Logger;
+        m_MultiThreaded = multiThreaded;
+        if (m_MultiThreaded)
+            m_Thread = std::make_unique<std::jthread>(Update, this, std::chrono::milliseconds(16));
 
-        s_Instance->m_MultiThreaded = multiThreaded;
-        if (s_Instance->m_MultiThreaded)
-            s_Instance->m_Thread = std::make_unique<std::thread>(Update, s_Instance, std::chrono::milliseconds(16));
-
-        s_Instance->VerifyLogPath();
+        VerifyLogPath();
 
 #ifdef _WIN32
         // Customize Console a little bit
@@ -60,25 +50,14 @@ namespace fw
 #endif
     }
 
-    void Logger::Destroy()
+    Logger::~Logger()
     {
-        s_Instance->m_ShouldPrint = false;
-
-        if (s_Instance->m_MultiThreaded)
-            s_Instance->m_Thread->join();
-
-        delete s_Instance;
-        s_Instance = nullptr;
-    }
-
-    Logger* Logger::Get()
-    {
-        return s_Instance;
+        m_ShouldPrint = false;
     }
 
     void Logger::LogInternal(Level level, const char* file, u32 line, const char* function, std::string text)
     {
-        if (!s_Instance)
+        if (!Get())
             return;
 
         if (m_MultiThreaded)
@@ -105,12 +84,12 @@ namespace fw
         }
         else
         {
-            Print(s_Instance, LogEntry{ filename, func, text, line, level });
+            Print(Get(), LogEntry{ filename, func, text, line, level });
         }
 
         // Force log thread to finish
         if (level == Level::Fatal && m_MultiThreaded)
-            m_Thread->join();
+            m_Thread->request_stop();
     }
 
 #ifdef _WIN32

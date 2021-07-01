@@ -5,13 +5,14 @@ set(precompiled_files
   "src/Precompiled/Precompiled.h")
 
 set(common_files
-  "src/Core/Filewatcher.h"
-  "src/Core/Filewatcher.cpp"
-  "src/Core/Logger.h"
-  "src/Core/Logger.cpp"
   "src/Core/Common.h"
-  "src/Core/Types.h"
-  "src/Core/Timer.h")
+  "src/Core/Filewatcher.cpp"
+  "src/Core/Filewatcher.h"
+  "src/Core/Logger.cpp"
+  "src/Core/Logger.h"
+  "src/Core/Singleton.h"
+  "src/Core/Timer.h"
+  "src/Core/Types.h")
 
 set(graphics_files
   "src/Graphics/ContentManager.h"

@@ -29,3 +29,15 @@ namespace fw
         TextureIDType m_Hash;
     };
 }  // namespace fw
+
+namespace std
+{
+    template <>
+    struct hash<fw::TextureID>
+    {
+        std::size_t operator()(const fw::TextureID& id) const
+        {
+            return std::hash<fw::TextureIDType>()(id);
+        }
+    };
+}  // namespace std

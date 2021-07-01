@@ -42,6 +42,6 @@ namespace fw
         GLFWwindow* m_Handle;
 
         std::string m_CurrentTitle;
-        static std::unordered_map<Handle, ResizeCallback> s_ResizeCallbacks;
+        static inline std::unordered_map<Handle, ResizeCallback> s_ResizeCallbacks;
     };
 }  // namespace fw

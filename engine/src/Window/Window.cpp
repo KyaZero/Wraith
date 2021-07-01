@@ -22,8 +22,6 @@ static LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
 
 namespace fw
 {
-    std::unordered_map<Handle, ResizeCallback> Window::s_ResizeCallbacks;
-
     Window::Window()
         : m_Handle()
     { }

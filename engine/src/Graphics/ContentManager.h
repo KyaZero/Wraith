@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <optional>
+#include <unordered_map>
 
 #include "Core/Types.h"
 

@@ -1,9 +1,6 @@
 #pragma once
-#include <filesystem>
-#include <string>
 
 #include "ContentManager.h"
-#include "Core/Types.h"
 
 namespace fw
 {

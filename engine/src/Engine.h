@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core/Types.h"
 #include "Graphics/Framework.h"
 #include "Graphics/RenderManager.h"
 #include "Scene/Scene.h"

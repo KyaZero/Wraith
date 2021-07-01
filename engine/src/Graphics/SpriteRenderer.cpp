@@ -1,10 +1,5 @@
 #include "SpriteRenderer.h"
 
-#include <array>
-#include <execution>
-
-#include <d3d11.h>
-
 #include "Framework.h"
 #include "TextureManager.h"
 

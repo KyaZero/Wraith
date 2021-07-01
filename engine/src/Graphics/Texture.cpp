@@ -1,10 +1,5 @@
 #include "Texture.h"
 
-#include <filesystem>
-
-#include <d3d11.h>
-
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
 #include "DXUtil.h"
@@ -15,10 +10,10 @@ namespace fw
     struct Texture::Data
     {
         std::string path = "";
-        ID3D11Texture2D* texture = nullptr;
-        ID3D11ShaderResourceView* shader_resource = nullptr;
-        ID3D11DepthStencilView* depth = nullptr;
-        ID3D11RenderTargetView* render_target = nullptr;
+        ComPtr<ID3D11Texture2D> texture;
+        ComPtr<ID3D11ShaderResourceView> shader_resource;
+        ComPtr<ID3D11DepthStencilView> depth;
+        ComPtr<ID3D11RenderTargetView> render_target;
         Vec2u size = Vec2u();
         D3D11_VIEWPORT viewport = {};
         DXGI_FORMAT format;
@@ -28,7 +23,7 @@ namespace fw
 
     Texture::Texture()
     {
-        m_Data = std::make_shared<Data>();
+        m_Data = std::make_unique<Data>();
     }
 
     Texture::Texture(const std::string& path)
@@ -78,8 +73,7 @@ namespace fw
             Release();
         }
 
-        m_Data = other.m_Data;
-        other.m_Data = nullptr;
+        m_Data = std::move(other.m_Data);
         return *this;
     }
 
@@ -105,7 +99,7 @@ namespace fw
         }
 
         if (!m_Data)
-            m_Data = std::make_shared<Data>();
+            m_Data = std::make_unique<Data>();
 
         m_Data->path = path;
 
@@ -136,7 +130,7 @@ namespace fw
     void Texture::Create(const TextureCreateInfo& info)
     {
         if (!m_Data)
-            m_Data = std::make_shared<Data>();
+            m_Data = std::make_unique<Data>();
 
         m_Data->is_rt = info.render_target;
         m_Data->format = (DXGI_FORMAT)info.format;
@@ -272,13 +266,13 @@ namespace fw
 
     void Texture::Clear(const Vec4f& color)
     {
-        Framework::GetContext()->ClearRenderTargetView(m_Data->render_target, &color.x);
+        Framework::GetContext()->ClearRenderTargetView(m_Data->render_target.Get(), &color.x);
     }
 
     void Texture::ClearDepth(f32 depth, u32 stencil)
     {
         Framework::GetContext()->ClearDepthStencilView(
-            m_Data->depth, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, depth, (UINT8)stencil);
+            m_Data->depth.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, depth, (UINT8)stencil);
     }
 
     void Texture::Resize(const Vec2u& size, ImageFormat format, void* data)
@@ -294,7 +288,8 @@ namespace fw
 
     void Texture::SetAsActiveTarget(Texture* depth)
     {
-        Framework::GetContext()->OMSetRenderTargets(1, &m_Data->render_target, depth ? depth->m_Data->depth : nullptr);
+        Framework::GetContext()->OMSetRenderTargets(
+            1, m_Data->render_target.GetAddressOf(), depth ? depth->m_Data->depth.Get() : nullptr);
         SetViewport();
     }
 
@@ -318,7 +313,7 @@ namespace fw
 
     void Texture::Bind(u32 slot) const
     {
-        Framework::GetContext()->PSSetShaderResources(slot, 1, &m_Data->shader_resource);
+        Framework::GetContext()->PSSetShaderResources(slot, 1, m_Data->shader_resource.GetAddressOf());
     }
 
     void Texture::Unbind(u32 slot) const
@@ -330,38 +325,34 @@ namespace fw
     {
         if (m_Data)
         {
-            if (m_Data->depth)
-                SafeRelease(&m_Data->depth);
-
-            if (m_Data->render_target)
-                SafeRelease(&m_Data->render_target);
-
-            if (m_Data->shader_resource)
-                SafeRelease(&m_Data->shader_resource);
+            m_Data->depth.Reset();
+            m_Data->render_target.Reset();
+            m_Data->shader_resource.Reset();
 
             if (m_Data->texture)
-                SafeRelease(&m_Data->texture);
+                m_Data->texture->Release();
+            m_Data->texture.Reset();
         }
     }
 
     ID3D11Texture2D* Texture::GetTexture() const
     {
-        return m_Data->texture;
+        return m_Data->texture.Get();
     }
 
     ID3D11DepthStencilView* Texture::GetDepth() const
     {
-        return m_Data->depth;
+        return m_Data->depth.Get();
     }
 
     ID3D11RenderTargetView* Texture::GetRenderTarget() const
     {
-        return m_Data->render_target;
+        return m_Data->render_target.Get();
     }
 
     ID3D11ShaderResourceView* Texture::GetShaderResourceView() const
     {
-        return m_Data->shader_resource;
+        return m_Data->shader_resource.Get();
     }
 
     Vec2u Texture::GetSize() const

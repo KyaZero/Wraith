@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core/Types.h"
 #include "RenderCommand.h"
 #include "SpriteRenderer.h"
 

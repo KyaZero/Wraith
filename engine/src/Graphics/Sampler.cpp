@@ -1,7 +1,5 @@
 #include "Sampler.h"
 
-#include <d3d11.h>
-
 #include "DXUtil.h"
 #include "Framework.h"
 
@@ -9,7 +7,7 @@ namespace fw
 {
     struct Sampler::Data
     {
-        ID3D11SamplerState* sampler;
+        ComPtr<ID3D11SamplerState> sampler;
     };
 
     Sampler::Sampler()
@@ -21,13 +19,7 @@ namespace fw
     }
 
     Sampler::~Sampler()
-    {
-        if (m_Data)
-        {
-            if (m_Data->sampler)
-                SafeRelease(&m_Data->sampler);
-        }
-    }
+    { }
 
     void Sampler::Init(Filter filter, Address address, Vec4f border)
     {
@@ -86,7 +78,7 @@ namespace fw
 
     void Sampler::Bind(u32 slot)
     {
-        Framework::GetContext()->PSSetSamplers(slot, 1, &m_Data->sampler);
+        Framework::GetContext()->PSSetSamplers(slot, 1, m_Data->sampler.GetAddressOf());
     }
 
     void Sampler::Unbind(u32 slot)

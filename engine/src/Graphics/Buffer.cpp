@@ -1,7 +1,5 @@
 #include "Buffer.h"
 
-#include <d3d11.h>
-
 #include "DXUtil.h"
 #include "Framework.h"
 
@@ -9,8 +7,8 @@ namespace fw
 {
     struct Buffer::Data
     {
-        ID3D11Buffer* buffer;
-        ID3D11ShaderResourceView* resource_view;
+        ComPtr<ID3D11Buffer> buffer;
+        ComPtr<ID3D11ShaderResourceView> resource_view;
         BufferType bindFlags;
         u32 stride;
     };
@@ -19,23 +17,15 @@ namespace fw
         : m_Data(nullptr)
     { }
 
-    Buffer::Buffer(u32 size, BufferUsage usage, BufferType flags, u32 stride, void* data)
+    Buffer::Buffer(u32 size, BufferUsage usage, BufferType flags, u32 stride, const void* data)
     {
         Init(size, usage, flags, stride, data);
     }
 
     Buffer::~Buffer()
-    {
-        if (m_Data)
-        {
-            if (m_Data->buffer)
-                SafeRelease(&m_Data->buffer);
-            if (m_Data->resource_view)
-                SafeRelease(&m_Data->resource_view);
-        }
-    }
+    { }
 
-    void Buffer::Init(u32 size, BufferUsage usage, BufferType flags, u32 stride, void* data)
+    void Buffer::Init(u32 size, BufferUsage usage, BufferType flags, u32 stride, const void* data)
     {
         m_Data = std::make_unique<Data>();
 
@@ -92,7 +82,7 @@ namespace fw
             srvDesc.Format = DXGI_FORMAT_UNKNOWN;
             srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
             srvDesc.Buffer.ElementWidth = size / stride;
-            Framework::GetDevice()->CreateShaderResourceView(m_Data->buffer, &srvDesc, &m_Data->resource_view);
+            Framework::GetDevice()->CreateShaderResourceView(m_Data->buffer.Get(), &srvDesc, &m_Data->resource_view);
         }
 
         m_Data->bindFlags = flags;
@@ -109,20 +99,20 @@ namespace fw
         switch (m_Data->bindFlags)
         {
         case BufferType::Vertex:
-            context->IASetVertexBuffers(slot, 1, &m_Data->buffer, (UINT*)&m_Data->stride, &offset);
+            context->IASetVertexBuffers(slot, 1, m_Data->buffer.GetAddressOf(), (UINT*)&m_Data->stride, &offset);
             break;
 
         case BufferType::Index:
-            context->IASetIndexBuffer(m_Data->buffer, DXGI_FORMAT_R32_UINT, 0);
+            context->IASetIndexBuffer(m_Data->buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
             break;
 
         case BufferType::Constant:
-            context->VSSetConstantBuffers(slot, 1, &m_Data->buffer);
-            context->PSSetConstantBuffers(slot, 1, &m_Data->buffer);
-            context->GSSetConstantBuffers(slot, 1, &m_Data->buffer);
+            context->VSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
+            context->PSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
+            context->GSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
             break;
         case BufferType::Structured:
-            context->VSSetShaderResources(1, 1, &m_Data->resource_view);
+            context->VSSetShaderResources(1, 1, m_Data->resource_view.GetAddressOf());
             break;
         default:
             ASSERT_LOG(false, "No implemented BufferType");
@@ -130,9 +120,9 @@ namespace fw
         }
     }
 
-    void Buffer::SetData(void* data, u32 size)
+    void Buffer::SetData(const void* data, u32 size)
     {
-        memcpy(Map(), data, size);
+        std::memcpy(Map(), data, size);
         Unmap();
     }
 
@@ -144,10 +134,10 @@ namespace fw
             return nullptr;
         }
         D3D11_MAPPED_SUBRESOURCE subres;
-        memset(&subres, 0, sizeof(D3D11_MAPPED_SUBRESOURCE));
+        std::memset(&subres, 0, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
         if (FailedCheck("Mapping buffer",
-                        Framework::GetContext()->Map(m_Data->buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
+                        Framework::GetContext()->Map(m_Data->buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
             return nullptr;
 
         return subres.pData;
@@ -160,6 +150,6 @@ namespace fw
             ERROR_LOG("Buffer not Inititalized!");
             return;
         }
-        Framework::GetContext()->Unmap(m_Data->buffer, 0);
+        Framework::GetContext()->Unmap(m_Data->buffer.Get(), 0);
     }
 }  // namespace fw

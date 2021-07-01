@@ -1,9 +1,5 @@
 #pragma once
 
-#include <memory>
-
-#include "Core/Math/Vec4.h"
-
 namespace fw
 {
     class Sampler

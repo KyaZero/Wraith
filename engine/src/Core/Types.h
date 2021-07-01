@@ -1,5 +1,6 @@
 #pragma once
-#include <stdint.h>
+
+#include <cstdint>
 
 using f32 = float;
 using f64 = double;

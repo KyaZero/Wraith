@@ -1,15 +1,9 @@
 #include "Shader.h"
 
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <wrl/client.h>
-
 #include "Core/Filewatcher.h"
 #include "DXUtil.h"
 #include "Framework.h"
 #include "ShaderReflection.h"
-
-using Microsoft::WRL::ComPtr;
 
 namespace fw
 {
@@ -156,12 +150,7 @@ namespace fw
 
     Shader::Shader()
     {
-        m_Data = std::make_shared<Data>();
-    }
-
-    Shader::Shader(const Shader& other)
-    {
-        operator=(other);
+        m_Data = std::make_unique<Data>();
     }
 
     Shader::Shader(Shader&& other)
@@ -172,16 +161,9 @@ namespace fw
     Shader::~Shader()
     { }
 
-    Shader& Shader::operator=(const Shader& other)
-    {
-        m_Data = other.m_Data;
-        return *this;
-    }
-
     Shader& Shader::operator=(Shader&& other)
     {
-        m_Data = other.m_Data;
-        other.m_Data = nullptr;
+        m_Data = std::move(other.m_Data);
         return *this;
     }
 

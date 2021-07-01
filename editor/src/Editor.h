@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Application.h"
+#include <Application.h>
+#include <Scene/Entity.h>
+#include <Scene/Scene.h>
+
 #include "Panels/SceneHierarchyPanel.h"
-#include "Scene/Entity.h"
-#include "Scene/Scene.h"
 
 namespace fw
 {

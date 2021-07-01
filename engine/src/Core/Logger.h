@@ -1,14 +1,9 @@
 #pragma once
 
-#include <cassert>
-#include <format>
-#include <mutex>
 #include <queue>
-#include <string>
-#include <thread>
-#include <vector>
+#include <mutex>
 
-#include <Core/Types.h>
+#include "Core/Types.h"
 
 #define VERBOSE_LOG(...) \
     fw::Logger::Get()->Log(::fw::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);

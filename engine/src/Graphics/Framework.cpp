@@ -1,13 +1,7 @@
 #include "Framework.h"
 
-#include <filesystem>
-#include <string>
-
-#include <atlbase.h>
 #include <backends/imgui_impl_dx11.h>
 #include <backends/imgui_impl_win32.h>
-#include <d3d11.h>
-#include <d3d11_1.h>
 
 #include "DXUtil.h"
 #include "Texture.h"
@@ -17,55 +11,34 @@ namespace fw
     // for getters, should figure out a better way to do this
     static ID3D11Device* s_Device;
     static ID3D11DeviceContext* s_Context;
-    void* s_Annot = nullptr;
+    static ID3D11Debug* s_DeviceDebug;
+    static ID3DUserDefinedAnnotation* s_Annot;
 
     struct Framework::Data
     {
-        IDXGISwapChain* swap_chain = nullptr;
-        ID3D11Device* device = nullptr;
-        ID3D11DeviceContext* context = nullptr;
-        Texture back_buffer;
-        std::vector<IDXGIAdapter*> adapters;
+        ComPtr<IDXGISwapChain> swap_chain;
+        ComPtr<ID3D11Device> device;
+        ComPtr<ID3D11DeviceContext> context;
+        ComPtr<ID3D11RenderTargetView> back_buffer;
+        std::vector<ComPtr<IDXGIAdapter>> adapters;
     };
 
     Framework::Framework(Window& window)
         : m_Window(window)
     {
-        m_Data = new Data;
+        m_Data = std::make_unique<Data>();
     }
 
     Framework::~Framework()
+    { }
+
+    std::vector<ComPtr<IDXGIAdapter>> EnumerateAdapters()
     {
-        Window::UnregisterResizeCallback(this);
+        ComPtr<IDXGIFactory> factory;
+        ComPtr<IDXGIAdapter> adapter;
+        std::vector<ComPtr<IDXGIAdapter>> adapters;
 
-        if (m_Data)
-        {
-            for (auto* adapter : m_Data->adapters)
-            {
-                adapter->Release();
-            }
-
-            SafeRelease(&m_Data->swap_chain);
-            m_Data->back_buffer.Release();
-
-            m_Data->context->ClearState();
-            m_Data->context->Flush();
-
-            SafeRelease(&m_Data->context);
-            SafeRelease(&m_Data->device);
-
-            delete m_Data;
-        }
-        m_Data = nullptr;
-    }
-
-    std::vector<IDXGIAdapter*> EnumerateAdapters()
-    {
-        IDXGIAdapter* adapter;
-        std::vector<IDXGIAdapter*> adapters;
-        IDXGIFactory* factory = nullptr;
-
-        if (FailedCheck("Gathering adapters", CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
+        if (FailedCheck("Gathering adapters", CreateDXGIFactory(IID_PPV_ARGS(&factory))))
         {
             return adapters;
         }
@@ -75,11 +48,6 @@ namespace fw
             adapters.push_back(adapter);
         }
 
-        if (factory)
-        {
-            factory->Release();
-        }
-
         return adapters;
     }
 
@@ -87,8 +55,8 @@ namespace fw
     {
         m_Data->adapters = EnumerateAdapters();
 
-        IDXGIAdapter* adapter = nullptr;
-        for (auto* a : m_Data->adapters)
+        ComPtr<IDXGIAdapter> adapter;
+        for (const auto& a : m_Data->adapters)
         {
             DXGI_ADAPTER_DESC adapterDescription;
             a->GetDesc(&adapterDescription);
@@ -136,7 +104,7 @@ namespace fw
         swapchain_desc.Windowed = true;
 
         if (FailedCheck("D3D11CreateDeviceAndSwapChain",
-                        D3D11CreateDeviceAndSwapChain(adapter,
+                        D3D11CreateDeviceAndSwapChain(adapter.Get(),
                                                       D3D_DRIVER_TYPE_UNKNOWN,
                                                       NULL,
                                                       creation_flags,
@@ -152,18 +120,12 @@ namespace fw
             return false;
         }
 
-        s_Device = m_Data->device;
-        s_Context = m_Data->context;
+        m_Data->device->QueryInterface(IID_PPV_ARGS(&s_DeviceDebug));
 
-        ID3D11Texture2D* back_buffer;
-        if (FailedCheck("Getting backbuffer texture from swapchain",
-                        m_Data->swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&back_buffer)))
-        {
-            return false;
-        }
+        s_Device = m_Data->device.Get();
+        s_Context = m_Data->context.Get();
 
-        m_Data->back_buffer.CreateFromTexture(back_buffer);
-        m_Data->back_buffer.SetAsActiveTarget();
+        CreateBackbufferRTV();
 
         D3D11_VIEWPORT view = { .TopLeftX = 0.0f,
                                 .TopLeftY = 0.0f,
@@ -182,8 +144,8 @@ namespace fw
 
     void Framework::BeginFrame(const Vec4f& clear_color)
     {
-        m_Data->back_buffer.SetAsActiveTarget();
-        m_Data->back_buffer.Clear(clear_color);
+        SetBackbufferAsActiveTarget();
+        m_Data->context->ClearRenderTargetView(m_Data->back_buffer.Get(), &clear_color.r);
     }
 
     void Framework::EndFrame()
@@ -193,7 +155,7 @@ namespace fw
 
     void Framework::SetBackbufferAsActiveTarget()
     {
-        m_Data->back_buffer.SetAsActiveTarget();
+        m_Data->context->OMSetRenderTargets(1, m_Data->back_buffer.GetAddressOf(), nullptr);
     }
 
     ID3D11Device* Framework::GetDevice()
@@ -206,23 +168,36 @@ namespace fw
         return s_Context;
     }
 
+    void Framework::ReportLiveObjects()
+    {
+        if (s_DeviceDebug)
+            s_DeviceDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY);
+    }
+
+    void Framework::CreateBackbufferRTV()
+    {
+        ComPtr<ID3D11Texture2D> back_buffer;
+        if (FailedCheck("Getting backbuffer texture from swapchain",
+                        m_Data->swap_chain->GetBuffer(0, IID_PPV_ARGS(&back_buffer))))
+            return;
+
+        if (FailedCheck("Creating backbuffer RTV",
+                        m_Data->device->CreateRenderTargetView(back_buffer.Get(), nullptr, &m_Data->back_buffer)))
+            return;
+    }
+
     void Framework::ResizeBackbuffer(u32 width, u32 height)
     {
         if (width == 0 || height == 0)
             return;
 
-        m_Data->context->OMSetRenderTargets(0, 0, 0);
-        m_Data->back_buffer.Release();
+        m_Data->context->ClearState();
+        m_Data->back_buffer.Reset();
 
         if (FailedCheck("Resizing backbuffer", m_Data->swap_chain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0)))
             return;
 
-        ID3D11Texture2D* buffer = nullptr;
-        if (FailedCheck("Getting buffer", m_Data->swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer)))
-            return;
-
-        m_Data->back_buffer.CreateFromTexture(buffer);
-        m_Data->back_buffer.SetAsActiveTarget();
+        CreateBackbufferRTV();
 
         VERBOSE_LOG("Resized backbuffer to ({}, {})", width, height);
     }
@@ -231,19 +206,17 @@ namespace fw
     {
         if (!s_Annot)
         {
-            ID3DUserDefinedAnnotation* annot = nullptr;
-            GetContext()->QueryInterface(__uuidof(ID3DUserDefinedAnnotation), (void**)&annot);
-            s_Annot = annot;
+            GetContext()->QueryInterface(IID_PPV_ARGS(&s_Annot));
         }
 
         // little bit of a hack to convert from std::string to std::wstring using the std library!
-        ((ID3DUserDefinedAnnotation*)s_Annot)->BeginEvent(std::filesystem::path(name).wstring().c_str());
+        s_Annot->BeginEvent(std::filesystem::path(name).wstring().c_str());
     }
 
     void Framework::EndEvent()
     {
         if (!s_Annot)
             return;
-        ((ID3DUserDefinedAnnotation*)s_Annot)->EndEvent();
+        s_Annot->EndEvent();
     }
 }  // namespace fw

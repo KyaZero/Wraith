@@ -2,15 +2,6 @@
 
 #include "Framework.h"
 
-// helper template stuff for std::visit + std::variant usage :)
-// see link for details
-// https://www.bfilipek.com/2018/06/variant.html#overload
-template <class... Ts>
-struct overload : Ts...
-{
-    using Ts::operator()...;
-};
-
 namespace fw
 {
     RenderManager::RenderManager(Window& window)
@@ -45,8 +36,8 @@ namespace fw
 
         for (auto& command : m_RenderCommands)
         {
-            std::visit(overload{ [&](SpriteCommand sprite) { m_SpriteRenderer.Submit(sprite); },
-                                 [&](SetCameraCommand camera) { m_SpriteRenderer.Submit(camera); } },
+            std::visit(overloaded{ [&](SpriteCommand sprite) { m_SpriteRenderer.Submit(sprite); },
+                                   [&](SetCameraCommand camera) { m_SpriteRenderer.Submit(camera); } },
                        command);
         }
         m_RenderCommands.clear();

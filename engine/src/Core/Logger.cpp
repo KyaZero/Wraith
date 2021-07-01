@@ -1,11 +1,5 @@
 #include "Logger.h"
 
-#include <chrono>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-
 // Simply used to customize console colours a bit
 #ifdef _WIN32
 #include <cwchar>

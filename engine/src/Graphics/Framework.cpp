@@ -31,6 +31,8 @@ namespace fw
 
     Framework::~Framework()
     {
+        Window::UnregisterResizeCallback(this);
+
         m_Data->context->ClearState();
         m_Data->context->Flush();
         ReportLiveObjects();

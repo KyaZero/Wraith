@@ -101,6 +101,7 @@ target_link_libraries(${target_name} PUBLIC
     compiler_warnings
     d3d11
     dxgi
+    dxguid
     d3dcompiler
     imgui
     EnTT

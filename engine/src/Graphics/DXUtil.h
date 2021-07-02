@@ -23,4 +23,13 @@ namespace fw
         }
         return false;
     }
+
+    inline void SetDebugObjectName([[maybe_unused]] ID3D11DeviceChild* resource, [[maybe_unused]] std::string_view name)
+    {
+#ifdef _DEBUG
+        static int id = 0;
+        std::string n = std::format("#fw::{}[{}]", name, ++id);
+        resource->SetPrivateData(WKPDID_D3DDebugObjectName, static_cast<u32>(n.size()), n.data());
+#endif
+    }
 };  // namespace fw

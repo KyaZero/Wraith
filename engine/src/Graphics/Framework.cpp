@@ -30,7 +30,11 @@ namespace fw
     }
 
     Framework::~Framework()
-    { }
+    {
+        m_Data->context->ClearState();
+        m_Data->context->Flush();
+        ReportLiveObjects();
+    }
 
     std::vector<ComPtr<IDXGIAdapter>> EnumerateAdapters()
     {
@@ -171,7 +175,7 @@ namespace fw
     void Framework::ReportLiveObjects()
     {
         if (s_DeviceDebug)
-            s_DeviceDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY);
+            s_DeviceDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
     }
 
     void Framework::CreateBackbufferRTV()

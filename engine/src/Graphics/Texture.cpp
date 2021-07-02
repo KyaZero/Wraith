@@ -10,10 +10,10 @@ namespace fw
     struct Texture::Data
     {
         std::string path = "";
-        ComPtr<ID3D11Texture2D> texture;
-        ComPtr<ID3D11ShaderResourceView> shader_resource;
         ComPtr<ID3D11DepthStencilView> depth;
         ComPtr<ID3D11RenderTargetView> render_target;
+        ComPtr<ID3D11ShaderResourceView> shader_resource;
+        ComPtr<ID3D11Texture2D> texture;
         Vec2u size = Vec2u();
         D3D11_VIEWPORT viewport = {};
         DXGI_FORMAT format;
@@ -154,12 +154,11 @@ namespace fw
         if (info.num_mips != 1)
             desc.MiscFlags |= D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
-        ID3D11Texture2D* texture = nullptr;
-
         D3D11_SUBRESOURCE_DATA initial_data = {};
         initial_data.pSysMem = info.data;
         initial_data.SysMemPitch = info.size.x * (sizeof(u8)) * 4;
 
+        ComPtr<ID3D11Texture2D> texture;
         if (FailedCheck("Creating texture",
                         Framework::GetDevice()->CreateTexture2D(&desc, info.data ? &initial_data : nullptr, &texture)))
         {
@@ -167,7 +166,7 @@ namespace fw
             return;
         }
 
-        CreateFromTexture(texture);
+        CreateFromTexture(texture.Get());
         m_Data->size = info.size;
     }
 
@@ -235,7 +234,7 @@ namespace fw
         sr_desc.Texture2D.MostDetailedMip = 0;
         sr_desc.Texture2D.MipLevels = 1;
 
-        ID3D11Texture2D* texture = nullptr;
+        ComPtr<ID3D11Texture2D> texture;
         if (FailedCheck("Creating Texture2D for depth texture",
                         Framework::GetDevice()->CreateTexture2D(&desc, nullptr, &texture)))
         {
@@ -243,15 +242,16 @@ namespace fw
         }
 
         if (FailedCheck("Creating Depth Stencil View for depth texture",
-                        Framework::GetDevice()->CreateDepthStencilView(texture, &dsv_desc, &m_Data->depth)))
+                        Framework::GetDevice()->CreateDepthStencilView(texture.Get(), &dsv_desc, &m_Data->depth)))
         {
             // cleanup.
             Release();
             return;
         }
 
-        if (FailedCheck("Creating Shader Resource View for depth texture",
-                        Framework::GetDevice()->CreateShaderResourceView(texture, &sr_desc, &m_Data->shader_resource)))
+        if (FailedCheck(
+                "Creating Shader Resource View for depth texture",
+                Framework::GetDevice()->CreateShaderResourceView(texture.Get(), &sr_desc, &m_Data->shader_resource)))
         {
             // cleanup.
             Release();
@@ -328,9 +328,6 @@ namespace fw
             m_Data->depth.Reset();
             m_Data->render_target.Reset();
             m_Data->shader_resource.Reset();
-
-            if (m_Data->texture)
-                m_Data->texture->Release();
             m_Data->texture.Reset();
         }
     }

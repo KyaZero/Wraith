@@ -1,9 +1,7 @@
 #pragma once
-#include <d3d11.h>
 
 #include "Core/Logger.h"
 
-// This file should only be included in .cpp files so as to not leak d3d11.h into the headers
 namespace fw
 {
     // Returns true if failed, and false otherwise.
@@ -26,10 +24,12 @@ namespace fw
         return false;
     }
 
-    template <typename T>
-    inline void SafeRelease(T** resource)
+    inline void SetDebugObjectName([[maybe_unused]] ID3D11DeviceChild* resource, [[maybe_unused]] std::string_view name)
     {
-        (*resource)->Release();
-        *resource = nullptr;
+#ifdef _DEBUG
+        static int id = 0;
+        std::string n = std::format("#fw::{}[{}]", name, ++id);
+        resource->SetPrivateData(WKPDID_D3DDebugObjectName, static_cast<u32>(n.size()), n.data());
+#endif
     }
 };  // namespace fw

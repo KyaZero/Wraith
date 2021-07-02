@@ -1,16 +1,13 @@
 #pragma once
 
 #include <functional>
-#include <map>
-
-#include "Core/Math/Vec2.h"
 
 struct GLFWwindow;
 
 namespace fw
 {
     using Handle = void*;
-    using WindowHandle = Handle;
+    using ResizeCallback = std::function<void(u32, u32)>;
 
     class Window
     {
@@ -24,7 +21,7 @@ namespace fw
         bool ShouldClose();
         void PollEvents();
 
-        static void RegisterResizeCallback(void* instance, std::function<void(u32, u32)> callback);
+        static void RegisterResizeCallback(void* instance, ResizeCallback callback);
         static void UnregisterResizeCallback(void* instance);
 
         const Vec2u& GetSize() const;
@@ -45,6 +42,6 @@ namespace fw
         GLFWwindow* m_Handle;
 
         std::string m_CurrentTitle;
-        static std::map<void*, std::function<void(u32, u32)>> s_ResizeCallbacks;
+        static inline std::unordered_map<Handle, ResizeCallback> s_ResizeCallbacks;
     };
 }  // namespace fw

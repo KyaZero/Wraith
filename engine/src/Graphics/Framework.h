@@ -24,15 +24,17 @@ namespace fw
 
         static ID3D11Device* GetDevice();
         static ID3D11DeviceContext* GetContext();
+        static void ReportLiveObjects();
 
         static void BeginEvent(std::string name);
         static void EndEvent();
 
     private:
+        void CreateBackbufferRTV();
         void ResizeBackbuffer(u32 width, u32 height);
 
         Window& m_Window;
         struct Data;
-        Data* m_Data;
+        std::unique_ptr<Data> m_Data;
     };
 }  // namespace fw

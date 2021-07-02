@@ -2,26 +2,6 @@
 
 namespace fw
 {
-    Filewatcher* Filewatcher::m_Instance = nullptr;
-
-    Filewatcher* Filewatcher::Get()
-    {
-        return m_Instance;
-    }
-
-    void Filewatcher::Create()
-    {
-        if (m_Instance)
-            ERROR_LOG("Trying to create a filewatcher when it's already been created!");
-        m_Instance = new Filewatcher;
-    }
-
-    void Filewatcher::Destroy()
-    {
-        if (m_Instance)
-            delete m_Instance;
-    }
-
     Filewatcher::Filewatcher()
     {
         m_IsRunning = true;

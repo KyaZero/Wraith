@@ -1,10 +1,5 @@
 #pragma once
 
-#include <memory>
-#include <string>
-
-#include "Core/Math/Vec.h"
-#include "Core/Types.h"
 #include "ImageFormat.h"
 
 struct ID3D11Texture2D;
@@ -69,6 +64,6 @@ namespace fw
 
     private:
         struct Data;
-        std::shared_ptr<Data> m_Data;
+        std::unique_ptr<Data> m_Data;
     };
 }  // namespace fw

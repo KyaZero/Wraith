@@ -3,7 +3,6 @@
 #include <variant>
 
 #include "Camera.h"
-#include "Core/Math/Vec4.h"
 #include "TextureID.h"
 
 namespace fw

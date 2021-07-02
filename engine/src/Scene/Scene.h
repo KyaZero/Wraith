@@ -2,7 +2,6 @@
 
 #include <entt/entt.hpp>
 
-#include "Core/Types.h"
 #include "Graphics/OrthographicCameraController.h"
 #include "Graphics/RenderManager.h"
 #include "Window/Window.h"

@@ -186,11 +186,11 @@ namespace fw
             return m_Numbers[index];
         }
 
-        static Mat4<T> CreateOrthographicProjection(T left, T right, T bottom, T top, T near, T far)
+        static Mat4<T> CreateOrthographicProjection(T left, T right, T bottom, T top, T znear, T zfar)
         {
             f32 ReciprocalWidth = 1.0f / (right - left);
             f32 ReciprocalHeight = 1.0f / (top - bottom);
-            f32 fRange = 1.0f / (far - near);
+            f32 fRange = 1.0f / (zfar - znear);
             return Mat4<T>{ ReciprocalWidth + ReciprocalWidth,
                             0,
                             0,
@@ -205,27 +205,27 @@ namespace fw
                             0,
                             -(left + right) * ReciprocalWidth,
                             -(top + bottom) * ReciprocalHeight,
-                            -fRange * near,
+                            -fRange * znear,
                             1 };
         }
 
-        static Mat4<T> CreateOrthographicProjection(T width, T height, T near, T far)
+        static Mat4<T> CreateOrthographicProjection(T width, T height, T znear, T zfar)
         {
             T B = (T)2.0 / height;
             T A = (T)2.0 / width;
-            T C = (T)1.0 / (far - near);
-            T E = near / (near - far);
+            T C = (T)1.0 / (zfar - znear);
+            T E = znear / (znear - zfar);
             return Mat4<T>{ A, 0, 0, 0, 0, B, 0, 0, 0, 0, C, 0, 0, 0, E, 1 };
         }
 
-        static Mat4<T> CreatePerspectiveProjection(T fov, T aspect, T near, T far)
+        static Mat4<T> CreatePerspectiveProjection(T fov, T aspect, T znear, T zfar)
         {
             T yFov = fov / aspect;
             T B = (T)1.0f / (std::tan(yFov * (3.1415f / 180.0f) * (T)0.5f));
             T A = B / aspect;
-            T C = far / (far - near);
+            T C = zfar / (zfar - znear);
             T D = (T)1.0f;
-            T E = -near * far / (far - near);
+            T E = -znear * zfar / (zfar - znear);
             return Mat4<T>{ A, 0, 0, 0, 0, B, 0, 0, 0, 0, C, D, 0, 0, E, 0 };
         }
 

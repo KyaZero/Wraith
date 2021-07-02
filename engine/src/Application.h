@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "Core/Timer.h"
 #include "Engine.h"
 #include "UI/ImguiLayer.h"

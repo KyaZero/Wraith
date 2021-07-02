@@ -1,13 +1,13 @@
 #include "Window.h"
 
 #include <GLFW/glfw3.h>
+#include <backends/imgui_impl_win32.h>
 
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
 #include "Core/Logger.h"
 #include "Input/Input.h"
-#include "backends/imgui_impl_win32.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -22,8 +22,6 @@ static LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
 
 namespace fw
 {
-    std::map<void*, std::function<void(u32, u32)>> Window::s_ResizeCallbacks;
-
     Window::Window()
         : m_Handle()
     { }
@@ -76,14 +74,14 @@ namespace fw
         glfwPollEvents();
     }
 
-    void Window::RegisterResizeCallback(void* instance, std::function<void(u32, u32)> callback)
+    void Window::RegisterResizeCallback(Handle handle, ResizeCallback callback)
     {
-        s_ResizeCallbacks.emplace(instance, callback);
+        s_ResizeCallbacks.emplace(handle, callback);
     }
 
-    void Window::UnregisterResizeCallback(void* instance)
+    void Window::UnregisterResizeCallback(Handle handle)
     {
-        s_ResizeCallbacks.erase(instance);
+        s_ResizeCallbacks.erase(handle);
     }
 
     const Vec2u& Window::GetSize() const
@@ -124,9 +122,9 @@ namespace fw
 
         auto* window = (Window*)glfwGetWindowUserPointer(handle);
         window->m_Resolution = { (u32)width, (u32)height };
-        for (auto callback : window->s_ResizeCallbacks)
+        for (const auto& [h, callback] : window->s_ResizeCallbacks)
         {
-            callback.second(width, height);
+            callback(width, height);
         }
     }
 }  // namespace fw

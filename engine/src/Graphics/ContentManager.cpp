@@ -2,24 +2,6 @@
 
 namespace fw
 {
-    ContentManager* ContentManager::s_Instance = nullptr;
-
-    void ContentManager::Create()
-    {
-        s_Instance = new ContentManager;
-    }
-
-    void ContentManager::Destroy()
-    {
-        delete s_Instance;
-    }
-
-    ContentManager* ContentManager::Get()
-    {
-        ASSERT_LOG(s_Instance != nullptr, "ContentManager not created before being used.");
-        return s_Instance;
-    }
-
     IDType ContentManager::Register(const std::string& path)
     {
         auto fs_path = std::filesystem::path(path);

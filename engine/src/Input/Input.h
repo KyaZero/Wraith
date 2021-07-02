@@ -1,9 +1,5 @@
 #pragma once
 
-#include <map>
-#include <vector>
-
-#include "Core/Types.h"
 #include "Keys.h"
 
 struct GLFWwindow;
@@ -57,10 +53,10 @@ namespace fw
         void SetMouseButtonState(MouseButton button, bool is_down);
         void SetScrollState(f64 x_offset, f64 y_offset);
 
-        std::map<i32, bool> m_Keys;
-        std::map<i32, bool> m_KeysPrevious;
-        std::map<i32, bool> m_MouseButtons;
-        std::map<i32, bool> m_MouseButtonsPrevious;
+        std::unordered_map<i32, bool> m_Keys;
+        std::unordered_map<i32, bool> m_KeysPrevious;
+        std::unordered_map<i32, bool> m_MouseButtons;
+        std::unordered_map<i32, bool> m_MouseButtonsPrevious;
         ScrollState m_ScrollState;
 
         bool m_IsEnabled;

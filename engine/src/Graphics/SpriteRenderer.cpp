@@ -1,10 +1,5 @@
 #include "SpriteRenderer.h"
 
-#include <array>
-#include <execution>
-
-#include <d3d11.h>
-
 #include "Framework.h"
 #include "TextureManager.h"
 
@@ -80,7 +75,7 @@ namespace fw
             return a.texture > b.texture;
         });
 
-        std::map<TextureID, std::vector<InstanceData>> instances;
+        std::unordered_map<TextureID, std::vector<InstanceData>> instances;
 
         TextureID current_texture_id = 0;
         Vec2f current_texture_size = { 0, 0 };

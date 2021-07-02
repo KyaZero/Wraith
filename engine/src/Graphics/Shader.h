@@ -1,5 +1,4 @@
 #pragma once
-#include <type_traits>
 
 namespace fw
 {
@@ -14,11 +13,9 @@ namespace fw
         };
 
         Shader();
-        Shader(const Shader& other);
         Shader(Shader&& other);
         ~Shader();
 
-        Shader& operator=(const Shader& other);
         Shader& operator=(Shader&& other);
 
         bool Load(std::underlying_type_t<ShaderType> shader_type, const std::string& path);
@@ -28,6 +25,6 @@ namespace fw
 
     private:
         struct Data;
-        std::shared_ptr<Data> m_Data;
+        std::unique_ptr<Data> m_Data;
     };
 }  // namespace fw

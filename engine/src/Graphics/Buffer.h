@@ -1,9 +1,5 @@
 #pragma once
 
-#include <memory>
-
-#include "Core/Types.h"
-
 namespace fw
 {
     enum class BufferUsage
@@ -24,16 +20,16 @@ namespace fw
     {
     public:
         Buffer();
-        Buffer(u32 size, BufferUsage usage, BufferType flags, u32 stride = 0, void* data = nullptr);
+        Buffer(u32 size, BufferUsage usage, BufferType flags, u32 stride = 0, const void* data = nullptr);
         virtual ~Buffer();
-        virtual void Init(u32 size, BufferUsage usage, BufferType flags, u32 stride = 0, void* data = nullptr);
+        virtual void Init(u32 size, BufferUsage usage, BufferType flags, u32 stride = 0, const void* data = nullptr);
 
         virtual void Bind(i32 slot = 0) const;
 
         template <typename T>
         void SetData(T& data);
 
-        virtual void SetData(void* data, u32 size);
+        virtual void SetData(const void* data, u32 size);
         virtual void* Map();
         virtual void Unmap();
 

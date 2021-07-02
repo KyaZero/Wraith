@@ -1,15 +1,5 @@
 #pragma once
 
-#include <cassert>
-#include <format>
-#include <mutex>
-#include <queue>
-#include <string>
-#include <thread>
-#include <vector>
-
-#include <Core/Types.h>
-
 #define VERBOSE_LOG(...) \
     fw::Logger::Get()->Log(::fw::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 #define INFO_LOG(...) fw::Logger::Get()->Log(::fw::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
@@ -27,9 +17,15 @@
     (void)((!!(expression)) || (___ASSERT_LOG("Assertion failed: {}", (#expression " " #__VA_ARGS__)), 0))
 #endif
 
+#include <mutex>
+#include <queue>
+
+#include "Singleton.h"
+#include "Types.h"
+
 namespace fw
 {
-    class Logger
+    class Logger : public Singleton<Logger>
     {
     public:
         enum class Level : char
@@ -43,12 +39,9 @@ namespace fw
             Count
         };
 
-        Logger();
+        Logger(bool multiThreaded = true);
         ~Logger();
 
-        static void Create(bool multiThreaded = true);
-        static void Destroy();
-        static Logger* Get();
         static void SetLevel(Level level);
         static void SetPrint(bool shouldPrint);
         static void SetShouldLogToFile(bool shouldLogToFile);
@@ -60,7 +53,6 @@ namespace fw
         }
 
     private:
-        static Logger* s_Instance;
         void VerifyLogPath();
         void LogToFile(const std::string& msg);
         static void Update(Logger* instance, std::chrono::duration<double, std::milli> interval);
@@ -85,7 +77,7 @@ namespace fw
 
         std::queue<LogEntry> m_Queue;
         std::mutex m_QueueMutex;
-        std::unique_ptr<std::thread> m_Thread;
+        std::unique_ptr<std::jthread> m_Thread;
         std::string m_LogPath;
 
         char m_Level;

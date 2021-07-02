@@ -1,12 +1,8 @@
-#include <Application.h>
-#include <Core/EntryPoint.h>
-
 #include "Editor.h"
 
-namespace fw
+int main(int argc, char** argv)
 {
-    Application* CreateApplication()
-    {
-        return new Editor();
-    }
-}  // namespace fw
+    fw::Editor editor;
+    editor.Run();
+    return 0;
+}

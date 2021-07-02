@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Camera.h"
-#include "Core/Math/Mat4.h"
-#include "Core/Math/Vec2.h"
-#include "Core/Types.h"
 
 namespace fw
 {

@@ -4,24 +4,6 @@
 
 namespace fw
 {
-    TextureManager* TextureManager::s_Instance = nullptr;
-
-    void TextureManager::Create()
-    {
-        s_Instance = new TextureManager;
-    }
-
-    void TextureManager::Destroy()
-    {
-        delete s_Instance;
-    }
-
-    TextureManager* TextureManager::Get()
-    {
-        ASSERT_LOG(s_Instance != nullptr, "TextureManager not created before being used.");
-        return s_Instance;
-    }
-
     const Texture& TextureManager::GetTexture(TextureID id)
     {
         auto it = m_TextureMap.find(id);

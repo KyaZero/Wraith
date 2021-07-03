@@ -24,6 +24,8 @@ if(NOT imgui_POPULATED)
     "${imgui_SOURCE_DIR}/imstb_rectpack.h"
     "${imgui_SOURCE_DIR}/imstb_textedit.h"
     "${imgui_SOURCE_DIR}/imstb_truetype.h"
+    "${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.h"
+    "${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.cpp"
     "${imgui_SOURCE_DIR}/backends/imgui_impl_dx11.h"
     "${imgui_SOURCE_DIR}/backends/imgui_impl_dx11.cpp"
     "${imgui_SOURCE_DIR}/backends/imgui_impl_win32.h"

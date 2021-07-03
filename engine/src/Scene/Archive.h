@@ -1,8 +1,7 @@
 #pragma once
 
 #include <dubu_serialize/dubu_serialize.h>
-
-#include "Entity.h"
+#include <entt/entt.hpp>
 
 namespace dubu::serialize::internal
 {
@@ -74,5 +73,28 @@ namespace fw
 
     private:
         dubu::serialize::ReadBuffer& m_Buffer;
+    };
+
+    template <typename... Components>
+    class Archiver
+    {
+    public:
+        void CreateSnapshot(entt::registry& registry)
+        {
+            OutputArchive outputArchive(m_Buffer);
+            entt::snapshot{ registry }.component<Components...>(outputArchive);
+        }
+        void RestoreSnapshot(entt::registry& registry)
+        {
+            registry.clear();
+
+            InputArchive inputArchive(m_Buffer);
+            entt::snapshot_loader{ registry }.component<Components...>(inputArchive).orphans();
+
+            m_Buffer = dubu::serialize::MemoryBuffer{};
+        }
+
+    private:
+        dubu::serialize::MemoryBuffer m_Buffer;
     };
 }  // namespace fw

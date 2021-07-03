@@ -1,10 +1,11 @@
 #pragma once
 
-#include <dubu_serialize/dubu_serialize.h>
 #include <entt/entt.hpp>
 
 #include "Graphics/OrthographicCameraController.h"
 #include "Graphics/RenderManager.h"
+#include "Scene/Archive.h"
+#include "Scene/Components.h"
 #include "Window/Window.h"
 
 namespace fw
@@ -34,6 +35,6 @@ namespace fw
         bool m_IsPlaying;
         entt::registry m_Registry;
 
-        dubu::serialize::MemoryBuffer m_Buffer;
+        Archiver<TagComponent, TransformComponent, SpriteComponent, CameraComponent, NativeScriptComponent> m_Archiver;
     };
 }  // namespace fw

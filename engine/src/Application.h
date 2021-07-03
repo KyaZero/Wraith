@@ -35,6 +35,4 @@ namespace fw
         Timer m_Timer;
         std::string m_Name;
     };
-
-    Application* CreateApplication();
 }  // namespace fw

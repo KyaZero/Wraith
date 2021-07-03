@@ -40,10 +40,8 @@ namespace fw
         };
 
         Logger(bool multiThreaded = true);
-        ~Logger();
 
         static void SetLevel(Level level);
-        static void SetPrint(bool shouldPrint);
         static void SetShouldLogToFile(bool shouldLogToFile);
 
         template <typename... Args>
@@ -77,12 +75,11 @@ namespace fw
 
         std::queue<LogEntry> m_Queue;
         std::mutex m_QueueMutex;
-        std::unique_ptr<std::jthread> m_Thread;
+        std::jthread m_Thread;
         std::string m_LogPath;
 
         char m_Level;
 
-        bool m_ShouldPrint;
         bool m_ShouldLogToFile;
         bool m_MultiThreaded;
     };

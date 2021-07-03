@@ -36,19 +36,21 @@ namespace fw
 
     struct NativeScriptComponent
     {
-        ScriptableEntity* instance = nullptr;
+        using PtrScriptableEntity = std::unique_ptr<ScriptableEntity>;
+        using InstantiateFunction = std::function<PtrScriptableEntity()>;
 
-        ScriptableEntity* (*InstantiateScript)();
-        void (*DestroyScript)(NativeScriptComponent*);
+        std::unique_ptr<ScriptableEntity> instance;
+        InstantiateFunction InstantiateScript;
 
-        template <typename T>
-        void Bind()
+        template <typename T, typename... Args>
+        void Bind(Args&&... args)
         {
-            InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
-            DestroyScript = [](NativeScriptComponent* nsc) {
-                delete nsc->instance;
-                nsc->instance = nullptr;
-            };
+            InstantiateScript = [args...]() { return std::make_unique<T>(args...); };
+        }
+
+        void DestroyScript()
+        {
+            instance.reset();
         }
     };
 }  // namespace fw

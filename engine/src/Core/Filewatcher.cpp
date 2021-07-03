@@ -8,9 +8,6 @@ namespace fw
         m_Thread = std::jthread([=]() { WatchFiles(); });
     }
 
-    Filewatcher::~Filewatcher()
-    { }
-
     void Filewatcher::Watch(const std::string& path, WatchCallback callback)
     {
         std::filesystem::file_time_type last_write_time;

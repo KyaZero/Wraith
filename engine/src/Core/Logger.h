@@ -40,7 +40,6 @@ namespace fw
         };
 
         Logger(bool multiThreaded = true);
-        ~Logger();
 
         static void SetLevel(Level level);
         static void SetShouldLogToFile(bool shouldLogToFile);

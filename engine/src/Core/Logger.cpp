@@ -48,9 +48,6 @@ namespace fw
 #endif
     }
 
-    Logger::~Logger()
-    { }
-
     void Logger::LogInternal(Level level, const char* file, u32 line, const char* function, std::string text)
     {
         if (!Get())

@@ -16,7 +16,6 @@ namespace fw
             std::filesystem::file_time_type last_write_time;
         };
         Filewatcher();
-        ~Filewatcher();
 
         void Watch(const std::string& path, WatchCallback callback);
         void FlushChanges();

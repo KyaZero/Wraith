@@ -2,6 +2,8 @@
 
 #pragma warning(disable : 4201)
 
+#include <dubu_serialize/dubu_serialize.h>
+
 #include "Core/Types.h"
 
 namespace fw
@@ -140,6 +142,15 @@ namespace fw
         inline void operator/=(const T& scalar)
         {
             *this = *this / scalar;
+        }
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> x >> y;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << x << y;
         }
 
         T x, y;

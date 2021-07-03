@@ -1,5 +1,6 @@
 #pragma once
 
+#include <dubu_serialize/dubu_serialize.h>
 #include <entt/entt.hpp>
 
 #include "Graphics/OrthographicCameraController.h"
@@ -11,6 +12,9 @@ namespace fw
     class Entity;
     class Scene
     {
+        friend class Entity;
+        friend class SceneHierarchyPanel;
+
     public:
         Scene();
         ~Scene();
@@ -30,7 +34,6 @@ namespace fw
         bool m_IsPlaying;
         entt::registry m_Registry;
 
-        friend class Entity;
-        friend class SceneHierarchyPanel;
+        dubu::serialize::MemoryBuffer m_Buffer;
     };
 }  // namespace fw

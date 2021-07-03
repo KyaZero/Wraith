@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include <dubu_serialize/dubu_serialize.h>
+
 #pragma warning(disable : 4201)
 
 namespace fw
@@ -151,6 +153,15 @@ namespace fw
         inline void operator/=(const T& scalar)
         {
             *this = *this / scalar;
+        }
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> x >> y >> z;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << x << y << z;
         }
 
         union

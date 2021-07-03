@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+#include "Archive.h"
 #include "Components.h"
 #include "Entity.h"
 #include "Graphics/TextureManager.h"
@@ -100,6 +101,10 @@ namespace fw
 
     void Scene::Play()
     {
+        OutputArchive outputArchive(m_Buffer);
+        entt::snapshot{ m_Registry }.component<TagComponent, TransformComponent, SpriteComponent, CameraComponent>(
+            outputArchive);
+
         m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nsc) {
             if (!nsc.instance)
             {
@@ -119,5 +124,14 @@ namespace fw
                 nsc.DestroyScript(&nsc);
             }
         });
+
+        m_Registry.clear();
+
+        InputArchive inputArchive(m_Buffer);
+        entt::snapshot_loader{ m_Registry }
+            .component<TagComponent, TransformComponent, SpriteComponent, CameraComponent>(inputArchive)
+            .orphans();
+
+        m_Buffer = dubu::serialize::MemoryBuffer{};
     }
 }  // namespace fw

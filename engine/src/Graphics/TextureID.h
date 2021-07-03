@@ -1,5 +1,7 @@
 #pragma once
 
+#include <dubu_serialize/dubu_serialize.h>
+
 #include "ContentManager.h"
 
 namespace fw
@@ -23,6 +25,15 @@ namespace fw
         operator TextureIDType() const
         {
             return m_Hash;
+        }
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> m_Hash;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << m_Hash;
         }
 
     private:

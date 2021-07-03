@@ -31,7 +31,7 @@ namespace fw
 
     void RenderManager::Render(f32 dt, f32 total_time)
     {
-        m_RenderTexture->Clear({ 0.2f, 0.0f, 0.2f, 0.2f });
+        m_RenderTexture->Clear({ 0.0f, 0.0f, 0.0f, 1.0f });
         m_RenderTexture->SetAsActiveTarget();
 
         for (auto& command : m_RenderCommands)

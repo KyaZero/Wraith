@@ -6,14 +6,12 @@ namespace fw
     {
         m_IsRunning = true;
         m_HasChanges = false;
-        m_Thread = std::thread([=]() { WatchFiles(); });
+        m_Thread = std::jthread([=]() { WatchFiles(); });
     }
 
     Filewatcher::~Filewatcher()
     {
         m_IsRunning = false;
-        if (m_Thread.joinable())
-            m_Thread.join();
     }
 
     void Filewatcher::Watch(const std::string& path, WatchCallback callback)

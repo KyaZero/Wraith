@@ -26,7 +26,7 @@ namespace fw
 
         std::unordered_map<std::string, FileEntry> m_Entries;
         std::vector<std::string> m_Changes;
-        std::thread m_Thread;
+        std::jthread m_Thread;
 
         volatile bool m_IsRunning;
         volatile bool m_HasChanges;

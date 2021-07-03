@@ -77,7 +77,7 @@ namespace fw
 
         std::queue<LogEntry> m_Queue;
         std::mutex m_QueueMutex;
-        std::unique_ptr<std::jthread> m_Thread;
+        std::jthread m_Thread;
         std::string m_LogPath;
 
         char m_Level;

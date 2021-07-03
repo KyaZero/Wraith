@@ -20,14 +20,13 @@ namespace fw
     Logger::Logger(bool multiThreaded)
         : m_Queue()
         , m_Level((char)Level::All)
-        , m_Thread(nullptr)
         , m_ShouldLogToFile(true)
         , m_ShouldPrint(true)
         , m_MultiThreaded(false)
     {
         m_MultiThreaded = multiThreaded;
         if (m_MultiThreaded)
-            m_Thread = std::make_unique<std::jthread>(Update, this, std::chrono::milliseconds(16));
+            m_Thread = std::jthread(Update, this, std::chrono::milliseconds(16));
 
         VerifyLogPath();
 
@@ -89,7 +88,7 @@ namespace fw
 
         // Force log thread to finish
         if (level == Level::Fatal && m_MultiThreaded)
-            m_Thread->request_stop();
+            m_Thread.request_stop();
     }
 
 #ifdef _WIN32

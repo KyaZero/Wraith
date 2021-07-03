@@ -21,7 +21,6 @@ namespace fw
         : m_Queue()
         , m_Level((char)Level::All)
         , m_ShouldLogToFile(true)
-        , m_ShouldPrint(true)
         , m_MultiThreaded(false)
     {
         m_MultiThreaded = multiThreaded;
@@ -50,9 +49,7 @@ namespace fw
     }
 
     Logger::~Logger()
-    {
-        m_ShouldPrint = false;
-    }
+    { }
 
     void Logger::LogInternal(Level level, const char* file, u32 line, const char* function, std::string text)
     {
@@ -163,7 +160,7 @@ namespace fw
 
     void Logger::Update(Logger* instance, std::chrono::duration<double, std::milli> interval)
     {
-        while (instance->m_ShouldPrint || !instance->m_Queue.empty())
+        while (!instance->m_Thread.get_stop_token().stop_requested() || !instance->m_Queue.empty())
         {
             auto t1 = std::chrono::steady_clock::now();
             {
@@ -210,11 +207,6 @@ namespace fw
     void Logger::SetLevel(Level level)
     {
         Get()->m_Level = (char)level;
-    }
-
-    void Logger::SetPrint(bool shouldPrint)
-    {
-        Get()->m_ShouldPrint = shouldPrint;
     }
 
     void Logger::SetShouldLogToFile(bool shouldLogToFile)

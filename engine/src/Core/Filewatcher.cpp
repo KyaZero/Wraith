@@ -4,15 +4,12 @@ namespace fw
 {
     Filewatcher::Filewatcher()
     {
-        m_IsRunning = true;
         m_HasChanges = false;
         m_Thread = std::jthread([=]() { WatchFiles(); });
     }
 
     Filewatcher::~Filewatcher()
-    {
-        m_IsRunning = false;
-    }
+    { }
 
     void Filewatcher::Watch(const std::string& path, WatchCallback callback)
     {
@@ -40,7 +37,7 @@ namespace fw
 
     void Filewatcher::WatchFiles()
     {
-        while (m_IsRunning)
+        while (!m_Thread.get_stop_token().stop_requested())
         {
             if (!m_HasChanges)
             {

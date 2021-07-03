@@ -28,7 +28,6 @@ namespace fw
         std::vector<std::string> m_Changes;
         std::jthread m_Thread;
 
-        volatile bool m_IsRunning;
         volatile bool m_HasChanges;
     };
 }  // namespace fw

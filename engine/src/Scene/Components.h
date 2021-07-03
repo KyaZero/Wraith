@@ -90,5 +90,14 @@ namespace fw
         {
             instance.reset();
         }
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer.Read(reinterpret_cast<char*>(&InstantiateScript), sizeof(InstantiateScript));
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer.Write(reinterpret_cast<const char*>(&InstantiateScript), sizeof(InstantiateScript));
+        }
     };
 }  // namespace fw

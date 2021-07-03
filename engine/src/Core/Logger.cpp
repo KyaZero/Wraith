@@ -20,14 +20,12 @@ namespace fw
     Logger::Logger(bool multiThreaded)
         : m_Queue()
         , m_Level((char)Level::All)
-        , m_Thread(nullptr)
         , m_ShouldLogToFile(true)
-        , m_ShouldPrint(true)
         , m_MultiThreaded(false)
     {
         m_MultiThreaded = multiThreaded;
         if (m_MultiThreaded)
-            m_Thread = std::make_unique<std::jthread>(Update, this, std::chrono::milliseconds(16));
+            m_Thread = std::jthread(Update, this, std::chrono::milliseconds(16));
 
         VerifyLogPath();
 
@@ -48,11 +46,6 @@ namespace fw
         wcscpy_s(cfi.FaceName, _countof(cfi.FaceName), L"Consolas");
         SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 #endif
-    }
-
-    Logger::~Logger()
-    {
-        m_ShouldPrint = false;
     }
 
     void Logger::LogInternal(Level level, const char* file, u32 line, const char* function, std::string text)
@@ -89,7 +82,7 @@ namespace fw
 
         // Force log thread to finish
         if (level == Level::Fatal && m_MultiThreaded)
-            m_Thread->request_stop();
+            m_Thread.request_stop();
     }
 
 #ifdef _WIN32
@@ -164,7 +157,7 @@ namespace fw
 
     void Logger::Update(Logger* instance, std::chrono::duration<double, std::milli> interval)
     {
-        while (instance->m_ShouldPrint || !instance->m_Queue.empty())
+        while (!instance->m_Thread.get_stop_token().stop_requested() || !instance->m_Queue.empty())
         {
             auto t1 = std::chrono::steady_clock::now();
             {
@@ -211,11 +204,6 @@ namespace fw
     void Logger::SetLevel(Level level)
     {
         Get()->m_Level = (char)level;
-    }
-
-    void Logger::SetPrint(bool shouldPrint)
-    {
-        Get()->m_ShouldPrint = shouldPrint;
     }
 
     void Logger::SetShouldLogToFile(bool shouldLogToFile)

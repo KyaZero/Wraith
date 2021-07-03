@@ -55,7 +55,7 @@ namespace fw
     {
         // Script Update
         {
-            m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nsc) {
+            m_Registry.view<NativeScriptComponent>().each([dt](auto entity, NativeScriptComponent& nsc) {
                 if (nsc.instance)
                     nsc.instance->OnUpdate(dt);
             });
@@ -105,8 +105,8 @@ namespace fw
         entt::snapshot{ m_Registry }.component<TagComponent, TransformComponent, SpriteComponent, CameraComponent>(
             outputArchive);
 
-        m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nsc) {
-            if (!nsc.instance)
+        m_Registry.view<NativeScriptComponent>().each([this](auto entity, NativeScriptComponent& nsc) {
+            if (!nsc.instance && nsc.InstantiateScript)
             {
                 nsc.instance = nsc.InstantiateScript();
                 nsc.instance->m_Entity = { entity, this };
@@ -117,11 +117,11 @@ namespace fw
 
     void Scene::EndPlay()
     {
-        m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nsc) {
+        m_Registry.view<NativeScriptComponent>().each([this](auto entity, NativeScriptComponent& nsc) {
             if (nsc.instance)
             {
                 nsc.instance->OnDestroy();
-                nsc.DestroyScript(&nsc);
+                nsc.DestroyScript();
             }
         });
 

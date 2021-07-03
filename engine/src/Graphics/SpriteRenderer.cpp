@@ -94,7 +94,7 @@ namespace fw
             data.color = sprite.color;
             data.offset = Vec2f(sprite.origin.x * current_texture_size.x, sprite.origin.y * current_texture_size.y);
             data.position = sprite.position;
-            data.rotation = Radians(-sprite.rotation);
+            data.rotation = -sprite.rotation;
             data.scale = sprite.scale;
             data.size = current_texture_size;
             data.world_space = sprite.world_space;

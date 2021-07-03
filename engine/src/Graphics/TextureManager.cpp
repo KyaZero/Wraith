@@ -22,7 +22,7 @@ namespace fw
                 return GetDefaultTexture();
             }
 
-            auto texture_loader = [&]() {
+            const auto texture_loader = [=]() {
                 Texture new_texture;
                 if (!new_texture.LoadFromFile(path->string()))
                     return false;
@@ -36,7 +36,7 @@ namespace fw
                 return GetDefaultTexture();
             }
 
-            Filewatcher::Get()->Watch(path->string(), [&]() { texture_loader(); });
+            Filewatcher::Get()->Watch(path->string(), [=]() { texture_loader(); });
             it = m_TextureMap.find(id);
         }
 

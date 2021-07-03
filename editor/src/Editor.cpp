@@ -48,6 +48,11 @@ namespace fw
         class CameraController : public ScriptableEntity
         {
         public:
+            CameraController(f32 speed)
+                : m_Speed(speed)
+            { }
+
+        protected:
             void OnCreate()
             { }
 
@@ -57,20 +62,21 @@ namespace fw
             void OnUpdate(f32 dt)
             {
                 auto& transform = GetComponent<TransformComponent>();
-                float speed = 4.0f;
-
                 if (GetInput().IsDown(Key::A))
-                    transform.position.x -= speed * dt;
+                    transform.position.x -= m_Speed * dt;
                 if (GetInput().IsDown(Key::D))
-                    transform.position.x += speed * dt;
+                    transform.position.x += m_Speed * dt;
                 if (GetInput().IsDown(Key::W))
-                    transform.position.y -= speed * dt;
+                    transform.position.y -= m_Speed * dt;
                 if (GetInput().IsDown(Key::S))
-                    transform.position.y += speed * dt;
+                    transform.position.y += m_Speed * dt;
             }
+
+        private:
+            f32 m_Speed;
         };
 
-        m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+        m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>(10.f);
 
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }

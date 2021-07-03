@@ -1,6 +1,7 @@
 #include "SceneHierarchyPanel.h"
 
 #include <imgui/imgui.h>
+#include <imgui/misc/cpp/imgui_stdlib.h>
 
 #include "Scene/Components.h"
 
@@ -67,14 +68,7 @@ namespace fw
         if (entity.HasComponent<TagComponent>())
         {
             auto& tag = entity.GetComponent<TagComponent>().tag;
-
-            char buffer[256];
-            memset(buffer, 0, sizeof(buffer));
-            strcpy_s(buffer, sizeof(buffer), tag.c_str());
-            if (ImGui::InputText("Tag", buffer, sizeof(buffer)))
-            {
-                tag = std::string(buffer);
-            }
+            ImGui::InputText("Tag", &tag);
         }
 
         if (entity.HasComponent<TransformComponent>())

@@ -82,14 +82,14 @@ namespace fw
         void CreateSnapshot(entt::registry& registry)
         {
             OutputArchive outputArchive(m_Buffer);
-            entt::snapshot{ registry }.component<Components...>(outputArchive);
+            entt::snapshot{ registry }.entities(outputArchive).component<Components...>(outputArchive);
         }
         void RestoreSnapshot(entt::registry& registry)
         {
             registry.clear();
 
             InputArchive inputArchive(m_Buffer);
-            entt::snapshot_loader{ registry }.component<Components...>(inputArchive).orphans();
+            entt::snapshot_loader{ registry }.entities(inputArchive).component<Components...>(inputArchive).orphans();
 
             m_Buffer = dubu::serialize::MemoryBuffer{};
         }

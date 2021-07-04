@@ -7,19 +7,28 @@
 
 namespace fw
 {
+    static const std::filesystem::path iniFilePath = std::filesystem::temp_directory_path() / "2DGE/imgui.ini";
+    static const std::string iniFileString = iniFilePath.generic_string();
+
     ImguiLayer::ImguiLayer(Engine& engine)
         : m_Engine(engine)
     {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
-        (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
         // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;    // Enable Docking
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  // Enable Multi-Viewport / Platform Windows
         // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
         // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
+
+        if (!std::filesystem::exists(iniFilePath))
+        {
+            std::filesystem::create_directories(iniFilePath.parent_path());
+            std::filesystem::copy("imgui.ini", iniFilePath);
+        }
+        io.IniFilename = iniFileString.c_str();
 
         ImGui::StyleColorsDark();
 

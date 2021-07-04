@@ -1,6 +1,5 @@
 #pragma once
 
-#include <dubu_serialize/dubu_serialize.h>
 #include <entt/entt.hpp>
 
 namespace dubu::serialize::internal
@@ -12,11 +11,11 @@ namespace dubu::serialize::internal
         {
             std::underlying_type_t<entt::entity> id;
             buffer >> id;
-            entity = static_cast<entt::entity>(id);
+            entity = entt::entity{ id };
         }
         void Write(dubu::serialize::WriteBuffer& buffer, const entt::entity& entity)
         {
-            buffer << static_cast<std::underlying_type_t<entt::entity>>(entity);
+            buffer << std::underlying_type_t<entt::entity>(entity);
         }
     };
 }  // namespace dubu::serialize::internal

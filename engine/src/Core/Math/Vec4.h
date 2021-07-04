@@ -1,6 +1,6 @@
 #pragma once
 
-#include <dubu_serialize/dubu_serialize.h>
+#include <dubu_serialize/dubu_serialize.hpp>
 
 #include "Vec2.h"
 #include "Vec3.h"

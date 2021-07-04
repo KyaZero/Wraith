@@ -1,7 +1,5 @@
 #pragma once
 
-#include <dubu_serialize/dubu_serialize.h>
-
 #include "ContentManager.h"
 
 namespace fw

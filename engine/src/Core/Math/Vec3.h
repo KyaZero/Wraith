@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include <dubu_serialize/dubu_serialize.h>
+#include <dubu_serialize/dubu_serialize.hpp>
 
 #pragma warning(disable : 4201)
 

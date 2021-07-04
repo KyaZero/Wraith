@@ -2,7 +2,7 @@
 
 #pragma warning(disable : 4201)
 
-#include <dubu_serialize/dubu_serialize.h>
+#include <dubu_serialize/dubu_serialize.hpp>
 
 #include "Core/Types.h"
 

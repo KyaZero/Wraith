@@ -4,7 +4,7 @@
 #include <cmath>
 #include <initializer_list>
 
-#include <dubu_serialize/dubu_serialize.h>
+#include <dubu_serialize/dubu_serialize.hpp>
 #include <xmmintrin.h>
 
 #include "Core/Types.h"
@@ -550,11 +550,11 @@ namespace fw
 
         void Serialize(dubu::serialize::ReadBuffer& buffer)
         {
-            buffer >> m_RightAxis >> m_RightW >> m_UpAxis >> m_UpW >> m_ForwardAxis >> m_ForwardW >> m_Position >> m_W;
+            buffer >> m_Numbers;
         }
         void Serialize(dubu::serialize::WriteBuffer& buffer) const
         {
-            buffer << m_RightAxis << m_RightW << m_UpAxis << m_UpW << m_ForwardAxis << m_ForwardW << m_Position << m_W;
+            buffer << m_Numbers;
         }
 
         union

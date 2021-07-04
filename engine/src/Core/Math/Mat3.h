@@ -2,6 +2,8 @@
 
 #include <initializer_list>
 
+#include <dubu_serialize/dubu_serialize.hpp>
+
 #include "Core/Types.h"
 #include "Mat4.h"
 #include "Vec2.h"
@@ -206,6 +208,15 @@ namespace fw
         {
             aVector = aVector * matrix;
         };
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> m_Numbers;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << m_Numbers;
+        }
 
         T m_Numbers[9];
     };

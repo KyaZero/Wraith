@@ -1,7 +1,5 @@
 #pragma once
 
-#include <dubu_serialize/dubu_serialize.h>
-
 #include "Core/Math/Mat4.h"
 
 namespace fw

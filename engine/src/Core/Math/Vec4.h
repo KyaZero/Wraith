@@ -1,5 +1,7 @@
 #pragma once
 
+#include <dubu_serialize/dubu_serialize.hpp>
+
 #include "Vec2.h"
 #include "Vec3.h"
 
@@ -161,6 +163,15 @@ namespace fw
         inline void operator/=(const T& scalar)
         {
             *this = *this / scalar;
+        }
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> x >> y >> z >> w;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << x << y << z << w;
         }
 
         union

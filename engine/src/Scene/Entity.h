@@ -3,7 +3,6 @@
 #include <entt/entt.hpp>
 
 #include "Core/Logger.h"
-#include "Scene.h"
 
 namespace fw
 {
@@ -11,37 +10,37 @@ namespace fw
     {
     public:
         Entity() = default;
-        Entity(entt::entity handle, Scene* scene)
+        Entity(entt::entity handle, entt::registry* registry)
             : m_Handle(handle)
-            , m_Scene(scene)
+            , m_Registry(registry)
         { }
         Entity(const Entity& other) = default;
 
         template <typename T>
         bool HasComponent()
         {
-            return m_Scene->m_Registry.all_of<T>(m_Handle);
+            return m_Registry->all_of<T>(m_Handle);
         }
 
         template <typename T, typename... Args>
         T& AddComponent(Args&&... args)
         {
             ASSERT_LOG(!HasComponent<T>(), "Entity already has component!");
-            return m_Scene->m_Registry.emplace<T>(m_Handle, std::forward<Args>(args)...);
+            return m_Registry->emplace<T>(m_Handle, std::forward<Args>(args)...);
         }
 
         template <typename T>
         T& GetComponent()
         {
             ASSERT_LOG(HasComponent<T>(), "Entity doesn't have component!");
-            return m_Scene->m_Registry.get<T>(m_Handle);
+            return m_Registry->get<T>(m_Handle);
         }
 
         template <typename T>
         void RemoveComponent()
         {
             ASSERT_LOG(HasComponent<T>(), "Entity doesn't have component!");
-            m_Scene->m_Registry.remove<T>(m_Handle);
+            m_Registry->remove<T>(m_Handle);
         }
 
         operator bool() const
@@ -55,7 +54,7 @@ namespace fw
 
         bool operator==(const Entity& other)
         {
-            return m_Handle == other.m_Handle && m_Scene == other.m_Scene;
+            return (m_Handle == other.m_Handle) && (m_Registry == other.m_Registry);
         }
         bool operator!=(const Entity& other)
         {
@@ -64,6 +63,6 @@ namespace fw
 
     private:
         entt::entity m_Handle{ entt::null };
-        Scene* m_Scene = nullptr;
+        entt::registry* m_Registry;
     };
 }  // namespace fw

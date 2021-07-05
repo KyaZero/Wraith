@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+#include "Archive.h"
 #include "Components.h"
 #include "Entity.h"
 #include "Graphics/TextureManager.h"
@@ -20,7 +21,7 @@ namespace fw
 
     Entity Scene::CreateEntity(const std::string& name)
     {
-        Entity entity = { m_Registry.create(), this };
+        Entity entity = { m_Registry.create(), &m_Registry };
         entity.AddComponent<TransformComponent>();
         auto& tag = entity.AddComponent<TagComponent>();
         tag.tag = name.empty() ? "Unnamed Entity" : name;
@@ -100,11 +101,13 @@ namespace fw
 
     void Scene::Play()
     {
+        m_Archiver.CreateSnapshot(m_Registry);
+
         m_Registry.view<NativeScriptComponent>().each([this](auto entity, NativeScriptComponent& nsc) {
             if (!nsc.instance && nsc.InstantiateScript)
             {
                 nsc.instance = nsc.InstantiateScript();
-                nsc.instance->m_Entity = { entity, this };
+                nsc.instance->m_Entity = { entity, &m_Registry };
                 nsc.instance->OnCreate();
             }
         });
@@ -119,5 +122,7 @@ namespace fw
                 nsc.DestroyScript();
             }
         });
+
+        m_Archiver.RestoreSnapshot(m_Registry);
     }
 }  // namespace fw

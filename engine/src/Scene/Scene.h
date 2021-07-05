@@ -4,6 +4,8 @@
 
 #include "Graphics/OrthographicCameraController.h"
 #include "Graphics/RenderManager.h"
+#include "Scene/Archive.h"
+#include "Scene/Components.h"
 #include "Window/Window.h"
 
 namespace fw
@@ -11,6 +13,9 @@ namespace fw
     class Entity;
     class Scene
     {
+        friend class Entity;
+        friend class SceneHierarchyPanel;
+
     public:
         Scene();
         ~Scene();
@@ -30,7 +35,6 @@ namespace fw
         bool m_IsPlaying;
         entt::registry m_Registry;
 
-        friend class Entity;
-        friend class SceneHierarchyPanel;
+        Archiver<TagComponent, TransformComponent, SpriteComponent, CameraComponent, NativeScriptComponent> m_Archiver;
     };
 }  // namespace fw

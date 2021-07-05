@@ -12,11 +12,29 @@ namespace fw
         Vec3f position{ 0.f, 0.f, 0.f };
         Vec3f scale{ 1.f, 1.f, 1.f };
         Vec3f rotation{ 0.f, 0.f, 0.f };
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> position >> scale >> rotation;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << position << scale << rotation;
+        }
     };
 
     struct TagComponent
     {
         std::string tag;
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> tag;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << tag;
+        }
     };
 
     struct SpriteComponent
@@ -26,12 +44,30 @@ namespace fw
         Vec2f origin{ 0, 0 };
         f32 layer{ 0 };
         bool world_space{ true };
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> texture >> color >> origin >> layer >> world_space;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << texture << color << origin << layer << world_space;
+        }
     };
 
     struct CameraComponent
     {
         Camera camera;
         bool primary = true;
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> camera >> primary;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << camera << primary;
+        }
     };
 
     struct NativeScriptComponent
@@ -51,6 +87,15 @@ namespace fw
         void DestroyScript()
         {
             instance.reset();
+        }
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer.Read(reinterpret_cast<char*>(&InstantiateScript), sizeof(InstantiateScript));
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer.Write(reinterpret_cast<const char*>(&InstantiateScript), sizeof(InstantiateScript));
         }
     };
 }  // namespace fw

@@ -4,6 +4,7 @@
 #include <cmath>
 #include <initializer_list>
 
+#include <dubu_serialize/dubu_serialize.hpp>
 #include <xmmintrin.h>
 
 #include "Core/Types.h"
@@ -546,6 +547,15 @@ namespace fw
         {
             vector = vector * matrix;
         };
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> m_Numbers;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << m_Numbers;
+        }
 
         union
         {

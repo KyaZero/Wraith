@@ -30,6 +30,7 @@ namespace fw
         static void EndEvent();
 
     private:
+        void ProcessDebugMessages();
         void CreateBackbufferRTV();
         void ResizeBackbuffer(u32 width, u32 height);
 

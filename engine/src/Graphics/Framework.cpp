@@ -20,6 +20,7 @@ namespace fw
         ComPtr<ID3D11Device> device;
         ComPtr<ID3D11DeviceContext> context;
         ComPtr<ID3D11RenderTargetView> back_buffer;
+        ComPtr<ID3D11InfoQueue> info_queue;
         std::vector<ComPtr<IDXGIAdapter>> adapters;
     };
 
@@ -127,6 +128,7 @@ namespace fw
         }
 
         m_Data->device->QueryInterface(IID_PPV_ARGS(&s_DeviceDebug));
+        m_Data->device->QueryInterface(IID_PPV_ARGS(&m_Data->info_queue));
 
         s_Device = m_Data->device.Get();
         s_Context = m_Data->context.Get();
@@ -152,7 +154,9 @@ namespace fw
     {
         SetBackbufferAsActiveTarget();
         m_Data->context->ClearRenderTargetView(m_Data->back_buffer.Get(), &clear_color.r);
-    }
+        
+        ProcessDebugMessages();
+    } 
 
     void Framework::EndFrame()
     {
@@ -178,6 +182,82 @@ namespace fw
     {
         if (s_DeviceDebug)
             s_DeviceDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+    }
+
+    void Framework::ProcessDebugMessages()
+    {
+#if defined(_DEBUG)
+        if (FailedCheck("Failed to push empty storage filter to debug queue",
+                        m_Data->info_queue->PushEmptyStorageFilter()))
+        {
+            return;
+        }
+
+        u64 message_count = m_Data->info_queue->GetNumStoredMessages();
+
+        for (u64 i = 0; i < message_count; ++i)
+        {
+            SIZE_T message_size = 0;
+            m_Data->info_queue->GetMessage(i, nullptr, &message_size);
+
+            D3D11_MESSAGE* message = (D3D11_MESSAGE*)malloc(message_size);
+            if (FailedCheck("Failed to get message from debug queue",
+                            m_Data->info_queue->GetMessage(i, message, &message_size)))
+            {
+                continue;
+            }
+
+            auto get_category = [](const D3D11_MESSAGE_CATEGORY& category) {
+                switch (category)
+                {
+                case D3D11_MESSAGE_CATEGORY_APPLICATION_DEFINED:
+                    return "APPLICATION DEFINED";
+                case D3D11_MESSAGE_CATEGORY_MISCELLANEOUS:
+                    return "MISCELLANEOUS";
+                case D3D11_MESSAGE_CATEGORY_INITIALIZATION:
+                    return "INITIALIZATION";
+                case D3D11_MESSAGE_CATEGORY_CLEANUP:
+                    return "CLEANUP";
+                case D3D11_MESSAGE_CATEGORY_COMPILATION:
+                    return "COMPILATION";
+                case D3D11_MESSAGE_CATEGORY_STATE_CREATION:
+                    return "STATE CREATION";
+                case D3D11_MESSAGE_CATEGORY_STATE_SETTING:
+                    return "STATE SETTING";
+                case D3D11_MESSAGE_CATEGORY_STATE_GETTING:
+                    return "STATE GETTING";
+                case D3D11_MESSAGE_CATEGORY_RESOURCE_MANIPULATION:
+                    return "RESOURCE MANIPULATION";
+                case D3D11_MESSAGE_CATEGORY_EXECUTION:
+                    return "EXECUTION";
+                case D3D11_MESSAGE_CATEGORY_SHADER:
+                    return "SHADER";
+                default:
+                    return "UNKNOWN CATEGORY";
+                }
+            };
+
+            switch (message->Severity)
+            {
+            case D3D11_MESSAGE_SEVERITY_ERROR:
+            {
+                ERROR_LOG("D3D11 INFO: {} [CATEGORY: {}]", message->pDescription, get_category(message->Category));
+            };
+            case D3D11_MESSAGE_SEVERITY_WARNING:
+            {
+                WARNING_LOG("D3D11 INFO: {} [CATEGORY: {}]", message->pDescription, get_category(message->Category));
+            };
+            case D3D11_MESSAGE_SEVERITY_INFO:
+            {
+                INFO_LOG("D3D11 INFO: {} [CATEGORY: {}]", message->pDescription, get_category(message->Category));
+            };
+            }
+
+            free(message);
+        }
+
+        m_Data->info_queue->ClearStoredMessages();
+#endif
     }
 
     void Framework::CreateBackbufferRTV()

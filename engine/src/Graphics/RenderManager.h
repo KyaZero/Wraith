@@ -2,6 +2,7 @@
 
 #include "RenderCommand.h"
 #include "SpriteRenderer.h"
+#include "TextRenderer.h"
 
 namespace fw
 {
@@ -23,6 +24,7 @@ namespace fw
         std::unique_ptr<Texture> m_RenderTexture;
         Window& m_Window;
         SpriteRenderer m_SpriteRenderer;
+        TextRenderer m_TextRenderer;
         std::vector<RenderCommand> m_RenderCommands;
     };
 }  // namespace fw

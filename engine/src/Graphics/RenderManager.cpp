@@ -17,6 +17,9 @@ namespace fw
         if (!m_SpriteRenderer.Init())
             return false;
 
+        if (!m_TextRenderer.Init())
+            return false;
+
         m_RenderTexture = std::make_unique<Texture>();
         m_RenderTexture->Create(m_Window.GetSize());
 
@@ -36,14 +39,21 @@ namespace fw
 
         for (auto& command : m_RenderCommands)
         {
-            std::visit(overloaded{ [&](SpriteCommand sprite) { m_SpriteRenderer.Submit(sprite); },
-                                   [&](SetCameraCommand camera) { m_SpriteRenderer.Submit(camera); } },
+            std::visit(overloaded{
+                           [&](SpriteCommand sprite) { m_SpriteRenderer.Submit(sprite); },
+                           [&](SetCameraCommand camera) { m_SpriteRenderer.Submit(camera); },
+                           [&](TextCommand text) { m_TextRenderer.Submit(text); },
+                       },
                        command);
         }
         m_RenderCommands.clear();
 
         Framework::BeginEvent("Render Sprites");
         m_SpriteRenderer.Render(dt, total_time);
+        Framework::EndEvent();
+
+        Framework::BeginEvent("Render Text");
+        m_TextRenderer.Render();
         Framework::EndEvent();
 
         m_RenderTexture->UnsetActiveTarget();

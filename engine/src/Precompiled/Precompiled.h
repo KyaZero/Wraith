@@ -46,6 +46,9 @@ using Microsoft::WRL::WeakRef;
 #ifdef max
 #undef max
 #endif
+#ifdef INFINITE
+#undef INFINITE
+#endif
 
 // Thirdparty includes
 #include <dubu_serialize/dubu_serialize.hpp>

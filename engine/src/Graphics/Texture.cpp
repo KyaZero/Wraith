@@ -143,14 +143,14 @@ namespace fw
         desc.Format = m_Data->format;
         desc.SampleDesc.Count = 1;
         desc.SampleDesc.Quality = 0;
-        desc.Usage = D3D11_USAGE_DEFAULT;
+        desc.Usage = static_cast<D3D11_USAGE>(info.usage);
 
         if (m_Data->is_rt)
             desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
         else
             desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 
-        desc.CPUAccessFlags = 0;
+        desc.CPUAccessFlags = info.cpu_access;
         if (info.num_mips != 1)
             desc.MiscFlags |= D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
@@ -360,5 +360,30 @@ namespace fw
     Vec2f Texture::GetSizef() const
     {
         return { (f32)m_Data->size.x, (f32)m_Data->size.y };
+    }
+
+    void Texture::Blit(const u8* data, i32 x, i32 y, i32 w, i32 h, i32 stride)
+    {
+        if (!m_Data)
+        {
+            ERROR_LOG("Texture not Initialized!");
+            return;
+        }
+
+        D3D11_MAPPED_SUBRESOURCE subres = {};
+
+        if (FailedCheck("Mapping texture",
+                        Framework::GetContext()->Map(m_Data->texture.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
+            return;
+
+        u8* mapped_data = reinterpret_cast<u8*>(subres.pData) + x + y * subres.RowPitch;
+        for (i32 i = 0; i < h; ++i)
+        {
+            std::memcpy(mapped_data, data, stride);
+            mapped_data += subres.RowPitch;
+            data += stride;
+        }
+
+        Framework::GetContext()->Unmap(m_Data->texture.Get(), 0);
     }
 }  // namespace fw

@@ -15,7 +15,9 @@ namespace fw
         ImageFormat format = ImageFormat::R8G8B8A8_UNORM;
         void* data = nullptr;
         bool render_target = true;
-        u32 num_mips = 1;
+        u32 num_mips = 1u;
+        u8 usage = 0u;
+        i64 cpu_access = 0u;
     };
 
     class Texture
@@ -61,6 +63,8 @@ namespace fw
         ID3D11ShaderResourceView* GetShaderResourceView() const;
         Vec2u GetSize() const;
         Vec2f GetSizef() const;
+
+        void Blit(const u8* data, i32 x, i32 y, i32 w, i32 h, i32 stride);
 
     private:
         struct Data;

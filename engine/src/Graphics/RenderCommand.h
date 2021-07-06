@@ -25,5 +25,10 @@ namespace fw
         Mat4f view;
     };
 
-    using RenderCommand = std::variant<SpriteCommand, SetCameraCommand>;
+    struct TextCommand
+    {
+        std::string text;
+    };
+
+    using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand>;
 }  // namespace fw

@@ -1,5 +1,7 @@
 include(FetchContent)
 
+include("freetype.cmake")
+include("msdfgen.cmake")
 include("glfw.cmake")
 include("imgui.cmake")
 include("entt.cmake")

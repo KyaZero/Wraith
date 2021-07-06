@@ -16,6 +16,9 @@ project_root> scripts/open.bat
 # bash
 project_root> scripts/gen
 project_root> scripts/open
+
+# you can also pass params to cmake
+project_root> scripts/gen -Ax64 -DCMAKE_UNITY_BUILD=ON
 ```
 
 

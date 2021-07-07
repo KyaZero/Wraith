@@ -62,7 +62,7 @@ namespace fw
 
     void Thread::Kill()
     {
-        VERBOSE_LOG("Signalling thread {} to die", m_ID);
+        VERBOSE_LOG("Signaling thread {} to die", m_ID);
         m_ShouldRun = false;
         m_Channel.notify_all();
     }

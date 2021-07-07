@@ -9,7 +9,7 @@ namespace fw
         m_Window = std::make_unique<Window>(Vec2u(1600, 900), m_Name);
         m_Engine = std::make_unique<Engine>(*m_Window);
 
-        if (!m_Engine->Init([&]() { OnUIRender(); }, [&](f32 dt) { OnUpdate(dt); }))
+        if (!m_Engine->Init([this]() { OnUIRender(); }, [this](f32 dt) { OnUpdate(dt); }))
         {
             ASSERT_LOG(false, "Failed To Initialize Engine.");
         }

@@ -5,10 +5,11 @@ namespace fw
     class ProcessingJob
     {
     public:
+        using Job = std::function<void(ProcessingJob&)>;
         ProcessingJob(
             const std::string& id,
-            std::function<void(ProcessingJob&)> job,
-            std::function<void(ProcessingJob&)> callback = [](ProcessingJob& job) { });
+            Job job,
+            Job callback = [](ProcessingJob&) { });
         ~ProcessingJob();
 
         bool IsDone() const;
@@ -25,8 +26,8 @@ namespace fw
     private:
         std::string m_ID;
 
-        std::function<void(ProcessingJob&)> m_Job;
-        std::function<void(ProcessingJob&)> m_OnFinish;
+        Job m_Job;
+        Job m_OnFinish;
 
         volatile bool m_Done;
         f32 m_ExecutionTime;

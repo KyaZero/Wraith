@@ -11,8 +11,9 @@ namespace fw
     {
     public:
         constexpr static u32 TimeLogSize = 60;
+        using Job = std::function<void()>;
 
-        PersistentJob(const std::string& id, std::function<void()> job);
+        PersistentJob(const std::string& id, Job job);
 
         f32 GetAverageTime() const;
         std::array<f32, TimeLogSize> GetPreviousTimes() const;
@@ -29,6 +30,6 @@ namespace fw
 
         Timer m_Timer;
 
-        std::function<void()> m_Job;
+        Job m_Job;
     };
 }  // namespace fw

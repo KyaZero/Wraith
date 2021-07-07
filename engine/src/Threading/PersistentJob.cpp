@@ -2,7 +2,7 @@
 
 namespace fw
 {
-    PersistentJob::PersistentJob(const std::string& id, std::function<void()> job)
+    PersistentJob::PersistentJob(const std::string& id, PersistentJob::Job job)
         : m_PrevTimes{ 0 }
         , m_ID(id)
         , m_Job(job)

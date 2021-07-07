@@ -5,8 +5,8 @@
 namespace fw
 {
     ProcessingJob::ProcessingJob(const std::string& id,
-                                 std::function<void(ProcessingJob&)> job,
-                                 std::function<void(ProcessingJob&)> callback)
+                                 ProcessingJob::Job job,
+                                 ProcessingJob::Job callback)
         : m_ID(id)
         , m_Job(job)
         , m_OnFinish(callback)

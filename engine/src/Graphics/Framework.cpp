@@ -251,7 +251,7 @@ namespace fw
             };
             case D3D11_MESSAGE_SEVERITY_INFO:
             {
-                INFO_LOG("D3D11: {} [CATEGORY: {}]", message->pDescription, get_category(message->Category));
+                VERBOSE_LOG("D3D11: {} [CATEGORY: {}]", message->pDescription, get_category(message->Category));
                 break;
             };
             }

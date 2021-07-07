@@ -8,7 +8,7 @@ FetchContent_Declare(
     SOURCE_DIR      "${FETCHCONTENT_BASE_DIR}/msdfgen/msdfgen"
 )
 
-set(MSDFGEN_BUILD_MSDFGEN_STANDALONE OFF)
-set(MSDFGEN_INSTALL OFF)
+option(MSDFGEN_BUILD_MSDFGEN_STANDALONE "" OFF)
+option(MSDFGEN_INSTALL "" OFF)
 
 FetchContent_MakeAvailable(msdfgen)

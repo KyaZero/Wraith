@@ -4,13 +4,17 @@ on: [push, pull_request]
 
 jobs:
   build:
+    strategy:
+      matrix:
+        unity_build: ["ON", "OFF"]
+
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Generate
-        run: scripts/gen.bat -DCMAKE_BUILD_TYPE=Debug -DCMAKE_UNITY_BUILD=ON
+        run: scripts/gen.bat -DCMAKE_BUILD_TYPE=Debug -DCMAKE_UNITY_BUILD=${{ matrix.unity_build }}
 
       - name: Build
         run: scripts/build.bat

@@ -47,6 +47,9 @@ using Microsoft::WRL::WeakRef;
 #undef max
 #endif
 
+// Thirdparty includes
+#include <dubu_serialize/dubu_serialize.hpp>
+
 // Engine includes
 #include "Core/Logger.h"
 #include "Core/Math/Mat.h"

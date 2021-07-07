@@ -25,6 +25,15 @@ namespace fw
             return m_Hash;
         }
 
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> m_Hash;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << m_Hash;
+        }
+
     private:
         TextureIDType m_Hash;
     };

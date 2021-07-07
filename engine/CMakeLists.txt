@@ -81,11 +81,12 @@ set(ui_files
   "src/UI/ImGuiLayer.cpp")
 
 set(scene_files
-  "src/Scene/ScriptableEntity.h"
+  "src/Scene/Archive.h"
   "src/Scene/Components.h"
   "src/Scene/Entity.h"
+  "src/Scene/Scene.cpp"
   "src/Scene/Scene.h"
-  "src/Scene/Scene.cpp")
+  "src/Scene/ScriptableEntity.h")
     
 set(input_files
   "src/Input/Keys.h"
@@ -123,7 +124,8 @@ target_link_libraries(${target_name} PUBLIC
     EnTT
     stb
     glfw
-    color-console)
+    color-console
+    dubu_serialize)
 
 target_precompile_headers(${target_name} PRIVATE "src/Precompiled/Precompiled.h")
 target_include_directories(${target_name} PUBLIC "src")

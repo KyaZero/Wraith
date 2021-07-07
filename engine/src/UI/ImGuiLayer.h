@@ -1,13 +1,14 @@
 #pragma once
 
-#include "Engine.h"
+#include "Graphics/Framework.h"
+#include "Window/Window.h"
 
 namespace fw
 {
     class ImguiLayer
     {
     public:
-        ImguiLayer(Engine& engine);
+        ImguiLayer(Framework& engine, Window& window);
         ~ImguiLayer();
 
         void Begin();
@@ -16,6 +17,7 @@ namespace fw
         void SetThemeColors();
 
     private:
-        Engine& m_Engine;
+        Framework& m_Framework;
+        Window& m_Window;
     };
 }  // namespace fw

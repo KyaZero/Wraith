@@ -58,3 +58,4 @@ using Microsoft::WRL::WeakRef;
 #include "Core/Math/Mat.h"
 #include "Core/Math/Vec.h"
 #include "Core/Types.h"
+#include "Core/Constants.h"

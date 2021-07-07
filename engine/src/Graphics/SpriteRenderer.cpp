@@ -47,7 +47,7 @@ namespace fw
 
     void SpriteRenderer::Submit(const SpriteCommand& sprite)
     {
-        m_SpriteCommands.push_back(sprite);
+        m_SpriteCommands[NEXT_FRAME].push_back(sprite);
     }
 
     void SpriteRenderer::Submit(const SetCameraCommand& command)
@@ -55,11 +55,11 @@ namespace fw
         m_CurrentCamera = std::make_unique<RenderCamera>(command.camera->GetProjection(), command.view);
     }
 
-    void SpriteRenderer::Render(f32 dt, f32 total_time)
+    void SpriteRenderer::Render()
     {
         auto* context = Framework::GetContext();
         context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-        UpdateConstantBuffer(total_time);
+        UpdateConstantBuffer();
         m_ConstantBuffer.Bind(0);
 
         m_SpriteShader.Bind();
@@ -67,11 +67,13 @@ namespace fw
         m_VertexBuffer.Bind();
         m_Sampler.Bind(0);
 
+        auto& commands = m_SpriteCommands[CURRENT_FRAME];
+
         // Sort by texture, to reduce texture swaps during rendering.
         // TODO: Should add layer support too.
         // edit: this could be fixed easily by using a perspective camera and just having a depth buffer/z position,
         // but may want to have layers for UI etc?
-        std::sort(std::execution::par, m_SpriteCommands.begin(), m_SpriteCommands.end(), [](auto a, auto b) {
+        std::sort(std::execution::par, commands.begin(), commands.end(), [](auto a, auto b) {
             return a.texture > b.texture;
         });
 
@@ -79,7 +81,7 @@ namespace fw
 
         TextureID current_texture_id = 0;
         Vec2f current_texture_size = { 0, 0 };
-        for (auto& sprite : m_SpriteCommands)
+        for (auto& sprite : commands)
         {
             // caching, could probably be optimized by storing the textures that are in the current command list, and
             // having them in a lookup table instead of getting them from the TextureManager
@@ -122,12 +124,17 @@ namespace fw
 
         m_CurrentCamera = nullptr;
 
-        m_SpriteCommands.clear();
         m_SpriteShader.Unbind();
         m_Sampler.Unbind(0);
     }
 
-    void SpriteRenderer::UpdateConstantBuffer(f32 total_time)
+    void SpriteRenderer::Flip()
+    {
+        std::swap(m_SpriteCommands[CURRENT_FRAME], m_SpriteCommands[NEXT_FRAME]);
+        m_SpriteCommands[NEXT_FRAME].clear();
+    }
+
+    void SpriteRenderer::UpdateConstantBuffer()
     {
         auto size = m_Window.GetSize();
 
@@ -144,7 +151,6 @@ namespace fw
         }
 
         m_ConstantBufferData.resolution = Vec2f(size.x, size.y);
-        m_ConstantBufferData.time = total_time;
 
         m_ConstantBuffer.SetData(m_ConstantBufferData);
     }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Constants.h"
 #include "RenderCommand.h"
 #include "SpriteRenderer.h"
 #include "TextRenderer.h"
@@ -15,16 +16,18 @@ namespace fw
         bool Init();
 
         void Submit(const RenderCommand& command);
-        void Render(f32 dt, f32 total_time);
+        void Render();
 
         Texture& GetRenderTexture();
         void Resize(u32 width, u32 height);
+
+        void Flip();
 
     private:
         std::unique_ptr<Texture> m_RenderTexture;
         Window& m_Window;
         SpriteRenderer m_SpriteRenderer;
         TextRenderer m_TextRenderer;
-        std::vector<RenderCommand> m_RenderCommands;
+        std::vector<RenderCommand> m_RenderCommands[FRAME_COUNT];
     };
 }  // namespace fw

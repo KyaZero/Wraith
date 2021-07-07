@@ -29,15 +29,15 @@ namespace fw
 
     void RenderManager::Submit(const RenderCommand& command)
     {
-        m_RenderCommands.push_back(command);
+        m_RenderCommands[NEXT_FRAME].push_back(command);
     }
 
-    void RenderManager::Render(f32 dt, f32 total_time)
+    void RenderManager::Render()
     {
         m_RenderTexture->Clear({ 0.0f, 0.0f, 0.0f, 1.0f });
         m_RenderTexture->SetAsActiveTarget();
 
-        for (auto& command : m_RenderCommands)
+        for (auto& command : m_RenderCommands[CURRENT_FRAME])
         {
             std::visit(overloaded{
                            [&](SpriteCommand sprite) { m_SpriteRenderer.Submit(sprite); },
@@ -46,10 +46,9 @@ namespace fw
                        },
                        command);
         }
-        m_RenderCommands.clear();
 
         Framework::BeginEvent("Render Sprites");
-        m_SpriteRenderer.Render(dt, total_time);
+        m_SpriteRenderer.Render();
         Framework::EndEvent();
 
         Framework::BeginEvent("Render Text");
@@ -67,5 +66,11 @@ namespace fw
     void RenderManager::Resize(u32 width, u32 height)
     {
         m_RenderTexture->Resize(m_Window.GetSize());
+    }
+    void RenderManager::Flip()
+    {
+        std::swap(m_RenderCommands[CURRENT_FRAME], m_RenderCommands[NEXT_FRAME]);
+        m_RenderCommands[NEXT_FRAME].clear();
+        m_SpriteRenderer.Flip();
     }
 }  // namespace fw

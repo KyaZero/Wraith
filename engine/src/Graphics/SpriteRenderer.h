@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Buffer.h"
+#include "Core/Constants.h"
 #include "Core/Math/Mat4.h"
 #include "OrthographicCamera.h"
 #include "RenderCommand.h"
@@ -21,7 +22,9 @@ namespace fw
 
         void Submit(const SpriteCommand& sprite);
         void Submit(const SetCameraCommand& command);
-        void Render(f32 dt, f32 total_time);
+        void Render();
+
+        void Flip();
 
     private:
         Window& m_Window;
@@ -45,7 +48,6 @@ namespace fw
             Mat4f view_projection;
             Mat4f projection;
             Vec2f resolution;
-            f32 time;
         } m_ConstantBufferData;
         Buffer m_ConstantBuffer;
 
@@ -60,11 +62,12 @@ namespace fw
             i32 world_space;
         };
 
-        void UpdateConstantBuffer(f32 total_time);
+        void UpdateConstantBuffer();
 
         // I found 1024 instances to be the best in terms of performance and drawcalls
         constexpr static u32 InstanceCount = 1024;
-        std::vector<SpriteCommand> m_SpriteCommands;
+        std::vector<SpriteCommand> m_SpriteCommands[FRAME_COUNT];
+
         Sampler m_Sampler;
     };
 }  // namespace fw

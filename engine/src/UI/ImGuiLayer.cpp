@@ -10,8 +10,9 @@ namespace fw
     static const std::filesystem::path iniFilePath = std::filesystem::temp_directory_path() / "2DGE/imgui.ini";
     static const std::string iniFileString = iniFilePath.generic_string();
 
-    ImguiLayer::ImguiLayer(Engine& engine)
-        : m_Engine(engine)
+    ImguiLayer::ImguiLayer(Framework& framework, Window& window)
+        : m_Framework(framework)
+        , m_Window(window)
     {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -41,9 +42,8 @@ namespace fw
 
         SetThemeColors();
 
-        auto& framework = m_Engine.GetFramework();
-        ImGui_ImplWin32_Init(m_Engine.GetWindow().GetPlatformHandle());
-        ImGui_ImplDX11_Init(framework.GetDevice(), framework.GetContext());
+        ImGui_ImplWin32_Init(m_Window.GetPlatformHandle());
+        ImGui_ImplDX11_Init(m_Framework.GetDevice(), m_Framework.GetContext());
     }
 
     ImguiLayer::~ImguiLayer()
@@ -63,7 +63,7 @@ namespace fw
     void ImguiLayer::End()
     {
         ImGuiIO& io = ImGui::GetIO();
-        io.DisplaySize = ImVec2((f32)m_Engine.GetWindow().GetSize().x, (f32)m_Engine.GetWindow().GetSize().x);
+        io.DisplaySize = ImVec2((f32)m_Window.GetSize().x, (f32)m_Window.GetSize().x);
 
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

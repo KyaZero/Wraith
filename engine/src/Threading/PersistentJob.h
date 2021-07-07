@@ -18,7 +18,7 @@ namespace fw
         f32 GetAverageTime() const;
         std::array<f32, TimeLogSize> GetPreviousTimes() const;
 
-        const std::string& GetID() const;
+        std::string_view GetID() const;
 
         f32 Execute();
 

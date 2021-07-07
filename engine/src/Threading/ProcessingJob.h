@@ -15,7 +15,7 @@ namespace fw
         bool IsDone() const;
         f32 GetExecutionTime() const;
 
-        const std::string& GetID() const;
+        std::string_view GetID() const;
 
         void Execute();
 

@@ -45,7 +45,7 @@ namespace fw
         VERBOSE_LOG("Thread {} is dead", m_ID);
     }
 
-    const std::string& Thread::GetID() const
+    std::string_view Thread::GetID() const
     {
         return m_ID;
     }

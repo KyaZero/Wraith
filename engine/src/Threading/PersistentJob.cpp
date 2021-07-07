@@ -19,7 +19,7 @@ namespace fw
         return m_PrevTimes;
     }
 
-    const std::string& PersistentJob::GetID() const
+    std::string_view PersistentJob::GetID() const
     {
         return m_ID;
     }

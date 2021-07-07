@@ -9,7 +9,7 @@ namespace fw
         Thread(const std::string& id);
         virtual ~Thread();
 
-        const std::string& GetID() const;
+        std::string_view GetID() const;
 
         bool IsRunning() const;
         bool ShouldRun() const;

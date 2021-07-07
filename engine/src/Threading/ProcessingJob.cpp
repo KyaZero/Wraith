@@ -28,7 +28,7 @@ namespace fw
         return m_ExecutionTime;
     }
 
-    const std::string& ProcessingJob::GetID() const
+    std::string_view ProcessingJob::GetID() const
     {
         return m_ID;
     }

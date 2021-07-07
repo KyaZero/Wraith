@@ -10,6 +10,7 @@ FetchContent_Declare(
 
 option(MSDFGEN_BUILD_MSDFGEN_STANDALONE "" OFF)
 option(MSDFGEN_INSTALL "" OFF)
+option(MSDFGEN_USE_OPENMP "" ON)
 
 FetchContent_MakeAvailable(msdfgen)
 

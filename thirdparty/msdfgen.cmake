@@ -12,3 +12,6 @@ option(MSDFGEN_BUILD_MSDFGEN_STANDALONE "" OFF)
 option(MSDFGEN_INSTALL "" OFF)
 
 FetchContent_MakeAvailable(msdfgen)
+
+set_target_properties(msdfgen PROPERTIES FOLDER "thirdparty/msdfgen")
+set_target_properties(msdfgen-ext PROPERTIES FOLDER "thirdparty/msdfgen")

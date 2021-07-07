@@ -17,3 +17,5 @@ option(CMAKE_DISABLE_FIND_PACKAGE_BrotliDec "" TRUE)
 FetchContent_MakeAvailable(freetype)
 
 add_library(Freetype::Freetype ALIAS freetype)
+
+set_target_properties(freetype PROPERTIES FOLDER "thirdparty/freetype")

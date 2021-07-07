@@ -19,8 +19,8 @@ set(threading_files
   "src/Threading/Thread.cpp")
 
 set(common_files
-  "src/Core/Constants.h"
   "src/Core/Common.h"
+  "src/Core/Constants.h"
   "src/Core/Filewatcher.cpp"
   "src/Core/Filewatcher.h"
   "src/Core/Logger.cpp"

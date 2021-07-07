@@ -21,9 +21,8 @@ namespace fw
         : m_Queue()
         , m_Level((char)Level::All)
         , m_ShouldLogToFile(true)
-        , m_MultiThreaded(false)
+        , m_MultiThreaded(multiThreaded)
     {
-        m_MultiThreaded = multiThreaded;
         if (m_MultiThreaded)
             m_Thread = std::jthread(Update, this, std::chrono::milliseconds(16));
 
@@ -53,11 +52,9 @@ namespace fw
         if (!Get())
             return;
 
-        if (m_MultiThreaded)
-            std::lock_guard<std::mutex> lock(m_QueueMutex);
-
         if ((char)level < (char)m_Level)
             return;
+
         if (level == Level::All || level == Level::Count)
             return;
 
@@ -73,6 +70,7 @@ namespace fw
 
         if (m_MultiThreaded)
         {
+            std::lock_guard<std::mutex> lock(m_QueueMutex);
             m_Queue.push(LogEntry{ filename, func, text, line, level });
         }
         else

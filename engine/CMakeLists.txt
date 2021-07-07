@@ -4,8 +4,23 @@ set(precompiled_files
   "src/Precompiled/Precompiled.cpp"
   "src/Precompiled/Precompiled.h")
 
+set(threading_files
+  "src/Threading/ThreadScheduler.h"
+  "src/Threading/ThreadScheduler.cpp"
+  "src/Threading/ProcessingThread.h"
+  "src/Threading/ProcessingThread.cpp"
+  "src/Threading/ProcessingJob.h"
+  "src/Threading/ProcessingJob.cpp"
+  "src/Threading/WorkerThread.h"
+  "src/Threading/WorkerThread.cpp"
+  "src/Threading/PersistentJob.h"
+  "src/Threading/PersistentJob.cpp"
+  "src/Threading/Thread.h"
+  "src/Threading/Thread.cpp")
+
 set(common_files
   "src/Core/Common.h"
+  "src/Core/Constants.h"
   "src/Core/Filewatcher.cpp"
   "src/Core/Filewatcher.h"
   "src/Core/Logger.cpp"
@@ -86,6 +101,7 @@ set(src_files
 
 set(all_files
   ${precompiled_files}
+  ${threading_files}
   ${ui_files}
   ${input_files}
   ${scene_files}
@@ -122,6 +138,7 @@ source_group("src/Input" FILES ${input_files})
 source_group("src/UI" FILES ${ui_files})
 source_group("src/Core" FILES ${common_files})
 source_group("src/Core/Math" FILES ${math_files})
+source_group("src/Threading" FILES ${threading_files})
 source_group("src/Precompiled" FILES ${precompiled_files})
 source_group("src/Precompiled" REGULAR_EXPRESSION "cmake_pch\.[ch]xx")
 

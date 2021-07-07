@@ -21,7 +21,6 @@ cbuffer BufferData : register(b0)
     float4x4 ViewProjection;
     float4x4 Projection;
     float2 Resolution;
-    float Time;
 }
 
 #define TO_SRGB(_Linear_Color) (pow(_Linear_Color, 1.0 / 2.2))

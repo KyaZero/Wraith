@@ -9,33 +9,21 @@ namespace fw
         m_Window = std::make_unique<Window>(Vec2u(1600, 900), m_Name);
         m_Engine = std::make_unique<Engine>(*m_Window);
 
-        if (!m_Engine->Init())
+        if (!m_Engine->Init([this]() { OnUIRender(); }, [this](f32 dt) { OnUpdate(dt); }))
         {
             ASSERT_LOG(false, "Failed To Initialize Engine.");
         }
-
-        m_ImguiLayer = std::make_unique<ImguiLayer>(*m_Engine);
     }
+
+    Application::~Application()
+    { }
 
     bool Application::Run()
     {
         while (!m_Window->ShouldClose())
         {
-            m_Timer.Update();
-
             m_Engine->BeginFrame();
-
-            {
-                OnUpdate(m_Timer.GetDeltaTime());
-                m_Engine->Update(m_Timer.GetDeltaTime(), m_Timer.GetTotalTime());
-            }
-
-            {
-                m_ImguiLayer->Begin();
-                OnUIRender();
-                m_ImguiLayer->End();
-            }
-
+            m_Engine->Update();
             m_Engine->EndFrame();
 
             // Window events such as resizing, input, etc..

@@ -40,7 +40,6 @@ namespace fw
                                    [&](SetCameraCommand camera) { m_SpriteRenderer.Submit(camera); } },
                        command);
         }
-        m_RenderCommands[CURRENT_FRAME].clear();
 
         Framework::BeginEvent("Render Sprites");
         m_SpriteRenderer.Render();

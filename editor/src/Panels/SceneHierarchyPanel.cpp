@@ -24,7 +24,7 @@ namespace fw
 
         auto& registry = m_Context->m_Registry;
         registry.each([&](auto e) {
-            Entity entity{ e, m_Context.get() };
+            Entity entity{ e, &registry };
             DrawEntityNode(entity);
         });
 

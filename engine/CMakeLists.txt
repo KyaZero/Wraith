@@ -130,16 +130,7 @@ target_link_libraries(${target_name} PUBLIC
 target_precompile_headers(${target_name} PRIVATE "src/Precompiled/Precompiled.h")
 target_include_directories(${target_name} PUBLIC "src")
 
-source_group("src" FILES ${src_files})
-source_group("src/Window" FILES ${window_files})
-source_group("src/Graphics" FILES ${graphics_files})
-source_group("src/Scene" FILES ${scene_files})
-source_group("src/Input" FILES ${input_files})
-source_group("src/UI" FILES ${ui_files})
-source_group("src/Core" FILES ${common_files})
-source_group("src/Core/Math" FILES ${math_files})
-source_group("src/Threading" FILES ${threading_files})
-source_group("src/Precompiled" FILES ${precompiled_files})
+auto_group_sources(all_files ${CMAKE_CURRENT_SOURCE_DIR})
 source_group("src/Precompiled" REGULAR_EXPRESSION "cmake_pch\.[ch]xx")
 
 set_target_properties(${target_name} PROPERTIES FOLDER ${PROJECT_NAME})

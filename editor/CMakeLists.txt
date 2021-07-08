@@ -15,9 +15,6 @@ set(all_files
     ${src_files}
     ${panel_files})
     
-source_group("src" FILES ${src_files})
-source_group("src/Panels" FILES ${panel_files})
-
 add_executable(${target_name} ${all_files})
 
 target_link_libraries(${target_name}
@@ -25,6 +22,8 @@ target_link_libraries(${target_name}
     compiler_features
     compiler_warnings
     imgui)
+
+auto_group_sources(all_files ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties(${target_name} PROPERTIES
     FOLDER ${PROJECT_NAME}

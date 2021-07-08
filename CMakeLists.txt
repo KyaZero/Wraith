@@ -8,6 +8,7 @@ set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "predefined")
 
 include("cmake/compiler_features.cmake")
 include("cmake/compiler_warnings.cmake")
+include("cmake/auto_group_sources.cmake")
 
 add_subdirectory("thirdparty")
 

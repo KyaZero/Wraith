@@ -12,14 +12,17 @@ namespace fw
 {
     bool TextRenderer::Init()
     {
+        constexpr int ATLAS_SIZE = 512;
         m_Atlas.Create(TextureCreateInfo{
-            .size = { 256, 256 },
+            .size = { ATLAS_SIZE, ATLAS_SIZE },
             .format = ImageFormat::R32G32B32A32_FLOAT,
             .render_target = false,
-            .usage = D3D11_USAGE_DYNAMIC,
+            .usage = D3D11_USAGE_DEFAULT,
             .cpu_access = D3D11_CPU_ACCESS_WRITE,
         });
         SetDebugObjectName(m_Atlas.GetTexture(), "FontAtlas");
+
+        dubu::rect_pack::Packer packer(ATLAS_SIZE, ATLAS_SIZE);
 
         if (!m_TextShader.Load(Shader::Vertex | Shader::Pixel, "assets/engine/shaders/text.hlsl"))
             return false;
@@ -45,25 +48,45 @@ namespace fw
 
         {  // msdfgen
             auto freetypeHandle = msdfgen::initializeFreetype();
-            //auto fontHandle = msdfgen::loadFont(freetypeHandle, "assets/engine/fonts/Roboto-Regular.ttf");
+            // auto fontHandle = msdfgen::loadFont(freetypeHandle, "assets/engine/fonts/Roboto-Regular.ttf");
             auto fontHandle = msdfgen::loadFont(freetypeHandle, "c:/windows/fonts/bazzi.ttf");
 
-            msdfgen::Shape shape;
-            msdfgen::loadGlyph(shape, fontHandle, L'A');
-            msdfgen::loadGlyph(shape, fontHandle, L'한');
+            for (u16 c = 0xAC00; c < 0xB500; ++c)
+            {
+                msdfgen::Shape shape;
+                msdfgen::GlyphIndex glyph;
+                if (!msdfgen::getGlyphIndex(glyph, fontHandle, c))
+                {
+                    continue;
+                }
+                if (!msdfgen::loadGlyph(shape, fontHandle, glyph))
+                {
+                    continue;
+                }
+                if (shape.edgeCount() == 0)
+                {
+                    continue;
+                }
+                shape.normalize();
+                shape.getBounds();
 
-            const i32 range = 2;
-            auto bounds = shape.getBounds();
-            float scale = 16.f / (bounds.t-bounds.b);
-            i32 w = std::round((bounds.r-bounds.l+range*2)*scale);
-            i32 h = std::round((bounds.t-bounds.b+range*2)*scale);
+                const i32 range = 2;
+                auto bounds = shape.getBounds();
+                float scale = 1.f;
+                i32 w = std::round((bounds.r - bounds.l + range * 2) * scale);
+                i32 h = std::round((bounds.t - bounds.b + range * 2) * scale);
 
-            msdfgen::edgeColoringSimple(shape, 3.0);
-            msdfgen::Bitmap<float, 4> msdf(w, h);
-            msdfgen::generateMTSDF(msdf, shape, {scale, range}, range);
-            msdfgen::savePng(msdf, "output.png");
+                msdfgen::edgeColoringSimple(shape, 3.0);
+                msdfgen::Bitmap<float, 4> msdf(w, h);
+                msdfgen::generateMTSDF(msdf, shape, { scale, { range - bounds.l, range - bounds.b } }, range);
+                msdfgen::savePng(msdf, "saved/output.png");
 
-            m_Atlas.Blit(reinterpret_cast<u8*>(msdf(0, 0)), 0, 0, w, h, w*4*sizeof(float));
+                const auto rect = packer.Pack({ static_cast<u32>(w + 1), static_cast<u32>(h + 1) });
+                if (rect)
+                {
+                    m_Atlas.Blit(reinterpret_cast<u8*>(msdf(0, 0)), rect->x, rect->y, w, h, w * 4 * sizeof(float));
+                }
+            }
 
             msdfgen::destroyFont(fontHandle);
             msdfgen::deinitializeFreetype(freetypeHandle);

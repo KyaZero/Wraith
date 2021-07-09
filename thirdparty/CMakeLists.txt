@@ -1,10 +1,20 @@
 include(FetchContent)
 
+# text rendering
 include("freetype.cmake")
 include("msdfgen.cmake")
+include("dubu_rect_pack.cmake")
+
+# framework
 include("glfw.cmake")
 include("imgui.cmake")
+
+# scene
 include("entt.cmake")
-include("stb.cmake")
-include("color_console.cmake")
 include("dubu_serialize.cmake")
+
+# console
+include("color_console.cmake")
+
+# image loading
+include("stb.cmake")

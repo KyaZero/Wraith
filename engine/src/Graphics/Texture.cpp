@@ -370,20 +370,7 @@ namespace fw
             return;
         }
 
-        D3D11_MAPPED_SUBRESOURCE subres = {};
-
-        if (FailedCheck("Mapping texture",
-                        Framework::GetContext()->Map(m_Data->texture.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
-            return;
-
-        u8* mapped_data = reinterpret_cast<u8*>(subres.pData) + x + y * subres.RowPitch;
-        for (i32 i = 0; i < h; ++i)
-        {
-            std::memcpy(mapped_data, data, stride);
-            mapped_data += subres.RowPitch;
-            data += stride;
-        }
-
-        Framework::GetContext()->Unmap(m_Data->texture.Get(), 0);
+        CD3D11_BOX box(x, y, 0, x+w, y+h, 1);
+        Framework::GetContext()->UpdateSubresource(m_Data->texture.Get(), 0, &box, data, stride, 0);
     }
 }  // namespace fw

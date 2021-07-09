@@ -128,6 +128,7 @@ target_link_libraries(${target_name} PUBLIC
     glfw
     color-console
     dubu_serialize
+    dubu_rect_pack
     msdfgen::msdfgen
     msdfgen::msdfgen-ext)
 

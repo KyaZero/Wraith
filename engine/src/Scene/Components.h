@@ -55,6 +55,20 @@ namespace fw
         }
     };
 
+    struct TextComponent
+    {
+        std::wstring text;
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> text;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer)
+        {
+            buffer << text;
+        }
+    };
+
     struct CameraComponent
     {
         Camera camera;

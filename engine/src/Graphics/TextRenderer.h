@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Graphics/RenderCommand.h"
-#include "Graphics/Texture.h"
-#include "Graphics/Shader.h"
+#include <dubu_rect_pack/dubu_rect_pack.hpp>
+
 #include "Graphics/Buffer.h"
+#include "Graphics/RenderCommand.h"
 #include "Graphics/Sampler.h"
+#include "Graphics/Shader.h"
+#include "Graphics/Texture.h"
 
 namespace fw
 {

@@ -45,7 +45,7 @@ namespace fw
 
         {  // msdfgen
             auto freetypeHandle = msdfgen::initializeFreetype();
-            //auto fontHandle = msdfgen::loadFont(freetypeHandle, "assets/engine/fonts/Roboto-Regular.ttf");
+            // auto fontHandle = msdfgen::loadFont(freetypeHandle, "assets/engine/fonts/Roboto-Regular.ttf");
             auto fontHandle = msdfgen::loadFont(freetypeHandle, "c:/windows/fonts/bazzi.ttf");
 
             msdfgen::Shape shape;
@@ -54,16 +54,16 @@ namespace fw
 
             const i32 range = 2;
             auto bounds = shape.getBounds();
-            float scale = 16.f / (bounds.t-bounds.b);
-            i32 w = std::round((bounds.r-bounds.l+range*2)*scale);
-            i32 h = std::round((bounds.t-bounds.b+range*2)*scale);
+            float scale = 16.f / (bounds.t - bounds.b);
+            i32 w = std::round((bounds.r - bounds.l + range * 2) * scale);
+            i32 h = std::round((bounds.t - bounds.b + range * 2) * scale);
 
             msdfgen::edgeColoringSimple(shape, 3.0);
             msdfgen::Bitmap<float, 4> msdf(w, h);
-            msdfgen::generateMTSDF(msdf, shape, {scale, range}, range);
+            msdfgen::generateMTSDF(msdf, shape, { scale, range }, range);
             msdfgen::savePng(msdf, "output.png");
 
-            m_Atlas.Blit(reinterpret_cast<u8*>(msdf(0, 0)), 0, 0, w, h, w*4*sizeof(float));
+            m_Atlas.Blit(reinterpret_cast<u8*>(msdf(0, 0)), 0, 0, w, h, w * 4 * sizeof(float));
 
             msdfgen::destroyFont(fontHandle);
             msdfgen::deinitializeFreetype(freetypeHandle);

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Graphics/RenderCommand.h"
-#include "Graphics/Texture.h"
-#include "Graphics/Shader.h"
 #include "Graphics/Buffer.h"
+#include "Graphics/RenderCommand.h"
 #include "Graphics/Sampler.h"
+#include "Graphics/Shader.h"
+#include "Graphics/Texture.h"
 
 namespace fw
 {

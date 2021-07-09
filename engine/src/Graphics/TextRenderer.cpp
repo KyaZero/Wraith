@@ -76,16 +76,18 @@ namespace fw
                 i32 w = std::round((bounds.r - bounds.l + range * 2) * scale);
                 i32 h = std::round((bounds.t - bounds.b + range * 2) * scale);
 
+                const auto rect = packer.Pack({ static_cast<u32>(w + 1), static_cast<u32>(h + 1) });
+                if (!rect)
+                {
+                    continue;
+                }
+
                 msdfgen::edgeColoringSimple(shape, 3.0);
                 msdfgen::Bitmap<float, 4> msdf(w, h);
                 msdfgen::generateMTSDF(msdf, shape, { scale, { range - bounds.l, range - bounds.b } }, range);
                 msdfgen::savePng(msdf, "saved/output.png");
 
-                const auto rect = packer.Pack({ static_cast<u32>(w + 1), static_cast<u32>(h + 1) });
-                if (rect)
-                {
-                    m_Atlas.Blit(reinterpret_cast<u8*>(msdf(0, 0)), rect->x, rect->y, w, h, w * 4 * sizeof(float));
-                }
+                m_Atlas.Blit(reinterpret_cast<u8*>(msdf(0, 0)), rect->x, rect->y, w, h, w * 4 * sizeof(float));
             }
 
             msdfgen::destroyFont(fontHandle);

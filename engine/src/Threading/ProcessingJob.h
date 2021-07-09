@@ -7,9 +7,7 @@ namespace fw
     public:
         using Job = std::function<void(ProcessingJob&)>;
         ProcessingJob(
-            const std::string& id,
-            Job job,
-            Job callback = [](ProcessingJob&) { });
+            const std::string& id, Job job, Job callback = [](ProcessingJob&) {});
         ~ProcessingJob();
 
         bool IsDone() const;
@@ -19,7 +17,7 @@ namespace fw
 
         void Execute();
 
-        //For passing whatever userdata you might need to the job
+        // For passing whatever userdata you might need to the job
         void SetUserData(void* data);
         void* GetUserData() const;
 

@@ -22,13 +22,10 @@ namespace fw
         TextureManager::Create();
         ThreadScheduler::Create();
 
-        ThreadScheduler::Get()->AddPersistentJob(std::make_shared<PersistentJob>("Update Frame", [&](){
-            m_UpdateCallback(m_Timer.GetDeltaTime()); 
-        }));
+        ThreadScheduler::Get()->AddPersistentJob(
+            std::make_shared<PersistentJob>("Update Frame", [&]() { m_UpdateCallback(m_Timer.GetDeltaTime()); }));
 
-        ThreadScheduler::Get()->AddPersistentJob(std::make_shared<PersistentJob>("Render Frame", [&]() {
-            Render(); 
-        }));
+        ThreadScheduler::Get()->AddPersistentJob(std::make_shared<PersistentJob>("Render Frame", [&]() { Render(); }));
     }
 
     Engine::~Engine()

@@ -1,8 +1,8 @@
 #pragma once
-#include "Core/Singleton.h"
-#include "WorkerThread.h"
-#include "ProcessingThread.h"
 #include "Core/Constants.h"
+#include "Core/Singleton.h"
+#include "ProcessingThread.h"
+#include "WorkerThread.h"
 
 namespace fw
 {

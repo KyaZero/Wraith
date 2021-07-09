@@ -54,8 +54,8 @@ using Microsoft::WRL::WeakRef;
 #include <dubu_serialize/dubu_serialize.hpp>
 
 // Engine includes
+#include "Core/Constants.h"
 #include "Core/Logger.h"
 #include "Core/Math/Mat.h"
 #include "Core/Math/Vec.h"
 #include "Core/Types.h"
-#include "Core/Constants.h"

@@ -3,8 +3,8 @@
 
 namespace fw
 {
-	class Thread
-	{
+    class Thread
+    {
     public:
         Thread(const std::string& id);
         virtual ~Thread();
@@ -33,5 +33,5 @@ namespace fw
 
         volatile bool m_IsRunning;
         volatile bool m_ShouldRun;
-	};
-}
+    };
+}  // namespace fw

@@ -1,4 +1,5 @@
 #include "ProcessingThread.h"
+
 #include "Core/Timer.h"
 
 namespace fw

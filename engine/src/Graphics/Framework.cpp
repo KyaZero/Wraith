@@ -154,9 +154,9 @@ namespace fw
     {
         SetBackbufferAsActiveTarget();
         m_Data->context->ClearRenderTargetView(m_Data->back_buffer.Get(), &clear_color.r);
-        
+
         ProcessDebugMessages();
-    } 
+    }
 
     void Framework::EndFrame()
     {

@@ -8,7 +8,7 @@ namespace fw
         , m_Job(job)
         , m_AverageTime(0.0f)
     { }
-    
+
     f32 PersistentJob::GetAverageTime() const
     {
         return m_AverageTime;
@@ -32,12 +32,12 @@ namespace fw
 
         f32 time_taken = m_Timer.GetDeltaTime() * 1000.0f;
         f32 total_time = time_taken;
-        for (u32 i = 1; i < TimeLogSize; ++i) 
+        for (u32 i = 1; i < TimeLogSize; ++i)
         {
             total_time += m_PrevTimes[i];
             m_PrevTimes[i - 1] = m_PrevTimes[i];
         }
-        
+
         m_PrevTimes[TimeLogSize - 1] = time_taken;
         m_AverageTime = total_time / TimeLogSize;
 

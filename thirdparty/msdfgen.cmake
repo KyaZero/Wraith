@@ -4,7 +4,7 @@ include(FetchContent)
 FetchContent_Declare(
     msdfgen
     GIT_REPOSITORY  https://github.com/Chlumsky/msdfgen.git
-    GIT_TAG         3e4570f8afbe62dd3edb81d04e4b9ce63220f397
+    GIT_TAG         v1.9.1
     SOURCE_DIR      "${FETCHCONTENT_BASE_DIR}/msdfgen/msdfgen"
 )
 

@@ -32,22 +32,33 @@ namespace fw
     {
         m_Renderer->Submit(SetCameraCommand{ editor_camera, editor_camera->GetView() });
 
-        auto view = m_Registry.view<TransformComponent, SpriteComponent>();
-        for (auto& entity : view)
         {
-            auto [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
-            SpriteCommand sprite_cmd{
-                sprite.texture,
-                sprite.color,
-                { transform.position.x, transform.position.y },
-                sprite.origin,
-                { transform.scale.x, transform.scale.y },
-                transform.rotation.z,
-                sprite.layer,
-                sprite.world_space,
-            };
+            const auto view = m_Registry.view<TransformComponent, SpriteComponent>();
+            for (auto& entity : view)
+            {
+                const auto& [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
+                SpriteCommand sprite_cmd{
+                    sprite.texture,
+                    sprite.color,
+                    { transform.position.x, transform.position.y },
+                    sprite.origin,
+                    { transform.scale.x, transform.scale.y },
+                    transform.rotation.z,
+                    sprite.layer,
+                    sprite.world_space,
+                };
 
-            m_Renderer->Submit(sprite_cmd);
+                m_Renderer->Submit(sprite_cmd);
+            }
+        }
+
+        {
+            const auto view = m_Registry.view<TextComponent>();
+            for (const auto& entity : view)
+            {
+                const auto& text = view.get<TextComponent>(entity);
+                m_Renderer->Submit(TextCommand{ text.text });
+            }
         }
     }
 

@@ -45,6 +45,8 @@ namespace fw
             Camera(Mat4f::CreatePerspectiveProjection(90.0f, -16.0f / 9.0f, 0.01f, 100.0f)));
         m_CameraEntity.GetComponent<TransformComponent>().position = { 0.0f, 0.0f, -10.0f };
 
+        m_ActiveScene->CreateEntity("Text").AddComponent<TextComponent>();
+
         class CameraController : public ScriptableEntity
         {
         public:

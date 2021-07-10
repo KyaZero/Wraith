@@ -4,7 +4,7 @@ include(FetchContent)
 FetchContent_Declare(
     dubu_rect_pack
     GIT_REPOSITORY  https://github.com/Husenap/dubu-rect-pack.git
-    GIT_TAG         b7fb731
+    GIT_TAG         v1.1
 )
 
 set(dubu_rect_pack_BUILD_TESTS OFF)

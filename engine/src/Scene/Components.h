@@ -57,7 +57,7 @@ namespace fw
 
     struct TextComponent
     {
-        std::wstring text;
+        std::string text;
 
         void Serialize(dubu::serialize::ReadBuffer& buffer)
         {

@@ -70,6 +70,11 @@ namespace fw
             auto& tag = entity.GetComponent<TagComponent>().tag;
             ImGui::InputText("Tag", &tag);
         }
+        if (entity.HasComponent<TextComponent>())
+        {
+            auto& text = entity.GetComponent<TextComponent>().text;
+            ImGui::InputText("Text", &text);
+        }
 
         if (entity.HasComponent<TransformComponent>())
         {

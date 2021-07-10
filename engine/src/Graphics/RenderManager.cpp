@@ -72,5 +72,6 @@ namespace fw
         std::swap(m_RenderCommands[CURRENT_FRAME], m_RenderCommands[NEXT_FRAME]);
         m_RenderCommands[NEXT_FRAME].clear();
         m_SpriteRenderer.Flip();
+        m_TextRenderer.Flip();
     }
 }  // namespace fw

@@ -38,7 +38,6 @@ struct overloaded : Ts...
 #include <d3dcompiler.h>
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
-using Microsoft::WRL::WeakRef;
 
 #ifdef min
 #undef min

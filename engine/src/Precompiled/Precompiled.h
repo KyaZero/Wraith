@@ -57,4 +57,5 @@ using Microsoft::WRL::ComPtr;
 #include "Core/Logger.h"
 #include "Core/Math/Mat.h"
 #include "Core/Math/Vec.h"
+#include "Core/StringID.h"
 #include "Core/Types.h"

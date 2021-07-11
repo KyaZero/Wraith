@@ -3,13 +3,13 @@
 #include <variant>
 
 #include "Camera.h"
-#include "TextureID.h"
+#include "Core/StringID.h"
 
 namespace fw
 {
     struct SpriteCommand
     {
-        TextureID texture;
+        StringID texture;
         Vec4f color;
         Vec2f position;
         Vec2f origin;
@@ -28,6 +28,7 @@ namespace fw
     struct TextCommand
     {
         std::string text;
+        StringID font_id;
     };
 
     using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand>;

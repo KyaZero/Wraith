@@ -38,14 +38,14 @@ namespace fw
             {
                 const auto& [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
                 SpriteCommand sprite_cmd{
-                    sprite.texture,
-                    sprite.color,
-                    { transform.position.x, transform.position.y },
-                    sprite.origin,
-                    { transform.scale.x, transform.scale.y },
-                    transform.rotation.z,
-                    sprite.layer,
-                    sprite.world_space,
+                    .texture = sprite.texture,
+                    .color = sprite.color,
+                    .position = { transform.position.x, transform.position.y },
+                    .origin = sprite.origin,
+                    .scale = { transform.scale.x, transform.scale.y },
+                    .rotation = transform.rotation.z,
+                    .layer = sprite.layer,
+                    .world_space = sprite.world_space,
                 };
 
                 m_Renderer->Submit(sprite_cmd);
@@ -57,7 +57,10 @@ namespace fw
             for (const auto& entity : view)
             {
                 const auto& text = view.get<TextComponent>(entity);
-                m_Renderer->Submit(TextCommand{ text.text });
+                m_Renderer->Submit(TextCommand{
+                    .text = text.text,
+                    .font_id = text.font_id,
+                });
             }
         }
     }

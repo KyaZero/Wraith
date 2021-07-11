@@ -7,8 +7,8 @@
 
 namespace fw
 {
-    static const std::filesystem::path iniFilePath = std::filesystem::temp_directory_path() / "2DGE/imgui.ini";
-    static const std::string iniFileString = iniFilePath.generic_string();
+    const static auto INI_FILE_PATH = TEMP_DIRECTORY / "imgui.ini";
+    const static auto INI_FILE_STRING = INI_FILE_PATH.generic_string();
 
     ImguiLayer::ImguiLayer(Framework& framework, Window& window)
         : m_Framework(framework)
@@ -24,12 +24,12 @@ namespace fw
         // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
         // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
-        if (!std::filesystem::exists(iniFilePath))
+        if (!std::filesystem::exists(INI_FILE_PATH))
         {
-            std::filesystem::create_directories(iniFilePath.parent_path());
-            std::filesystem::copy("imgui.ini", iniFilePath);
+            std::filesystem::create_directories(INI_FILE_PATH.parent_path());
+            std::filesystem::copy("imgui.ini", INI_FILE_PATH);
         }
-        io.IniFilename = iniFileString.c_str();
+        io.IniFilename = INI_FILE_STRING.c_str();
 
         ImGui::StyleColorsDark();
 

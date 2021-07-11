@@ -3,6 +3,7 @@
 #include <imgui/imgui.h>
 #include <imgui/misc/cpp/imgui_stdlib.h>
 
+#include "Core/StringID.h"
 #include "Scene/Components.h"
 
 namespace fw
@@ -72,8 +73,12 @@ namespace fw
         }
         if (entity.HasComponent<TextComponent>())
         {
-            auto& text = entity.GetComponent<TextComponent>().text;
-            ImGui::InputText("Text", &text);
+            auto& textComponent = entity.GetComponent<TextComponent>();
+            ImGui::InputText("Text", &textComponent.text);
+            if (ImGui::InputText("Font", &textComponent.font))
+            {
+                textComponent.font_id = StringID(textComponent.font);
+            }
         }
 
         if (entity.HasComponent<TransformComponent>())

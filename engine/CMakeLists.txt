@@ -26,15 +26,19 @@ set(common_files
   "src/Core/Logger.cpp"
   "src/Core/Logger.h"
   "src/Core/Singleton.h"
+  "src/Core/StringID.h"
   "src/Core/Timer.h"
   "src/Core/Types.h")
 
 set(graphics_files
+  "src/Graphics/Text/Font.h"
+  "src/Graphics/Text/Font.cpp"
+  "src/Graphics/Text/FontManager.h"
+  "src/Graphics/Text/FontManager.cpp"
   "src/Graphics/ContentManager.h"
   "src/Graphics/ContentManager.cpp"
   "src/Graphics/TextureManager.h"
   "src/Graphics/TextureManager.cpp"
-  "src/Graphics/TextureID.h"
   "src/Graphics/OrthographicCameraController.h"
   "src/Graphics/OrthographicCameraController.cpp"
   "src/Graphics/OrthographicCamera.h"

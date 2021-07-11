@@ -4,7 +4,7 @@
 
 namespace fw
 {
-    const Texture& TextureManager::GetTexture(TextureID id)
+    const Texture& TextureManager::GetTexture(StringID id)
     {
         auto it = m_TextureMap.find(id);
         if (it == m_TextureMap.end())

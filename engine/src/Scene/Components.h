@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Core/Math/Vec.h"
+#include "Core/StringID.h"
 #include "Graphics/Camera.h"
-#include "Graphics/TextureID.h"
 #include "ScriptableEntity.h"
 
 namespace fw
@@ -39,7 +39,7 @@ namespace fw
 
     struct SpriteComponent
     {
-        TextureID texture;
+        StringID texture;
         Vec4f color{ 1, 1, 1, 1 };
         Vec2f origin{ 0, 0 };
         f32 layer{ 0 };
@@ -58,14 +58,16 @@ namespace fw
     struct TextComponent
     {
         std::string text;
+        std::string font = "assets/engine/fonts/Roboto-Regular.ttf";
+        StringID font_id = StringID(font);
 
         void Serialize(dubu::serialize::ReadBuffer& buffer)
         {
-            buffer >> text;
+            buffer >> text >> font;
         }
         void Serialize(dubu::serialize::WriteBuffer& buffer)
         {
-            buffer << text;
+            buffer << text << font;
         }
     };
 

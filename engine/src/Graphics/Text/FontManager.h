@@ -17,6 +17,8 @@ namespace fw
         {
             Vec2f uv_offset;
             Vec2f uv_scale;
+            Vec2f offset;
+            f32 advance;
         };
 
     public:
@@ -26,6 +28,8 @@ namespace fw
         bool Init();
 
         std::optional<GlyphData> GetGlyph(StringID font_id, u16 c);
+        f32 GetSpaceWidth(StringID font_id);
+        f32 GetLineHeight(StringID font_id);
 
         const Texture& GetAtlas() const
         {
@@ -33,6 +37,7 @@ namespace fw
         }
 
     private:
+        Font* GetFont(StringID font_id);
         bool LoadFont(StringID font_id);
 
         std::optional<GlyphData> LoadGlyph(StringID font_id, u16 c);

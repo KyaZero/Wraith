@@ -35,6 +35,12 @@ namespace fw
         bool m_IsPlaying;
         entt::registry m_Registry;
 
-        Archiver<TagComponent, TransformComponent, SpriteComponent, CameraComponent, NativeScriptComponent> m_Archiver;
+        Archiver<TagComponent,
+                 TransformComponent,
+                 SpriteComponent,
+                 TextComponent,
+                 CameraComponent,
+                 NativeScriptComponent>
+            m_Archiver;
     };
 }  // namespace fw

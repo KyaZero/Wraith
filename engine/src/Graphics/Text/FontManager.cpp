@@ -45,17 +45,40 @@ namespace fw
             return it->second;
         }
 
+        if (auto font = GetFont(font_id); font)
+        {
+            const auto [it, inserted] = m_Glyphs.emplace(std::make_pair(font_id, c), LoadGlyph(font_id, c));
+            return it->second;
+        }
+
+        return std::nullopt;
+    }
+
+    f32 FontManager::GetSpaceWidth(StringID font_id)
+    {
+        if (auto font = GetFont(font_id); font)
+            return font->GetSpaceWidth() / ATLAS_SIZE;
+        return 0.f;
+    }
+
+    f32 FontManager::GetLineHeight(StringID font_id)
+    {
+        if (auto font = GetFont(font_id); font)
+            return font->GetLineHeight() / ATLAS_SIZE;
+        return 0.f;
+    }
+
+    Font* FontManager::GetFont(StringID font_id)
+    {
         if (auto it = m_Fonts.find(font_id); it == m_Fonts.end())
         {
             if (!LoadFont(font_id))
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
-
-        return m_Glyphs.emplace(std::make_pair(font_id, c), LoadGlyph(font_id, c)).first->second;
+        return &m_Fonts[font_id];
     }
-
     bool FontManager::LoadFont(StringID font_id)
     {
         auto path = ContentManager::Get()->GetPath(font_id);
@@ -89,11 +112,14 @@ namespace fw
         if (!glyph)
             return std::nullopt;
 
-        m_Atlas.Blit(glyph->bitmap.data(), rect->x, rect->y, glyph->width, glyph->height, glyph->stride);
+        m_Atlas.Blit(glyph->bitmap.data(), rect->x, rect->y, shape->width, shape->height, glyph->stride);
 
+        const auto bounds = shape->shape.getBounds();
         return GlyphData{
             .uv_offset = { static_cast<f32>(rect->x) / ATLAS_SIZE, static_cast<f32>(rect->y) / ATLAS_SIZE },
-            .uv_scale = { static_cast<f32>(glyph->width) / ATLAS_SIZE, static_cast<f32>(glyph->height) / ATLAS_SIZE },
+            .uv_scale = { static_cast<f32>(shape->width) / ATLAS_SIZE, static_cast<f32>(shape->height) / ATLAS_SIZE },
+            .offset = shape->offset / ATLAS_SIZE,
+            .advance = static_cast<f32>(shape->advance) / ATLAS_SIZE,
         };
     }
 }  // namespace fw

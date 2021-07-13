@@ -34,9 +34,9 @@ namespace fw
 
         {
             const auto view = m_Registry.view<TransformComponent, SpriteComponent>();
-            for (auto& entity : view)
+            for (const auto entity : view)
             {
-                const auto& [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
+                const auto [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
                 SpriteCommand sprite_cmd{
                     .texture = sprite.texture,
                     .color = sprite.color,
@@ -54,7 +54,7 @@ namespace fw
 
         {
             const auto view = m_Registry.view<TextComponent>();
-            for (const auto& entity : view)
+            for (const auto entity : view)
             {
                 const auto& text = view.get<TextComponent>(entity);
                 m_Renderer->Submit(TextCommand{
@@ -77,10 +77,10 @@ namespace fw
 
         Camera* main_camera = nullptr;
         Mat4f camera_transform;
-        auto cameras = m_Registry.view<TransformComponent, CameraComponent>();
-        for (auto& entity : cameras)
+        const auto cameras = m_Registry.view<TransformComponent, CameraComponent>();
+        for (const auto entity : cameras)
         {
-            auto [transform, camera] = cameras.get<TransformComponent, CameraComponent>(entity);
+            const auto [transform, camera] = cameras.get<TransformComponent, CameraComponent>(entity);
 
             if (camera.primary)
             {
@@ -93,22 +93,36 @@ namespace fw
         {
             m_Renderer->Submit(SetCameraCommand{ main_camera, Mat4f::FastInverse(camera_transform) });
 
-            auto view = m_Registry.view<TransformComponent, SpriteComponent>();
-            for (auto& entity : view)
             {
-                auto [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
-                SpriteCommand sprite_cmd{
-                    sprite.texture,
-                    sprite.color,
-                    { transform.position.x, transform.position.y },
-                    sprite.origin,
-                    { transform.scale.x, transform.scale.y },
-                    transform.rotation.z,
-                    sprite.layer,
-                    sprite.world_space,
-                };
+                const auto view = m_Registry.view<TransformComponent, SpriteComponent>();
+                for (const auto entity : view)
+                {
+                    const auto [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
+                    SpriteCommand sprite_cmd{
+                        .texture = sprite.texture,
+                        .color = sprite.color,
+                        .position = { transform.position.x, transform.position.y },
+                        .origin = sprite.origin,
+                        .scale = { transform.scale.x, transform.scale.y },
+                        .rotation = transform.rotation.z,
+                        .layer = sprite.layer,
+                        .world_space = sprite.world_space,
+                    };
 
-                m_Renderer->Submit(sprite_cmd);
+                    m_Renderer->Submit(sprite_cmd);
+                }
+            }
+        }
+
+        {
+            const auto view = m_Registry.view<TextComponent>();
+            for (const auto entity : view)
+            {
+                const auto& text = view.get<TextComponent>(entity);
+                m_Renderer->Submit(TextCommand{
+                    .text = text.text,
+                    .font_id = text.font_id,
+                });
             }
         }
     }

@@ -74,7 +74,7 @@ namespace fw
         if (entity.HasComponent<TextComponent>())
         {
             auto& textComponent = entity.GetComponent<TextComponent>();
-            ImGui::InputText("Text", &textComponent.text);
+            ImGui::InputTextMultiline("Text", &textComponent.text);
             if (ImGui::InputText("Font", &textComponent.font))
             {
                 textComponent.font_id = StringID(textComponent.font);

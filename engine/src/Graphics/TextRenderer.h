@@ -4,6 +4,7 @@
 #include <msdfgen/msdfgen-ext.h>
 #include <msdfgen/msdfgen.h>
 
+#include "Graphics/BlendState.h"
 #include "Graphics/Buffer.h"
 #include "Graphics/RenderCommand.h"
 #include "Graphics/Sampler.h"
@@ -15,6 +16,15 @@ namespace fw
 {
     class TextRenderer
     {
+        constexpr static u32 MAX_INSTANCES = 1024;
+        struct InstanceData
+        {
+            Vec2f uv_offset;
+            Vec2f uv_scale;
+            Vec2f offset;
+            Vec2f position;
+        };
+
     public:
         TextRenderer();
         ~TextRenderer();
@@ -34,7 +44,9 @@ namespace fw
         Shader m_TextShader;
         Buffer m_IndexBuffer;
         Buffer m_VertexBuffer;
+        Buffer m_InstanceBuffer;
         Sampler m_Sampler;
+        BlendState m_BlendState;
 
         FontManager m_FontManager;
     };

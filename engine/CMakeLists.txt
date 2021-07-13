@@ -31,10 +31,12 @@ set(common_files
   "src/Core/Types.h")
 
 set(graphics_files
-  "src/Graphics/Text/Font.h"
   "src/Graphics/Text/Font.cpp"
-  "src/Graphics/Text/FontManager.h"
+  "src/Graphics/Text/Font.h"
   "src/Graphics/Text/FontManager.cpp"
+  "src/Graphics/Text/FontManager.h"
+  "src/Graphics/BlendState.cpp"
+  "src/Graphics/BlendState.h"
   "src/Graphics/ContentManager.h"
   "src/Graphics/ContentManager.cpp"
   "src/Graphics/TextureManager.h"
@@ -132,7 +134,7 @@ target_link_libraries(${target_name} PUBLIC
     glfw
     color-console
     dubu_serialize
-    dubu_rect_pack
+    dubu::rect_pack
     msdfgen::msdfgen
     msdfgen::msdfgen-ext)
 

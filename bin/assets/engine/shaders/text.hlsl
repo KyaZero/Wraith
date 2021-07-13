@@ -4,14 +4,33 @@
 Texture2D<float3> AtlasTexture : register(t0);
 SamplerState DefaultSampler : register(s0);
 
+struct InstanceBuffer
+{
+    float2 UvOffset;
+    float2 UvScale;
+    float2 Offset;
+    float2 Position;
+};
+
+StructuredBuffer<InstanceBuffer> InstanceData : register(t1);
+
 float median(float r, float g, float b) {
     return max(min(r, g), min(max(r, g), b));
 }
 
 void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_InstanceID)
 {
-    output.position = float4(input.position.xy*2-1, 0.0, 1.0);
-    output.uv = input.uv;
+    const float2 uv_scale = InstanceData[instance_ID].UvScale;
+    const float2 uv_offset = InstanceData[instance_ID].UvOffset;
+    const float2 offset = InstanceData[instance_ID].Offset;
+    const float2 position = InstanceData[instance_ID].Position;
+
+    output.position = float4(input.position.xy, 0.0, 1.0);
+    output.position.xy *= uv_scale;
+    output.position.xy += offset;
+    output.position.xy += position;
+
+    output.uv = input.uv * uv_scale + uv_offset;
 }
 
 float screenPxRange(float2 texcoord) {
@@ -28,6 +47,5 @@ void PSMain(in PixelInput input, out PixelOutput output)
     float screenPxDistance = screenPxRange(input.uv)*(sd-0.5);
     float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
 
-    output.color.rgb = opacity;
-    output.color.a = 1.0;
+    output.color.rgba = opacity;
 }

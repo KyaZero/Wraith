@@ -17,23 +17,12 @@ namespace fw
             u32 height;
             msdfgen::Shape shape;
             double advance;
+            Vec2f offset;
         };
         struct GlyphData
         {
-            u32 width;
-            u32 height;
             std::vector<u8> bitmap;
             u32 stride;
-            double advance;
-
-            void Serialize(dubu::serialize::ReadBuffer& buffer)
-            {
-                buffer >> width >> height >> bitmap >> stride >> advance;
-            }
-            void Serialize(dubu::serialize::WriteBuffer& buffer) const
-            {
-                buffer << width << height << bitmap << stride << advance;
-            }
         };
 
     public:
@@ -45,10 +34,20 @@ namespace fw
         std::optional<ShapeData> LoadShape(u16 c);
         std::optional<GlyphData> GenerateGlyph(ShapeData& shape_data);
 
+        f32 GetSpaceWidth() const
+        {
+            return m_SpaceWidth;
+        }
+        f32 GetLineHeight() const
+        {
+            return static_cast<f32>(m_FontMetrics.lineHeight * m_FontScale);
+        }
+
     private:
         msdfgen::FreetypeHandle* m_FreetypeHandle;
         msdfgen::FontHandle* m_FontHandle;
         msdfgen::FontMetrics m_FontMetrics;
         f32 m_FontScale;
+        f32 m_SpaceWidth;
     };
 }  // namespace fw

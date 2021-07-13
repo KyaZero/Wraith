@@ -4,6 +4,14 @@
 Texture2D<float3> AtlasTexture : register(t0);
 SamplerState DefaultSampler : register(s0);
 
+cbuffer BufferData : register(b0)
+{
+    float PixelRange;
+    float FontSize;
+    float AtlasSize;
+    float _Padding;
+};
+
 struct InstanceBuffer
 {
     float2 UvOffset;
@@ -11,7 +19,6 @@ struct InstanceBuffer
     float2 Offset;
     float2 Position;
 };
-
 StructuredBuffer<InstanceBuffer> InstanceData : register(t1);
 
 float median(float r, float g, float b) {
@@ -29,13 +36,13 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     output.position.xy *= uv_scale;
     output.position.xy += offset;
     output.position.xy += position;
+    output.position.xy *= AtlasSize / FontSize;
 
     output.uv = input.uv * uv_scale + uv_offset;
 }
 
 float screenPxRange(float2 texcoord) {
-    float pxRange = 2.0;
-    float2 unitRange = pxRange/256.0;
+    float2 unitRange = PixelRange/(AtlasSize*2.0);
     float2 screenTexSize = 1.0/fwidth(texcoord);
     return max(0.5*dot(unitRange, screenTexSize), 1.0);
 }

@@ -7,6 +7,7 @@ namespace fw
 {
     class Font
     {
+    public:
         constexpr static f32 FONT_SIZE = 20.f;
         constexpr static i32 SDF_RANGE = 2;
 

@@ -10,7 +10,8 @@ namespace fw
 {
     class FontManager
     {
-        constexpr static u32 ATLAS_SIZE = 256;
+    public:
+        constexpr static u32 ATLAS_SIZE = 1024;
 
     public:
         struct GlyphData

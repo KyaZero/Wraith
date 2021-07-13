@@ -43,6 +43,7 @@ namespace fw
             sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
         m_InstanceBuffer.Init(
             MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
+        m_ConstantBuffer.Init(sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant);
 
         m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
 
@@ -88,6 +89,13 @@ namespace fw
             }
         }
 
+        m_ConstantBuffer.SetData(ConstantBufferData{
+            .pixel_range = Font::SDF_RANGE,
+            .font_size = Font::FONT_SIZE,
+            .atlas_size = FontManager::ATLAS_SIZE,
+        });
+
+        m_ConstantBuffer.Bind(0);
         m_TextShader.Bind();
         m_Sampler.Bind(0);
         m_FontManager.GetAtlas().Bind(0);

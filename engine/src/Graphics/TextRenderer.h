@@ -24,6 +24,13 @@ namespace fw
             Vec2f offset;
             Vec2f position;
         };
+        struct ConstantBufferData
+        {
+            float pixel_range;
+            float font_size;
+            float atlas_size;
+            float _padding;
+        };
 
     public:
         TextRenderer();
@@ -45,6 +52,7 @@ namespace fw
         Buffer m_IndexBuffer;
         Buffer m_VertexBuffer;
         Buffer m_InstanceBuffer;
+        Buffer m_ConstantBuffer;
         Sampler m_Sampler;
         BlendState m_BlendState;
 

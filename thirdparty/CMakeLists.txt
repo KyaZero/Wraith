@@ -2,6 +2,7 @@ include(FetchContent)
 
 # text rendering
 include("freetype.cmake")
+include("harfbuzz.cmake")
 include("msdfgen.cmake")
 include("dubu_rect_pack.cmake")
 

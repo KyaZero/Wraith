@@ -8,7 +8,6 @@ namespace fw
     const static auto FONT_CACHE_DIR = TEMP_DIRECTORY / "font_cache";
 
     FontManager::FontManager()
-        : m_Packer(ATLAS_SIZE, ATLAS_SIZE)
     { }
 
     FontManager::~FontManager()
@@ -27,6 +26,10 @@ namespace fw
         if (!m_FreetypeHandle)
             return false;
 
+        m_DefaultFont = std::make_unique<Font>(m_FreetypeHandle);
+        if (!m_DefaultFont->Init("assets/engine/fonts/roboto-regular.ttf"))
+            return false;
+
         m_Atlas.Create(TextureCreateInfo{
             .size = { ATLAS_SIZE, ATLAS_SIZE },
             .format = ImageFormat::R32G32B32A32_FLOAT,
@@ -35,10 +38,12 @@ namespace fw
         });
         SetDebugObjectName(m_Atlas.GetTexture(), "FontAtlas");
 
+        m_Packer = std::make_unique<dubu::rect_pack::Packer>(ATLAS_SIZE, ATLAS_SIZE);
+
         return true;
     }
 
-    std::optional<FontManager::GlyphData> FontManager::GetGlyph(StringID font_id, u16 c)
+    std::optional<FontManager::GlyphData> FontManager::GetGlyph(StringID font_id, u32 c)
     {
         if (auto it = m_Glyphs.find({ font_id, c }); it != m_Glyphs.end())
         {
@@ -47,11 +52,18 @@ namespace fw
 
         if (auto font = GetFont(font_id); font)
         {
-            const auto [it, inserted] = m_Glyphs.emplace(std::make_pair(font_id, c), LoadGlyph(font_id, c));
+            const auto [it, inserted] = m_Glyphs.emplace(std::make_pair(font_id, c), LoadGlyph(font, c));
             return it->second;
         }
 
         return std::nullopt;
+    }
+
+    std::vector<Font::ShapedGlyph> FontManager::ShapeText(StringID font_id, std::string_view text)
+    {
+        if (auto font = GetFont(font_id); font)
+            return font->ShapeText(text);
+        return {};
     }
 
     f32 FontManager::GetSpaceWidth(StringID font_id)
@@ -68,13 +80,20 @@ namespace fw
         return 0.f;
     }
 
+    f32 FontManager::GetKerning(StringID font_id, u32 a, u32 b)
+    {
+        if (auto font = GetFont(font_id); font)
+            return font->GetKerning(a, b) / ATLAS_SIZE;
+        return 0.f;
+    }
+
     Font* FontManager::GetFont(StringID font_id)
     {
         if (auto it = m_Fonts.find(font_id); it == m_Fonts.end())
         {
             if (!LoadFont(font_id))
             {
-                return nullptr;
+                return m_DefaultFont.get();
             }
         }
         return &m_Fonts[font_id];
@@ -96,19 +115,18 @@ namespace fw
         return true;
     }
 
-    std::optional<FontManager::GlyphData> FontManager::LoadGlyph(StringID font_id, u16 c)
+    std::optional<FontManager::GlyphData> FontManager::LoadGlyph(Font* font, u32 c)
     {
-        auto& font = m_Fonts[font_id];
-        auto shape = font.LoadShape(c);
+        auto shape = font->LoadShape(c);
         if (!shape)
             return std::nullopt;
 
         // 1px padding in atlas to avoid bleeding from other glyphs
-        const auto rect = m_Packer.Pack({ shape->width + 1, shape->height + 1 });
+        const auto rect = m_Packer->Pack({ shape->width + 1, shape->height + 1 });
         if (!rect)
             return std::nullopt;
 
-        const auto glyph = font.GenerateGlyph(*shape);
+        const auto glyph = font->GenerateGlyph(*shape);
         if (!glyph)
             return std::nullopt;
 

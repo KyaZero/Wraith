@@ -28,9 +28,13 @@ namespace fw
 
         bool Init();
 
-        std::optional<GlyphData> GetGlyph(StringID font_id, u16 c);
+        std::optional<GlyphData> GetGlyph(StringID font_id, u32 c);
+
+        std::vector<Font::ShapedGlyph> ShapeText(StringID font_id, std::string_view text);
+
         f32 GetSpaceWidth(StringID font_id);
         f32 GetLineHeight(StringID font_id);
+        f32 GetKerning(StringID font_id, u32 a, u32 b);
 
         const Texture& GetAtlas() const
         {
@@ -41,12 +45,13 @@ namespace fw
         Font* GetFont(StringID font_id);
         bool LoadFont(StringID font_id);
 
-        std::optional<GlyphData> LoadGlyph(StringID font_id, u16 c);
+        std::optional<GlyphData> LoadGlyph(Font* font, u32 c);
 
         msdfgen::FreetypeHandle* m_FreetypeHandle;
-        dubu::rect_pack::Packer m_Packer;
-        std::unordered_map<std::pair<StringID, u16>, std::optional<GlyphData>> m_Glyphs;
+        std::unique_ptr<dubu::rect_pack::Packer> m_Packer;
+        std::unordered_map<std::pair<StringID, u32>, std::optional<GlyphData>> m_Glyphs;
         std::unordered_map<StringID, Font> m_Fonts;
+        std::unique_ptr<Font> m_DefaultFont;
         Texture m_Atlas;
     };
 }  // namespace fw

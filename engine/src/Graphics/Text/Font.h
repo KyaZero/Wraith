@@ -1,5 +1,6 @@
 #pragma once
 
+#include <hb.h>
 #include <msdfgen/msdfgen-ext.h>
 #include <msdfgen/msdfgen.h>
 
@@ -25,6 +26,11 @@ namespace fw
             std::vector<u8> bitmap;
             u32 stride;
         };
+        struct ShapedGlyph
+        {
+            u32 glyph_id;
+            Vec2f position;
+        };
 
     public:
         Font(msdfgen::FreetypeHandle* freetypeHandle = nullptr);
@@ -32,8 +38,10 @@ namespace fw
         bool Init(std::filesystem::path fontPath);
         void Release();
 
-        std::optional<ShapeData> LoadShape(u16 c);
+        std::optional<ShapeData> LoadShape(u32 c);
         std::optional<GlyphData> GenerateGlyph(ShapeData& shape_data);
+
+        std::vector<ShapedGlyph> ShapeText(std::string_view text);
 
         f32 GetSpaceWidth() const
         {
@@ -43,6 +51,12 @@ namespace fw
         {
             return static_cast<f32>(m_FontMetrics.lineHeight * m_FontScale);
         }
+        f32 GetKerning(u32 a, u32 b) const
+        {
+            double kerning;
+            msdfgen::getKerning(kerning, m_FontHandle, a, b);
+            return static_cast<f32>(kerning * m_FontScale);
+        }
 
     private:
         msdfgen::FreetypeHandle* m_FreetypeHandle;
@@ -50,5 +64,14 @@ namespace fw
         msdfgen::FontMetrics m_FontMetrics;
         f32 m_FontScale;
         f32 m_SpaceWidth;
+
+        struct HarfBuzz
+        {
+            hb_buffer_t* buffer = nullptr;
+            hb_blob_t* blob = nullptr;
+            hb_face_t* face = nullptr;
+            hb_font_t* font = nullptr;
+            Vec2f scale;
+        } m_HarfBuzz;
     };
 }  // namespace fw

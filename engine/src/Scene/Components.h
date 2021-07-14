@@ -57,8 +57,8 @@ namespace fw
 
     struct TextComponent
     {
-        std::string text = "hejsan kompis";
-        std::string font = "assets/engine/fonts/Roboto-Regular.ttf";
+        std::string text = "hi there";
+        std::string font = "";
         StringID font_id = StringID(font);
 
         void Serialize(dubu::serialize::ReadBuffer& buffer)

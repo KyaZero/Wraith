@@ -56,19 +56,44 @@ namespace fw
     }
     void TextRenderer::Render()
     {
-        f32 advance = 0.f;
-        f32 baseline = 0.f;
         std::vector<InstanceData> instances;
         for (const auto& command : m_TextCommands[CURRENT_FRAME])
         {
-            for (const auto& c : command.text)
+            const auto shapedGlyphs = m_FontManager.ShapeText(command.font_id, command.text);
+            for (const auto& sg : shapedGlyphs)
             {
-                if (c == ' ' || c == '\t')
+                auto glyph = m_FontManager.GetGlyph(command.font_id, sg.glyph_id);
+                if (!glyph)
+                    continue;
+
+                instances.push_back(InstanceData{
+                    .uv_offset = glyph->uv_offset,
+                    .uv_scale = glyph->uv_scale,
+                    .offset = glyph->offset,
+                    .position = sg.position,
+                });
+            }
+
+            /*
+            f32 advance = 0.f;
+            f32 baseline = 0.f;
+
+            const std::u16string text =
+                std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}.from_bytes(command.text);
+
+            char16_t previous = 0;
+            for (const auto c : text)
+            {
+                if (previous != 0)
+                    advance += m_FontManager.GetKerning(command.font_id, previous, c);
+                previous = c;
+
+                if (c == L' ' || c == L'\t')
                 {
                     advance += m_FontManager.GetSpaceWidth(command.font_id);
                     continue;
                 }
-                if (c == '\n')
+                if (c == L'\n')
                 {
                     advance = 0.f;
                     baseline += m_FontManager.GetLineHeight(command.font_id);
@@ -87,6 +112,7 @@ namespace fw
                 });
                 advance += glyph->advance;
             }
+            */
         }
 
         m_ConstantBuffer.SetData(ConstantBufferData{

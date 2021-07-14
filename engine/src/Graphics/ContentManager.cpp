@@ -6,12 +6,17 @@ namespace fw
     {
         auto fs_path = std::filesystem::path(path);
 
-        if (std::filesystem::exists(fs_path))
+        try
         {
-            auto hash = std::filesystem::hash_value(path);
-            m_Paths[hash] = fs_path;
-            return hash;
+            if (std::filesystem::exists(fs_path))
+            {
+                auto hash = std::filesystem::hash_value(path);
+                m_Paths[hash] = fs_path;
+                return hash;
+            }
         }
+        catch (const std::exception&)
+        { }
 
         return NullId;
     }

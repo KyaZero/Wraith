@@ -54,68 +54,56 @@ namespace fw
     {
         m_TextCommands[NEXT_FRAME].push_back(command);
     }
-    void TextRenderer::Render()
+    void TextRenderer::Render(const Vec2f& viewport_size)
     {
         std::vector<InstanceData> instances;
         for (const auto& command : m_TextCommands[CURRENT_FRAME])
         {
-            const auto shapedGlyphs = m_FontManager.ShapeText(command.font_id, command.text);
-            for (const auto& sg : shapedGlyphs)
-            {
-                auto glyph = m_FontManager.GetGlyph(command.font_id, sg.glyph_id);
-                if (!glyph)
-                    continue;
+            std::string_view text = command.text;
 
-                instances.push_back(InstanceData{
-                    .uv_offset = glyph->uv_offset,
-                    .uv_scale = glyph->uv_scale,
-                    .offset = glyph->offset,
-                    .position = sg.position,
-                });
+            std::vector<Font::DisplayData> displayData;
+            while (!text.empty())
+            {
+                auto split_pos = text.find('\n');
+                displayData.push_back(m_FontManager.ShapeText(command.font_id, text.substr(0, split_pos)));
+
+                if (split_pos == text.npos)
+                    break;
+                text = text.substr(split_pos + 1);
             }
 
-            /*
-            f32 advance = 0.f;
-            f32 baseline = 0.f;
-
-            const std::u16string text =
-                std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}.from_bytes(command.text);
-
-            char16_t previous = 0;
-            for (const auto c : text)
+            const f32 line_height = m_FontManager.GetLineHeight(command.font_id);
+            const f32 total_height = line_height * displayData.size();
+            f32 total_width = 0.f;
+            for (const auto& [_, size] : displayData)
             {
-                if (previous != 0)
-                    advance += m_FontManager.GetKerning(command.font_id, previous, c);
-                previous = c;
-
-                if (c == L' ' || c == L'\t')
-                {
-                    advance += m_FontManager.GetSpaceWidth(command.font_id);
-                    continue;
-                }
-                if (c == L'\n')
-                {
-                    advance = 0.f;
-                    baseline += m_FontManager.GetLineHeight(command.font_id);
-                    continue;
-                }
-
-                auto glyph = m_FontManager.GetGlyph(command.font_id, c);
-                if (!glyph)
-                    continue;
-
-                instances.push_back(InstanceData{
-                    .uv_offset = glyph->uv_offset,
-                    .uv_scale = glyph->uv_scale,
-                    .offset = glyph->offset,
-                    .position = { advance, -baseline },
-                });
-                advance += glyph->advance;
+                total_width = Max(total_width, size.x);
             }
-            */
+
+            float baseline = line_height;
+            for (const auto& [shaped_glyphs, size] : displayData)
+            {
+                for (const auto& sg : shaped_glyphs)
+                {
+                    const auto glyph = m_FontManager.GetGlyph(command.font_id, sg.glyph_id);
+                    if (!glyph)
+                        continue;
+
+                    instances.push_back(InstanceData{
+                        .uv_offset = glyph->uv_offset,
+                        .uv_scale = glyph->uv_scale,
+                        .offset = glyph->offset,
+                        .position = sg.position - Vec2f(size.x * command.justification, baseline) +
+                                    Vec2f(total_width * command.justification, total_height * command.alignment),
+                        .font_scale = static_cast<f32>(command.font_size) / Font::FONT_SIZE,
+                    });
+                }
+                baseline += line_height;
+            }
         }
 
         m_ConstantBuffer.SetData(ConstantBufferData{
+            .projection = Mat4f::CreateOrthographicProjection(0, viewport_size.x, -viewport_size.y, 0, 0.f, 1.f),
             .pixel_range = Font::SDF_RANGE,
             .font_size = Font::FONT_SIZE,
             .atlas_size = FontManager::ATLAS_SIZE,

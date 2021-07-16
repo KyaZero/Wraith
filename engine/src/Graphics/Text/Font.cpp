@@ -116,15 +116,23 @@ namespace fw
         return glyph_data;
     }
 
-    std::vector<Font::ShapedGlyph> Font::ShapeText(std::string_view text)
+    Font::DisplayData Font::ShapeText(std::string_view text)
     {
-        hb_buffer_clear_contents(m_HarfBuzz.buffer);
-        hb_buffer_add_utf8(m_HarfBuzz.buffer, text.data(), -1, 0, -1);
+        m_FriBidi.logical.resize(text.size() * 2);
+        m_FriBidi.visual.resize(text.size() * 2);
 
+        FriBidiStrIndex len = fribidi_charset_to_unicode(FriBidiCharSet::FRIBIDI_CHAR_SET_UTF8,
+                                                         text.data(),
+                                                         static_cast<FriBidiStrIndex>(text.size()),
+                                                         m_FriBidi.logical.data());
+        FriBidiParType par_type = FRIBIDI_TYPE_LTR;
+        fribidi_log2vis(m_FriBidi.logical.data(), len, &par_type, m_FriBidi.visual.data(), nullptr, nullptr, nullptr);
+
+        hb_buffer_clear_contents(m_HarfBuzz.buffer);
+        hb_buffer_add_utf32(m_HarfBuzz.buffer, m_FriBidi.visual.data(), len, 0, len);
+
+        hb_buffer_set_direction(m_HarfBuzz.buffer, HB_DIRECTION_LTR);
         hb_buffer_guess_segment_properties(m_HarfBuzz.buffer);
-        // hb_buffer_set_direction(m_HarfBuzz.buffer, HB_DIRECTION_LTR);
-        // hb_buffer_set_script(m_HarfBuzz.buffer, HB_SCRIPT_COMMON);
-        // hb_buffer_set_language(m_HarfBuzz.buffer, hb_language_from_string("en", -1));
 
         hb_shape(m_HarfBuzz.font, m_HarfBuzz.buffer, nullptr, 0);
 
@@ -154,7 +162,7 @@ namespace fw
             cursor_y += y_advance;
         }
 
-        return shapedGlyphs;
+        return { shapedGlyphs, Vec2f(cursor_x, cursor_y) / m_HarfBuzz.scale };
     }
 
 }  // namespace fw

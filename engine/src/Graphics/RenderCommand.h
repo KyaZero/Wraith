@@ -29,6 +29,9 @@ namespace fw
     {
         std::string text;
         StringID font_id;
+        float justification;
+        float alignment;
+        int font_size;
     };
 
     using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand>;

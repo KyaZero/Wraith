@@ -71,15 +71,6 @@ namespace fw
             auto& tag = entity.GetComponent<TagComponent>().tag;
             ImGui::InputText("Tag", &tag);
         }
-        if (entity.HasComponent<TextComponent>())
-        {
-            auto& textComponent = entity.GetComponent<TextComponent>();
-            ImGui::InputTextMultiline("Text", &textComponent.text);
-            if (ImGui::InputText("Font", &textComponent.font))
-            {
-                textComponent.font_id = StringID(textComponent.font);
-            }
-        }
 
         if (entity.HasComponent<TransformComponent>())
         {
@@ -97,6 +88,35 @@ namespace fw
                 transform.rotation = { Radians(rotation_in_degrees.x),
                                        Radians(rotation_in_degrees.y),
                                        Radians(rotation_in_degrees.z) };
+                ImGui::TreePop();
+            }
+        }
+
+        if (entity.HasComponent<TextComponent>())
+        {
+            if (ImGui::TreeNodeEx((void*)typeid(TextComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Text"))
+            {
+                auto& text = entity.GetComponent<TextComponent>();
+                ImGui::InputTextMultiline("Text", &text.text);
+                if (ImGui::InputText("Font", &text.font))
+                {
+                    text.font_id = StringID(text.font);
+                }
+
+                ImGui::DragInt("Font Size", &text.font_size, 1, 1, 256);
+
+                ImGui::RadioButton("Left", &text.justification, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("Center", &text.justification, 1);
+                ImGui::SameLine();
+                ImGui::RadioButton("Right", &text.justification, 2);
+
+                ImGui::RadioButton("Top", &text.alignment, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("Middle", &text.alignment, 1);
+                ImGui::SameLine();
+                ImGui::RadioButton("Bottom", &text.alignment, 2);
+
                 ImGui::TreePop();
             }
         }

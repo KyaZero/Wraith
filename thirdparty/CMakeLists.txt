@@ -1,6 +1,7 @@
 include(FetchContent)
 
 # text rendering
+include("fribidi.cmake")
 include("freetype.cmake")
 include("harfbuzz.cmake")
 include("msdfgen.cmake")

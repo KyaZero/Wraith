@@ -3,6 +3,7 @@
 #include "Core/Math/Vec.h"
 #include "Core/StringID.h"
 #include "Graphics/Camera.h"
+#include "Graphics/Text/Text.h"
 #include "ScriptableEntity.h"
 
 namespace fw
@@ -60,14 +61,17 @@ namespace fw
         std::string text = "hi there";
         std::string font = "";
         StringID font_id = StringID(font);
+        i32 justification = 0;
+        i32 alignment = 0;
+        i32 font_size = 20;
 
         void Serialize(dubu::serialize::ReadBuffer& buffer)
         {
-            buffer >> text >> font;
+            buffer >> text >> font >> justification >> alignment >> font_size;
         }
         void Serialize(dubu::serialize::WriteBuffer& buffer) const
         {
-            buffer << text << font;
+            buffer << text << font << justification << alignment << font_size;
         }
     };
 

@@ -3,6 +3,13 @@
 Texture2D ColorTexture : register(t0);
 SamplerState DefaultSampler : register(s0);
 
+cbuffer BufferData : register(b0)
+{
+    float4x4 ViewProjection;
+    float4x4 Projection;
+    float2 Resolution;
+}
+
 struct InstanceBuffer
 {
     float4 Color;
@@ -13,7 +20,6 @@ struct InstanceBuffer
     float Rotation;
     int WorldSpace;
 };
-
 StructuredBuffer<InstanceBuffer> InstanceData : register(t1);
 
 float2 Rotate(float rotation, float2 position)

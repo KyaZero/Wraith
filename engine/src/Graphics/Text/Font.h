@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fribidi.h>
 #include <hb.h>
 #include <msdfgen/msdfgen-ext.h>
 #include <msdfgen/msdfgen.h>
@@ -31,6 +32,11 @@ namespace fw
             u32 glyph_id;
             Vec2f position;
         };
+        struct DisplayData
+        {
+            std::vector<ShapedGlyph> shapedGlyphs;
+            Vec2f size;
+        };
 
     public:
         Font(msdfgen::FreetypeHandle* freetypeHandle = nullptr);
@@ -41,7 +47,7 @@ namespace fw
         std::optional<ShapeData> LoadShape(u32 c);
         std::optional<GlyphData> GenerateGlyph(ShapeData& shape_data);
 
-        std::vector<ShapedGlyph> ShapeText(std::string_view text);
+        DisplayData ShapeText(std::string_view text);
 
         f32 GetSpaceWidth() const
         {
@@ -49,7 +55,7 @@ namespace fw
         }
         f32 GetLineHeight() const
         {
-            return static_cast<f32>(m_FontMetrics.lineHeight * m_FontScale);
+            return static_cast<f32>(m_FontMetrics.lineHeight * m_FontScale) / FONT_SIZE;
         }
         f32 GetKerning(u32 a, u32 b) const
         {
@@ -65,7 +71,7 @@ namespace fw
         f32 m_FontScale;
         f32 m_SpaceWidth;
 
-        struct HarfBuzz
+        struct
         {
             hb_buffer_t* buffer = nullptr;
             hb_blob_t* blob = nullptr;
@@ -73,5 +79,11 @@ namespace fw
             hb_font_t* font = nullptr;
             Vec2f scale;
         } m_HarfBuzz;
+
+        struct
+        {
+            std::vector<FriBidiChar> logical;
+            std::vector<FriBidiCharType> visual;
+        } m_FriBidi;
     };
 }  // namespace fw

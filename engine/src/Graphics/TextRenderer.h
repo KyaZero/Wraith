@@ -23,9 +23,12 @@ namespace fw
             Vec2f uv_scale;
             Vec2f offset;
             Vec2f position;
+            float font_scale;
+            float _padding;
         };
         struct ConstantBufferData
         {
+            Mat4f projection;
             float pixel_range;
             float font_size;
             float atlas_size;
@@ -40,7 +43,7 @@ namespace fw
 
         void Submit(const TextCommand& command);
 
-        void Render();
+        void Render(const Vec2f& viewport_size);
 
         void Flip();
 

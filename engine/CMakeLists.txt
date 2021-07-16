@@ -135,6 +135,7 @@ target_link_libraries(${target_name} PUBLIC
     color-console
     dubu_serialize
     dubu::rect_pack
+    fribidi
     harfbuzz
     msdfgen::msdfgen
     msdfgen::msdfgen-ext)

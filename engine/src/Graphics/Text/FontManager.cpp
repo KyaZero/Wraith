@@ -59,11 +59,11 @@ namespace fw
         return std::nullopt;
     }
 
-    std::vector<Font::ShapedGlyph> FontManager::ShapeText(StringID font_id, std::string_view text)
+    Font::DisplayData FontManager::ShapeText(StringID font_id, std::string_view text)
     {
         if (auto font = GetFont(font_id); font)
             return font->ShapeText(text);
-        return {};
+        return { {}, {} };
     }
 
     f32 FontManager::GetSpaceWidth(StringID font_id)
@@ -76,7 +76,7 @@ namespace fw
     f32 FontManager::GetLineHeight(StringID font_id)
     {
         if (auto font = GetFont(font_id); font)
-            return font->GetLineHeight() / ATLAS_SIZE;
+            return font->GetLineHeight();
         return 0.f;
     }
 

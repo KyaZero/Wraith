@@ -60,6 +60,9 @@ namespace fw
                 m_Renderer->Submit(TextCommand{
                     .text = text.text,
                     .font_id = text.font_id,
+                    .justification = Justification::FromIndex(text.justification),
+                    .alignment = Alignment::FromIndex(text.alignment),
+                    .font_size = text.font_size,
                 });
             }
         }
@@ -122,6 +125,9 @@ namespace fw
                 m_Renderer->Submit(TextCommand{
                     .text = text.text,
                     .font_id = text.font_id,
+                    .justification = Justification::FromIndex(text.justification),
+                    .alignment = Alignment::FromIndex(text.alignment),
+                    .font_size = text.font_size,
                 });
             }
         }

@@ -52,7 +52,7 @@ namespace fw
         Framework::EndEvent();
 
         Framework::BeginEvent("Render Text");
-        m_TextRenderer.Render();
+        m_TextRenderer.Render(m_RenderTexture->GetSizef());
         Framework::EndEvent();
 
         m_RenderTexture->UnsetActiveTarget();
@@ -65,7 +65,7 @@ namespace fw
 
     void RenderManager::Resize(u32 width, u32 height)
     {
-        m_RenderTexture->Resize(m_Window.GetSize());
+        m_RenderTexture->Resize({ width, height });
     }
     void RenderManager::Flip()
     {

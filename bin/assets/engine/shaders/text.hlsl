@@ -6,6 +6,7 @@ SamplerState DefaultSampler : register(s0);
 
 cbuffer BufferData : register(b0)
 {
+    float4x4 Projection;
     float PixelRange;
     float FontSize;
     float AtlasSize;
@@ -18,6 +19,8 @@ struct InstanceBuffer
     float2 UvScale;
     float2 Offset;
     float2 Position;
+    float FontScale;
+    float _Padding;
 };
 StructuredBuffer<InstanceBuffer> InstanceData : register(t1);
 
@@ -27,6 +30,7 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     const float2 uv_offset = InstanceData[instance_ID].UvOffset;
     const float2 offset = InstanceData[instance_ID].Offset;
     const float2 position = InstanceData[instance_ID].Position;
+    const float font_scale = InstanceData[instance_ID].FontScale;
 
     float2 p = input.position.xy;
     p *= uv_scale;
@@ -34,11 +38,9 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     p *= AtlasSize / FontSize;
     p += position;
 
-    p *= 0.1;
+    p *= FontSize * font_scale;
 
-    p.x -= 1;
-
-    output.position = float4(p, 0.0, 1.0);
+    output.position = mul(Projection, float4(p, 0.0, 1.0));
     output.uv = input.uv * uv_scale + uv_offset;
 }
 

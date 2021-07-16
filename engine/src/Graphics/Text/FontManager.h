@@ -30,7 +30,7 @@ namespace fw
 
         std::optional<GlyphData> GetGlyph(StringID font_id, u32 c);
 
-        std::vector<Font::ShapedGlyph> ShapeText(StringID font_id, std::string_view text);
+        Font::DisplayData ShapeText(StringID font_id, std::string_view text);
 
         f32 GetSpaceWidth(StringID font_id);
         f32 GetLineHeight(StringID font_id);

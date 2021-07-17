@@ -47,7 +47,7 @@ namespace fw
     {
         auto& tag = entity.GetComponent<TagComponent>().tag;
 
-        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanFullWidth;
 
         if (entity == m_SelectionContext)
             flags |= ImGuiTreeNodeFlags_Selected;
@@ -74,8 +74,7 @@ namespace fw
 
         if (entity.HasComponent<TransformComponent>())
         {
-            if (ImGui::TreeNodeEx(
-                    (void*)typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+            if (ImGui::CollapsingHeader("Transform Component"))
             {
                 auto& transform = entity.GetComponent<TransformComponent>();
 
@@ -88,13 +87,12 @@ namespace fw
                 transform.rotation = { Radians(rotation_in_degrees.x),
                                        Radians(rotation_in_degrees.y),
                                        Radians(rotation_in_degrees.z) };
-                ImGui::TreePop();
             }
         }
 
         if (entity.HasComponent<TextComponent>())
         {
-            if (ImGui::TreeNodeEx((void*)typeid(TextComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Text"))
+            if (ImGui::CollapsingHeader("Text Component"))
             {
                 auto& text = entity.GetComponent<TextComponent>();
                 ImGui::InputTextMultiline("Text", &text.text);
@@ -104,6 +102,8 @@ namespace fw
                 }
 
                 ImGui::DragInt("Font Size", &text.font_size, 1, 1, 256);
+
+                ImGui::Separator();
 
                 ImGui::RadioButton("Left", &text.justification, 0);
                 ImGui::SameLine();
@@ -117,18 +117,22 @@ namespace fw
                 ImGui::SameLine();
                 ImGui::RadioButton("Bottom", &text.alignment, 2);
 
-                ImGui::TreePop();
+                ImGui::RadioButton("LTR", &text.direction, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("RTL", &text.direction, 1);
+
+                ImGui::Separator();
+
+                ImGui::ColorEdit4("Color", &text.color.x);
+                ImGui::SliderFloat("Blend Mode", &text.blend_mode, 0.0f, 1.0f, "Additive - %.2f - Alpha Blend");
             }
         }
 
         if (entity.HasComponent<CameraComponent>())
         {
-            if (ImGui::TreeNodeEx(
-                    (void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera Component"))
+            if (ImGui::CollapsingHeader("Camera Component"))
             {
                 // auto& camera_component = entity.GetComponent<CameraComponent>();
-
-                ImGui::TreePop();
             }
         }
     }

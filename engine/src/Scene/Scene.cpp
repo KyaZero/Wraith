@@ -63,6 +63,9 @@ namespace fw
                     .justification = Justification::FromIndex(text.justification),
                     .alignment = Alignment::FromIndex(text.alignment),
                     .font_size = text.font_size,
+                    .direction = text.direction,
+                    .color = text.color,
+                    .blend_mode = text.blend_mode,
                 });
             }
         }
@@ -128,6 +131,9 @@ namespace fw
                     .justification = Justification::FromIndex(text.justification),
                     .alignment = Alignment::FromIndex(text.alignment),
                     .font_size = text.font_size,
+                    .direction = text.direction,
+                    .color = text.color,
+                    .blend_mode = text.blend_mode,
                 });
             }
         }

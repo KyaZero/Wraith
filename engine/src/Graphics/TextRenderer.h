@@ -19,12 +19,13 @@ namespace fw
         constexpr static u32 MAX_INSTANCES = 1024;
         struct InstanceData
         {
+            Vec4f color;
             Vec2f uv_offset;
             Vec2f uv_scale;
             Vec2f offset;
             Vec2f position;
             float font_scale;
-            float _padding;
+            float blend_mode;
         };
         struct ConstantBufferData
         {

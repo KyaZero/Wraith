@@ -35,6 +35,7 @@ set(graphics_files
   "src/Graphics/Text/Font.h"
   "src/Graphics/Text/FontManager.cpp"
   "src/Graphics/Text/FontManager.h"
+  "src/Graphics/Text/Text.h"
   "src/Graphics/BlendState.cpp"
   "src/Graphics/BlendState.h"
   "src/Graphics/ContentManager.h"

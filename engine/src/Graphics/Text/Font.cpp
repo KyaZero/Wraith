@@ -1,5 +1,7 @@
 #include "Font.h"
 
+#include "Graphics/Text/Text.h"
+
 namespace fw
 {
     Font::Font(msdfgen::FreetypeHandle* freetypeHandle)
@@ -116,7 +118,7 @@ namespace fw
         return glyph_data;
     }
 
-    Font::DisplayData Font::ShapeText(std::string_view text)
+    Font::DisplayData Font::ShapeText(std::string_view text, i32 direction)
     {
         m_FriBidi.logical.resize(text.size() * 2);
         m_FriBidi.visual.resize(text.size() * 2);
@@ -125,7 +127,7 @@ namespace fw
                                                          text.data(),
                                                          static_cast<FriBidiStrIndex>(text.size()),
                                                          m_FriBidi.logical.data());
-        FriBidiParType par_type = FRIBIDI_TYPE_LTR;
+        FriBidiParType par_type = (direction == Direction::LTR) ? FRIBIDI_TYPE_LTR : FRIBIDI_TYPE_RTL;
         fribidi_log2vis(m_FriBidi.logical.data(), len, &par_type, m_FriBidi.visual.data(), nullptr, nullptr, nullptr);
 
         hb_buffer_clear_contents(m_HarfBuzz.buffer);

@@ -45,8 +45,6 @@ namespace fw
             Camera(Mat4f::CreatePerspectiveProjection(90.0f, -16.0f / 9.0f, 0.01f, 100.0f)));
         m_CameraEntity.GetComponent<TransformComponent>().position = { 0.0f, 0.0f, -10.0f };
 
-        m_ActiveScene->CreateEntity("Text").AddComponent<TextComponent>();
-
         class CameraController : public ScriptableEntity
         {
         public:
@@ -81,6 +79,11 @@ namespace fw
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>(10.f);
 
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+        {
+            auto textEntity = m_ActiveScene->CreateEntity("Text");
+            textEntity.AddComponent<TextComponent>();
+        }
     }
 
     void Editor::OnUpdate(f32 dt)

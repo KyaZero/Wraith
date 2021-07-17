@@ -47,7 +47,7 @@ namespace fw
         std::optional<ShapeData> LoadShape(u32 c);
         std::optional<GlyphData> GenerateGlyph(ShapeData& shape_data);
 
-        DisplayData ShapeText(std::string_view text);
+        DisplayData ShapeText(std::string_view text, i32 direction);
 
         f32 GetSpaceWidth() const
         {

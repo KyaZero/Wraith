@@ -59,10 +59,10 @@ namespace fw
         return std::nullopt;
     }
 
-    Font::DisplayData FontManager::ShapeText(StringID font_id, std::string_view text)
+    Font::DisplayData FontManager::ShapeText(StringID font_id, std::string_view text, i32 direction)
     {
         if (auto font = GetFont(font_id); font)
-            return font->ShapeText(text);
+            return font->ShapeText(text, direction);
         return { {}, {} };
     }
 

@@ -65,7 +65,8 @@ namespace fw
             while (!text.empty())
             {
                 auto split_pos = text.find('\n');
-                displayData.push_back(m_FontManager.ShapeText(command.font_id, text.substr(0, split_pos)));
+                displayData.push_back(
+                    m_FontManager.ShapeText(command.font_id, text.substr(0, split_pos), command.direction));
 
                 if (split_pos == text.npos)
                     break;
@@ -90,12 +91,14 @@ namespace fw
                         continue;
 
                     instances.push_back(InstanceData{
+                        .color = command.color,
                         .uv_offset = glyph->uv_offset,
                         .uv_scale = glyph->uv_scale,
                         .offset = glyph->offset,
                         .position = sg.position - Vec2f(size.x * command.justification, baseline) +
                                     Vec2f(total_width * command.justification, total_height * command.alignment),
                         .font_scale = static_cast<f32>(command.font_size) / Font::FONT_SIZE,
+                        .blend_mode = command.blend_mode,
                     });
                 }
                 baseline += line_height;

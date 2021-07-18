@@ -86,7 +86,7 @@ namespace fw
             {
                 for (const auto& sg : shaped_glyphs)
                 {
-                    const auto glyph = m_FontManager.GetGlyph(command.font_id, sg.glyph_id);
+                    const auto glyph = m_FontManager.GetGlyph(command.font_id, sg.glyph_index);
                     if (!glyph)
                         continue;
 

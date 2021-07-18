@@ -71,11 +71,11 @@ namespace fw
         }
     }
 
-    std::optional<Font::ShapeData> Font::LoadShape(u32 c)
+    std::optional<Font::ShapeData> Font::LoadShape(u32 glyph_index)
     {
         double advance;
         msdfgen::Shape shape;
-        if (!msdfgen::loadGlyph(shape, m_Freetype.font_handle, msdfgen::GlyphIndex(c), &advance))
+        if (!msdfgen::loadGlyph(shape, m_Freetype.font_handle, msdfgen::GlyphIndex(glyph_index), &advance))
         {
             return std::nullopt;
         }
@@ -146,14 +146,14 @@ namespace fw
         hb_position_t cursor_y = 0;
         for (u32 i = 0; i < glyph_count; ++i)
         {
-            hb_codepoint_t glyph_id = glyph_info[i].codepoint;
-            hb_position_t x_offset = glyph_pos[i].x_offset;
-            hb_position_t y_offset = glyph_pos[i].y_offset;
-            hb_position_t x_advance = glyph_pos[i].x_advance;
-            hb_position_t y_advance = glyph_pos[i].y_advance;
+            const hb_codepoint_t glyph_index = glyph_info[i].codepoint;
+            const hb_position_t x_offset = glyph_pos[i].x_offset;
+            const hb_position_t y_offset = glyph_pos[i].y_offset;
+            const hb_position_t x_advance = glyph_pos[i].x_advance;
+            const hb_position_t y_advance = glyph_pos[i].y_advance;
 
             shapedGlyphs.push_back(ShapedGlyph{
-                .glyph_id = glyph_id,
+                .glyph_index = glyph_index,
                 .position = Vec2f(cursor_x + x_offset, cursor_y + y_offset) / m_HarfBuzz.scale,
             });
 

@@ -28,7 +28,7 @@ namespace fw
 
         bool Init();
 
-        std::optional<GlyphData> GetGlyph(StringID font_id, u32 c);
+        std::optional<GlyphData> GetGlyph(StringID font_id, u32 glyph_index);
 
         Font::DisplayData ShapeText(StringID font_id, std::string_view text, i32 direction);
 
@@ -43,7 +43,7 @@ namespace fw
         Font* GetFont(StringID font_id);
         bool LoadFont(StringID font_id);
 
-        std::optional<GlyphData> LoadGlyph(Font* font, u32 c);
+        std::optional<GlyphData> LoadGlyph(Font* font, u32 glyph_index);
 
         msdfgen::FreetypeHandle* m_FreetypeHandle;
         std::unique_ptr<dubu::rect_pack::Packer> m_Packer;

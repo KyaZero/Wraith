@@ -18,9 +18,6 @@ namespace fw
         msdfgen::FontMetrics font_metrics;
         msdfgen::getFontMetrics(font_metrics, m_Freetype.font_handle);
         m_FontScale = (FONT_SIZE / font_metrics.emSize);
-
-        double space_advance, tab_advance;
-        msdfgen::getFontWhitespaceWidth(space_advance, tab_advance, m_Freetype.font_handle);
         m_LineHeight = font_metrics.lineHeight * m_FontScale / FONT_SIZE;
 
         m_HarfBuzz.buffer = hb_buffer_create();

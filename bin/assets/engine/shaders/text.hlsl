@@ -2,7 +2,7 @@
 #include "common.hlsl"
 
 Texture2D<float3> AtlasTexture : register(t0);
-SamplerState DefaultSampler : register(s0);
+SamplerState LinearSampler : register(s0);
 
 cbuffer BufferData : register(b0)
 {
@@ -20,7 +20,7 @@ struct InstanceBuffer
     float2 UvScale;
     float2 Offset;
     float2 Position;
-    float FontScale;
+    float TextScale;
     float BlendMode;
     float2 ScreenPosition;
 };
@@ -33,7 +33,7 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     const float2 uv_offset = InstanceData[instance_ID].UvOffset;
     const float2 offset = InstanceData[instance_ID].Offset;
     const float2 position = InstanceData[instance_ID].Position;
-    const float font_scale = InstanceData[instance_ID].FontScale;
+    const float text_scale = InstanceData[instance_ID].TextScale;
     const float blend_mode = InstanceData[instance_ID].BlendMode;
     const float2 screen_position = InstanceData[instance_ID].ScreenPosition;
 
@@ -43,7 +43,7 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     p *= AtlasSize / FontSize;
     p += position;
 
-    p *= FontSize * font_scale;
+    p *= FontSize * text_scale;
 
     p += screen_position;
 
@@ -52,19 +52,19 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     output.color = float4(color.rgb * color.a, color.a * blend_mode);
 }
 
-float screenPxRange(float2 texcoord)
+float ScreenPxRange(float2 texcoord)
 {
-    const float2 unitRange = PixelRange / AtlasSize;
-    const float2 screenTexSize = 1.0 / fwidth(texcoord);
-    return max(0.5 * dot(unitRange, screenTexSize), 1.0);
+    const float2 unit_range = PixelRange / AtlasSize;
+    const float2 screen_tex_size = 1.0 / fwidth(texcoord);
+    return max(0.5 * dot(unit_range, screen_tex_size), 1.0);
 }
 
 void PSMain(in PixelInput input, out PixelOutput output)
 {
-    const float3 msd = AtlasTexture.Sample(DefaultSampler, input.uv).rgb;
+    const float3 msd = AtlasTexture.Sample(LinearSampler, input.uv).rgb;
     const float sd = max(min(msd.r, msd.g), min(max(msd.r, msd.g), msd.b));
-    const float screenPxDistance = screenPxRange(input.uv) * (sd - 0.5);
-    const float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
+    const float screen_px_distance = ScreenPxRange(input.uv) * (sd - 0.5);
+    const float opacity = clamp(screen_px_distance + 0.5, 0.0, 1.0);
 
     output.color.rgba = opacity;
     output.color *= input.color;

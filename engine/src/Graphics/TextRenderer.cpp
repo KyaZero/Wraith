@@ -97,7 +97,7 @@ namespace fw
                         .offset = glyph->offset,
                         .position = sg.position - Vec2f(size.x * command.justification, baseline) +
                                     Vec2f(total_width * command.justification, total_height * command.alignment),
-                        .font_scale = static_cast<f32>(command.font_size) / Font::FONT_SIZE,
+                        .text_scale = static_cast<f32>(command.font_size) / Font::FONT_SIZE,
                         .blend_mode = command.blend_mode,
                         .screen_position = command.screen_position,
                     });

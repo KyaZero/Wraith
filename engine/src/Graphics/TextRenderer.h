@@ -24,7 +24,7 @@ namespace fw
             Vec2f uv_scale;
             Vec2f offset;
             Vec2f position;
-            float font_scale;
+            float text_scale;
             float blend_mode;
             Vec2f screen_position;
         };

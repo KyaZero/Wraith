@@ -1,4 +1,3 @@
-
 #include "common.hlsl"
 
 Texture2D<float3> AtlasTexture : register(t0);

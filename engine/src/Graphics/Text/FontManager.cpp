@@ -43,6 +43,11 @@ namespace fw
 
     std::optional<FontManager::GlyphData> FontManager::GetGlyph(StringID font_id, msdfgen::GlyphIndex glyph_index)
     {
+        if (!glyph_index)
+        {
+            return std::nullopt;
+        }
+
         if (auto it = m_Glyphs.find({ font_id, glyph_index.getIndex() }); it != m_Glyphs.end())
         {
             return it->second;
@@ -51,7 +56,7 @@ namespace fw
         if (auto font = GetFont(font_id); font)
         {
             const auto [it, inserted] =
-                m_Glyphs.emplace(std::make_pair(font_id, glyph_index), LoadGlyph(font, glyph_index));
+                m_Glyphs.emplace(std::make_pair(font_id, glyph_index.getIndex()), LoadGlyph(font, glyph_index));
             return it->second;
         }
 

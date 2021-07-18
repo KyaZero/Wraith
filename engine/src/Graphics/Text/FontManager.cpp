@@ -5,8 +5,6 @@
 
 namespace fw
 {
-    const static auto FONT_CACHE_DIR = TEMP_DIRECTORY / "font_cache";
-
     FontManager::FontManager()
     { }
 

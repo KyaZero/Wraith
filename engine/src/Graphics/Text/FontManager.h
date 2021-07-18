@@ -19,7 +19,6 @@ namespace fw
             Vec2f uv_offset;
             Vec2f uv_scale;
             Vec2f offset;
-            f32 advance;
         };
 
     public:

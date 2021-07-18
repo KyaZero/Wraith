@@ -73,9 +73,8 @@ namespace fw
 
     std::optional<Font::ShapeData> Font::LoadShape(u32 glyph_index)
     {
-        double advance;
         msdfgen::Shape shape;
-        if (!msdfgen::loadGlyph(shape, m_Freetype.font_handle, msdfgen::GlyphIndex(glyph_index), &advance))
+        if (!msdfgen::loadGlyph(shape, m_Freetype.font_handle, msdfgen::GlyphIndex(glyph_index)))
         {
             return std::nullopt;
         }
@@ -93,14 +92,13 @@ namespace fw
             .width = w,
             .height = h,
             .shape = shape,
-            .advance = advance * m_FontScale,
             .offset = Vec2f(bounds.l * m_FontScale, bounds.b * m_FontScale),
         };
     }
 
     std::optional<Font::GlyphData> Font::GenerateGlyph(ShapeData& shape_data)
     {
-        auto& [width, height, shape, advance, offset] = shape_data;
+        auto& [width, height, shape, offset] = shape_data;
 
         const auto bounds = shape.getBounds();
 

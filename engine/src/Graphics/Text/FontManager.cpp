@@ -122,7 +122,6 @@ namespace fw
             .uv_offset = { static_cast<f32>(rect->x) / ATLAS_SIZE, static_cast<f32>(rect->y) / ATLAS_SIZE },
             .uv_scale = { static_cast<f32>(shape->width) / ATLAS_SIZE, static_cast<f32>(shape->height) / ATLAS_SIZE },
             .offset = shape->offset / ATLAS_SIZE,
-            .advance = static_cast<f32>(shape->advance) / ATLAS_SIZE,
         };
     }
 }  // namespace fw

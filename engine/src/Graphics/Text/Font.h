@@ -19,7 +19,6 @@ namespace fw
             u32 width;
             u32 height;
             msdfgen::Shape shape;
-            double advance;
             Vec2f offset;
         };
         struct GlyphData

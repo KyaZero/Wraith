@@ -53,10 +53,10 @@ namespace fw
         }
 
         {
-            const auto view = m_Registry.view<TextComponent>();
+            const auto view = m_Registry.view<TransformComponent, TextComponent>();
             for (const auto entity : view)
             {
-                const auto& text = view.get<TextComponent>(entity);
+                const auto [transform, text] = view.get<TransformComponent, TextComponent>(entity);
                 m_Renderer->Submit(TextCommand{
                     .text = text.text,
                     .font_id = text.font_id,
@@ -66,6 +66,7 @@ namespace fw
                     .direction = text.direction,
                     .color = text.color,
                     .blend_mode = text.blend_mode,
+                    .screen_position = { transform.position.x, -transform.position.y },
                 });
             }
         }
@@ -121,10 +122,10 @@ namespace fw
         }
 
         {
-            const auto view = m_Registry.view<TextComponent>();
+            const auto view = m_Registry.view<TransformComponent, TextComponent>();
             for (const auto entity : view)
             {
-                const auto& text = view.get<TextComponent>(entity);
+                const auto [transform, text] = view.get<TransformComponent, TextComponent>(entity);
                 m_Renderer->Submit(TextCommand{
                     .text = text.text,
                     .font_id = text.font_id,
@@ -134,6 +135,7 @@ namespace fw
                     .direction = text.direction,
                     .color = text.color,
                     .blend_mode = text.blend_mode,
+                    .screen_position = { transform.position.x, -transform.position.y },
                 });
             }
         }

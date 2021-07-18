@@ -35,6 +35,7 @@ namespace fw
         i32 direction;
         Vec4f color;
         f32 blend_mode;
+        Vec2f screen_position;
     };
 
     using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand>;

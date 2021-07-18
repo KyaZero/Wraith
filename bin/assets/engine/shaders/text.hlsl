@@ -22,18 +22,20 @@ struct InstanceBuffer
     float2 Position;
     float FontScale;
     float BlendMode;
+    float2 ScreenPosition;
 };
 StructuredBuffer<InstanceBuffer> InstanceData : register(t1);
 
 void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_InstanceID)
 {
+    const float4 color = InstanceData[instance_ID].Color;
     const float2 uv_scale = InstanceData[instance_ID].UvScale;
     const float2 uv_offset = InstanceData[instance_ID].UvOffset;
     const float2 offset = InstanceData[instance_ID].Offset;
     const float2 position = InstanceData[instance_ID].Position;
     const float font_scale = InstanceData[instance_ID].FontScale;
-    const float4 color = InstanceData[instance_ID].Color;
     const float blend_mode = InstanceData[instance_ID].BlendMode;
+    const float2 screen_position = InstanceData[instance_ID].ScreenPosition;
 
     float2 p = input.position.xy;
     p *= uv_scale;
@@ -42,6 +44,8 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     p += position;
 
     p *= FontSize * font_scale;
+
+    p += screen_position;
 
     output.position = mul(Projection, float4(p, 0.0, 1.0));
     output.uv = input.uv * uv_scale + uv_offset;

@@ -26,6 +26,7 @@ namespace fw
             Vec2f position;
             float font_scale;
             float blend_mode;
+            Vec2f screen_position;
         };
         struct ConstantBufferData
         {

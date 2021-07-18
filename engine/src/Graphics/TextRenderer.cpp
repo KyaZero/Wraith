@@ -99,6 +99,7 @@ namespace fw
                                     Vec2f(total_width * command.justification, total_height * command.alignment),
                         .font_scale = static_cast<f32>(command.font_size) / Font::FONT_SIZE,
                         .blend_mode = command.blend_mode,
+                        .screen_position = command.screen_position,
                     });
                 }
                 baseline += line_height;

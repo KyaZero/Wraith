@@ -29,8 +29,8 @@ StructuredBuffer<InstanceBuffer> InstanceData : register(t1);
 void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_InstanceID)
 {
     const float4 color = InstanceData[instance_ID].Color;
-    const float2 uv_scale = InstanceData[instance_ID].UvScale;
     const float2 uv_offset = InstanceData[instance_ID].UvOffset;
+    const float2 uv_scale = InstanceData[instance_ID].UvScale;
     const float2 offset = InstanceData[instance_ID].Offset;
     const float2 position = InstanceData[instance_ID].Position;
     const float text_scale = InstanceData[instance_ID].TextScale;

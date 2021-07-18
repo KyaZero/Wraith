@@ -24,13 +24,6 @@
 #include <variant>
 #include <vector>
 
-// Variant helper
-template <class... Ts>
-struct overloaded : Ts...
-{
-    using Ts::operator()...;
-};
-
 // Windows includes
 #define WIN32_LEAN_AND_MEAN
 #include <d3d11.h>

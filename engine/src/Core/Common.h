@@ -72,6 +72,13 @@ namespace fw
     }
 }  // namespace fw
 
+// Variant helper
+template <class... Ts>
+struct variant_visitor : Ts...
+{
+    using Ts::operator()...;
+};
+
 namespace std
 {
     template <typename T1, typename T2>

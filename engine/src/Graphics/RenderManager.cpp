@@ -39,7 +39,7 @@ namespace fw
 
         for (auto& command : m_RenderCommands[CURRENT_FRAME])
         {
-            std::visit(overloaded{
+            std::visit(variant_visitor{
                            [&](SpriteCommand sprite) { m_SpriteRenderer.Submit(sprite); },
                            [&](SetCameraCommand camera) { m_SpriteRenderer.Submit(camera); },
                            [&](TextCommand text) { m_TextRenderer.Submit(text); },

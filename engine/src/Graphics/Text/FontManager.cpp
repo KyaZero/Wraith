@@ -64,24 +64,10 @@ namespace fw
         return { {}, {} };
     }
 
-    f32 FontManager::GetSpaceWidth(StringID font_id)
-    {
-        if (auto font = GetFont(font_id); font)
-            return font->GetSpaceWidth() / ATLAS_SIZE;
-        return 0.f;
-    }
-
     f32 FontManager::GetLineHeight(StringID font_id)
     {
         if (auto font = GetFont(font_id); font)
             return font->GetLineHeight();
-        return 0.f;
-    }
-
-    f32 FontManager::GetKerning(StringID font_id, u32 a, u32 b)
-    {
-        if (auto font = GetFont(font_id); font)
-            return font->GetKerning(a, b) / ATLAS_SIZE;
         return 0.f;
     }
 

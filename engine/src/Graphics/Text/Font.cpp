@@ -5,23 +5,23 @@
 namespace fw
 {
     Font::Font(msdfgen::FreetypeHandle* freetypeHandle)
-        : m_FreetypeHandle(freetypeHandle)
-        , m_FontHandle(nullptr)
-    { }
+    {
+        m_Freetype.handle = freetypeHandle;
+    }
 
     bool Font::Init(std::filesystem::path fontPath)
     {
-        m_FontHandle = msdfgen::loadFont(m_FreetypeHandle, fontPath.generic_string().c_str());
-        if (!m_FontHandle)
+        m_Freetype.font_handle = msdfgen::loadFont(m_Freetype.handle, fontPath.generic_string().c_str());
+        if (!m_Freetype.font_handle)
             return false;
 
-        msdfgen::getFontMetrics(m_FontMetrics, m_FontHandle);
-        m_FontScale = (FONT_SIZE / m_FontMetrics.emSize);
+        msdfgen::FontMetrics font_metrics;
+        msdfgen::getFontMetrics(font_metrics, m_Freetype.font_handle);
+        m_FontScale = (FONT_SIZE / font_metrics.emSize);
 
         double space_advance, tab_advance;
-        msdfgen::getFontWhitespaceWidth(space_advance, tab_advance, m_FontHandle);
-
-        m_SpaceWidth = static_cast<f32>(space_advance * m_FontScale);
+        msdfgen::getFontWhitespaceWidth(space_advance, tab_advance, m_Freetype.font_handle);
+        m_LineHeight = font_metrics.lineHeight * m_FontScale / FONT_SIZE;
 
         m_HarfBuzz.buffer = hb_buffer_create();
         if (!m_HarfBuzz.buffer)
@@ -46,10 +46,10 @@ namespace fw
 
     void Font::Release()
     {
-        if (m_FontHandle)
+        if (m_Freetype.font_handle)
         {
-            msdfgen::destroyFont(m_FontHandle);
-            m_FontHandle = nullptr;
+            msdfgen::destroyFont(m_Freetype.font_handle);
+            m_Freetype.font_handle = nullptr;
         }
 
         if (m_HarfBuzz.font)
@@ -78,7 +78,7 @@ namespace fw
     {
         double advance;
         msdfgen::Shape shape;
-        if (!msdfgen::loadGlyph(shape, m_FontHandle, msdfgen::GlyphIndex(c), &advance))
+        if (!msdfgen::loadGlyph(shape, m_Freetype.font_handle, msdfgen::GlyphIndex(c), &advance))
         {
             return std::nullopt;
         }

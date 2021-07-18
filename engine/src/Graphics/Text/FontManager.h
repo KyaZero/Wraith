@@ -32,9 +32,7 @@ namespace fw
 
         Font::DisplayData ShapeText(StringID font_id, std::string_view text, i32 direction);
 
-        f32 GetSpaceWidth(StringID font_id);
         f32 GetLineHeight(StringID font_id);
-        f32 GetKerning(StringID font_id, u32 a, u32 b);
 
         const Texture& GetAtlas() const
         {

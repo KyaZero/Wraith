@@ -49,27 +49,17 @@ namespace fw
 
         DisplayData ShapeText(std::string_view text, i32 direction);
 
-        f32 GetSpaceWidth() const
-        {
-            return m_SpaceWidth;
-        }
         f32 GetLineHeight() const
         {
-            return static_cast<f32>(m_FontMetrics.lineHeight * m_FontScale) / FONT_SIZE;
-        }
-        f32 GetKerning(u32 a, u32 b) const
-        {
-            double kerning;
-            msdfgen::getKerning(kerning, m_FontHandle, a, b);
-            return static_cast<f32>(kerning * m_FontScale);
+            return m_LineHeight;
         }
 
     private:
-        msdfgen::FreetypeHandle* m_FreetypeHandle;
-        msdfgen::FontHandle* m_FontHandle;
-        msdfgen::FontMetrics m_FontMetrics;
-        f32 m_FontScale;
-        f32 m_SpaceWidth;
+        struct
+        {
+            msdfgen::FreetypeHandle* handle = nullptr;
+            msdfgen::FontHandle* font_handle = nullptr;
+        } m_Freetype;
 
         struct
         {
@@ -85,5 +75,8 @@ namespace fw
             std::vector<FriBidiChar> logical;
             std::vector<FriBidiCharType> visual;
         } m_FriBidi;
+
+        f32 m_FontScale;
+        f32 m_LineHeight;
     };
 }  // namespace fw

@@ -28,7 +28,7 @@ namespace fw
         };
         struct ShapedGlyph
         {
-            u32 glyph_index;
+            msdfgen::GlyphIndex glyph_index;
             Vec2f position;
         };
         struct DisplayData
@@ -43,7 +43,7 @@ namespace fw
         bool Init(std::filesystem::path fontPath);
         void Release();
 
-        std::optional<ShapeData> LoadShape(u32 glyph_index);
+        std::optional<ShapeData> LoadShape(msdfgen::GlyphIndex glyph_index);
         std::optional<GlyphData> GenerateGlyph(ShapeData& shape_data);
 
         DisplayData ShapeText(std::string_view text, i32 direction);

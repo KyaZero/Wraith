@@ -41,9 +41,9 @@ namespace fw
         return true;
     }
 
-    std::optional<FontManager::GlyphData> FontManager::GetGlyph(StringID font_id, u32 glyph_index)
+    std::optional<FontManager::GlyphData> FontManager::GetGlyph(StringID font_id, msdfgen::GlyphIndex glyph_index)
     {
-        if (auto it = m_Glyphs.find({ font_id, glyph_index }); it != m_Glyphs.end())
+        if (auto it = m_Glyphs.find({ font_id, glyph_index.getIndex() }); it != m_Glyphs.end())
         {
             return it->second;
         }
@@ -100,7 +100,7 @@ namespace fw
         return true;
     }
 
-    std::optional<FontManager::GlyphData> FontManager::LoadGlyph(Font* font, u32 glyph_index)
+    std::optional<FontManager::GlyphData> FontManager::LoadGlyph(Font* font, msdfgen::GlyphIndex glyph_index)
     {
         auto shape = font->LoadShape(glyph_index);
         if (!shape)

@@ -71,10 +71,10 @@ namespace fw
         }
     }
 
-    std::optional<Font::ShapeData> Font::LoadShape(u32 glyph_index)
+    std::optional<Font::ShapeData> Font::LoadShape(msdfgen::GlyphIndex glyph_index)
     {
         msdfgen::Shape shape;
-        if (!msdfgen::loadGlyph(shape, m_Freetype.font_handle, msdfgen::GlyphIndex(glyph_index)))
+        if (!msdfgen::loadGlyph(shape, m_Freetype.font_handle, glyph_index))
         {
             return std::nullopt;
         }
@@ -92,7 +92,7 @@ namespace fw
             .width = w,
             .height = h,
             .shape = shape,
-            .offset = Vec2f(bounds.l * m_FontScale, bounds.b * m_FontScale),
+            .offset = Vec2f(bounds.l, bounds.b) * m_FontScale,
         };
     }
 
@@ -151,7 +151,7 @@ namespace fw
             const hb_position_t y_advance = glyph_pos[i].y_advance;
 
             shapedGlyphs.push_back(ShapedGlyph{
-                .glyph_index = glyph_index,
+                .glyph_index = msdfgen::GlyphIndex(glyph_index),
                 .position = Vec2f(cursor_x + x_offset, cursor_y + y_offset) / m_HarfBuzz.scale,
             });
 

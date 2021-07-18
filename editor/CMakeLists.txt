@@ -18,12 +18,13 @@ set(all_files
 add_executable(${target_name} ${all_files})
 
 target_link_libraries(${target_name}
-    Engine
     compiler_features
     compiler_warnings
+    Engine
     imgui)
 
 auto_group_sources(all_files ${CMAKE_CURRENT_SOURCE_DIR})
+source_group("src/Precompiled" REGULAR_EXPRESSION "cmake_pch\.[ch]xx")
 
 set_target_properties(${target_name} PROPERTIES
     FOLDER ${PROJECT_NAME}

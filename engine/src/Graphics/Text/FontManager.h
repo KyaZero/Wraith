@@ -39,10 +39,10 @@ namespace fw
         }
 
     private:
-        Font* GetFont(StringID font_id);
+        Font& GetFont(StringID font_id);
         bool LoadFont(StringID font_id);
 
-        std::optional<GlyphData> LoadGlyph(Font* font, msdfgen::GlyphIndex glyph_index);
+        std::optional<GlyphData> LoadGlyph(Font& font, msdfgen::GlyphIndex glyph_index);
 
         msdfgen::FreetypeHandle* m_FreetypeHandle;
         std::unique_ptr<dubu::rect_pack::Packer> m_Packer;

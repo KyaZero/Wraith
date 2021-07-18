@@ -53,40 +53,31 @@ namespace fw
             return it->second;
         }
 
-        if (auto font = GetFont(font_id); font)
-        {
-            const auto [it, inserted] =
-                m_Glyphs.emplace(std::make_pair(font_id, glyph_index.getIndex()), LoadGlyph(font, glyph_index));
-            return it->second;
-        }
-
-        return std::nullopt;
+        const auto [it, inserted] =
+            m_Glyphs.emplace(std::make_pair(font_id, glyph_index.getIndex()), LoadGlyph(GetFont(font_id), glyph_index));
+        return it->second;
     }
 
     Font::DisplayData FontManager::ShapeText(StringID font_id, std::string_view text, i32 direction)
     {
-        if (auto font = GetFont(font_id); font)
-            return font->ShapeText(text, direction);
-        return { {}, {} };
+        return GetFont(font_id).ShapeText(text, direction);
     }
 
     f32 FontManager::GetLineHeight(StringID font_id)
     {
-        if (auto font = GetFont(font_id); font)
-            return font->GetLineHeight();
-        return 0.f;
+        return GetFont(font_id).GetLineHeight();
     }
 
-    Font* FontManager::GetFont(StringID font_id)
+    Font& FontManager::GetFont(StringID font_id)
     {
         if (auto it = m_Fonts.find(font_id); it == m_Fonts.end())
         {
             if (!LoadFont(font_id))
             {
-                return m_DefaultFont.get();
+                return *m_DefaultFont;
             }
         }
-        return &m_Fonts[font_id];
+        return m_Fonts[font_id];
     }
     bool FontManager::LoadFont(StringID font_id)
     {
@@ -105,9 +96,9 @@ namespace fw
         return true;
     }
 
-    std::optional<FontManager::GlyphData> FontManager::LoadGlyph(Font* font, msdfgen::GlyphIndex glyph_index)
+    std::optional<FontManager::GlyphData> FontManager::LoadGlyph(Font& font, msdfgen::GlyphIndex glyph_index)
     {
-        auto shape = font->LoadShape(glyph_index);
+        auto shape = font.LoadShape(glyph_index);
         if (!shape)
             return std::nullopt;
 
@@ -116,7 +107,7 @@ namespace fw
         if (!rect)
             return std::nullopt;
 
-        const auto glyph = font->GenerateGlyph(*shape);
+        const auto glyph = font.GenerateGlyph(*shape);
         if (!glyph)
             return std::nullopt;
 

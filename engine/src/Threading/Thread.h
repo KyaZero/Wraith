@@ -34,4 +34,4 @@ namespace Wraith
         volatile bool m_IsRunning;
         volatile bool m_ShouldRun;
     };
-}  // namespace fw
+}  // namespace Wraith

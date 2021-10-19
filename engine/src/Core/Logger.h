@@ -2,7 +2,8 @@
 
 #define VERBOSE_LOG(...) \
     Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define INFO_LOG(...) Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define INFO_LOG(...) \
+    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 #define WARNING_LOG(...) \
     Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Warning, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 #define ERROR_LOG(...) \

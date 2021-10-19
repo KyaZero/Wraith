@@ -5,7 +5,7 @@
 #include "Core/Common.h"
 #include "Mat4.h"
 
-namespace fw
+namespace Wraith
 {
     template <class T>
     class Mat3;
@@ -347,4 +347,4 @@ namespace fw
     };
 
     typedef Quat<f32> Quatf;
-}  // namespace fw
+}  // namespace Wraith

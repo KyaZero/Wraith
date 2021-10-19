@@ -1,6 +1,6 @@
 #include "ContentManager.h"
 
-namespace fw
+namespace Wraith
 {
     IDType ContentManager::Register(const std::string& path)
     {
@@ -25,4 +25,4 @@ namespace fw
 
         return it->second;
     }
-}  // namespace fw
+}  // namespace Wraith

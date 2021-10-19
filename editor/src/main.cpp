@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv)
 {
-    fw::Editor editor;
+    Wraith::Editor editor;
     editor.Run();
     return 0;
 }

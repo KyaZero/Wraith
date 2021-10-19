@@ -3,7 +3,7 @@
 #include "Scene/Entity.h"
 #include "Scene/Scene.h"
 
-namespace fw
+namespace Wraith
 {
     class SceneHierarchyPanel
     {
@@ -24,4 +24,4 @@ namespace fw
         std::shared_ptr<Scene> m_Context;
         Entity m_SelectionContext;
     };
-}  // namespace fw
+}  // namespace Wraith

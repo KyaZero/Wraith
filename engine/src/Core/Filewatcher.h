@@ -3,7 +3,7 @@
 #include "Logger.h"
 #include "Singleton.h"
 
-namespace fw
+namespace Wraith
 {
     using WatchCallback = std::function<void()>;
 
@@ -29,4 +29,4 @@ namespace fw
 
         volatile bool m_HasChanges;
     };
-}  // namespace fw
+}  // namespace Wraith

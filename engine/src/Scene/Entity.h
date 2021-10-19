@@ -4,7 +4,7 @@
 
 #include "Core/Logger.h"
 
-namespace fw
+namespace Wraith
 {
     class Entity
     {
@@ -65,4 +65,4 @@ namespace fw
         entt::entity m_Handle{ entt::null };
         entt::registry* m_Registry;
     };
-}  // namespace fw
+}  // namespace Wraith

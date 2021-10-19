@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fw
+namespace Wraith
 {
     class Sampler
     {
@@ -32,4 +32,4 @@ namespace fw
         struct Data;
         std::unique_ptr<Data> m_Data;
     };
-}  // namespace fw
+}  // namespace Wraith

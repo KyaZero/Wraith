@@ -2,7 +2,7 @@
 
 #include "Core/Timer.h"
 
-namespace fw
+namespace Wraith
 {
     ProcessingJob::ProcessingJob(const std::string& id,
                                  ProcessingJob::Job job,
@@ -55,4 +55,4 @@ namespace fw
     {
         return m_UserData;
     }
-}  // namespace fw
+}  // namespace Wraith

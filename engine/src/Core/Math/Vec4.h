@@ -7,7 +7,7 @@
 
 #pragma warning(disable : 4201)
 
-namespace fw
+namespace Wraith
 {
     template <typename T>
     class Vec4
@@ -224,4 +224,4 @@ namespace fw
     using Vec4f = Vec4<f32>;
     using Vec4i = Vec4<i32>;
     using Vec4u = Vec4<u32>;
-}  // namespace fw
+}  // namespace Wraith

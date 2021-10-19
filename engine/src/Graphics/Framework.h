@@ -7,7 +7,7 @@
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
-namespace fw
+namespace Wraith
 {
     class Framework
     {
@@ -38,4 +38,4 @@ namespace fw
         struct Data;
         std::unique_ptr<Data> m_Data;
     };
-}  // namespace fw
+}  // namespace Wraith

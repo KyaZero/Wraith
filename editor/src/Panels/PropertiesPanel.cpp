@@ -1,5 +1,5 @@
 #include "PropertiesPanel.h"
 
-namespace fw
+namespace Wraith
 {
 }

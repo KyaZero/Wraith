@@ -1,7 +1,7 @@
 #pragma once
 #include <thread>
 
-namespace fw
+namespace Wraith
 {
 	class Thread
 	{

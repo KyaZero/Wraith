@@ -3,7 +3,7 @@
 #include "Input/Input.h"
 #include "OrthographicCamera.h"
 
-namespace fw
+namespace Wraith
 {
     class OrthographicCameraController
     {
@@ -52,4 +52,4 @@ namespace fw
         f32 m_CameraTranslationSpeed = 0.0f;
         f32 m_CameraRotationSpeed = 180.0f;
     };
-}  // namespace fw
+}  // namespace Wraith

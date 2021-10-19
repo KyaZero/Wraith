@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fw
+namespace Wraith
 {
     class Shader
     {
@@ -27,4 +27,4 @@ namespace fw
         struct Data;
         std::unique_ptr<Data> m_Data;
     };
-}  // namespace fw
+}  // namespace Wraith

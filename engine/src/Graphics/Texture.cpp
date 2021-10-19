@@ -5,7 +5,7 @@
 #include "DXUtil.h"
 #include "Graphics/Framework.h"
 
-namespace fw
+namespace Wraith
 {
     struct Texture::Data
     {
@@ -361,4 +361,4 @@ namespace fw
     {
         return { (f32)m_Data->size.x, (f32)m_Data->size.y };
     }
-}  // namespace fw
+}  // namespace Wraith

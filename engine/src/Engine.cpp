@@ -8,7 +8,7 @@
 #include "Threading/ThreadScheduler.h"
 #include "UI/ImGuiLayer.h"
 
-namespace fw
+namespace Wraith
 {
     Engine::Engine(Window& window)
         : m_Window(window)
@@ -105,4 +105,4 @@ namespace fw
         m_Framework.SetBackbufferAsActiveTarget();
     }
 
-}  // namespace fw
+}  // namespace Wraith

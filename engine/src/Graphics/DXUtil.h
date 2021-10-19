@@ -2,7 +2,7 @@
 
 #include "Core/Logger.h"
 
-namespace fw
+namespace Wraith
 {
     // Returns true if failed, and false otherwise.
     inline bool FailedCheck(const std::string& name, HRESULT res)
@@ -28,8 +28,8 @@ namespace fw
     {
 #ifdef _DEBUG
         static int id = 0;
-        std::string n = std::format("#fw::{}[{}]", name, ++id);
+        std::string n = std::format("#Wraith::{}[{}]", name, ++id);
         resource->SetPrivateData(WKPDID_D3DDebugObjectName, static_cast<u32>(n.size()), n.data());
 #endif
     }
-};  // namespace fw
+};  // namespace Wraith

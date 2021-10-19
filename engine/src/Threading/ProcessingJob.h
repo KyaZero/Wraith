@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fw
+namespace Wraith
 {
     class ProcessingJob
     {
@@ -34,4 +34,4 @@ namespace fw
 
         void* m_UserData;
     };
-}  // namespace fw
+}  // namespace Wraith

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fw
+namespace Wraith
 {
     class ShaderReflection
     {
@@ -14,4 +14,4 @@ namespace fw
         ComPtr<ID3D11ShaderReflection> m_Reflection;
         D3D11_SHADER_DESC m_ShaderDesc;
     };
-}  // namespace fw
+}  // namespace Wraith

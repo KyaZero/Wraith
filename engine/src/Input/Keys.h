@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fw
+namespace Wraith
 {
     struct ScrollState
     {
@@ -106,4 +106,4 @@ namespace fw
         F12 = 0x7B,
         Count
     };
-}  // namespace fw
+}  // namespace Wraith

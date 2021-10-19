@@ -5,7 +5,7 @@
 #include "Framework.h"
 #include "ShaderReflection.h"
 
-namespace fw
+namespace Wraith
 {
     struct Shader::Data
     {
@@ -289,4 +289,4 @@ namespace fw
             context->PSSetShader(nullptr, 0, 0);
         }
     }
-}  // namespace fw
+}  // namespace Wraith

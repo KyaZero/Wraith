@@ -6,7 +6,7 @@
 
 #include "Core/Types.h"
 
-namespace fw
+namespace Wraith
 {
     template <typename T>
     class Vec2
@@ -159,4 +159,4 @@ namespace fw
     using Vec2f = Vec2<f32>;
     using Vec2i = Vec2<i32>;
     using Vec2u = Vec2<u32>;
-}  // namespace fw
+}  // namespace Wraith

@@ -4,7 +4,7 @@
 
 struct GLFWwindow;
 
-namespace fw
+namespace Wraith
 {
     using Handle = void*;
     using ResizeCallback = std::function<void(u32, u32)>;
@@ -44,4 +44,4 @@ namespace fw
         std::string m_CurrentTitle;
         static inline std::unordered_map<Handle, ResizeCallback> s_ResizeCallbacks;
     };
-}  // namespace fw
+}  // namespace Wraith

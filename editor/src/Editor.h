@@ -6,7 +6,7 @@
 
 #include "Panels/SceneHierarchyPanel.h"
 
-namespace fw
+namespace Wraith
 {
     class Editor : public Application
     {
@@ -35,4 +35,4 @@ namespace fw
 
         SceneHierarchyPanel m_SceneHierarchyPanel;
     };
-}  // namespace fw
+}  // namespace Wraith

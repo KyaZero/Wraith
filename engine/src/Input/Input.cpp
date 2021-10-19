@@ -5,7 +5,7 @@
 
 #include "Window/Window.h"
 
-namespace fw
+namespace Wraith
 {
     std::vector<Input*> Input::s_Instances;
     bool Input::s_UIBlockEvents = false;
@@ -274,4 +274,4 @@ namespace fw
             input->SetKeyState((Key)key, action != GLFW_RELEASE);
         }
     }
-}  // namespace fw
+}  // namespace Wraith

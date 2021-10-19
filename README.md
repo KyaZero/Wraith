@@ -1,7 +1,7 @@
-[![Windows](https://github.com/KyaZero/2DGE/actions/workflows/windows.yml/badge.svg)](https://github.com/KyaZero/2DGE/actions/workflows/windows.yml)
+[![Windows](https://github.com/KyaZero/Wraith/actions/workflows/windows.yml/badge.svg)](https://github.com/KyaZero/Wraith/actions/workflows/windows.yml)
 
-# 2DGE
-A 2D game engine, to make a little 2d game or something
+# Wraith
+A hobby game engine, currently only supports 2D
 
 ## Current screenshot of the project
 ![](https://i.imgur.com/A8XyY8j.png "Editor")

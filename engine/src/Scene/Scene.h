@@ -8,7 +8,7 @@
 #include "Scene/Components.h"
 #include "Window/Window.h"
 
-namespace fw
+namespace Wraith
 {
     class Entity;
     class Scene
@@ -37,4 +37,4 @@ namespace fw
 
         Archiver<TagComponent, TransformComponent, SpriteComponent, CameraComponent, NativeScriptComponent> m_Archiver;
     };
-}  // namespace fw
+}  // namespace Wraith

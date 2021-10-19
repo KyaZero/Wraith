@@ -1,6 +1,6 @@
 #include "Filewatcher.h"
 
-namespace fw
+namespace Wraith
 {
     Filewatcher::Filewatcher()
     {
@@ -57,4 +57,4 @@ namespace fw
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
-}  // namespace fw
+}  // namespace Wraith

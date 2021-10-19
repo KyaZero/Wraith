@@ -2,7 +2,7 @@
 
 #include "Camera.h"
 
-namespace fw
+namespace Wraith
 {
     class OrthographicCamera : public Camera
     {
@@ -63,4 +63,4 @@ namespace fw
         f32 m_Rotation = 0.0f;
         f32 m_Scale = 1.0f;
     };
-}  // namespace fw
+}  // namespace Wraith

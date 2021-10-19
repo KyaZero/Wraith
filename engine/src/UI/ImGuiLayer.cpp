@@ -5,7 +5,7 @@
 #include <imgui/backends/imgui_impl_win32.h>
 #include <imgui/imgui.h>
 
-namespace fw
+namespace Wraith
 {
     static const std::filesystem::path iniFilePath = std::filesystem::temp_directory_path() / "2DGE/imgui.ini";
     static const std::string iniFileString = iniFilePath.generic_string();
@@ -109,4 +109,4 @@ namespace fw
         colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
         colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
     }
-}  // namespace fw
+}  // namespace Wraith

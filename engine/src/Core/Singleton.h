@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fw
+namespace Wraith
 {
     template <typename T>
     class Singleton
@@ -28,4 +28,4 @@ namespace fw
     private:
         static inline std::unique_ptr<T> m_Instance;
     };
-}  // namespace fw
+}  // namespace Wraith

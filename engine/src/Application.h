@@ -5,7 +5,7 @@
 
 int main(int argc, char** argv);
 
-namespace fw
+namespace Wraith
 {
     class Application
     {
@@ -25,4 +25,4 @@ namespace fw
         std::unique_ptr<Engine> m_Engine;
         std::string m_Name;
     };
-}  // namespace fw
+}  // namespace Wraith

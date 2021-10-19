@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include "TextureID.h"
 
-namespace fw
+namespace Wraith
 {
     class TextureManager : public Singleton<TextureManager>
     {
@@ -21,4 +21,4 @@ namespace fw
 
         std::unordered_map<TextureID, Texture> m_TextureMap;
     };
-}  // namespace fw
+}  // namespace Wraith

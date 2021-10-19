@@ -2,7 +2,7 @@
 
 #include "Core/Timer.h"
 
-namespace fw
+namespace Wraith
 {
     ProcessingThread::ProcessingThread(const std::string& id)
         : Thread(id)
@@ -63,4 +63,4 @@ namespace fw
             }
         }
     }
-}  // namespace fw
+}  // namespace Wraith

@@ -2,7 +2,7 @@
 
 #include "ContentManager.h"
 
-namespace fw
+namespace Wraith
 {
     using TextureIDType = IDType;
     class TextureID
@@ -37,16 +37,16 @@ namespace fw
     private:
         TextureIDType m_Hash;
     };
-}  // namespace fw
+}  // namespace Wraith
 
 namespace std
 {
     template <>
-    struct hash<fw::TextureID>
+    struct hash<Wraith::TextureID>
     {
-        std::size_t operator()(const fw::TextureID& id) const
+        std::size_t operator()(const Wraith::TextureID& id) const
         {
-            return std::hash<fw::TextureIDType>()(id);
+            return std::hash<Wraith::TextureIDType>()(id);
         }
     };
 }  // namespace std

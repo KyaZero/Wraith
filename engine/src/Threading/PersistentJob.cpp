@@ -1,6 +1,6 @@
 #include "PersistentJob.h"
 
-namespace fw
+namespace Wraith
 {
     PersistentJob::PersistentJob(const std::string& id, PersistentJob::Job job)
         : m_PrevTimes{ 0 }
@@ -43,4 +43,4 @@ namespace fw
 
         return time_taken;
     }
-}  // namespace fw
+}  // namespace Wraith

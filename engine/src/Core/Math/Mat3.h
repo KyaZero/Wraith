@@ -9,7 +9,7 @@
 #include "Vec2.h"
 #include "Vec3.h"
 
-namespace fw
+namespace Wraith
 {
     template <typename T>
     class Mat3
@@ -74,9 +74,9 @@ namespace fw
                 scale.x, 0, 0, 0, scale.y, 0, 0, 0, 1,
             };
 
-            fw::Mat3<T> r = fw::Mat3<T>::CreateRotationAroundZ(rotation);
+            Wraith::Mat3<T> r = Wraith::Mat3<T>::CreateRotationAroundZ(rotation);
 
-            fw::Mat3<T> t = { 1, 0, 0, 0, 1, 0, position.x, position.y, 1 };
+            Wraith::Mat3<T> t = { 1, 0, 0, 0, 1, 0, position.x, position.y, 1 };
             return s * r * t;
         }
 
@@ -222,4 +222,4 @@ namespace fw
     };
     using Mat3f = Mat3<f32>;
     using Mat3i = Mat3<i32>;
-}  // namespace fw
+}  // namespace Wraith

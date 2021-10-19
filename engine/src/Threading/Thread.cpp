@@ -26,7 +26,7 @@ static void SetThreadName(u32 dwThreadID, const char* threadName)
 }
 #endif
 
-namespace fw
+namespace Wraith
 {
     Thread::Thread(const std::string& id)
         : m_ShouldRun(true)
@@ -88,4 +88,4 @@ namespace fw
 
         m_Job();
     }
-}  // namespace fw
+}  // namespace Wraith

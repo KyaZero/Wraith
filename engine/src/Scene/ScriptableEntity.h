@@ -2,7 +2,7 @@
 
 #include "Entity.h"
 
-namespace fw
+namespace Wraith
 {
     class ScriptableEntity
     {
@@ -34,4 +34,4 @@ namespace fw
         Input m_Input;
         friend class Scene;
     };
-}  // namespace fw
+}  // namespace Wraith

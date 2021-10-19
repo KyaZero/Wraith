@@ -15,7 +15,7 @@
 
 namespace fs = ::std::filesystem;
 
-namespace fw
+namespace Wraith
 {
     Logger::Logger(bool multiThreaded)
         : m_Queue()
@@ -208,4 +208,4 @@ namespace fw
     {
         Get()->m_ShouldLogToFile = shouldLogToFile;
     }
-}  // namespace fw
+}  // namespace Wraith

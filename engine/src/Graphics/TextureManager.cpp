@@ -2,7 +2,7 @@
 
 #include "Core/Filewatcher.h"
 
-namespace fw
+namespace Wraith
 {
     const Texture& TextureManager::GetTexture(TextureID id)
     {
@@ -56,4 +56,4 @@ namespace fw
 
         m_DefaultTexture.LoadFromFile("assets/textures/default.png");
     }
-}  // namespace fw
+}  // namespace Wraith

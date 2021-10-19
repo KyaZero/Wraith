@@ -3,7 +3,7 @@
 #include "ProcessingJob.h"
 #include "Thread.h"
 
-namespace fw
+namespace Wraith
 {
     class ProcessingThread : public Thread
     {
@@ -28,4 +28,4 @@ namespace fw
 
         std::deque<std::shared_ptr<ProcessingJob>> m_QueuedJobs;
     };
-}  // namespace fw
+}  // namespace Wraith

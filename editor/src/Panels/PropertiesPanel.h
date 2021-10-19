@@ -1,10 +1,10 @@
 #pragma once
 
-namespace fw
+namespace Wraith
 {
     class PropertiesPanel
     {
     public:
     private:
     };
-}  // namespace fw
+}  // namespace Wraith

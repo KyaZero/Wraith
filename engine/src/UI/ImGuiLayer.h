@@ -3,7 +3,7 @@
 #include "Graphics/Framework.h"
 #include "Window/Window.h"
 
-namespace fw
+namespace Wraith
 {
     class ImguiLayer
     {
@@ -20,4 +20,4 @@ namespace fw
         Framework& m_Framework;
         Window& m_Window;
     };
-}  // namespace fw
+}  // namespace Wraith

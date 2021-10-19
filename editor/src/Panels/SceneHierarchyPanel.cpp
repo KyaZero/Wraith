@@ -5,7 +5,7 @@
 
 #include "Scene/Components.h"
 
-namespace fw
+namespace Wraith
 {
     SceneHierarchyPanel::SceneHierarchyPanel(std::shared_ptr<Scene> context)
         : m_SelectionContext()
@@ -102,4 +102,4 @@ namespace fw
             }
         }
     }
-}  // namespace fw
+}  // namespace Wraith

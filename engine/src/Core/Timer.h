@@ -4,7 +4,7 @@
 
 #include "Types.h"
 
-namespace fw
+namespace Wraith
 {
     class Timer
     {
@@ -46,4 +46,4 @@ namespace fw
         std::chrono::high_resolution_clock::time_point m_NewTime;
         std::chrono::high_resolution_clock::time_point m_OldTime;
     };
-}  // namespace fw
+}  // namespace Wraith

@@ -12,7 +12,7 @@
 #include "Vec3.h"
 #include "Vec4.h"
 
-namespace fw
+namespace Wraith
 {
     template <typename T>
     class Mat3;
@@ -589,4 +589,4 @@ namespace fw
     };
 
     using Mat4f = Mat4<f32>;
-}  // namespace fw
+}  // namespace Wraith

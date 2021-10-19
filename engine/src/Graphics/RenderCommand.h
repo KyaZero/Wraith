@@ -5,7 +5,7 @@
 #include "Camera.h"
 #include "TextureID.h"
 
-namespace fw
+namespace Wraith
 {
     struct SpriteCommand
     {
@@ -26,4 +26,4 @@ namespace fw
     };
 
     using RenderCommand = std::variant<SpriteCommand, SetCameraCommand>;
-}  // namespace fw
+}  // namespace Wraith

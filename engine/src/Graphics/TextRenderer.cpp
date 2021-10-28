@@ -90,15 +90,16 @@ namespace Wraith
                         continue;
 
                     instances.push_back(InstanceData{
-                        .color = command.color,
-                        .uv_offset = glyph->uv_offset,
-                        .uv_scale = glyph->uv_scale,
-                        .offset = glyph->offset,
-                        .position = sg.position - Vec2f(size.x * command.justification, baseline) +
-                                    Vec2f(total_width * command.justification, total_height * command.alignment),
-                        .text_scale = static_cast<f32>(command.font_size) / Font::FONT_SIZE,
-                        .blend_mode = command.blend_mode,
+                        .text_color = command.color,
+                        .glyph_uv_offset = glyph->uv_offset,
+                        .glyph_uv_size = glyph->uv_scale,
+                        .baseline_offset = glyph->offset,
+                        .character_position =
+                            sg.position - Vec2f(size.x * command.justification, baseline) +
+                            Vec2f(total_width * command.justification, total_height * command.alignment),
                         .screen_position = command.screen_position,
+                        .text_scale = static_cast<f32>(command.font_size),
+                        .blend_mode = command.blend_mode,
                     });
                 }
                 baseline += line_height;

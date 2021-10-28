@@ -19,14 +19,14 @@ namespace Wraith
         constexpr static u32 MAX_INSTANCES = 1024;
         struct InstanceData
         {
-            Vec4f color;
-            Vec2f uv_offset;
-            Vec2f uv_scale;
-            Vec2f offset;
-            Vec2f position;
-            float text_scale;
-            float blend_mode;
-            Vec2f screen_position;
+            Vec4f text_color;          // Text Color
+            Vec2f glyph_uv_offset;     // UV Offset to the glyph in the atlas
+            Vec2f glyph_uv_size;       // UV Size of the glyph in the atlas
+            Vec2f baseline_offset;     // Offset for the glyph to land on the baseline
+            Vec2f character_position;  // Position of the character in the text
+            Vec2f screen_position;     // Position of the text on the screen
+            float text_scale;          // Scale of the text
+            float blend_mode;          // Premultiplied alpha blendmode (Additive 0 - 1 AlphaBlend)
         };
         struct ConstantBufferData
         {

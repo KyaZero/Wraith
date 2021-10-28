@@ -15,7 +15,12 @@ namespace Wraith
     BlendState::~BlendState()
     { }
 
-    bool BlendState::Create(u8 src_rgb, u8 dest_rgb, u8 src_alpha, u8 dest_alpha, u8 op_rgb, u8 op_alpha)
+    bool BlendState::Create(BlendMode src_rgb,
+                            BlendMode dest_rgb,
+                            BlendMode src_alpha,
+                            BlendMode dest_alpha,
+                            BlendOp op_rgb,
+                            BlendOp op_alpha)
     {
         m_Data = std::make_unique<Data>();
 

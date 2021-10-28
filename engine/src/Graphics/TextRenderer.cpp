@@ -21,8 +21,7 @@ namespace Wraith
         if (!m_TextShader.Load(Shader::Vertex | Shader::Pixel, "assets/engine/shaders/text.hlsl"))
             return false;
 
-        if (!m_BlendState.Create(
-                D3D11_BLEND_ONE, D3D11_BLEND_INV_SRC_ALPHA, D3D11_BLEND_ONE, D3D11_BLEND_INV_SRC_ALPHA))
+        if (!m_BlendState.Create(BlendMode::One, BlendMode::InvSrcAlpha, BlendMode::One, BlendMode::InvSrcAlpha))
             return false;
 
         // clang-format off

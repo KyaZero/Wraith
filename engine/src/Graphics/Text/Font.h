@@ -78,4 +78,4 @@ namespace Wraith
         f32 m_FontScale;
         f32 m_LineHeight;
     };
-}  // namespace fw
+}  // namespace Wraith

@@ -18,4 +18,4 @@ namespace Wraith
         std::unique_ptr<Data> m_Data;
     };
 
-}  // namespace fw
+}  // namespace Wraith

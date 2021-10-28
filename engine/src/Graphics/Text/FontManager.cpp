@@ -120,4 +120,4 @@ namespace Wraith
             .offset = shape->offset / ATLAS_SIZE,
         };
     }
-}  // namespace fw
+}  // namespace Wraith

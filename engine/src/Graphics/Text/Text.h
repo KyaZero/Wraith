@@ -28,4 +28,4 @@ namespace Wraith
         constexpr i32 RTL = 1;
     }  // namespace Direction
 
-}  // namespace fw
+}  // namespace Wraith

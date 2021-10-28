@@ -142,4 +142,4 @@ namespace Wraith
         m_TextCommands[CURRENT_FRAME].clear();
         std::swap(m_TextCommands[CURRENT_FRAME], m_TextCommands[NEXT_FRAME]);
     }
-}  // namespace fw
+}  // namespace Wraith

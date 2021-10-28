@@ -51,4 +51,4 @@ namespace Wraith
         std::unique_ptr<Font> m_DefaultFont;
         Texture m_Atlas;
     };
-}  // namespace fw
+}  // namespace Wraith

@@ -43,4 +43,4 @@ namespace Wraith
     {
         Framework::GetContext()->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
     }
-}  // namespace fw
+}  // namespace Wraith

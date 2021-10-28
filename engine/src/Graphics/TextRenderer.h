@@ -63,4 +63,4 @@ namespace Wraith
 
         FontManager m_FontManager;
     };
-}  // namespace fw
+}  // namespace Wraith

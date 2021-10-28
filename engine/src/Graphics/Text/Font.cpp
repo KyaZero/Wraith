@@ -162,4 +162,4 @@ namespace Wraith
         return { shapedGlyphs, Vec2f(cursor_x, cursor_y) / m_HarfBuzz.scale };
     }
 
-}  // namespace fw
+}  // namespace Wraith

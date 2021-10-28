@@ -3,7 +3,7 @@
 #include "Framework.h"
 #include "TextureManager.h"
 
-namespace fw
+namespace Wraith
 {
     SpriteRenderer::SpriteRenderer(Window& window)
         : m_CurrentCamera()
@@ -154,4 +154,4 @@ namespace fw
 
         m_ConstantBuffer.SetData(m_ConstantBufferData);
     }
-}  // namespace fw
+}  // namespace Wraith

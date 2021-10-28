@@ -6,7 +6,7 @@
 #include "Scene/Entity.h"
 #include "Scene/ScriptableEntity.h"
 
-namespace fw
+namespace Wraith
 {
     Editor::Editor()
         : Application("Editor")
@@ -157,4 +157,4 @@ namespace fw
         m_ActiveScene->EndPlay();
         m_IsScenePlaying = false;
     }
-}  // namespace fw
+}  // namespace Wraith

@@ -3,7 +3,7 @@
 #include "DXUtil.h"
 #include "Framework.h"
 
-namespace fw
+namespace Wraith
 {
     struct Sampler::Data
     {
@@ -86,4 +86,4 @@ namespace fw
         ID3D11SamplerState* sampler = nullptr;
         Framework::GetContext()->PSSetSamplers(slot, 1, &sampler);
     }
-}  // namespace fw
+}  // namespace Wraith

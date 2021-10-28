@@ -3,7 +3,7 @@
 #include "Graphics/ContentManager.h"
 #include "Graphics/DXUtil.h"
 
-namespace fw
+namespace Wraith
 {
     FontManager::FontManager()
     { }

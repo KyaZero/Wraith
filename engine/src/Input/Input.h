@@ -4,7 +4,7 @@
 
 struct GLFWwindow;
 
-namespace fw
+namespace Wraith
 {
     class Window;
     class Input
@@ -62,4 +62,4 @@ namespace fw
         bool m_IsEnabled;
         static bool s_UIBlockEvents;
     };
-}  // namespace fw
+}  // namespace Wraith

@@ -10,7 +10,7 @@
 #include "Texture.h"
 #include "Window/Window.h"
 
-namespace fw
+namespace Wraith
 {
     class SpriteRenderer
     {
@@ -70,4 +70,4 @@ namespace fw
 
         Sampler m_Sampler;
     };
-}  // namespace fw
+}  // namespace Wraith

@@ -5,7 +5,7 @@
 #include <imgui/backends/imgui_impl_win32.h>
 #include <imgui/imgui.h>
 
-namespace fw
+namespace Wraith
 {
     const static auto INI_FILE_PATH = TEMP_DIRECTORY / "imgui.ini";
     const static auto INI_FILE_STRING = INI_FILE_PATH.generic_string();
@@ -109,4 +109,4 @@ namespace fw
         colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
         colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
     }
-}  // namespace fw
+}  // namespace Wraith

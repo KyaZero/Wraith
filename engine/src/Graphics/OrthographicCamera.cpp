@@ -1,6 +1,6 @@
 #include "OrthographicCamera.h"
 
-namespace fw
+namespace Wraith
 {
     OrthographicCamera::OrthographicCamera(f32 left, f32 right, f32 bottom, f32 top)
         : Camera(m_Projection)
@@ -35,4 +35,4 @@ namespace fw
         m_ViewMatrix = Mat4f::FastInverse(transform);
         m_ViewProjectionMatrix = m_ViewMatrix * m_Projection;
     }
-}  // namespace fw
+}  // namespace Wraith

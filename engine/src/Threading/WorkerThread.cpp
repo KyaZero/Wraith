@@ -2,7 +2,7 @@
 
 #include "Engine.h"
 
-namespace fw
+namespace Wraith
 {
     WorkerThread::WorkerThread(const std::string& id)
         : Thread(id)
@@ -61,4 +61,4 @@ namespace fw
             SetActive(false);
         }
     }
-}  // namespace fw
+}  // namespace Wraith

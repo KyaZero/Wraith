@@ -1,18 +1,19 @@
 #pragma once
 
 #define VERBOSE_LOG(...) \
-    fw::Logger::Get()->Log(::fw::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define INFO_LOG(...) fw::Logger::Get()->Log(::fw::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define INFO_LOG(...) \
+    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 #define WARNING_LOG(...) \
-    fw::Logger::Get()->Log(::fw::Logger::Level::Warning, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Warning, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 #define ERROR_LOG(...) \
-    fw::Logger::Get()->Log(::fw::Logger::Level::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 
 #ifdef NDEBUG
 #define ASSERT_LOG(...) ((void)0)
 #else
 #define ___ASSERT_LOG(...) \
-    fw::Logger::Get()->Log(::fw::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), abort()
+    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), abort()
 #define ASSERT_LOG(expression, ...) \
     (void)((!!(expression)) || (___ASSERT_LOG("Assertion failed: {}", (#expression " " #__VA_ARGS__)), 0))
 #endif
@@ -23,7 +24,7 @@
 #include "Singleton.h"
 #include "Types.h"
 
-namespace fw
+namespace Wraith
 {
     class Logger : public Singleton<Logger>
     {
@@ -83,4 +84,4 @@ namespace fw
         bool m_ShouldLogToFile;
         bool m_MultiThreaded;
     };
-}  // namespace fw
+}  // namespace Wraith

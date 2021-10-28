@@ -2,7 +2,7 @@
 
 #include "Window/Window.h"
 
-namespace fw
+namespace Wraith
 {
     OrthographicCameraController::OrthographicCameraController()
         : m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel)
@@ -95,4 +95,4 @@ namespace fw
     {
         m_Camera.SetProjection(-width * m_ZoomLevel, width * m_ZoomLevel, height * m_ZoomLevel, -height * m_ZoomLevel);
     }
-}  // namespace fw
+}  // namespace Wraith

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fw
+namespace Wraith
 {
     enum class ImageFormat
     {

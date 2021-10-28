@@ -2,7 +2,7 @@
 
 #include "Framework.h"
 
-namespace fw
+namespace Wraith
 {
     RenderManager::RenderManager(Window& window)
         : m_Window(window)
@@ -74,4 +74,4 @@ namespace fw
         m_SpriteRenderer.Flip();
         m_TextRenderer.Flip();
     }
-}  // namespace fw
+}  // namespace Wraith

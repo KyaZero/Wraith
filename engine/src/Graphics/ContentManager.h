@@ -5,7 +5,7 @@
 #include "Core/Singleton.h"
 #include "Core/Types.h"
 
-namespace fw
+namespace Wraith
 {
     using IDType = u64;
     static constexpr IDType NullId = (IDType)-1;
@@ -19,4 +19,4 @@ namespace fw
     private:
         std::unordered_map<IDType, std::filesystem::path> m_Paths;
     };
-}  // namespace fw
+}  // namespace Wraith

@@ -5,7 +5,7 @@
 
 #include "Core/Types.h"
 
-namespace fw
+namespace Wraith
 {
     constexpr f32 PI = 3.14159265358979323846f;
 
@@ -34,7 +34,7 @@ namespace fw
     template <typename T, typename U, typename R>
     inline T Clamp(const T& x, const U& min, const R& max)
     {
-        return (T)fw::Max(min, fw::Min(x, max));
+        return (T)Wraith::Max(min, Wraith::Min(x, max));
     }
 
     template <typename T, typename T2>
@@ -70,7 +70,7 @@ namespace fw
     {
         return RandomRange(-1.0f, 1.0f);
     }
-}  // namespace fw
+}  // namespace Wraith
 
 // Variant helper
 template <class... Ts>

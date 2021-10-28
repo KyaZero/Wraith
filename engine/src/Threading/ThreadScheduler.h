@@ -4,7 +4,7 @@
 #include "ProcessingThread.h"
 #include "WorkerThread.h"
 
-namespace fw
+namespace Wraith
 {
     class ThreadScheduler : public Singleton<ThreadScheduler>
     {
@@ -32,4 +32,4 @@ namespace fw
         std::vector<std::shared_ptr<PersistentJob>> m_PersistentJobs;
         std::vector<std::shared_ptr<ProcessingJob>> m_ProcessingJobs;
     };
-}  // namespace fw
+}  // namespace Wraith

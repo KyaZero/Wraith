@@ -6,7 +6,7 @@
 #include "Graphics/Text/Text.h"
 #include "ScriptableEntity.h"
 
-namespace fw
+namespace Wraith
 {
     struct TransformComponent
     {
@@ -122,4 +122,4 @@ namespace fw
             buffer.Write(reinterpret_cast<const char*>(&InstantiateScript), sizeof(InstantiateScript));
         }
     };
-}  // namespace fw
+}  // namespace Wraith

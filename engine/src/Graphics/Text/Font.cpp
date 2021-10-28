@@ -2,7 +2,7 @@
 
 #include "Graphics/Text/Text.h"
 
-namespace fw
+namespace Wraith
 {
     Font::Font(msdfgen::FreetypeHandle* freetypeHandle)
     {

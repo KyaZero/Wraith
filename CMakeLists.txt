@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.18)
-project("2DGE" C CXX)
+
+set(PROJECT_NAME "Wraith")
+project(${PROJECT_NAME} C CXX)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "predefined")

@@ -2,7 +2,7 @@
 
 #include "DXUtil.h"
 
-namespace fw
+namespace Wraith
 {
     bool ShaderReflection::Reflect(ComPtr<ID3DBlob> blob)
     {
@@ -38,4 +38,4 @@ namespace fw
             visitor(resource_desc);
         }
     }
-}  // namespace fw
+}  // namespace Wraith

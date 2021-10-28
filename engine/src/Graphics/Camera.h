@@ -2,7 +2,7 @@
 
 #include "Core/Math/Mat4.h"
 
-namespace fw
+namespace Wraith
 {
     class Camera
     {
@@ -30,4 +30,4 @@ namespace fw
     protected:
         Mat4f m_Projection;
     };
-}  // namespace fw
+}  // namespace Wraith

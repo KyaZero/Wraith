@@ -5,7 +5,7 @@
 #include "Entity.h"
 #include "Graphics/TextureManager.h"
 
-namespace fw
+namespace Wraith
 {
     Scene::Scene()
     { }
@@ -167,4 +167,4 @@ namespace fw
 
         m_Archiver.RestoreSnapshot(m_Registry);
     }
-}  // namespace fw
+}  // namespace Wraith

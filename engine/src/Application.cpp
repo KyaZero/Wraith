@@ -1,6 +1,6 @@
 #include "Application.h"
 
-namespace fw
+namespace Wraith
 {
     Application::Application(const std::string& name)
         : m_Window()
@@ -31,4 +31,4 @@ namespace fw
         }
         return true;
     }
-}  // namespace fw
+}  // namespace Wraith

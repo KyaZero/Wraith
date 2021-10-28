@@ -5,7 +5,7 @@
 #include "DXUtil.h"
 #include "Graphics/Framework.h"
 
-namespace fw
+namespace Wraith
 {
     struct Texture::Data
     {
@@ -373,4 +373,4 @@ namespace fw
         CD3D11_BOX box(x, y, 0, x + w, y + h, 1);
         Framework::GetContext()->UpdateSubresource(m_Data->texture.Get(), 0, &box, data, stride, 0);
     }
-}  // namespace fw
+}  // namespace Wraith

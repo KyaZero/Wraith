@@ -6,7 +6,7 @@
 #include "Scene/Scene.h"
 #include "UI/ImGuiLayer.h"
 
-namespace fw
+namespace Wraith
 {
     class Engine
     {
@@ -52,4 +52,4 @@ namespace fw
         f32 m_FpsUpdateTimer = 0.0f;
         constexpr static f32 FpsUpdatesPerSecond = 30.0f;
     };
-}  // namespace fw
+}  // namespace Wraith

@@ -4,7 +4,7 @@
 #include "Core/Timer.h"
 #include "Core/Types.h"
 
-namespace fw
+namespace Wraith
 {
     // A job which happens every frame, e.g Update/Render/etc...
     class PersistentJob
@@ -32,4 +32,4 @@ namespace fw
 
         Job m_Job;
     };
-}  // namespace fw
+}  // namespace Wraith

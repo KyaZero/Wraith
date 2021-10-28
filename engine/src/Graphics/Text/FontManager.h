@@ -6,7 +6,7 @@
 #include "Graphics/Text/Font.h"
 #include "Graphics/Texture.h"
 
-namespace fw
+namespace Wraith
 {
     class FontManager
     {

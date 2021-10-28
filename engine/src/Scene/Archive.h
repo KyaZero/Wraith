@@ -20,7 +20,7 @@ namespace dubu::serialize::internal
     };
 }  // namespace dubu::serialize::internal
 
-namespace fw
+namespace Wraith
 {
     class OutputArchive
     {
@@ -96,4 +96,4 @@ namespace fw
     private:
         dubu::serialize::MemoryBuffer m_Buffer;
     };
-}  // namespace fw
+}  // namespace Wraith

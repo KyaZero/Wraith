@@ -1,7 +1,7 @@
 #pragma once
 #include <thread>
 
-namespace fw
+namespace Wraith
 {
     class Thread
     {
@@ -34,4 +34,4 @@ namespace fw
         volatile bool m_IsRunning;
         volatile bool m_ShouldRun;
     };
-}  // namespace fw
+}  // namespace Wraith

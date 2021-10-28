@@ -2,7 +2,7 @@
 
 #include "imgui/imgui.h"
 
-namespace fw
+namespace Wraith
 {
     ThreadScheduler::ThreadScheduler()
         : m_FrameIndex(0)
@@ -191,4 +191,4 @@ namespace fw
         }
         m_ProcessingJobs.clear();
     }
-}  // namespace fw
+}  // namespace Wraith

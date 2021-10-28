@@ -3,7 +3,7 @@
 #include "DXUtil.h"
 #include "Framework.h"
 
-namespace fw
+namespace Wraith
 {
     struct Buffer::Data
     {
@@ -152,4 +152,4 @@ namespace fw
         }
         Framework::GetContext()->Unmap(m_Data->buffer.Get(), 0);
     }
-}  // namespace fw
+}  // namespace Wraith

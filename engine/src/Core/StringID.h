@@ -2,7 +2,7 @@
 
 #include "Graphics/ContentManager.h"
 
-namespace fw
+namespace Wraith
 {
     using StringIDType = IDType;
     class StringID
@@ -37,16 +37,16 @@ namespace fw
     private:
         StringIDType m_Hash;
     };
-}  // namespace fw
+}  // namespace Wraith
 
 namespace std
 {
     template <>
-    struct hash<fw::StringID>
+    struct hash<Wraith::StringID>
     {
-        std::size_t operator()(const fw::StringID& id) const
+        std::size_t operator()(const Wraith::StringID& id) const
         {
-            return std::hash<fw::StringIDType>()(id);
+            return std::hash<Wraith::StringIDType>()(id);
         }
     };
 }  // namespace std

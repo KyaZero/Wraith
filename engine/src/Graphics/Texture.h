@@ -7,7 +7,7 @@ struct ID3D11ShaderResourceView;
 struct ID3D11RenderTargetView;
 struct ID3D11DepthStencilView;
 
-namespace fw
+namespace Wraith
 {
     struct TextureCreateInfo
     {
@@ -70,4 +70,4 @@ namespace fw
         struct Data;
         std::unique_ptr<Data> m_Data;
     };
-}  // namespace fw
+}  // namespace Wraith

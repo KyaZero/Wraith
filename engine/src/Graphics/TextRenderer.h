@@ -12,7 +12,7 @@
 #include "Graphics/Text/FontManager.h"
 #include "Graphics/Texture.h"
 
-namespace fw
+namespace Wraith
 {
     class TextRenderer
     {

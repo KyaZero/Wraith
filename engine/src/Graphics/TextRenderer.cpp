@@ -5,7 +5,7 @@
 #include "Graphics/DXUtil.h"
 #include "Graphics/Framework.h"
 
-namespace fw
+namespace Wraith
 {
     TextRenderer::TextRenderer()
     { }

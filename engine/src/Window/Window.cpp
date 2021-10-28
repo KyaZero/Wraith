@@ -20,7 +20,7 @@ static LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
     return CallWindowProc(currentWndProc, hWnd, msg, wParam, lParam);
 }
 
-namespace fw
+namespace Wraith
 {
     Window::Window()
         : m_Handle()
@@ -127,4 +127,4 @@ namespace fw
             callback(width, height);
         }
     }
-}  // namespace fw
+}  // namespace Wraith

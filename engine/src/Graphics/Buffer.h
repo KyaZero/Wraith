@@ -1,6 +1,6 @@
 #pragma once
 
-namespace fw
+namespace Wraith
 {
     enum class BufferUsage
     {
@@ -43,4 +43,4 @@ namespace fw
     {
         SetData(&data, sizeof(data));
     }
-}  // namespace fw
+}  // namespace Wraith

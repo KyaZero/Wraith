@@ -5,7 +5,7 @@
 #include <msdfgen/msdfgen-ext.h>
 #include <msdfgen/msdfgen.h>
 
-namespace fw
+namespace Wraith
 {
     class Font
     {

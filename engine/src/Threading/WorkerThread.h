@@ -2,7 +2,7 @@
 #include "PersistentJob.h"
 #include "Thread.h"
 
-namespace fw
+namespace Wraith
 {
     class WorkerThread : public Thread
     {
@@ -23,4 +23,4 @@ namespace fw
         f32 m_ProjectedTime;
         std::vector<std::shared_ptr<PersistentJob>> m_QueuedJobs;
     };
-}  // namespace fw
+}  // namespace Wraith

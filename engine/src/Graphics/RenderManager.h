@@ -5,7 +5,7 @@
 #include "SpriteRenderer.h"
 #include "TextRenderer.h"
 
-namespace fw
+namespace Wraith
 {
     class RenderManager
     {
@@ -30,4 +30,4 @@ namespace fw
         TextRenderer m_TextRenderer;
         std::vector<RenderCommand> m_RenderCommands[FRAME_COUNT];
     };
-}  // namespace fw
+}  // namespace Wraith

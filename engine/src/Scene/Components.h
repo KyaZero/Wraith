@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Core/Math/Vec.h"
+#include "Core/StringID.h"
 #include "Graphics/Camera.h"
-#include "Graphics/TextureID.h"
+#include "Graphics/Text/Text.h"
 #include "ScriptableEntity.h"
 
 namespace Wraith
@@ -39,7 +40,7 @@ namespace Wraith
 
     struct SpriteComponent
     {
-        TextureID texture;
+        StringID texture;
         Vec4f color{ 1, 1, 1, 1 };
         Vec2f origin{ 0, 0 };
         f32 layer{ 0 };
@@ -52,6 +53,29 @@ namespace Wraith
         void Serialize(dubu::serialize::WriteBuffer& buffer) const
         {
             buffer << texture << color << origin << layer << world_space;
+        }
+    };
+
+    struct TextComponent
+    {
+        std::string text = "Text";
+        std::string font = "assets/engine/fonts/roboto-regular.ttf";
+        StringID font_id = font;
+        i32 justification = Justification::Left;
+        i32 alignment = Alignment::Top;
+        i32 font_size = 36;
+        i32 direction = Direction::LTR;
+        Vec4f color{ 1, 1, 1, 1 };
+        f32 blend_mode = 1.f;
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer)
+        {
+            buffer >> text >> font >> justification >> alignment >> font_size >> direction >> color >> blend_mode;
+            font_id = font;
+        }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const
+        {
+            buffer << text << font << justification << alignment << font_size << direction << color << blend_mode;
         }
     };
 

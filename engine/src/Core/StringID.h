@@ -1,26 +1,26 @@
 #pragma once
 
-#include "ContentManager.h"
+#include "Graphics/ContentManager.h"
 
 namespace Wraith
 {
-    using TextureIDType = IDType;
-    class TextureID
+    using StringIDType = IDType;
+    class StringID
     {
     public:
-        TextureID()
+        StringID()
             : m_Hash(0)
         { }
-        TextureID(TextureIDType id)
+        StringID(StringIDType id)
             : m_Hash(id)
         { }
-        TextureID(const std::string& path)
+        StringID(const std::string& path)
         {
             IDType id = ContentManager::Get()->Register(path);
             m_Hash = id;
         }
 
-        operator TextureIDType() const
+        operator StringIDType() const
         {
             return m_Hash;
         }
@@ -35,18 +35,18 @@ namespace Wraith
         }
 
     private:
-        TextureIDType m_Hash;
+        StringIDType m_Hash;
     };
 }  // namespace Wraith
 
 namespace std
 {
     template <>
-    struct hash<Wraith::TextureID>
+    struct hash<Wraith::StringID>
     {
-        std::size_t operator()(const Wraith::TextureID& id) const
+        std::size_t operator()(const Wraith::StringID& id) const
         {
-            return std::hash<Wraith::TextureIDType>()(id);
+            return std::hash<Wraith::StringIDType>()(id);
         }
     };
 }  // namespace std

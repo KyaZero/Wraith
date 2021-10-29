@@ -24,13 +24,6 @@
 #include <variant>
 #include <vector>
 
-// Variant helper
-template <class... Ts>
-struct overloaded : Ts...
-{
-    using Ts::operator()...;
-};
-
 // Windows includes
 #define WIN32_LEAN_AND_MEAN
 #include <d3d11.h>
@@ -38,13 +31,15 @@ struct overloaded : Ts...
 #include <d3dcompiler.h>
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
-using Microsoft::WRL::WeakRef;
 
 #ifdef min
 #undef min
 #endif
 #ifdef max
 #undef max
+#endif
+#ifdef INFINITE
+#undef INFINITE
 #endif
 
 // Thirdparty includes
@@ -55,4 +50,5 @@ using Microsoft::WRL::WeakRef;
 #include "Core/Logger.h"
 #include "Core/Math/Mat.h"
 #include "Core/Math/Vec.h"
+#include "Core/StringID.h"
 #include "Core/Types.h"

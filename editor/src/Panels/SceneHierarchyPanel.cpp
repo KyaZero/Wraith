@@ -3,6 +3,7 @@
 #include <imgui/imgui.h>
 #include <imgui/misc/cpp/imgui_stdlib.h>
 
+#include "Core/StringID.h"
 #include "Scene/Components.h"
 
 namespace Wraith
@@ -46,7 +47,7 @@ namespace Wraith
     {
         auto& tag = entity.GetComponent<TagComponent>().tag;
 
-        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanFullWidth;
 
         if (entity == m_SelectionContext)
             flags |= ImGuiTreeNodeFlags_Selected;
@@ -73,8 +74,7 @@ namespace Wraith
 
         if (entity.HasComponent<TransformComponent>())
         {
-            if (ImGui::TreeNodeEx(
-                    (void*)typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+            if (ImGui::CollapsingHeader("Transform Component"))
             {
                 auto& transform = entity.GetComponent<TransformComponent>();
 
@@ -87,18 +87,52 @@ namespace Wraith
                 transform.rotation = { Radians(rotation_in_degrees.x),
                                        Radians(rotation_in_degrees.y),
                                        Radians(rotation_in_degrees.z) };
-                ImGui::TreePop();
+            }
+        }
+
+        if (entity.HasComponent<TextComponent>())
+        {
+            if (ImGui::CollapsingHeader("Text Component"))
+            {
+                auto& text = entity.GetComponent<TextComponent>();
+                ImGui::InputTextMultiline("Text", &text.text);
+                if (ImGui::InputText("Font", &text.font))
+                {
+                    text.font_id = StringID(text.font);
+                }
+
+                ImGui::DragInt("Font Size", &text.font_size, 1, 1, 256);
+
+                ImGui::Separator();
+
+                ImGui::RadioButton("Left", &text.justification, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("Center", &text.justification, 1);
+                ImGui::SameLine();
+                ImGui::RadioButton("Right", &text.justification, 2);
+
+                ImGui::RadioButton("Top", &text.alignment, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("Middle", &text.alignment, 1);
+                ImGui::SameLine();
+                ImGui::RadioButton("Bottom", &text.alignment, 2);
+
+                ImGui::RadioButton("LTR", &text.direction, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("RTL", &text.direction, 1);
+
+                ImGui::Separator();
+
+                ImGui::ColorEdit4("Color", &text.color.x);
+                ImGui::SliderFloat("Blend Mode", &text.blend_mode, 0.0f, 1.0f, "Additive - %.2f - Alpha Blend");
             }
         }
 
         if (entity.HasComponent<CameraComponent>())
         {
-            if (ImGui::TreeNodeEx(
-                    (void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera Component"))
+            if (ImGui::CollapsingHeader("Camera Component"))
             {
                 // auto& camera_component = entity.GetComponent<CameraComponent>();
-
-                ImGui::TreePop();
             }
         }
     }

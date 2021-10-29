@@ -26,7 +26,7 @@ namespace Wraith
                 auto e =
                     m_ActiveScene->CreateEntity("Sprite_" + std::to_string((x + half_num) + ((y + half_num) * num)));
                 auto& sprite = e.AddComponent<SpriteComponent>();
-                sprite.texture = TextureID("assets/engine/textures/default.png");
+                sprite.texture = StringID("assets/engine/textures/default.png");
                 sprite.origin = { 0.5f, 0.5f };
                 sprite.color =
                     Vec4f{ x / (f32)half_num, y / (f32)half_num, (x / (f32)half_num + y / (f32)half_num) / 2.0f, 1 } +
@@ -79,6 +79,11 @@ namespace Wraith
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>(10.f);
 
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+        {
+            auto textEntity = m_ActiveScene->CreateEntity("Text");
+            textEntity.AddComponent<TextComponent>();
+        }
     }
 
     void Editor::OnUpdate(f32 dt)

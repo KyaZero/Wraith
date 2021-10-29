@@ -26,15 +26,22 @@ set(common_files
   "src/Core/Logger.cpp"
   "src/Core/Logger.h"
   "src/Core/Singleton.h"
+  "src/Core/StringID.h"
   "src/Core/Timer.h"
   "src/Core/Types.h")
 
 set(graphics_files
+  "src/Graphics/Text/Font.cpp"
+  "src/Graphics/Text/Font.h"
+  "src/Graphics/Text/FontManager.cpp"
+  "src/Graphics/Text/FontManager.h"
+  "src/Graphics/Text/Text.h"
+  "src/Graphics/BlendState.cpp"
+  "src/Graphics/BlendState.h"
   "src/Graphics/ContentManager.h"
   "src/Graphics/ContentManager.cpp"
   "src/Graphics/TextureManager.h"
   "src/Graphics/TextureManager.cpp"
-  "src/Graphics/TextureID.h"
   "src/Graphics/OrthographicCameraController.h"
   "src/Graphics/OrthographicCameraController.cpp"
   "src/Graphics/OrthographicCamera.h"
@@ -57,6 +64,8 @@ set(graphics_files
   "src/Graphics/Buffer.cpp"
   "src/Graphics/DXUtil.h"
   "src/Graphics/ImageFormat.h"
+  "src/Graphics/TextRenderer.h"
+  "src/Graphics/TextRenderer.cpp"
   "src/Graphics/Texture.h"
   "src/Graphics/Texture.cpp"
   "src/Graphics/Framework.h"
@@ -125,7 +134,12 @@ target_link_libraries(${target_name} PUBLIC
     stb
     glfw
     color-console
-    dubu_serialize)
+    dubu_serialize
+    dubu::rect_pack
+    fribidi
+    harfbuzz
+    msdfgen::msdfgen
+    msdfgen::msdfgen-ext)
 
 target_precompile_headers(${target_name} PRIVATE "src/Precompiled/Precompiled.h")
 target_include_directories(${target_name} PUBLIC "src")

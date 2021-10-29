@@ -4,14 +4,13 @@
 
 #include "Core/Singleton.h"
 #include "Texture.h"
-#include "TextureID.h"
 
 namespace Wraith
 {
     class TextureManager : public Singleton<TextureManager>
     {
     public:
-        const Texture& GetTexture(TextureID id);
+        const Texture& GetTexture(StringID id);
         const Texture& GetDefaultTexture();
 
     private:
@@ -19,6 +18,6 @@ namespace Wraith
 
         Texture m_DefaultTexture;
 
-        std::unordered_map<TextureID, Texture> m_TextureMap;
+        std::unordered_map<StringID, Texture> m_TextureMap;
     };
 }  // namespace Wraith

@@ -3,13 +3,13 @@
 #include <variant>
 
 #include "Camera.h"
-#include "TextureID.h"
+#include "Core/StringID.h"
 
 namespace Wraith
 {
     struct SpriteCommand
     {
-        TextureID texture;
+        StringID texture;
         Vec4f color;
         Vec2f position;
         Vec2f origin;
@@ -25,5 +25,18 @@ namespace Wraith
         Mat4f view;
     };
 
-    using RenderCommand = std::variant<SpriteCommand, SetCameraCommand>;
+    struct TextCommand
+    {
+        std::string text;
+        StringID font_id;
+        f32 justification;
+        f32 alignment;
+        i32 font_size;
+        i32 direction;
+        Vec4f color;
+        f32 blend_mode;
+        Vec2f screen_position;
+    };
+
+    using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand>;
 }  // namespace Wraith

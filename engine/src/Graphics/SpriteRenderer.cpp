@@ -77,9 +77,9 @@ namespace Wraith
             return a.texture > b.texture;
         });
 
-        std::unordered_map<TextureID, std::vector<InstanceData>> instances;
+        std::unordered_map<StringID, std::vector<InstanceData>> instances;
 
-        TextureID current_texture_id = 0;
+        StringID current_texture_id = 0;
         Vec2f current_texture_size = { 0, 0 };
         for (auto& sprite : commands)
         {

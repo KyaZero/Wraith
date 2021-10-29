@@ -27,7 +27,7 @@ namespace Wraith
         virtual void Bind(i32 slot = 0) const;
 
         template <typename T>
-        void SetData(T& data);
+        void SetData(T&& data);
 
         virtual void SetData(const void* data, u32 size);
         virtual void* Map();
@@ -39,7 +39,7 @@ namespace Wraith
     };
 
     template <typename T>
-    inline void Buffer::SetData(T& data)
+    inline void Buffer::SetData(T&& data)
     {
         SetData(&data, sizeof(data));
     }

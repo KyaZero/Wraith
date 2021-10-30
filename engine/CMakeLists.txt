@@ -141,7 +141,7 @@ target_link_libraries(${target_name} PUBLIC
     msdfgen::msdfgen
     msdfgen::msdfgen-ext)
 
-target_precompile_headers(${target_name} PRIVATE "src/Precompiled/Precompiled.h")
+target_precompile_headers(${target_name} PUBLIC "src/Precompiled/Precompiled.h")
 target_include_directories(${target_name} PUBLIC "src")
 
 auto_group_sources(all_files ${CMAKE_CURRENT_SOURCE_DIR})

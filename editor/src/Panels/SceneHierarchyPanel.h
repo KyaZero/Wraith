@@ -1,27 +1,37 @@
 #pragma once
 
+#include <functional>
+
+#include "Panel.h"
 #include "Scene/Entity.h"
 #include "Scene/Scene.h"
 
 namespace Wraith
 {
-    class SceneHierarchyPanel
+    class SceneHierarchyPanel : public Panel
     {
+        using Handler = std::function<void(Entity)>;
+
     public:
-        SceneHierarchyPanel() = default;
-        SceneHierarchyPanel(std::shared_ptr<Scene> context);
+        SceneHierarchyPanel(Scene& context, Handler on_entity_selected)
+            : m_Context(context)
+            , m_OnEntitySelected(on_entity_selected)
+        { }
+        virtual ~SceneHierarchyPanel() = default;
 
-        void SetContext(std::shared_ptr<Scene> context);
-
-        void OnUIRender();
+        void OnUIRender() override;
+        const char* GetName() const override
+        {
+            return "Scene Hierarchy";
+        }
 
     private:
         void DrawEntityNode(Entity entity);
 
-        // Move this stuff to PropertiesPanel
-        void DrawComponents(Entity entity);
+        void SelectEntity(Entity entity);
 
-        std::shared_ptr<Scene> m_Context;
-        Entity m_SelectionContext;
+        Scene& m_Context;
+        Entity m_SelectedEntity;
+        Handler m_OnEntitySelected;
     };
 }  // namespace Wraith

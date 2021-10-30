@@ -1,10 +1,16 @@
 #pragma once
 
+#include <memory>
+
 #include <Application.h>
 #include <Scene/Entity.h>
 #include <Scene/Scene.h>
 
+#include "Panels/BarPanel.h"
+#include "Panels/PanelManager.h"
+#include "Panels/PropertiesPanel.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ViewportPanel.h"
 
 namespace Wraith
 {
@@ -21,18 +27,17 @@ namespace Wraith
         void OnSceneEndPlay();
 
     private:
-        std::shared_ptr<Scene> m_ActiveScene;
+        std::unique_ptr<Scene> m_ActiveScene;
         OrthographicCameraController m_CameraController;
-        Vec2f m_ViewportBounds[2];
-        Vec2f m_ViewportSize;
 
         Entity m_CameraEntity;
 
-        bool m_ViewportFocused = false;
-        bool m_ViewportHovered = false;
         bool m_IsScenePlaying = false;
-        bool m_IsPlay = true;
 
-        SceneHierarchyPanel m_SceneHierarchyPanel;
+        PanelManager m_PanelManager;
+        std::unique_ptr<ViewportPanel> m_ViewportPanel;
+        std::unique_ptr<BarPanel> m_BarPanel;
+        std::unique_ptr<SceneHierarchyPanel> m_SceneHierarchyPanel;
+        std::unique_ptr<PropertiesPanel> m_PropertiesPanel;
     };
 }  // namespace Wraith

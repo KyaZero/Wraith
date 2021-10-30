@@ -139,7 +139,8 @@ target_link_libraries(${target_name} PUBLIC
     fribidi
     harfbuzz
     msdfgen::msdfgen
-    msdfgen::msdfgen-ext)
+    msdfgen::msdfgen-ext
+    tinyfd)
 
 target_precompile_headers(${target_name} PUBLIC "src/Precompiled/Precompiled.h")
 target_include_directories(${target_name} PUBLIC "src")

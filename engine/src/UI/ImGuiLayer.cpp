@@ -75,6 +75,15 @@ namespace Wraith
             ImGui::RenderPlatformWindowsDefault();
             glfwMakeContextCurrent(backup_context);
         }
+
+        ImGui::EndFrame();
+
+        if (m_SettingsToLoad)
+        {
+            auto str = m_SettingsToLoad->generic_string();
+            ImGui::LoadIniSettingsFromDisk(str.c_str());
+            m_SettingsToLoad = std::nullopt;
+        }
     }
 
     void ImguiLayer::SetThemeColors()

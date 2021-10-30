@@ -11,6 +11,7 @@ namespace Wraith
     Editor::Editor()
         : Application("Editor")
         , m_CameraController(m_Engine->GetWindow().GetSize().x, m_Engine->GetWindow().GetSize().y, true)
+        , m_PanelManager(m_Engine->GetImguiLayer())
     {
         m_ActiveScene = std::make_unique<Scene>();
         m_ActiveScene->Init(m_Engine->GetRenderer());

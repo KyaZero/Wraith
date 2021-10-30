@@ -14,10 +14,16 @@ namespace Wraith
         void Begin();
         void End();
 
-        void SetThemeColors();
+        void LoadSettings(std::filesystem::path settings_file)
+        {
+            m_SettingsToLoad = settings_file;
+        }
 
     private:
+        void SetThemeColors();
+
         Framework& m_Framework;
         Window& m_Window;
+        std::optional<std::filesystem::path> m_SettingsToLoad = std::nullopt;
     };
 }  // namespace Wraith

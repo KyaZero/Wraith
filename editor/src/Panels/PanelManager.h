@@ -1,5 +1,7 @@
 #pragma once
 
+#include <UI/ImGuiLayer.h>
+
 #include "Panel.h"
 
 namespace Wraith
@@ -7,7 +9,9 @@ namespace Wraith
     class PanelManager
     {
     public:
-        PanelManager() = default;
+        PanelManager(ImguiLayer& imgui_layer)
+            : m_ImguiLayer(imgui_layer)
+        { }
         ~PanelManager() = default;
 
         void OnUIRender();
@@ -18,6 +22,7 @@ namespace Wraith
 
     private:
         std::vector<Panel*> m_Panels;
+        ImguiLayer& m_ImguiLayer;
     };
 
 }  // namespace Wraith

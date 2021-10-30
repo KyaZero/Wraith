@@ -24,6 +24,9 @@ namespace Wraith
         // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
         // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
+        ImGui_ImplWin32_Init(m_Window.GetPlatformHandle());
+        ImGui_ImplDX11_Init(m_Framework.GetDevice(), m_Framework.GetContext());
+
         if (!std::filesystem::exists(INI_FILE_PATH))
         {
             std::filesystem::create_directories(INI_FILE_PATH.parent_path());
@@ -31,23 +34,16 @@ namespace Wraith
         }
         io.IniFilename = INI_FILE_STRING.c_str();
 
-        ImGui::StyleColorsDark();
+        SetStyle();
 
-        ImGuiStyle& style = ImGui::GetStyle();
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
-            style.WindowRounding = 0.0f;
-            style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-        }
-
-        SetThemeColors();
-
-        ImGui_ImplWin32_Init(m_Window.GetPlatformHandle());
-        ImGui_ImplDX11_Init(m_Framework.GetDevice(), m_Framework.GetContext());
+        Window::RegisterContentScaleCallback(this, [this](f32 x, f32) { OnContentScale(x); });
+        m_ContentScale = window.GetContentScale().x;
+        SetScales();
     }
 
     ImguiLayer::~ImguiLayer()
     {
+        Window::UnregisterContentScaleCallback(this);
         ImGui_ImplDX11_Shutdown();
         ImGui_ImplWin32_Shutdown();
         ImGui::DestroyContext();
@@ -86,9 +82,46 @@ namespace Wraith
         }
     }
 
-    void ImguiLayer::SetThemeColors()
+    void ImguiLayer::LoadSettings(std::filesystem::path settings_file)
     {
-        auto& colors = ImGui::GetStyle().Colors;
+        m_SettingsToLoad = settings_file;
+    }
+
+    void ImguiLayer::OnContentScale(f32 scale)
+    {
+        // Reset previous scale
+        ImGui::GetStyle().ScaleAllSizes(1.f / m_ContentScale);
+
+        // Set new scale
+        m_ContentScale = scale;
+        SetScales();
+    }
+    void ImguiLayer::SetScales()
+    {
+        auto& style = ImGui::GetStyle();
+        auto& io = ImGui::GetIO();
+        style.ScaleAllSizes(m_ContentScale);
+
+        // Find the best font size for the content scale
+        io.FontDefault = nullptr;
+        io.FontGlobalScale = 1.f;
+        for (const auto& font : m_Fonts)
+        {
+            io.FontDefault = font.font;
+            io.FontGlobalScale = m_ContentScale / font.scale;
+
+            if (font.scale >= m_ContentScale)
+                break;
+        }
+    }
+
+    void ImguiLayer::SetStyle()
+    {
+        ImGui::StyleColorsDark();
+
+        auto& io = ImGui::GetIO();
+        auto& style = ImGui::GetStyle();
+        auto& colors = style.Colors;
         colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
 
         // Headers
@@ -117,5 +150,16 @@ namespace Wraith
         colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
         colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
         colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+            style.WindowRounding = 0.0f;
+
+        for (f32 f = 1.0f; f <= 3.0f; ++f)
+        {
+            m_Fonts.push_back(FontData{
+                .scale = f,
+                .font = io.Fonts->AddFontFromFileTTF("assets/engine/fonts/Roboto-Regular.ttf", 15.f * f),
+            });
+        }
     }
 }  // namespace Wraith

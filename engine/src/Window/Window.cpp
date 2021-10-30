@@ -57,6 +57,9 @@ namespace Wraith
         glfwMakeContextCurrent(m_Handle);
         glfwSetWindowUserPointer(m_Handle, this);
         glfwSetWindowSizeCallback(m_Handle, Window::HandleResize);
+        glfwSetWindowContentScaleCallback(m_Handle, Window::HandleContentScale);
+
+        glfwGetWindowContentScale(m_Handle, &m_ContentScale.x, &m_ContentScale.y);
 
         currentWndProc = (WNDPROC)GetWindowLongPtr((HWND)GetPlatformHandle(), GWLP_WNDPROC);
         SetWindowLongPtr((HWND)GetPlatformHandle(), GWLP_WNDPROC, (LONG_PTR)WindowProc);
@@ -84,9 +87,24 @@ namespace Wraith
         s_ResizeCallbacks.erase(handle);
     }
 
+    void Window::RegisterContentScaleCallback(Handle handle, ContentScaleCallback callback)
+    {
+        s_ContentScaleCallbacks.emplace(handle, callback);
+    }
+
+    void Window::UnregisterContentScaleCallback(Handle handle)
+    {
+        s_ContentScaleCallbacks.erase(handle);
+    }
+
     const Vec2u& Window::GetSize() const
     {
         return m_Resolution;
+    }
+
+    const Vec2f& Window::GetContentScale() const
+    {
+        return m_ContentScale;
     }
 
     GLFWwindow* Window::GetHandle() const
@@ -120,11 +138,20 @@ namespace Wraith
         if (width == 0 || height == 0)
             return;
 
-        auto* window = (Window*)glfwGetWindowUserPointer(handle);
+        auto window = (Window*)glfwGetWindowUserPointer(handle);
         window->m_Resolution = { (u32)width, (u32)height };
-        for (const auto& [h, callback] : window->s_ResizeCallbacks)
+        for (const auto& [h, callback] : s_ResizeCallbacks)
         {
             callback(width, height);
+        }
+    }
+    void Window::HandleContentScale(GLFWwindow* handle, float scaleX, float scaleY)
+    {
+        auto window = (Window*)glfwGetWindowUserPointer(handle);
+        window->m_ContentScale = { scaleX, scaleY };
+        for (const auto& [h, callback] : s_ContentScaleCallbacks)
+        {
+            callback(scaleX, scaleY);
         }
     }
 }  // namespace Wraith

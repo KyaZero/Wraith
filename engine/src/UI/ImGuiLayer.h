@@ -21,7 +21,6 @@ namespace Wraith
 
     private:
         void SetStyle();
-        void SetScales();
 
         Framework& m_Framework;
         Window& m_Window;
@@ -33,6 +32,6 @@ namespace Wraith
             ImFont* font;
         };
         std::vector<FontData> m_Fonts;
-        f32 m_ContentScale = 1.f;
+        ImGuiStyle m_Style;
     };
 }  // namespace Wraith

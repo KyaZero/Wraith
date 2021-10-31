@@ -35,10 +35,9 @@ namespace Wraith
         io.IniFilename = INI_FILE_STRING.c_str();
 
         SetStyle();
+        OnContentScale(window.GetContentScale().x);
 
         Window::RegisterContentScaleCallback(this, [this](f32 x, f32) { OnContentScale(x); });
-        m_ContentScale = window.GetContentScale().x;
-        SetScales();
     }
 
     ImguiLayer::~ImguiLayer()
@@ -89,18 +88,11 @@ namespace Wraith
 
     void ImguiLayer::OnContentScale(f32 scale)
     {
-        // Reset previous scale
-        ImGui::GetStyle().ScaleAllSizes(1.f / m_ContentScale);
+        ImGui::GetStyle() = m_Style;
 
-        // Set new scale
-        m_ContentScale = scale;
-        SetScales();
-    }
-    void ImguiLayer::SetScales()
-    {
         auto& style = ImGui::GetStyle();
         auto& io = ImGui::GetIO();
-        style.ScaleAllSizes(m_ContentScale);
+        style.ScaleAllSizes(scale);
 
         // Find the best font size for the content scale
         io.FontDefault = nullptr;
@@ -108,20 +100,19 @@ namespace Wraith
         for (const auto& font : m_Fonts)
         {
             io.FontDefault = font.font;
-            io.FontGlobalScale = m_ContentScale / font.scale;
+            io.FontGlobalScale = scale / font.scale;
 
-            if (font.scale >= m_ContentScale)
+            if (font.scale >= scale)
                 break;
         }
     }
 
     void ImguiLayer::SetStyle()
     {
-        ImGui::StyleColorsDark();
+        ImGui::StyleColorsDark(&m_Style);
 
         auto& io = ImGui::GetIO();
-        auto& style = ImGui::GetStyle();
-        auto& colors = style.Colors;
+        auto& colors = m_Style.Colors;
         colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
 
         // Headers
@@ -152,7 +143,7 @@ namespace Wraith
         colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-            style.WindowRounding = 0.0f;
+            m_Style.WindowRounding = 0.0f;
 
         for (f32 f = 1.0f; f <= 3.0f; ++f)
         {
@@ -161,5 +152,7 @@ namespace Wraith
                 .font = io.Fonts->AddFontFromFileTTF("assets/engine/fonts/Roboto-Regular.ttf", 15.f * f),
             });
         }
+
+        ImGui::GetStyle() = m_Style;
     }
 }  // namespace Wraith

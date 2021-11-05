@@ -8,6 +8,10 @@
 #include "Scene/Entity.h"
 #include "Scene/ScriptableEntity.h"
 
+#include "Panels/BarPanel.h"
+#include "Panels/SceneHierarchyPanel.h"
+#include "Panels/PropertiesPanel.h"
+
 namespace Wraith
 {
     Editor::Editor()

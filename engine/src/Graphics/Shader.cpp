@@ -148,18 +148,11 @@ namespace Wraith
         shaderReflection.ProcessBoundResources([](auto resource_desc) {});
     }
 
-    Shader::Shader()
-    {
-        m_Data = std::make_unique<Data>();
-    }
+    Shader::Shader() { m_Data = std::make_unique<Data>(); }
 
-    Shader::Shader(Shader&& other)
-    {
-        operator=(std::forward<Shader>(other));
-    }
+    Shader::Shader(Shader&& other) { operator=(std::forward<Shader>(other)); }
 
-    Shader::~Shader()
-    { }
+    Shader::~Shader() { }
 
     Shader& Shader::operator=(Shader&& other)
     {

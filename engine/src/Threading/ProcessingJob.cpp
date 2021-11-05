@@ -13,23 +13,13 @@ namespace Wraith
         , m_UserData(nullptr)
     { }
 
-    ProcessingJob::~ProcessingJob()
-    { }
+    ProcessingJob::~ProcessingJob() { }
 
-    bool ProcessingJob::IsDone() const
-    {
-        return m_Done;
-    }
+    bool ProcessingJob::IsDone() const { return m_Done; }
 
-    f32 ProcessingJob::GetExecutionTime() const
-    {
-        return m_ExecutionTime;
-    }
+    f32 ProcessingJob::GetExecutionTime() const { return m_ExecutionTime; }
 
-    std::string_view ProcessingJob::GetID() const
-    {
-        return m_ID;
-    }
+    std::string_view ProcessingJob::GetID() const { return m_ID; }
 
     void ProcessingJob::Execute()
     {
@@ -44,13 +34,7 @@ namespace Wraith
         m_OnFinish(*this);
     }
 
-    void ProcessingJob::SetUserData(void* data)
-    {
-        m_UserData = data;
-    }
+    void ProcessingJob::SetUserData(void* data) { m_UserData = data; }
 
-    void* ProcessingJob::GetUserData() const
-    {
-        return m_UserData;
-    }
+    void* ProcessingJob::GetUserData() const { return m_UserData; }
 }  // namespace Wraith

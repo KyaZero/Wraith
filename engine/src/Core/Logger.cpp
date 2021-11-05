@@ -200,13 +200,7 @@ namespace Wraith
 #endif
     }
 
-    void Logger::SetLevel(Level level)
-    {
-        Get()->m_Level = (char)level;
-    }
+    void Logger::SetLevel(Level level) { Get()->m_Level = (char)level; }
 
-    void Logger::SetShouldLogToFile(bool shouldLogToFile)
-    {
-        Get()->m_ShouldLogToFile = shouldLogToFile;
-    }
+    void Logger::SetShouldLogToFile(bool shouldLogToFile) { Get()->m_ShouldLogToFile = shouldLogToFile; }
 }  // namespace Wraith

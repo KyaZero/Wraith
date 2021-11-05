@@ -20,10 +20,7 @@ namespace Wraith
         Window::RegisterResizeCallback(this, [&](auto w, auto h) { Resize(w, h); });
     }
 
-    OrthographicCameraController::~OrthographicCameraController()
-    {
-        Window::UnregisterResizeCallback(this);
-    }
+    OrthographicCameraController::~OrthographicCameraController() { Window::UnregisterResizeCallback(this); }
 
     void OrthographicCameraController::Init(f32 width, f32 height, bool rotation)
     {

@@ -10,16 +10,11 @@ namespace Wraith
         ComPtr<ID3D11SamplerState> sampler;
     };
 
-    Sampler::Sampler()
-    { }
+    Sampler::Sampler() { }
 
-    Sampler::Sampler(Filter filter, Address address, Vec4f border)
-    {
-        Init(filter, address, border);
-    }
+    Sampler::Sampler(Filter filter, Address address, Vec4f border) { Init(filter, address, border); }
 
-    Sampler::~Sampler()
-    { }
+    Sampler::~Sampler() { }
 
     void Sampler::Init(Filter filter, Address address, Vec4f border)
     {
@@ -76,10 +71,7 @@ namespace Wraith
         FailedCheck("Creating Sampler State", Framework::GetDevice()->CreateSamplerState(&desc, &m_Data->sampler));
     }
 
-    void Sampler::Bind(u32 slot)
-    {
-        Framework::GetContext()->PSSetSamplers(slot, 1, m_Data->sampler.GetAddressOf());
-    }
+    void Sampler::Bind(u32 slot) { Framework::GetContext()->PSSetSamplers(slot, 1, m_Data->sampler.GetAddressOf()); }
 
     void Sampler::Unbind(u32 slot)
     {

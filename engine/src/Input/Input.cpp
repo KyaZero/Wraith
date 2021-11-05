@@ -46,10 +46,7 @@ namespace Wraith
         s_Instances.push_back(this);
     }
 
-    Input::~Input()
-    {
-        s_Instances.erase(std::remove(s_Instances.begin(), s_Instances.end(), this), s_Instances.end());
-    }
+    Input::~Input() { s_Instances.erase(std::remove(s_Instances.begin(), s_Instances.end(), this), s_Instances.end()); }
 
     bool Input::IsDown(Key key)
     {
@@ -83,15 +80,9 @@ namespace Wraith
         return result;
     }
 
-    bool Input::IsUp(Key key)
-    {
-        return !IsDown(key);
-    }
+    bool Input::IsUp(Key key) { return !IsDown(key); }
 
-    bool Input::IsUp(MouseButton button)
-    {
-        return !IsDown(button);
-    }
+    bool Input::IsUp(MouseButton button) { return !IsDown(button); }
 
     bool Input::IsPressed(Key key)
     {
@@ -157,15 +148,9 @@ namespace Wraith
         return result;
     }
 
-    bool Input::IsScrolling() const
-    {
-        return m_ScrollState.x_offset != 0 || m_ScrollState.y_offset != 0;
-    }
+    bool Input::IsScrolling() const { return m_ScrollState.x_offset != 0 || m_ScrollState.y_offset != 0; }
 
-    ScrollState Input::GetScrollState() const
-    {
-        return m_ScrollState;
-    }
+    ScrollState Input::GetScrollState() const { return m_ScrollState; }
 
     void Input::SetKeyState(Key key, bool is_down)
     {
@@ -185,20 +170,11 @@ namespace Wraith
         }
     }
 
-    void Input::SetScrollState(f64 x_offset, f64 y_offset)
-    {
-        m_ScrollState = { x_offset, y_offset };
-    }
+    void Input::SetScrollState(f64 x_offset, f64 y_offset) { m_ScrollState = { x_offset, y_offset }; }
 
-    bool Input::IsEnabled()
-    {
-        return m_IsEnabled;
-    }
+    bool Input::IsEnabled() { return m_IsEnabled; }
 
-    void Input::SetEnabled(bool value)
-    {
-        m_IsEnabled = value;
-    }
+    void Input::SetEnabled(bool value) { m_IsEnabled = value; }
 
     void Input::SetupInputs(Window* window)
     {
@@ -225,10 +201,7 @@ namespace Wraith
         }
     }
 
-    void Input::BlockUIEvents(bool should_block)
-    {
-        s_UIBlockEvents = should_block;
-    }
+    void Input::BlockUIEvents(bool should_block) { s_UIBlockEvents = should_block; }
 
     void Input::MouseButtonCallback(GLFWwindow* window, i32 button, i32 action, i32 mods)
     {

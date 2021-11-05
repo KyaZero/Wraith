@@ -48,8 +48,7 @@ namespace Wraith
             , w(other.w)
         { }
 
-        ~Vec4()
-        { }
+        ~Vec4() { }
 
         inline Vec4& operator=(const Vec4& other)
         {
@@ -69,25 +68,16 @@ namespace Wraith
             return *this;
         }
 
-        inline T Dot(const Vec4& other) const
-        {
-            return x * other.x + y * other.y + z * other.z + w * other.w;
-        }
+        inline T Dot(const Vec4& other) const { return x * other.x + y * other.y + z * other.z + w * other.w; }
 
         inline Vec4 Cross(const Vec4& other) const
         {
             return { y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x, 0 };
         }
 
-        inline T LengthSqr() const
-        {
-            return Dot(*this);
-        }
+        inline T LengthSqr() const { return Dot(*this); }
 
-        inline T Length() const
-        {
-            return sqrt(LengthSqr());
-        }
+        inline T Length() const { return sqrt(LengthSqr()); }
 
         inline Vec4 GetNormalized() const
         {
@@ -99,10 +89,7 @@ namespace Wraith
             return { 0, 0, 0, 0 };
         }
 
-        inline void Normalize()
-        {
-            *this = GetNormalized();
-        }
+        inline void Normalize() { *this = GetNormalized(); }
 
         inline bool operator==(const Vec4& other) const
         {
@@ -131,48 +118,18 @@ namespace Wraith
             return { x / other.x, y / other.y, z / other.z, w / other.w };
         }
 
-        inline Vec4 operator*(const T& scalar) const
-        {
-            return { x * scalar, y * scalar, z * scalar, w * scalar };
-        }
-        inline Vec4 operator/(const T& scalar) const
-        {
-            return { x / scalar, y / scalar, z / scalar, w / scalar };
-        }
+        inline Vec4 operator*(const T& scalar) const { return { x * scalar, y * scalar, z * scalar, w * scalar }; }
+        inline Vec4 operator/(const T& scalar) const { return { x / scalar, y / scalar, z / scalar, w / scalar }; }
 
-        inline void operator+=(const Vec4& other)
-        {
-            *this = *this + other;
-        }
-        inline void operator-=(const Vec4& other)
-        {
-            *this = *this - other;
-        }
-        inline void operator*=(const Vec4& other)
-        {
-            *this = *this * other;
-        }
-        inline void operator/=(const Vec4& other)
-        {
-            *this = *this / other;
-        }
-        inline void operator*=(const T& scalar)
-        {
-            *this = *this * scalar;
-        }
-        inline void operator/=(const T& scalar)
-        {
-            *this = *this / scalar;
-        }
+        inline void operator+=(const Vec4& other) { *this = *this + other; }
+        inline void operator-=(const Vec4& other) { *this = *this - other; }
+        inline void operator*=(const Vec4& other) { *this = *this * other; }
+        inline void operator/=(const Vec4& other) { *this = *this / other; }
+        inline void operator*=(const T& scalar) { *this = *this * scalar; }
+        inline void operator/=(const T& scalar) { *this = *this / scalar; }
 
-        void Serialize(dubu::serialize::ReadBuffer& buffer)
-        {
-            buffer >> x >> y >> z >> w;
-        }
-        void Serialize(dubu::serialize::WriteBuffer& buffer) const
-        {
-            buffer << x << y << z << w;
-        }
+        void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> x >> y >> z >> w; }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << x << y << z << w; }
 
         union
         {

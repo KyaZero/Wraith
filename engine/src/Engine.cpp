@@ -53,10 +53,7 @@ namespace Wraith
         return true;
     }
 
-    void Engine::BeginFrame()
-    {
-        m_Framework.BeginFrame({ 0.2f, 0.2f, 0.2f, 1 });
-    }
+    void Engine::BeginFrame() { m_Framework.BeginFrame({ 0.2f, 0.2f, 0.2f, 1 }); }
 
     void Engine::EndFrame()
     {

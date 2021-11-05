@@ -54,11 +54,9 @@ namespace Wraith
             { }
 
         protected:
-            void OnCreate()
-            { }
+            void OnCreate() { }
 
-            void OnDestroy()
-            { }
+            void OnDestroy() { }
 
             void OnUpdate(f32 dt)
             {

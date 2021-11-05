@@ -10,10 +10,8 @@ namespace Wraith
         ComPtr<ID3D11BlendState> blend_state;
     };
 
-    BlendState::BlendState()
-    { }
-    BlendState::~BlendState()
-    { }
+    BlendState::BlendState() { }
+    BlendState::~BlendState() { }
 
     bool BlendState::Create(BlendMode src_rgb,
                             BlendMode dest_rgb,
@@ -44,8 +42,5 @@ namespace Wraith
         const Vec4f blend_factor;
         Framework::GetContext()->OMSetBlendState(m_Data->blend_state.Get(), &blend_factor.x, 0xFFFFFFFF);
     }
-    void BlendState::Unbind()
-    {
-        Framework::GetContext()->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
-    }
+    void BlendState::Unbind() { Framework::GetContext()->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF); }
 }  // namespace Wraith

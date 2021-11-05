@@ -45,20 +45,11 @@ namespace Wraith
         VERBOSE_LOG("Thread {} is dead", m_ID);
     }
 
-    std::string_view Thread::GetID() const
-    {
-        return m_ID;
-    }
+    std::string_view Thread::GetID() const { return m_ID; }
 
-    bool Thread::IsRunning() const
-    {
-        return m_IsRunning;
-    }
+    bool Thread::IsRunning() const { return m_IsRunning; }
 
-    bool Thread::ShouldRun() const
-    {
-        return m_ShouldRun;
-    }
+    bool Thread::ShouldRun() const { return m_ShouldRun; }
 
     void Thread::Kill()
     {
@@ -67,10 +58,7 @@ namespace Wraith
         m_Channel.notify_all();
     }
 
-    void Thread::SetActive(bool active)
-    {
-        m_IsRunning = active;
-    }
+    void Thread::SetActive(bool active) { m_IsRunning = active; }
 
     void Thread::SetID(const std::string& id)
     {

@@ -8,8 +8,7 @@ namespace Wraith
     class ScriptableEntity
     {
     public:
-        virtual ~ScriptableEntity()
-        { }
+        virtual ~ScriptableEntity() { }
 
         template <typename T>
         T& GetComponent()
@@ -18,17 +17,11 @@ namespace Wraith
         }
 
     protected:
-        virtual void OnCreate()
-        { }
-        virtual void OnDestroy()
-        { }
-        virtual void OnUpdate(f32 dt)
-        { }
+        virtual void OnCreate() { }
+        virtual void OnDestroy() { }
+        virtual void OnUpdate(f32 dt) { }
 
-        Input& GetInput()
-        {
-            return m_Input;
-        }
+        Input& GetInput() { return m_Input; }
 
     private:
         Entity m_Entity;

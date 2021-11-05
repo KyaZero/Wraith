@@ -157,15 +157,9 @@ namespace Wraith
         ImGui::End();
     }
 
-    void ThreadScheduler::AddProcessingJob(std::shared_ptr<ProcessingJob> job)
-    {
-        m_ProcessingJobs.push_back(job);
-    }
+    void ThreadScheduler::AddProcessingJob(std::shared_ptr<ProcessingJob> job) { m_ProcessingJobs.push_back(job); }
 
-    void ThreadScheduler::AddPersistentJob(std::shared_ptr<PersistentJob> job)
-    {
-        m_PersistentJobs.push_back(job);
-    }
+    void ThreadScheduler::AddPersistentJob(std::shared_ptr<PersistentJob> job) { m_PersistentJobs.push_back(job); }
 
     void ThreadScheduler::ScheduleFrame()
     {

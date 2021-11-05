@@ -8,8 +8,7 @@ namespace Wraith
         : Thread(id)
     { }
 
-    ProcessingThread::~ProcessingThread()
-    { }
+    ProcessingThread::~ProcessingThread() { }
 
     void ProcessingThread::Queue(std::shared_ptr<ProcessingJob> job)
     {
@@ -26,10 +25,7 @@ namespace Wraith
         return m_IsWorking || !m_QueuedJobs.empty();
     }
 
-    const std::deque<std::shared_ptr<ProcessingJob>>& ProcessingThread::GetQueuedJobs() const
-    {
-        return m_QueuedJobs;
-    }
+    const std::deque<std::shared_ptr<ProcessingJob>>& ProcessingThread::GetQueuedJobs() const { return m_QueuedJobs; }
 
     void ProcessingThread::Execute()
     {

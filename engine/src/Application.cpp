@@ -15,8 +15,7 @@ namespace Wraith
         }
     }
 
-    Application::~Application()
-    { }
+    Application::~Application() { }
 
     bool Application::Run()
     {

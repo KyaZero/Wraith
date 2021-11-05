@@ -9,8 +9,7 @@ namespace Wraith
         m_ViewProjectionMatrix = m_ViewMatrix * m_Projection;
     }
 
-    OrthographicCamera::~OrthographicCamera()
-    { }
+    OrthographicCamera::~OrthographicCamera() { }
 
     void OrthographicCamera::SetProjection(f32 left, f32 right, f32 bottom, f32 top)
     {

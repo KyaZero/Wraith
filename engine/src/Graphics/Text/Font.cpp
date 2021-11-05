@@ -4,10 +4,7 @@
 
 namespace Wraith
 {
-    Font::Font(msdfgen::FreetypeHandle* freetypeHandle)
-    {
-        m_Freetype.handle = freetypeHandle;
-    }
+    Font::Font(msdfgen::FreetypeHandle* freetypeHandle) { m_Freetype.handle = freetypeHandle; }
 
     bool Font::Init(std::filesystem::path fontPath)
     {

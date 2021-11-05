@@ -21,35 +21,17 @@ namespace Wraith
         bool is_rt = true;
     };
 
-    Texture::Texture()
-    {
-        m_Data = std::make_unique<Data>();
-    }
+    Texture::Texture() { m_Data = std::make_unique<Data>(); }
 
-    Texture::Texture(const std::string& path)
-    {
-        LoadFromFile(path);
-    }
+    Texture::Texture(const std::string& path) { LoadFromFile(path); }
 
-    Texture::Texture(const Vec2u& size, ImageFormat format, void* data)
-    {
-        Create(size, format, data);
-    }
+    Texture::Texture(const Vec2u& size, ImageFormat format, void* data) { Create(size, format, data); }
 
-    Texture::Texture(const TextureCreateInfo& info)
-    {
-        Create(info);
-    }
+    Texture::Texture(const TextureCreateInfo& info) { Create(info); }
 
-    Texture::Texture(const Texture& other)
-    {
-        operator=(other);
-    }
+    Texture::Texture(const Texture& other) { operator=(other); }
 
-    Texture::Texture(Texture&& other)
-    {
-        operator=(std::forward<Texture>(other));
-    }
+    Texture::Texture(Texture&& other) { operator=(std::forward<Texture>(other)); }
 
     Texture& Texture::operator=(const Texture& other)
     {
@@ -77,10 +59,7 @@ namespace Wraith
         return *this;
     }
 
-    Texture::~Texture()
-    {
-        Release();
-    }
+    Texture::~Texture() { Release(); }
 
     bool Texture::IsValid()
     {
@@ -281,10 +260,7 @@ namespace Wraith
         Create(size, format, data);
     }
 
-    void Texture::UnsetActiveTarget()
-    {
-        Framework::GetContext()->OMSetRenderTargets(0, nullptr, nullptr);
-    }
+    void Texture::UnsetActiveTarget() { Framework::GetContext()->OMSetRenderTargets(0, nullptr, nullptr); }
 
     void Texture::SetAsActiveTarget(Texture* depth)
     {
@@ -293,10 +269,7 @@ namespace Wraith
         SetViewport();
     }
 
-    void Texture::SetViewport()
-    {
-        Framework::GetContext()->RSSetViewports(1, &m_Data->viewport);
-    }
+    void Texture::SetViewport() { Framework::GetContext()->RSSetViewports(1, &m_Data->viewport); }
 
     void Texture::SetCustomViewport(f32 top_left_x, f32 top_left_y, f32 width, f32 height, f32 min_depth, f32 max_depth)
     {
@@ -316,10 +289,7 @@ namespace Wraith
         Framework::GetContext()->PSSetShaderResources(slot, 1, m_Data->shader_resource.GetAddressOf());
     }
 
-    void Texture::Unbind(u32 slot) const
-    {
-        Framework::GetContext()->PSGetShaderResources(slot, 1, NULL);
-    }
+    void Texture::Unbind(u32 slot) const { Framework::GetContext()->PSGetShaderResources(slot, 1, NULL); }
 
     void Texture::Release()
     {
@@ -332,35 +302,17 @@ namespace Wraith
         }
     }
 
-    ID3D11Texture2D* Texture::GetTexture() const
-    {
-        return m_Data->texture.Get();
-    }
+    ID3D11Texture2D* Texture::GetTexture() const { return m_Data->texture.Get(); }
 
-    ID3D11DepthStencilView* Texture::GetDepth() const
-    {
-        return m_Data->depth.Get();
-    }
+    ID3D11DepthStencilView* Texture::GetDepth() const { return m_Data->depth.Get(); }
 
-    ID3D11RenderTargetView* Texture::GetRenderTarget() const
-    {
-        return m_Data->render_target.Get();
-    }
+    ID3D11RenderTargetView* Texture::GetRenderTarget() const { return m_Data->render_target.Get(); }
 
-    ID3D11ShaderResourceView* Texture::GetShaderResourceView() const
-    {
-        return m_Data->shader_resource.Get();
-    }
+    ID3D11ShaderResourceView* Texture::GetShaderResourceView() const { return m_Data->shader_resource.Get(); }
 
-    Vec2u Texture::GetSize() const
-    {
-        return m_Data->size;
-    }
+    Vec2u Texture::GetSize() const { return m_Data->size; }
 
-    Vec2f Texture::GetSizef() const
-    {
-        return { (f32)m_Data->size.x, (f32)m_Data->size.y };
-    }
+    Vec2f Texture::GetSizef() const { return { (f32)m_Data->size.x, (f32)m_Data->size.y }; }
 
     void Texture::Blit(const u8* data, i32 x, i32 y, i32 w, i32 h, i32 stride)
     {

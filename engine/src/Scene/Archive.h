@@ -29,14 +29,8 @@ namespace Wraith
             : m_Buffer(buffer)
         { }
 
-        void operator()(entt::entity entity)
-        {
-            m_Buffer << entity;
-        }
-        void operator()(std::underlying_type_t<entt::entity> entity)
-        {
-            m_Buffer << entity;
-        }
+        void operator()(entt::entity entity) { m_Buffer << entity; }
+        void operator()(std::underlying_type_t<entt::entity> entity) { m_Buffer << entity; }
 
         template <typename T>
         void operator()(entt::entity entity, const T& component)
@@ -55,14 +49,8 @@ namespace Wraith
             : m_Buffer(buffer)
         { }
 
-        void operator()(entt::entity& entity)
-        {
-            m_Buffer >> entity;
-        }
-        void operator()(std::underlying_type_t<entt::entity>& entity)
-        {
-            m_Buffer >> entity;
-        }
+        void operator()(entt::entity& entity) { m_Buffer >> entity; }
+        void operator()(std::underlying_type_t<entt::entity>& entity) { m_Buffer >> entity; }
 
         template <typename T>
         void operator()(entt::entity& entity, T& component)

@@ -48,10 +48,7 @@ namespace Wraith
 
         DisplayData ShapeText(std::string_view text, i32 direction);
 
-        f32 GetLineHeight() const
-        {
-            return m_LineHeight;
-        }
+        f32 GetLineHeight() const { return m_LineHeight; }
 
     private:
         struct

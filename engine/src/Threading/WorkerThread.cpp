@@ -10,8 +10,7 @@ namespace Wraith
         Clear();
     }
 
-    WorkerThread::~WorkerThread()
-    { }
+    WorkerThread::~WorkerThread() { }
 
     void WorkerThread::Clear()
     {
@@ -34,10 +33,7 @@ namespace Wraith
         m_Channel.notify_all();
     }
 
-    const f32 WorkerThread::GetProjectedTime() const
-    {
-        return m_ProjectedTime;
-    }
+    const f32 WorkerThread::GetProjectedTime() const { return m_ProjectedTime; }
 
     void WorkerThread::Execute()
     {

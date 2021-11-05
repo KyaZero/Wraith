@@ -43,23 +43,14 @@ namespace Wraith
             m_Registry->remove<T>(m_Handle);
         }
 
-        operator bool() const
-        {
-            return m_Handle != entt::null;
-        }
-        operator uint32_t() const
-        {
-            return (uint32_t)m_Handle;
-        }
+        operator bool() const { return m_Handle != entt::null; }
+        operator uint32_t() const { return (uint32_t)m_Handle; }
 
         bool operator==(const Entity& other)
         {
             return (m_Handle == other.m_Handle) && (m_Registry == other.m_Registry);
         }
-        bool operator!=(const Entity& other)
-        {
-            return !(*this == other);
-        }
+        bool operator!=(const Entity& other) { return !(*this == other); }
 
     private:
         entt::entity m_Handle{ entt::null };

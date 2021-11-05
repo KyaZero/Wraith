@@ -1,28 +1,22 @@
 #pragma once
 
-#include <UI/ImGuiLayer.h>
-
 #include "Panel.h"
+#include "PanelGroup.h"
 
 namespace Wraith
 {
-    class PanelManager
+    class PanelManager : public PanelGroup
     {
     public:
-        PanelManager(ImguiLayer& imgui_layer)
-            : m_ImguiLayer(imgui_layer)
+        PanelManager()
+            : PanelGroup("View")
         { }
         ~PanelManager() = default;
 
-        void OnUIRender();
-        void AddPanel(Panel* panel)
-        {
-            m_Panels.push_back(panel);
-        }
+        void RenderMenus();
+        void RenderWindows();
 
     private:
-        std::vector<Panel*> m_Panels;
-        ImguiLayer& m_ImguiLayer;
     };
 
 }  // namespace Wraith

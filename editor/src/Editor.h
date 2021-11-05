@@ -6,10 +6,7 @@
 #include <Scene/Entity.h>
 #include <Scene/Scene.h>
 
-#include "Panels/BarPanel.h"
 #include "Panels/PanelManager.h"
-#include "Panels/PropertiesPanel.h"
-#include "Panels/SceneHierarchyPanel.h"
 #include "Panels/ViewportPanel.h"
 
 namespace Wraith
@@ -35,9 +32,6 @@ namespace Wraith
         bool m_IsScenePlaying = false;
 
         PanelManager m_PanelManager;
-        std::unique_ptr<ViewportPanel> m_ViewportPanel;
-        std::unique_ptr<BarPanel> m_BarPanel;
-        std::unique_ptr<SceneHierarchyPanel> m_SceneHierarchyPanel;
-        std::unique_ptr<PropertiesPanel> m_PropertiesPanel;
+        ViewportPanel* m_ViewportPanel;
     };
 }  // namespace Wraith

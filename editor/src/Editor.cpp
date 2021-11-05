@@ -1,6 +1,8 @@
 #include "Editor.h"
 
 #include <imgui/imgui.h>
+#include <shellapi.h>
+#include <tinyfd/tinyfiledialogs.h>
 
 #include "Scene/Components.h"
 #include "Scene/Entity.h"
@@ -11,7 +13,6 @@ namespace Wraith
     Editor::Editor()
         : Application("Editor")
         , m_CameraController(m_Engine->GetWindow().GetSize().x, m_Engine->GetWindow().GetSize().y, true)
-        , m_PanelManager(m_Engine->GetImguiLayer())
     {
         m_ActiveScene = std::make_unique<Scene>();
         m_ActiveScene->Init(m_Engine->GetRenderer());
@@ -79,18 +80,16 @@ namespace Wraith
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>(10.f);
 
         {
-            m_BarPanel = std::make_unique<BarPanel>([this] { OnScenePlay(); }, [this] { OnSceneEndPlay(); });
-            m_PanelManager.AddPanel(m_BarPanel.get());
+            auto play_panels = m_PanelManager.CreateGroup("Play");
 
-            m_ViewportPanel = std::make_unique<ViewportPanel>(*m_Engine->GetRenderer(), m_CameraController);
-            m_PanelManager.AddPanel(m_ViewportPanel.get());
+            play_panels->CreatePanel<BarPanel>([this] { OnScenePlay(); }, [this] { OnSceneEndPlay(); });
+            m_ViewportPanel = play_panels->CreatePanel<ViewportPanel>(*m_Engine->GetRenderer(), m_CameraController);
 
-            m_SceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>(
-                *m_ActiveScene, [this](auto entity) { m_PropertiesPanel->SetSelectedEntity(entity); });
-            m_PanelManager.AddPanel(m_SceneHierarchyPanel.get());
+            auto scene_panels = m_PanelManager.CreateGroup("Scene");
 
-            m_PropertiesPanel = std::make_unique<PropertiesPanel>();
-            m_PanelManager.AddPanel(m_PropertiesPanel.get());
+            auto properties_panel = scene_panels->CreatePanel<PropertiesPanel>();
+            scene_panels->CreatePanel<SceneHierarchyPanel>(
+                *m_ActiveScene, [=](auto entity) { properties_panel->SetSelectedEntity(entity); });
         }
 
         {
@@ -113,7 +112,47 @@ namespace Wraith
 
     void Editor::OnUIRender()
     {
-        m_PanelManager.OnUIRender();
+        ImGui::DockSpaceOverViewport();
+
+        if (ImGui::BeginMainMenuBar())
+        {
+            m_PanelManager.RenderMenus();
+
+            if (ImGui::BeginMenu("View"))
+            {
+                ImGui::Separator();
+                if (ImGui::BeginMenu("Editor Layout"))
+                {
+                    if (ImGui::MenuItem("Save Layout"))
+                    {
+                        const char* filter = "*.ini";
+                        auto path = tinyfd_saveFileDialog("ImGui Layout", "", 1, &filter, nullptr);
+                        if (path)
+                            ImGui::SaveIniSettingsToDisk(path);
+                    }
+                    if (ImGui::MenuItem("Load Layout"))
+                    {
+                        const char* filter = "*.ini";
+                        auto path = tinyfd_openFileDialog("Load Layout", "", 1, &filter, nullptr, 0);
+                        if (path)
+                            m_Engine->GetImguiLayer().LoadSettings(path);
+                    }
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Help"))
+            {
+                if (ImGui::MenuItem("Open Temp Directory"))
+                {
+                    ShellExecuteW(0, L"open", TEMP_DIRECTORY.native().c_str(), 0, 0, SW_SHOWDEFAULT);
+                }
+                ImGui::EndMenu();
+            }
+            ImGui::EndMainMenuBar();
+        }
+        m_PanelManager.RenderWindows();
     }
 
     void Editor::OnScenePlay()

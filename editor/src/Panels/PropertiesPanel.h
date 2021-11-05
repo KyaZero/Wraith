@@ -12,15 +12,9 @@ namespace Wraith
         virtual ~PropertiesPanel() = default;
 
         void OnUIRender() override;
-        const char* GetName() const override
-        {
-            return "Properties";
-        }
+        const char* GetName() const override { return "Properties"; }
 
-        void SetSelectedEntity(Entity entity)
-        {
-            m_SelectedEntity = entity;
-        }
+        void SetSelectedEntity(Entity entity) { m_SelectedEntity = entity; }
 
     private:
         void DrawComponents();

@@ -81,10 +81,7 @@ namespace Wraith
         }
     }
 
-    void ImguiLayer::LoadSettings(std::filesystem::path settings_file)
-    {
-        m_SettingsToLoad = settings_file;
-    }
+    void ImguiLayer::LoadSettings(std::filesystem::path settings_file) { m_SettingsToLoad = settings_file; }
 
     void ImguiLayer::OnContentScale(f32 scale)
     {

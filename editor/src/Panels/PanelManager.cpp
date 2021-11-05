@@ -4,13 +4,7 @@
 
 namespace Wraith
 {
-    void PanelManager::RenderMenus()
-    {
-        PanelGroup::RenderMenus();
-    }
+    void PanelManager::RenderMenus() { PanelGroup::RenderMenus(); }
 
-    void PanelManager::RenderWindows()
-    {
-        PanelGroup::RenderWindows();
-    }
+    void PanelManager::RenderWindows() { PanelGroup::RenderWindows(); }
 }  // namespace Wraith

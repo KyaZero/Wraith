@@ -18,10 +18,7 @@ namespace Wraith
         virtual ~BarPanel() = default;
 
         void OnUIRender() override;
-        const char* GetName() const override
-        {
-            return "Bar";
-        }
+        const char* GetName() const override { return "Bar"; }
 
     private:
         bool m_IsPlay = true;

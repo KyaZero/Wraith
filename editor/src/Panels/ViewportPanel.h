@@ -17,10 +17,7 @@ namespace Wraith
         virtual ~ViewportPanel() = default;
 
         void OnUIRender() override;
-        const char* GetName() const override
-        {
-            return "Viewport";
-        }
+        const char* GetName() const override { return "Viewport"; }
 
     private:
         Vec2f m_ViewportBounds[2];

@@ -11,23 +11,11 @@ namespace Wraith
         virtual void OnUIRender() = 0;
         virtual const char* GetName() const = 0;
 
-        void ToggleVisibility()
-        {
-            m_IsVisible = !m_IsVisible;
-        }
+        void ToggleVisibility() { m_IsVisible = !m_IsVisible; }
 
-        bool IsVisible() const
-        {
-            return m_IsVisible;
-        }
-        bool IsFocused() const
-        {
-            return m_IsFocused;
-        }
-        bool IsHovered() const
-        {
-            return m_IsHovered;
-        }
+        bool IsVisible() const { return m_IsVisible; }
+        bool IsFocused() const { return m_IsFocused; }
+        bool IsHovered() const { return m_IsHovered; }
 
     protected:
         bool Begin(int flags = 0);

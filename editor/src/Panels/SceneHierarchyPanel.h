@@ -20,10 +20,7 @@ namespace Wraith
         virtual ~SceneHierarchyPanel() = default;
 
         void OnUIRender() override;
-        const char* GetName() const override
-        {
-            return "Scene Hierarchy";
-        }
+        const char* GetName() const override { return "Scene Hierarchy"; }
 
     private:
         void DrawEntityNode(Entity entity);

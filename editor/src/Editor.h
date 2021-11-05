@@ -6,7 +6,7 @@
 #include <Scene/Entity.h>
 #include <Scene/Scene.h>
 
-#include "Panels/PanelManager.h"
+#include "Panels/PanelGroup.h"
 #include "Panels/ViewportPanel.h"
 
 namespace Wraith
@@ -31,7 +31,7 @@ namespace Wraith
 
         bool m_IsScenePlaying = false;
 
-        PanelManager m_PanelManager;
+        PanelGroup m_PanelManager;
         ViewportPanel* m_ViewportPanel;
     };
 }  // namespace Wraith

@@ -7,8 +7,6 @@ set(panel_files
     "src/Panels/Panel.h"
     "src/Panels/PanelGroup.cpp"
     "src/Panels/PanelGroup.h"
-    "src/Panels/PanelManager.cpp"
-    "src/Panels/PanelManager.h"
     "src/Panels/PropertiesPanel.cpp"
     "src/Panels/PropertiesPanel.h"
     "src/Panels/SceneHierarchyPanel.cpp"

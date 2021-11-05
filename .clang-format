@@ -1,5 +1,5 @@
 AccessModifierOffset: "-4"
-AllowShortFunctionsOnASingleLine: None
+AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortBlocksOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: false

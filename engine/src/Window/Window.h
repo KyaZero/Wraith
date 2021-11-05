@@ -8,6 +8,7 @@ namespace Wraith
 {
     using Handle = void*;
     using ResizeCallback = std::function<void(u32, u32)>;
+    using ContentScaleCallback = std::function<void(f32, f32)>;
 
     class Window
     {
@@ -21,10 +22,13 @@ namespace Wraith
         bool ShouldClose();
         void PollEvents();
 
-        static void RegisterResizeCallback(void* instance, ResizeCallback callback);
-        static void UnregisterResizeCallback(void* instance);
+        static void RegisterResizeCallback(Handle handle, ResizeCallback callback);
+        static void UnregisterResizeCallback(Handle handle);
+        static void RegisterContentScaleCallback(Handle handle, ContentScaleCallback callback);
+        static void UnregisterContentScaleCallback(Handle handle);
 
         const Vec2u& GetSize() const;
+        const Vec2f& GetContentScale() const;
 
         GLFWwindow* GetHandle() const;
         void* GetPlatformHandle() const;
@@ -35,13 +39,16 @@ namespace Wraith
         const std::string& GetTitle() const;
 
     private:
-        static void HandleResize(GLFWwindow* window, int width, int height);
+        static void HandleResize(GLFWwindow* handle, int width, int height);
+        static void HandleContentScale(GLFWwindow* handle, float scaleX, float scaleY);
 
         Vec2u m_Resolution;
+        Vec2f m_ContentScale;
 
         GLFWwindow* m_Handle;
 
         std::string m_CurrentTitle;
         static inline std::unordered_map<Handle, ResizeCallback> s_ResizeCallbacks;
+        static inline std::unordered_map<Handle, ContentScaleCallback> s_ContentScaleCallbacks;
     };
 }  // namespace Wraith

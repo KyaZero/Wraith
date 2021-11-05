@@ -1,7 +1,12 @@
 #include "Editor.h"
 
 #include <imgui/imgui.h>
+#include <shellapi.h>
+#include <tinyfd/tinyfiledialogs.h>
 
+#include "Panels/BarPanel.h"
+#include "Panels/PropertiesPanel.h"
+#include "Panels/SceneHierarchyPanel.h"
 #include "Scene/Components.h"
 #include "Scene/Entity.h"
 #include "Scene/ScriptableEntity.h"
@@ -11,9 +16,9 @@ namespace Wraith
     Editor::Editor()
         : Application("Editor")
         , m_CameraController(m_Engine->GetWindow().GetSize().x, m_Engine->GetWindow().GetSize().y, true)
-        , m_ActiveScene(nullptr)
+        , m_PanelManager("View")
     {
-        m_ActiveScene = std::make_shared<Scene>();
+        m_ActiveScene = std::make_unique<Scene>();
         m_ActiveScene->Init(m_Engine->GetRenderer());
 
         const i32 num = 10;
@@ -76,7 +81,18 @@ namespace Wraith
 
         m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>(10.f);
 
-        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+        {
+            auto play_panels = m_PanelManager.CreateGroup("Play");
+
+            play_panels->CreatePanel<BarPanel>([this] { OnScenePlay(); }, [this] { OnSceneEndPlay(); });
+            m_ViewportPanel = play_panels->CreatePanel<ViewportPanel>(*m_Engine->GetRenderer(), m_CameraController);
+
+            auto scene_panels = m_PanelManager.CreateGroup("Scene");
+
+            auto properties_panel = scene_panels->CreatePanel<PropertiesPanel>();
+            scene_panels->CreatePanel<SceneHierarchyPanel>(
+                *m_ActiveScene, [=](auto entity) { properties_panel->SetSelectedEntity(entity); });
+        }
 
         {
             auto textEntity = m_ActiveScene->CreateEntity("Text");
@@ -90,7 +106,7 @@ namespace Wraith
             m_ActiveScene->UpdateRuntime(dt);
         else
         {
-            if (m_ViewportFocused)
+            if (m_ViewportPanel->IsFocused())
                 m_CameraController.Update(dt);
             m_ActiveScene->UpdateEditor(dt, m_CameraController.GetCamera());
         }
@@ -98,48 +114,47 @@ namespace Wraith
 
     void Editor::OnUIRender()
     {
-        ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+        ImGui::DockSpaceOverViewport();
 
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-        ImGui::Begin("Viewport");
-        ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-
-        if (m_ViewportSize.x != viewportPanelSize.x || m_ViewportSize.y != viewportPanelSize.y)
+        if (ImGui::BeginMainMenuBar())
         {
-            m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+            m_PanelManager.RenderMenus();
 
-            m_Engine->GetRenderer()->Resize(m_ViewportSize.x, m_ViewportSize.y);
-            m_CameraController.Resize(m_ViewportSize.x, m_ViewportSize.y);
-            // m_ActiveScene->Resize(m_ViewportSize.x, m_ViewportSize.y);
+            if (ImGui::BeginMenu("View"))
+            {
+                ImGui::Separator();
+                if (ImGui::BeginMenu("Editor Layout"))
+                {
+                    if (ImGui::MenuItem("Save Layout"))
+                    {
+                        const char* filter = "*.ini";
+                        auto path = tinyfd_saveFileDialog("ImGui Layout", "", 1, &filter, nullptr);
+                        if (path)
+                            ImGui::SaveIniSettingsToDisk(path);
+                    }
+                    if (ImGui::MenuItem("Load Layout"))
+                    {
+                        const char* filter = "*.ini";
+                        auto path = tinyfd_openFileDialog("Load Layout", "", 1, &filter, nullptr, 0);
+                        if (path)
+                            m_Engine->GetImguiLayer().LoadSettings(path);
+                    }
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Help"))
+            {
+                if (ImGui::MenuItem("Open Temp Directory"))
+                {
+                    ShellExecuteW(0, L"open", TEMP_DIRECTORY.native().c_str(), 0, 0, SW_SHOWDEFAULT);
+                }
+                ImGui::EndMenu();
+            }
+            ImGui::EndMainMenuBar();
         }
-
-        m_ViewportFocused = ImGui::IsWindowFocused();
-        m_ViewportHovered = ImGui::IsWindowHovered();
-        Input::BlockUIEvents(!m_ViewportFocused && !m_ViewportHovered);
-
-        Texture& texture = m_Engine->GetRenderer()->GetRenderTexture();
-        // Draw first
-        ImGui::Image(texture.GetShaderResourceView(),
-                     ImVec2{ m_ViewportSize.x, m_ViewportSize.y },
-                     ImVec2{ 0, 0 },
-                     ImVec2{ 1, 1 });
-
-        ImGui::End();
-        ImGui::PopStyleVar();
-
-        ImGui::Begin("Bar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoTitleBar);
-        if (ImGui::Button(m_IsPlay ? "Play" : "End Play"))
-        {
-            if (m_IsPlay)
-                OnScenePlay();
-            else
-                OnSceneEndPlay();
-
-            m_IsPlay = !m_IsPlay;
-        }
-        ImGui::End();
-
-        m_SceneHierarchyPanel.OnUIRender();
+        m_PanelManager.RenderWindows();
     }
 
     void Editor::OnScenePlay()

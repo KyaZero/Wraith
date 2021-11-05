@@ -79,7 +79,7 @@ namespace Wraith
 
         // Calculate average fps and display it on the window title
         {
-            static auto original_title = m_Window.GetTitle();
+            static std::string original_title = m_Window.GetTitle();
 
             constexpr float smoothness = 0.99f;
             m_Fps = (m_Fps * smoothness) + ((1.0f / m_Timer.GetDeltaTime()) * (1.0 - smoothness));

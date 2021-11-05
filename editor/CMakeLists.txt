@@ -1,10 +1,18 @@
 set(target_name "Editor")
 
 set(panel_files
-    "src/Panels/PropertiesPanel.h"
+    "src/Panels/BarPanel.cpp"
+    "src/Panels/BarPanel.h"
+    "src/Panels/Panel.cpp"
+    "src/Panels/Panel.h"
+    "src/Panels/PanelGroup.cpp"
+    "src/Panels/PanelGroup.h"
     "src/Panels/PropertiesPanel.cpp"
+    "src/Panels/PropertiesPanel.h"
+    "src/Panels/SceneHierarchyPanel.cpp"
     "src/Panels/SceneHierarchyPanel.h"
-    "src/Panels/SceneHierarchyPanel.cpp")
+    "src/Panels/ViewportPanel.cpp"
+    "src/Panels/ViewportPanel.h")
 
 set(src_files
     "src/Editor.h"

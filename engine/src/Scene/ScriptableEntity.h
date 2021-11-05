@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "Input/Input.h"
 
 namespace Wraith
 {

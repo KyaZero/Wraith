@@ -26,6 +26,7 @@ namespace Wraith
         RenderManager* GetRenderer() { return &m_RenderManager; }
         Window& GetWindow() { return m_Window; }
         Framework& GetFramework() { return m_Framework; }
+        ImguiLayer& GetImguiLayer() { return *m_ImguiLayer; }
 
     private:
         Window& m_Window;

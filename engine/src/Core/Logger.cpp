@@ -12,6 +12,7 @@
 #include <color.hpp>
 #pragma warning(default : 4242)
 #endif
+#include <Core/Constants.h>
 
 namespace fs = ::std::filesystem;
 
@@ -133,12 +134,12 @@ namespace Wraith
 
     void Logger::VerifyLogPath()
     {
-        // Make sure the saved directory exists so that we can create a log file
-        if (!fs::is_directory("saved") || !fs::exists("saved"))
-            fs::create_directory("saved");
+        m_LogPath =
+            std::format("{}/logs/log_{:%F}.txt", TEMP_DIRECTORY.generic_string(), std::chrono::utc_clock::now());
+
+        fs::create_directories(m_LogPath.parent_path());
 
         // Remove the file if it already exists a log for this date
-        m_LogPath = std::format("saved/log_{:%F}.txt", std::chrono::utc_clock::now());
         if (fs::exists(m_LogPath))
             fs::remove(m_LogPath);
 
@@ -148,7 +149,7 @@ namespace Wraith
 
     void Logger::LogToFile(const std::string& msg)
     {
-        std::ofstream ofs(m_LogPath.c_str(), std::ios_base::out | std::ios_base::app);
+        std::ofstream ofs(m_LogPath, std::ios_base::out | std::ios_base::app);
         ofs << std::format("[{:%F %H:%M:%OS}]\t", std::chrono::utc_clock::now()) << msg;
         ofs.close();
     }

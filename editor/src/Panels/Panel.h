@@ -13,31 +13,31 @@ namespace Wraith
 
         void ToggleVisibility()
         {
-            mIsVisible = !mIsVisible;
+            m_IsVisible = !m_IsVisible;
         }
 
         bool IsVisible() const
         {
-            return mIsVisible;
+            return m_IsVisible;
         }
         bool IsFocused() const
         {
-            return mIsFocused;
+            return m_IsFocused;
         }
         bool IsHovered() const
         {
-            return mIsHovered;
+            return m_IsHovered;
         }
 
     protected:
         bool Begin(int flags = 0);
         void End();
 
-        bool mIsVisible = true;
-        bool mIsFocused = false;
-        bool mIsHovered = false;
+        bool m_IsVisible = true;
+        bool m_IsFocused = false;
+        bool m_IsHovered = false;
 
     private:
-        bool mShouldCallEnd = true;
+        bool m_ShouldCallEnd = true;
     };
 }  // namespace Wraith

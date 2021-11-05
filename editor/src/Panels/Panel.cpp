@@ -6,16 +6,16 @@ namespace Wraith
 {
     bool Panel::Begin(int flags)
     {
-        mShouldCallEnd = mIsVisible;
-        if (!mIsVisible)
+        m_ShouldCallEnd = m_IsVisible;
+        if (!m_IsVisible)
             return false;
 
-        bool visible = ImGui::Begin(GetName(), &mIsVisible, flags);
+        bool visible = ImGui::Begin(GetName(), &m_IsVisible, flags);
 
         if (visible)
         {
-            mIsFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows);
-            mIsHovered = ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows);
+            m_IsFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows);
+            m_IsHovered = ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows);
         }
 
         return visible;
@@ -23,7 +23,7 @@ namespace Wraith
 
     void Panel::End()
     {
-        if (mShouldCallEnd)
+        if (m_ShouldCallEnd)
             ImGui::End();
     }
 

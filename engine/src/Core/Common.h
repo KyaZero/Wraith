@@ -9,15 +9,9 @@ namespace Wraith
 {
     constexpr f32 PI = 3.14159265358979323846f;
 
-    inline f32 Radians(f32 angle)
-    {
-        return angle * PI / 180.0f;
-    }
+    inline f32 Radians(f32 angle) { return angle * PI / 180.0f; }
 
-    inline f32 Degrees(f32 angle)
-    {
-        return angle * 180.0f / PI;
-    }
+    inline f32 Degrees(f32 angle) { return angle * 180.0f / PI; }
 
     template <typename T, typename U>
     inline T Max(const T& x, const U& y)
@@ -62,14 +56,8 @@ namespace Wraith
         }
     }
 
-    inline f32 Rand()
-    {
-        return RandomRange(0.0f, 1.0f);
-    }
-    inline f32 Rand11()
-    {
-        return RandomRange(-1.0f, 1.0f);
-    }
+    inline f32 Rand() { return RandomRange(0.0f, 1.0f); }
+    inline f32 Rand11() { return RandomRange(-1.0f, 1.0f); }
 }  // namespace Wraith
 
 // Variant helper

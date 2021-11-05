@@ -114,19 +114,10 @@ namespace Wraith
             T length = T(1) / Length();
             return Quat<T>(w * length, x * length, y * length, z * length);
         }
-        inline Quat<T> GetConjugate() const
-        {
-            return Quat<T>(w, -x, -y, -z);
-        }
+        inline Quat<T> GetConjugate() const { return Quat<T>(w, -x, -y, -z); }
 
-        T Length() const
-        {
-            return sqrt(Length2());
-        }
-        T Length2() const
-        {
-            return (x * x) + (y * y) + (z * z) + (w * w);
-        }
+        T Length() const { return sqrt(Length2()); }
+        T Length2() const { return (x * x) + (y * y) + (z * z) + (w * w); }
         inline Vec3<T> GetEulerAngles() const
         {
             // roll (z-xis rotation)
@@ -211,10 +202,7 @@ namespace Wraith
             return Mat4<T>::Transpose(result);
         }
 
-        inline T Dot(const Quat<T>& quat) const
-        {
-            return x * quat.x + y * quat.y + z * quat.z + w * quat.w;
-        }
+        inline T Dot(const Quat<T>& quat) const { return x * quat.x + y * quat.y + z * quat.z + w * quat.w; }
 
         inline Vec3<T> GetForwardVector() const
         {

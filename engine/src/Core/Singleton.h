@@ -6,10 +6,7 @@ namespace Wraith
     class Singleton
     {
     public:
-        static T* Get()
-        {
-            return m_Instance.get();
-        }
+        static T* Get() { return m_Instance.get(); }
         template <typename... Args>
         static void Create(Args&&... args)
         {
@@ -20,10 +17,7 @@ namespace Wraith
             }
             m_Instance = std::make_unique<T>(std::forward<Args>(args)...);
         }
-        static void Destroy()
-        {
-            m_Instance.reset();
-        }
+        static void Destroy() { m_Instance.reset(); }
 
     private:
         static inline std::unique_ptr<T> m_Instance;

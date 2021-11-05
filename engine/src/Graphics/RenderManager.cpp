@@ -9,8 +9,7 @@ namespace Wraith
         , m_SpriteRenderer(window)
     { }
 
-    RenderManager::~RenderManager()
-    { }
+    RenderManager::~RenderManager() { }
 
     bool RenderManager::Init()
     {
@@ -27,10 +26,7 @@ namespace Wraith
         return true;
     }
 
-    void RenderManager::Submit(const RenderCommand& command)
-    {
-        m_RenderCommands[NEXT_FRAME].push_back(command);
-    }
+    void RenderManager::Submit(const RenderCommand& command) { m_RenderCommands[NEXT_FRAME].push_back(command); }
 
     void RenderManager::Render()
     {
@@ -58,15 +54,9 @@ namespace Wraith
         m_RenderTexture->UnsetActiveTarget();
     }
 
-    Texture& RenderManager::GetRenderTexture()
-    {
-        return *m_RenderTexture;
-    }
+    Texture& RenderManager::GetRenderTexture() { return *m_RenderTexture; }
 
-    void RenderManager::Resize(u32 width, u32 height)
-    {
-        m_RenderTexture->Resize({ width, height });
-    }
+    void RenderManager::Resize(u32 width, u32 height) { m_RenderTexture->Resize({ width, height }); }
     void RenderManager::Flip()
     {
         std::swap(m_RenderCommands[CURRENT_FRAME], m_RenderCommands[NEXT_FRAME]);

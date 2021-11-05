@@ -23,18 +23,9 @@ namespace Wraith
         void BeginFrame();
         void EndFrame();
 
-        RenderManager* GetRenderer()
-        {
-            return &m_RenderManager;
-        }
-        Window& GetWindow()
-        {
-            return m_Window;
-        }
-        Framework& GetFramework()
-        {
-            return m_Framework;
-        }
+        RenderManager* GetRenderer() { return &m_RenderManager; }
+        Window& GetWindow() { return m_Window; }
+        Framework& GetFramework() { return m_Framework; }
 
     private:
         Window& m_Window;

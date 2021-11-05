@@ -7,11 +7,9 @@
 
 namespace Wraith
 {
-    TextRenderer::TextRenderer()
-    { }
+    TextRenderer::TextRenderer() { }
 
-    TextRenderer::~TextRenderer()
-    { }
+    TextRenderer::~TextRenderer() { }
 
     bool TextRenderer::Init()
     {
@@ -49,10 +47,7 @@ namespace Wraith
         return true;
     }
 
-    void TextRenderer::Submit(const TextCommand& command)
-    {
-        m_TextCommands[NEXT_FRAME].push_back(command);
-    }
+    void TextRenderer::Submit(const TextCommand& command) { m_TextCommands[NEXT_FRAME].push_back(command); }
     void TextRenderer::Render(const Vec2f& viewport_size)
     {
         std::vector<InstanceData> instances;

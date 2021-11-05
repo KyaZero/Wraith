@@ -28,10 +28,7 @@ namespace Wraith
                 m_Numbers[i] = *(begin + i);
             }
         }
-        Mat3(const Mat3<T>& matrix)
-        {
-            *this = matrix;
-        }
+        Mat3(const Mat3<T>& matrix) { *this = matrix; }
         Mat3(const Mat4<T>& matrix)
         {
             m_Numbers[0] = matrix.m_Numbers[0];
@@ -181,22 +178,10 @@ namespace Wraith
             return true;
         }
 
-        inline void operator+=(const Mat3<T>& matrix)
-        {
-            *this = *this + matrix;
-        }
-        inline void operator-=(const Mat3<T>& matrix)
-        {
-            *this = *this - matrix;
-        }
-        inline void operator*=(const Mat3<T>& matrix)
-        {
-            *this = *this * matrix;
-        }
-        inline void operator*=(const T& aScalar)
-        {
-            *this = *this * aScalar;
-        };
+        inline void operator+=(const Mat3<T>& matrix) { *this = *this + matrix; }
+        inline void operator-=(const Mat3<T>& matrix) { *this = *this - matrix; }
+        inline void operator*=(const Mat3<T>& matrix) { *this = *this * matrix; }
+        inline void operator*=(const T& aScalar) { *this = *this * aScalar; };
 
         friend inline Vec3<T> operator*(const Vec3<T>& vec, const Mat3<T>& matrix)
         {
@@ -204,19 +189,10 @@ namespace Wraith
                            vec.x * matrix.m_Numbers[1] + vec.y * matrix.m_Numbers[4] + vec.z * matrix.m_Numbers[7],
                            vec.x * matrix.m_Numbers[2] + vec.y * matrix.m_Numbers[5] + vec.z * matrix.m_Numbers[8]);
         }
-        friend inline void operator*=(Vec3<T>& aVector, const Mat3<T>& matrix)
-        {
-            aVector = aVector * matrix;
-        };
+        friend inline void operator*=(Vec3<T>& aVector, const Mat3<T>& matrix) { aVector = aVector * matrix; };
 
-        void Serialize(dubu::serialize::ReadBuffer& buffer)
-        {
-            buffer >> m_Numbers;
-        }
-        void Serialize(dubu::serialize::WriteBuffer& buffer) const
-        {
-            buffer << m_Numbers;
-        }
+        void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> m_Numbers; }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << m_Numbers; }
 
         T m_Numbers[9];
     };

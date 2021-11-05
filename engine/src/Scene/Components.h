@@ -14,28 +14,16 @@ namespace Wraith
         Vec3f scale{ 1.f, 1.f, 1.f };
         Vec3f rotation{ 0.f, 0.f, 0.f };
 
-        void Serialize(dubu::serialize::ReadBuffer& buffer)
-        {
-            buffer >> position >> scale >> rotation;
-        }
-        void Serialize(dubu::serialize::WriteBuffer& buffer) const
-        {
-            buffer << position << scale << rotation;
-        }
+        void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> position >> scale >> rotation; }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << position << scale << rotation; }
     };
 
     struct TagComponent
     {
         std::string tag;
 
-        void Serialize(dubu::serialize::ReadBuffer& buffer)
-        {
-            buffer >> tag;
-        }
-        void Serialize(dubu::serialize::WriteBuffer& buffer) const
-        {
-            buffer << tag;
-        }
+        void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> tag; }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << tag; }
     };
 
     struct SpriteComponent
@@ -84,14 +72,8 @@ namespace Wraith
         Camera camera;
         bool primary = true;
 
-        void Serialize(dubu::serialize::ReadBuffer& buffer)
-        {
-            buffer >> camera >> primary;
-        }
-        void Serialize(dubu::serialize::WriteBuffer& buffer) const
-        {
-            buffer << camera << primary;
-        }
+        void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> camera >> primary; }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << camera << primary; }
     };
 
     struct NativeScriptComponent
@@ -108,10 +90,7 @@ namespace Wraith
             InstantiateScript = [args...]() { return std::make_unique<T>(args...); };
         }
 
-        void DestroyScript()
-        {
-            instance.reset();
-        }
+        void DestroyScript() { instance.reset(); }
 
         void Serialize(dubu::serialize::ReadBuffer& buffer)
         {

@@ -14,10 +14,7 @@ namespace Wraith
         SetContext(context);
     }
 
-    void SceneHierarchyPanel::SetContext(std::shared_ptr<Scene> context)
-    {
-        m_Context = context;
-    }
+    void SceneHierarchyPanel::SetContext(std::shared_ptr<Scene> context) { m_Context = context; }
 
     void SceneHierarchyPanel::OnUIRender()
     {

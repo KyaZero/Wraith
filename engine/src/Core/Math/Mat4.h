@@ -62,10 +62,7 @@ namespace Wraith
                 m_Numbers[15]);
         }
 
-        Mat4(const Mat4<T>& other)
-        {
-            *this = other;
-        }
+        Mat4(const Mat4<T>& other) { *this = other; }
 
         inline Mat4<T>& operator=(const Mat4<T>& other)
         {
@@ -76,10 +73,7 @@ namespace Wraith
             return *this;
         }
 
-        Mat4(Mat4<T>&& other)
-        {
-            *this = other;
-        }
+        Mat4(Mat4<T>&& other) { *this = other; }
 
         inline Mat4<T>& operator=(Mat4<T>&& other) noexcept
         {
@@ -150,30 +144,15 @@ namespace Wraith
             return true;
         }
 
-        inline void operator+=(const Mat4<T>& other)
-        {
-            *this = *this + other;
-        }
+        inline void operator+=(const Mat4<T>& other) { *this = *this + other; }
 
-        inline void operator-=(const Mat4<T>& other)
-        {
-            *this = *this - other;
-        }
+        inline void operator-=(const Mat4<T>& other) { *this = *this - other; }
 
-        inline void operator*=(const Mat4<T>& other)
-        {
-            *this = *this * other;
-        }
+        inline void operator*=(const Mat4<T>& other) { *this = *this * other; }
 
-        inline void operator*=(const T& scalar)
-        {
-            *this = *this * scalar;
-        }
+        inline void operator*=(const T& scalar) { *this = *this * scalar; }
 
-        inline bool operator!=(const Mat4<T>& other) const
-        {
-            return !(*this == other);
-        }
+        inline bool operator!=(const Mat4<T>& other) const { return !(*this == other); }
 
         inline T& operator[](const u32& index)
         {
@@ -504,10 +483,7 @@ namespace Wraith
             return result * (1 / det);
         }
 
-        inline Mat4<T> GetInversed() const
-        {
-            return Inverse(*this);
-        }
+        inline Mat4<T> GetInversed() const { return Inverse(*this); }
 
         Vec3<T> GetRotation() const
         {
@@ -529,10 +505,7 @@ namespace Wraith
                            vector.x * matrix.m_Numbers[3] + vector.y * matrix.m_Numbers[7] +
                                vector.z * matrix.m_Numbers[11] + vector.w * matrix.m_Numbers[15]);
         }
-        friend inline void operator*=(Vec4<T>& vector, const Mat4<T>& matrix)
-        {
-            vector = vector * matrix;
-        };
+        friend inline void operator*=(Vec4<T>& vector, const Mat4<T>& matrix) { vector = vector * matrix; };
 
         friend inline Vec3<T> operator*(const Vec3<T>& vector, const Mat4<T>& matrix)
         {
@@ -543,19 +516,10 @@ namespace Wraith
                            vector.x * matrix.m_Numbers[2] + vector.y * matrix.m_Numbers[6] +
                                vector.z * matrix.m_Numbers[10] + matrix.m_Numbers[14]);
         }
-        friend inline void operator*=(Vec3<T>& vector, const Mat4<T>& matrix)
-        {
-            vector = vector * matrix;
-        };
+        friend inline void operator*=(Vec3<T>& vector, const Mat4<T>& matrix) { vector = vector * matrix; };
 
-        void Serialize(dubu::serialize::ReadBuffer& buffer)
-        {
-            buffer >> m_Numbers;
-        }
-        void Serialize(dubu::serialize::WriteBuffer& buffer) const
-        {
-            buffer << m_Numbers;
-        }
+        void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> m_Numbers; }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << m_Numbers; }
 
         union
         {

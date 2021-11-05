@@ -7,11 +7,9 @@
 
 namespace Wraith
 {
-    Scene::Scene()
-    { }
+    Scene::Scene() { }
 
-    Scene::~Scene()
-    { }
+    Scene::~Scene() { }
 
     bool Scene::Init(RenderManager* renderer)
     {

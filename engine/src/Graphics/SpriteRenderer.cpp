@@ -10,8 +10,7 @@ namespace Wraith
         , m_Window(window)
     { }
 
-    SpriteRenderer::~SpriteRenderer()
-    { }
+    SpriteRenderer::~SpriteRenderer() { }
 
     bool SpriteRenderer::Init()
     {
@@ -45,10 +44,7 @@ namespace Wraith
         return true;
     }
 
-    void SpriteRenderer::Submit(const SpriteCommand& sprite)
-    {
-        m_SpriteCommands[NEXT_FRAME].push_back(sprite);
-    }
+    void SpriteRenderer::Submit(const SpriteCommand& sprite) { m_SpriteCommands[NEXT_FRAME].push_back(sprite); }
 
     void SpriteRenderer::Submit(const SetCameraCommand& command)
     {

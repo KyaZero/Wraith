@@ -22,8 +22,7 @@ namespace Wraith
         Init(size, usage, flags, stride, data);
     }
 
-    Buffer::~Buffer()
-    { }
+    Buffer::~Buffer() { }
 
     void Buffer::Init(u32 size, BufferUsage usage, BufferType flags, u32 stride, const void* data)
     {

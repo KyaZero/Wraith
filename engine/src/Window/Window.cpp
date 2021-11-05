@@ -26,15 +26,9 @@ namespace Wraith
         : m_Handle()
     { }
 
-    Window::Window(Vec2u resolution, const std::string& title)
-    {
-        Create(resolution, title);
-    }
+    Window::Window(Vec2u resolution, const std::string& title) { Create(resolution, title); }
 
-    Window::~Window()
-    {
-        glfwTerminate();
-    }
+    Window::~Window() { glfwTerminate(); }
 
     void Window::Create(Vec2u resolution, const std::string& title)
     {
@@ -64,45 +58,24 @@ namespace Wraith
         Input::SetupInputs(this);
     }
 
-    bool Window::ShouldClose()
-    {
-        return glfwWindowShouldClose(m_Handle);
-    }
+    bool Window::ShouldClose() { return glfwWindowShouldClose(m_Handle); }
 
-    void Window::PollEvents()
-    {
-        glfwPollEvents();
-    }
+    void Window::PollEvents() { glfwPollEvents(); }
 
     void Window::RegisterResizeCallback(Handle handle, ResizeCallback callback)
     {
         s_ResizeCallbacks.emplace(handle, callback);
     }
 
-    void Window::UnregisterResizeCallback(Handle handle)
-    {
-        s_ResizeCallbacks.erase(handle);
-    }
+    void Window::UnregisterResizeCallback(Handle handle) { s_ResizeCallbacks.erase(handle); }
 
-    const Vec2u& Window::GetSize() const
-    {
-        return m_Resolution;
-    }
+    const Vec2u& Window::GetSize() const { return m_Resolution; }
 
-    GLFWwindow* Window::GetHandle() const
-    {
-        return m_Handle;
-    }
+    GLFWwindow* Window::GetHandle() const { return m_Handle; }
 
-    void* Window::GetPlatformHandle() const
-    {
-        return glfwGetWin32Window(m_Handle);
-    }
+    void* Window::GetPlatformHandle() const { return glfwGetWin32Window(m_Handle); }
 
-    void Window::SetSize(const Vec2u& size)
-    {
-        glfwSetWindowSize(m_Handle, size.x, size.y);
-    }
+    void Window::SetSize(const Vec2u& size) { glfwSetWindowSize(m_Handle, size.x, size.y); }
 
     void Window::SetTitle(const std::string& title)
     {
@@ -110,10 +83,7 @@ namespace Wraith
         glfwSetWindowTitle(m_Handle, title.c_str());
     }
 
-    const std::string& Window::GetTitle() const
-    {
-        return m_CurrentTitle;
-    }
+    const std::string& Window::GetTitle() const { return m_CurrentTitle; }
 
     void Window::HandleResize(GLFWwindow* handle, int width, int height)
     {

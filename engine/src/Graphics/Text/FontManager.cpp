@@ -5,8 +5,7 @@
 
 namespace Wraith
 {
-    FontManager::FontManager()
-    { }
+    FontManager::FontManager() { }
 
     FontManager::~FontManager()
     {
@@ -63,10 +62,7 @@ namespace Wraith
         return GetFont(font_id).ShapeText(text, direction);
     }
 
-    f32 FontManager::GetLineHeight(StringID font_id)
-    {
-        return GetFont(font_id).GetLineHeight();
-    }
+    f32 FontManager::GetLineHeight(StringID font_id) { return GetFont(font_id).GetLineHeight(); }
 
     Font& FontManager::GetFont(StringID font_id)
     {

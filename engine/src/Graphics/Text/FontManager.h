@@ -33,10 +33,7 @@ namespace Wraith
 
         f32 GetLineHeight(StringID font_id);
 
-        const Texture& GetAtlas() const
-        {
-            return m_Atlas;
-        }
+        const Texture& GetAtlas() const { return m_Atlas; }
 
     private:
         Font& GetFont(StringID font_id);

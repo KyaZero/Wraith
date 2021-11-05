@@ -158,25 +158,16 @@ namespace Wraith
         ProcessDebugMessages();
     }
 
-    void Framework::EndFrame()
-    {
-        m_Data->swap_chain->Present(0, 0);
-    }
+    void Framework::EndFrame() { m_Data->swap_chain->Present(0, 0); }
 
     void Framework::SetBackbufferAsActiveTarget()
     {
         m_Data->context->OMSetRenderTargets(1, m_Data->back_buffer.GetAddressOf(), nullptr);
     }
 
-    ID3D11Device* Framework::GetDevice()
-    {
-        return s_Device;
-    }
+    ID3D11Device* Framework::GetDevice() { return s_Device; }
 
-    ID3D11DeviceContext* Framework::GetContext()
-    {
-        return s_Context;
-    }
+    ID3D11DeviceContext* Framework::GetContext() { return s_Context; }
 
     void Framework::ReportLiveObjects()
     {

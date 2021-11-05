@@ -15,10 +15,8 @@ namespace Wraith
 
         bool Run();
 
-        virtual void OnUpdate(f32 dt)
-        { }
-        virtual void OnUIRender()
-        { }
+        virtual void OnUpdate(f32 dt) { }
+        virtual void OnUIRender() { }
 
     protected:
         std::unique_ptr<Window> m_Window;

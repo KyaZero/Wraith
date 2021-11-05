@@ -9,20 +9,11 @@ namespace Wraith
         , m_AverageTime(0.0f)
     { }
 
-    f32 PersistentJob::GetAverageTime() const
-    {
-        return m_AverageTime;
-    }
+    f32 PersistentJob::GetAverageTime() const { return m_AverageTime; }
 
-    std::array<f32, PersistentJob::TimeLogSize> PersistentJob::GetPreviousTimes() const
-    {
-        return m_PrevTimes;
-    }
+    std::array<f32, PersistentJob::TimeLogSize> PersistentJob::GetPreviousTimes() const { return m_PrevTimes; }
 
-    std::string_view PersistentJob::GetID() const
-    {
-        return m_ID;
-    }
+    std::string_view PersistentJob::GetID() const { return m_ID; }
 
     f32 PersistentJob::Execute()
     {

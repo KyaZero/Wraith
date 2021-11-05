@@ -4,13 +4,12 @@
 #include <shellapi.h>
 #include <tinyfd/tinyfiledialogs.h>
 
+#include "Panels/BarPanel.h"
+#include "Panels/PropertiesPanel.h"
+#include "Panels/SceneHierarchyPanel.h"
 #include "Scene/Components.h"
 #include "Scene/Entity.h"
 #include "Scene/ScriptableEntity.h"
-
-#include "Panels/BarPanel.h"
-#include "Panels/SceneHierarchyPanel.h"
-#include "Panels/PropertiesPanel.h"
 
 namespace Wraith
 {

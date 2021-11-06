@@ -35,17 +35,13 @@ namespace Wraith
     }
     void* SettingsHandler::ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, const char* name)
     {
-        INFO_LOG("Read Open: {}", name);
         if (name != std::string_view("Data"))
             return nullptr;
         return reinterpret_cast<void*>(1);
     }
     void SettingsHandler::ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void* entry, const char* line)
     {
-        INFO_LOG("Read Line: {}", line);
-        char name[256];
-        if (sscanf(line, "%255[^\n]", name) == 1)
-            s_VisiblePanels.insert(name);
+        s_VisiblePanels.insert(line);
     }
     void SettingsHandler::WriteAll(ImGuiContext* imgui_ctx, ImGuiSettingsHandler* handler, ImGuiTextBuffer* buf)
     {

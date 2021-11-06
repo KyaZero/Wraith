@@ -4,7 +4,7 @@
 A hobby game engine, currently only supports 2D
 
 ## Current screenshot of the project
-![](https://i.imgur.com/A8XyY8j.png "Editor")
+![](https://i.imgur.com/ThYudl9.png "Editor")
 
 
 ## How to generate and open the project

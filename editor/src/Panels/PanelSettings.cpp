@@ -43,7 +43,7 @@ namespace Wraith
         INFO_LOG("Read Line: {}", line);
         char name[256];
         if (sscanf(line, "%255[^\n]", name) == 1)
-			s_VisiblePanels.insert(name);
+            s_VisiblePanels.insert(name);
     }
     void SettingsHandler::WriteAll(ImGuiContext* imgui_ctx, ImGuiSettingsHandler* handler, ImGuiTextBuffer* buf)
     {
@@ -52,8 +52,8 @@ namespace Wraith
         auto root = reinterpret_cast<PanelGroup*>(handler->UserData);
         Traverse(root, [&](Panel* p) {
             if (p->IsVisible())
-				buf->appendf("%s\n", p->GetName());
-		});
+                buf->appendf("%s\n", p->GetName());
+        });
     }
     void SettingsHandler::Traverse(PanelGroup* root, std::function<void(Panel*)> callback)
     {

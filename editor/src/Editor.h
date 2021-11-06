@@ -15,7 +15,7 @@ namespace Wraith
     {
     public:
         Editor();
-        ~Editor(); 
+        ~Editor();
 
         void OnUpdate(f32 dt) override;
         void OnUIRender() override;

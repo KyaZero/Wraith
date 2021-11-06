@@ -12,6 +12,7 @@ namespace Wraith
         virtual const char* GetName() const = 0;
 
         void ToggleVisibility() { m_IsVisible = !m_IsVisible; }
+        void SetVisibility(bool is_visible) { m_IsVisible = is_visible; }
 
         bool IsVisible() const { return m_IsVisible; }
         bool IsFocused() const { return m_IsFocused; }

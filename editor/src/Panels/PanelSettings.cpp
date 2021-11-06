@@ -28,10 +28,7 @@ namespace Wraith
     void SettingsHandler::ApplyAll(ImGuiContext*, ImGuiSettingsHandler* handler)
     {
         auto root = reinterpret_cast<PanelGroup*>(handler->UserData);
-        Traverse(root, [&](Panel* p) {
-            if (p->IsVisible() != (s_VisiblePanels.count(p->GetName()) > 0))
-                p->ToggleVisibility();
-        });
+        Traverse(root, [&](Panel* p) { p->SetVisibility(s_VisiblePanels.count(p->GetName()) > 0); });
     }
     void* SettingsHandler::ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, const char* name)
     {

@@ -2,6 +2,8 @@
 
 #include <deque>
 
+#include "Core/Constants.h"
+
 namespace Wraith
 {
     std::unordered_set<std::string> SettingsHandler::s_VisiblePanels;
@@ -9,7 +11,7 @@ namespace Wraith
     void SettingsHandler::Register(PanelGroup* root)
     {
         ImGuiSettingsHandler handler;
-        handler.TypeName = "Wraith";
+        handler.TypeName = PROJECT_NAME.c_str();
         handler.TypeHash = ImHashStr(handler.TypeName);
         handler.ClearAllFn = ClearAll;
         handler.ReadInitFn = ClearAll;

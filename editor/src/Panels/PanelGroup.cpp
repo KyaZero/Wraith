@@ -28,6 +28,24 @@ namespace Wraith
             {
                 panel_group->RenderMenus();
             }
+            if (!m_Panels.empty())
+            {
+                ImGui::Separator();
+                if (ImGui::MenuItem(std::format("Show {} Group", m_Name).c_str()))
+                {
+                    for (auto& panel : m_Panels)
+                    {
+                        panel->SetVisibility(true);
+                    }
+                }
+                if (ImGui::MenuItem(std::format("Hide {} Group", m_Name).c_str()))
+                {
+                    for (auto& panel : m_Panels)
+                    {
+                        panel->SetVisibility(false);
+                    }
+                }
+            }
             ImGui::EndMenu();
         }
     }

@@ -1,7 +1,6 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.21)
 
-set(PROJECT_NAME "Wraith")
-project(${PROJECT_NAME} C CXX)
+project("Wraith" VERSION "0.1.0" LANGUAGES CXX)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "predefined")

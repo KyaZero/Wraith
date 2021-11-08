@@ -11,7 +11,7 @@ namespace Wraith
     void SettingsHandler::Register(PanelGroup* root)
     {
         ImGuiSettingsHandler handler;
-        handler.TypeName = PROJECT_NAME.c_str();
+        handler.TypeName = PROJECT_NAME;
         handler.TypeHash = ImHashStr(handler.TypeName);
         handler.ClearAllFn = ClearAll;
         handler.ReadInitFn = ClearAll;

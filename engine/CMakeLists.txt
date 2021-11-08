@@ -106,10 +106,13 @@ set(input_files
   "src/Input/Input.cpp")
 
 set(src_files
-  "src/Engine.h"
-  "src/Engine.cpp"
+  "src/Application.cpp"
   "src/Application.h"
-  "src/Application.cpp")
+  "src/Engine.cpp"
+  "src/Engine.h"
+  "src/Version.h")
+
+include("cmake/generate_version.cmake")
 
 set(all_files
   ${precompiled_files}

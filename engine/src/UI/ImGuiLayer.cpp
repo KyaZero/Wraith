@@ -30,7 +30,8 @@ namespace Wraith
         if (!std::filesystem::exists(INI_FILE_PATH))
         {
             std::filesystem::create_directories(INI_FILE_PATH.parent_path());
-            std::filesystem::copy("imgui.ini", INI_FILE_PATH);
+            if (std::filesystem::exists("imgui.ini"))
+                std::filesystem::copy("imgui.ini", INI_FILE_PATH);
         }
         io.IniFilename = INI_FILE_STRING.c_str();
 

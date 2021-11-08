@@ -28,6 +28,9 @@ namespace Wraith
             return reinterpret_cast<T*>(m_Panels.back().get());
         }
 
+        const auto& GetPanels() const { return m_Panels; }
+        const auto& GetGroups() const { return m_PanelGroups; }
+
     private:
         std::string m_Name;
         std::vector<std::unique_ptr<Panel>> m_Panels;

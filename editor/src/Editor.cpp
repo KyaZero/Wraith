@@ -5,6 +5,8 @@
 #include <tinyfd/tinyfiledialogs.h>
 
 #include "Panels/BarPanel.h"
+#include "Panels/DemoPanel.h"
+#include "Panels/PanelSettings.h"
 #include "Panels/PropertiesPanel.h"
 #include "Panels/SceneHierarchyPanel.h"
 #include "Scene/Components.h"
@@ -92,12 +94,23 @@ namespace Wraith
             auto properties_panel = scene_panels->CreatePanel<PropertiesPanel>();
             scene_panels->CreatePanel<SceneHierarchyPanel>(
                 *m_ActiveScene, [=](auto entity) { properties_panel->SetSelectedEntity(entity); });
+
+            auto debug_panels = m_PanelManager.CreateGroup("Debug");
+            debug_panels->CreatePanel<DemoPanel>();
         }
 
         {
             auto textEntity = m_ActiveScene->CreateEntity("Text");
             textEntity.AddComponent<TextComponent>();
         }
+
+        SettingsHandler::Register(&m_PanelManager);
+    }
+
+    Editor::~Editor()
+    {
+        ImGui::SaveIniSettingsToDisk(ImGui::GetIO().IniFilename);
+        ImGui::GetIO().IniFilename = nullptr;
     }
 
     void Editor::OnUpdate(f32 dt)
@@ -149,6 +162,10 @@ namespace Wraith
                 if (ImGui::MenuItem("Open Temp Directory"))
                 {
                     ShellExecuteW(0, L"open", TEMP_DIRECTORY.native().c_str(), 0, 0, SW_SHOWDEFAULT);
+                }
+                if (ImGui::MenuItem("About"))
+                {
+                    tinyfd_messageBox(PROJECT_NAME, VERSION_TEXT, "ok", "info", 1);
                 }
                 ImGui::EndMenu();
             }

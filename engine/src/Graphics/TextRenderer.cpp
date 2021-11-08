@@ -47,11 +47,10 @@ namespace Wraith
         return true;
     }
 
-    void TextRenderer::Submit(const TextCommand& command) { m_TextCommands[NEXT_FRAME].push_back(command); }
     void TextRenderer::Render(const Vec2f& viewport_size)
     {
         std::vector<InstanceData> instances;
-        for (const auto& command : m_TextCommands[CURRENT_FRAME])
+        for (const auto& command : GetCurrentCommands())
         {
             std::string_view text = command.text;
 
@@ -130,11 +129,5 @@ namespace Wraith
         m_BlendState.Unbind();
         m_TextShader.Unbind();
         m_Sampler.Unbind(0);
-    }
-
-    void TextRenderer::Flip()
-    {
-        m_TextCommands[CURRENT_FRAME].clear();
-        std::swap(m_TextCommands[CURRENT_FRAME], m_TextCommands[NEXT_FRAME]);
     }
 }  // namespace Wraith

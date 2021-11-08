@@ -37,16 +37,14 @@ namespace Wraith
         m_IndexBuffer.Init(
             sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
         m_InstanceBuffer.Init(
-            InstanceCount * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
+            MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
 
         m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
 
         return true;
     }
 
-    void SpriteRenderer::Submit(const SpriteCommand& sprite) { m_SpriteCommands[NEXT_FRAME].push_back(sprite); }
-
-    void SpriteRenderer::Submit(const SetCameraCommand& command)
+    void SpriteRenderer::SetCamera(const SetCameraCommand& command)
     {
         m_CurrentCamera = std::make_unique<RenderCamera>(command.camera->GetProjection(), command.view);
     }
@@ -63,7 +61,7 @@ namespace Wraith
         m_VertexBuffer.Bind();
         m_Sampler.Bind(0);
 
-        auto& commands = m_SpriteCommands[CURRENT_FRAME];
+        auto& commands = GetCurrentCommands();
 
         // Sort by texture, to reduce texture swaps during rendering.
         // TODO: Should add layer support too.
@@ -102,15 +100,15 @@ namespace Wraith
 
         for (auto& sprites : instances)
         {
-            u32 batches = 1 + ((u32)sprites.second.size() / InstanceCount);
+            u32 batches = 1 + ((u32)sprites.second.size() / MAX_INSTANCES);
             for (u32 i = 0; i < batches; ++i)
             {
                 auto& tex = TextureManager::Get()->GetTexture(sprites.first);
                 tex.Bind(0);
 
-                u32 num_instances = Min(InstanceCount, (u32)sprites.second.size() - (InstanceCount * i));
+                u32 num_instances = Min(MAX_INSTANCES, (u32)sprites.second.size() - (MAX_INSTANCES * i));
 
-                m_InstanceBuffer.SetData(&sprites.second[0] + (InstanceCount * i),
+                m_InstanceBuffer.SetData(&sprites.second[0] + (MAX_INSTANCES * i),
                                          num_instances * sizeof(InstanceData));
                 m_InstanceBuffer.Bind(1);
 
@@ -122,12 +120,6 @@ namespace Wraith
 
         m_SpriteShader.Unbind();
         m_Sampler.Unbind(0);
-    }
-
-    void SpriteRenderer::Flip()
-    {
-        std::swap(m_SpriteCommands[CURRENT_FRAME], m_SpriteCommands[NEXT_FRAME]);
-        m_SpriteCommands[NEXT_FRAME].clear();
     }
 
     void SpriteRenderer::UpdateConstantBuffer()

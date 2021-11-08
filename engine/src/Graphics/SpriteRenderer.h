@@ -5,26 +5,26 @@
 #include "Core/Math/Mat4.h"
 #include "OrthographicCamera.h"
 #include "RenderCommand.h"
+#include "BaseRenderer.h"
 #include "Sampler.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "Window/Window.h"
 
 namespace Wraith
 {
-    class SpriteRenderer
+    class SpriteRenderer : public BaseRenderer<SpriteCommand>
     {
+        // I found 1024 instances to be the best in terms of performance and drawcalls
+        constexpr static u32 MAX_INSTANCES = 1024;
+
     public:
         SpriteRenderer(Window& window);
-        ~SpriteRenderer();
+        virtual ~SpriteRenderer();
 
-        bool Init();
-
-        void Submit(const SpriteCommand& sprite);
-        void Submit(const SetCameraCommand& command);
+        bool Init() override;
         void Render();
 
-        void Flip();
+        void SetCamera(const SetCameraCommand& command);
 
     private:
         Window& m_Window;
@@ -63,10 +63,6 @@ namespace Wraith
         };
 
         void UpdateConstantBuffer();
-
-        // I found 1024 instances to be the best in terms of performance and drawcalls
-        constexpr static u32 InstanceCount = 1024;
-        std::vector<SpriteCommand> m_SpriteCommands[FRAME_COUNT];
 
         Sampler m_Sampler;
     };

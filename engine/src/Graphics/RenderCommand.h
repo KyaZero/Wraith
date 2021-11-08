@@ -38,5 +38,10 @@ namespace Wraith
         Vec2f screen_position;
     };
 
+    struct StaticMeshCommand
+    {
+        StringID mesh;
+    };
+
     using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand>;
 }  // namespace Wraith

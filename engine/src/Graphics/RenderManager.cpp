@@ -37,7 +37,7 @@ namespace Wraith
         {
             std::visit(variant_visitor{
                            [&](SpriteCommand sprite) { m_SpriteRenderer.Submit(sprite); },
-                           [&](SetCameraCommand camera) { m_SpriteRenderer.Submit(camera); },
+                           [&](SetCameraCommand camera) { m_SpriteRenderer.SetCamera(camera); },
                            [&](TextCommand text) { m_TextRenderer.Submit(text); },
                        },
                        command);
@@ -56,7 +56,11 @@ namespace Wraith
 
     Texture& RenderManager::GetRenderTexture() { return *m_RenderTexture; }
 
-    void RenderManager::Resize(u32 width, u32 height) { m_RenderTexture->Resize({ width, height }); }
+    void RenderManager::Resize(u32 width, u32 height)
+    {
+        m_RenderTexture->Resize({ width, height });
+    }
+
     void RenderManager::Flip()
     {
         std::swap(m_RenderCommands[CURRENT_FRAME], m_RenderCommands[NEXT_FRAME]);

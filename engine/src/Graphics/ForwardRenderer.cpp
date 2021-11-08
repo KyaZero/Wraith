@@ -6,8 +6,6 @@ Wraith::ForwardRenderer::~ForwardRenderer() { }
 
 bool Wraith::ForwardRenderer::Init()
 {
-
-
     return true;
 }
 

@@ -56,10 +56,7 @@ namespace Wraith
 
     Texture& RenderManager::GetRenderTexture() { return *m_RenderTexture; }
 
-    void RenderManager::Resize(u32 width, u32 height)
-    {
-        m_RenderTexture->Resize({ width, height });
-    }
+    void RenderManager::Resize(u32 width, u32 height) { m_RenderTexture->Resize({ width, height }); }
 
     void RenderManager::Flip()
     {

@@ -4,6 +4,7 @@
 #include <msdfgen/msdfgen-ext.h>
 #include <msdfgen/msdfgen.h>
 
+#include "BaseRenderer.h"
 #include "Graphics/BlendState.h"
 #include "Graphics/Buffer.h"
 #include "Graphics/RenderCommand.h"
@@ -11,7 +12,6 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Text/FontManager.h"
 #include "Graphics/Texture.h"
-#include "BaseRenderer.h"
 
 namespace Wraith
 {

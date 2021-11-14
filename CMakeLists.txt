@@ -9,6 +9,10 @@ include("cmake/compiler_features.cmake")
 include("cmake/compiler_warnings.cmake")
 include("cmake/auto_group_sources.cmake")
 
+set(${PROJECT_NAME}_FOLDER
+    ${PROJECT_NAME}
+    CACHE STRING "The folder that ${PROJECT_NAME} projects will be placed in.")
+
 add_subdirectory("thirdparty")
 
 add_subdirectory("editor")

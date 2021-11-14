@@ -165,7 +165,8 @@ namespace Wraith
                 }
                 if (ImGui::MenuItem("About"))
                 {
-                    tinyfd_messageBox(PROJECT_NAME, VERSION_TEXT, "ok", "info", 1);
+                    tinyfd_messageBox(
+                        std::format("{}({})", PROJECT_NAME, ENGINE_NAME).c_str(), VERSION_TEXT, "ok", "info", 1);
                 }
                 ImGui::EndMenu();
             }

@@ -153,3 +153,10 @@ auto_group_sources(all_files ${CMAKE_CURRENT_SOURCE_DIR})
 source_group("src/Precompiled" REGULAR_EXPRESSION "cmake_pch\.[ch]xx")
 
 set_target_properties(${target_name} PROPERTIES FOLDER ${${PROJECT_NAME}_FOLDER})
+
+add_custom_command(
+  TARGET ${target_name} POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${PROJECT_SOURCE_DIR}/bin/
+  ${CMAKE_SOURCE_DIR}/bin/
+)

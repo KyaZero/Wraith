@@ -124,6 +124,7 @@ set(all_files
   ${src_files})
 
 add_library(${target_name} STATIC ${all_files})
+add_library(${PROJECT_NAME}::${target_name} ALIAS ${target_name})
 
 target_link_libraries(${target_name} PUBLIC
     compiler_features

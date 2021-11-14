@@ -28,11 +28,12 @@ set(all_files
     ${panel_files})
     
 add_executable(${target_name} ${all_files})
+add_executable(${PROJECT_NAME}::${target_name} ALIAS ${target_name})
 
 target_link_libraries(${target_name}
     compiler_features
     compiler_warnings
-    Engine
+    Wraith::Engine
     imgui)
 
 auto_group_sources(all_files ${CMAKE_CURRENT_SOURCE_DIR})

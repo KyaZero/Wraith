@@ -29,12 +29,6 @@ namespace Wraith
     private:
         Window& m_Window;
 
-        struct RenderCamera
-        {
-            Mat4f projection;
-            Mat4f view;
-        };
-
         std::unique_ptr<RenderCamera> m_CurrentCamera;
 
         Shader m_SpriteShader;

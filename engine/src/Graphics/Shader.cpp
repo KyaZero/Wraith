@@ -148,11 +148,38 @@ namespace Wraith
         shaderReflection.ProcessBoundResources([](auto resource_desc) {});
     }
 
-    Shader::Shader() { m_Data = std::make_unique<Data>(); }
+    Shader::Shader()
+    {
+        if (!m_Data)
+            m_Data = std::make_unique<Data>();
+    }
+
+    Shader::Shader(std::underlying_type_t<ShaderType> shader_type, const std::string& path)
+        : Shader()
+    {
+        Load(shader_type, path);
+    }
+
+    Shader::Shader(const Shader& other)
+        : Shader()
+    {
+        operator=(other);
+    }
 
     Shader::Shader(Shader&& other) { operator=(std::forward<Shader>(other)); }
 
     Shader::~Shader() { }
+
+    Shader& Shader::operator=(const Shader& other)
+    {
+        m_Data->vertex = other.m_Data->vertex;
+        m_Data->pixel = other.m_Data->pixel;
+        m_Data->geometry = other.m_Data->geometry;
+        m_Data->input_layout = other.m_Data->input_layout;
+        m_Data->type = other.m_Data->type;
+
+        return *this;
+    }
 
     Shader& Shader::operator=(Shader&& other)
     {

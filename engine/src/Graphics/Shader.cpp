@@ -127,10 +127,10 @@ namespace Wraith
         });
 
         HRESULT hr = Framework::GetDevice().CreateInputLayout(input_element_desciptions.data(),
-                                                               static_cast<UINT>(input_element_desciptions.size()),
-                                                               vs_blob->GetBufferPointer(),
-                                                               vs_blob->GetBufferSize(),
-                                                               &input_layout);
+                                                              static_cast<UINT>(input_element_desciptions.size()),
+                                                              vs_blob->GetBufferPointer(),
+                                                              vs_blob->GetBufferSize(),
+                                                              &input_layout);
 
         if (FailedCheck("Creating Input Layout", hr))
         {

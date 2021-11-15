@@ -1,22 +1,24 @@
 set(target_name "Editor")
 
 set(panel_files
-    "src/Panels/BarPanel.cpp"
-    "src/Panels/BarPanel.h"
-    "src/Panels/DemoPanel.cpp"
-    "src/Panels/DemoPanel.h"
+    "src/Panels/Debug/DemoPanel.cpp"
+    "src/Panels/Debug/DemoPanel.h"
+    "src/Panels/Debug/ThreadSchedulerPanel.cpp"
+    "src/Panels/Debug/ThreadSchedulerPanel.h"
+    "src/Panels/Play/BarPanel.cpp"
+    "src/Panels/Play/BarPanel.h"
+    "src/Panels/Play/ViewportPanel.cpp"
+    "src/Panels/Play/ViewportPanel.h"
+    "src/Panels/Scene/PropertiesPanel.cpp"
+    "src/Panels/Scene/PropertiesPanel.h"
+    "src/Panels/Scene/SceneHierarchyPanel.cpp"
+    "src/Panels/Scene/SceneHierarchyPanel.h"
     "src/Panels/Panel.cpp"
     "src/Panels/Panel.h"
     "src/Panels/PanelGroup.cpp"
     "src/Panels/PanelGroup.h"
     "src/Panels/PanelSettings.cpp"
-    "src/Panels/PanelSettings.h"
-    "src/Panels/PropertiesPanel.cpp"
-    "src/Panels/PropertiesPanel.h"
-    "src/Panels/SceneHierarchyPanel.cpp"
-    "src/Panels/SceneHierarchyPanel.h"
-    "src/Panels/ViewportPanel.cpp"
-    "src/Panels/ViewportPanel.h")
+    "src/Panels/PanelSettings.h")
 
 set(src_files
     "src/Editor.h"
@@ -35,6 +37,8 @@ target_link_libraries(${target_name}
     compiler_warnings
     Wraith::Engine
     imgui)
+
+target_include_directories(${target_name} PUBLIC "src")
 
 auto_group_sources(all_files ${CMAKE_CURRENT_SOURCE_DIR})
 source_group("src/Precompiled" REGULAR_EXPRESSION "cmake_pch\.[ch]xx")

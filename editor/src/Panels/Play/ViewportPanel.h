@@ -3,7 +3,7 @@
 #include <Graphics/OrthographicCameraController.h>
 #include <Graphics/RenderManager.h>
 
-#include "Panel.h"
+#include "Panels/Panel.h"
 
 namespace Wraith
 {

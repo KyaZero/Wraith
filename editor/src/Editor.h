@@ -7,7 +7,7 @@
 #include <Scene/Scene.h>
 
 #include "Panels/PanelGroup.h"
-#include "Panels/ViewportPanel.h"
+#include "Panels/Play/ViewportPanel.h"
 
 namespace Wraith
 {

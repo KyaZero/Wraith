@@ -2,7 +2,7 @@
 
 #include <Scene/Entity.h>
 
-#include "Panel.h"
+#include "Panels/Panel.h"
 
 namespace Wraith
 {

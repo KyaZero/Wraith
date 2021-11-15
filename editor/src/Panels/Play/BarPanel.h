@@ -1,8 +1,6 @@
 #pragma once
 
-#include <functional>
-
-#include "Panel.h"
+#include "Panels/Panel.h"
 
 namespace Wraith
 {

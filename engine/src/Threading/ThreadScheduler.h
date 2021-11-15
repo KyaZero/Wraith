@@ -15,8 +15,6 @@ namespace Wraith
         void Start();
         void Sync();
 
-        void RenderDebugInfo();
-
         void AddProcessingJob(std::shared_ptr<ProcessingJob> job);
         void AddPersistentJob(std::shared_ptr<PersistentJob> job);
 
@@ -31,5 +29,10 @@ namespace Wraith
 
         std::vector<std::shared_ptr<PersistentJob>> m_PersistentJobs;
         std::vector<std::shared_ptr<ProcessingJob>> m_ProcessingJobs;
+
+#ifdef WITH_EDITOR
+    public:
+        void RenderDebugInfo();
+#endif
     };
 }  // namespace Wraith

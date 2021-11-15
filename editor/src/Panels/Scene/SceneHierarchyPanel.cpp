@@ -1,9 +1,8 @@
 #include "SceneHierarchyPanel.h"
 
+#include <Core/StringID.h>
+#include <Scene/Components.h>
 #include <imgui/imgui.h>
-
-#include "Core/StringID.h"
-#include "Scene/Components.h"
 
 namespace Wraith
 {

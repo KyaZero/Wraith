@@ -9,9 +9,6 @@
 #include "Panels/PanelSettings.h"
 #include "Panels/PropertiesPanel.h"
 #include "Panels/SceneHierarchyPanel.h"
-#include "Scene/Components.h"
-#include "Scene/Entity.h"
-#include "Scene/ScriptableEntity.h"
 
 namespace Wraith
 {
@@ -23,7 +20,7 @@ namespace Wraith
         m_ActiveScene = std::make_unique<Scene>();
         m_ActiveScene->Init(m_Engine->GetRenderer());
 
-        const i32 num = 10;
+        const i32 num = 2;
         const i32 half_num = num / 2;
 
         for (i32 y = -half_num; y < half_num; ++y)
@@ -100,8 +97,16 @@ namespace Wraith
         }
 
         {
-            auto textEntity = m_ActiveScene->CreateEntity("Text");
-            textEntity.AddComponent<TextComponent>();
+            auto text_entity = m_ActiveScene->CreateEntity("Text");
+            text_entity.AddComponent<TextComponent>();
+        }
+
+        {
+            auto cube_entity = m_ActiveScene->CreateEntity("Cube");
+            cube_entity.AddComponent<ModelComponent>(ModelManager::GetCube());
+            auto& transform = cube_entity.GetComponent<TransformComponent>();
+            transform.position.z += 10.0f;
+            transform.rotation.y += PI / 2.0f;
         }
 
         SettingsHandler::Register(&m_PanelManager);

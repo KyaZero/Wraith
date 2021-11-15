@@ -36,6 +36,14 @@ set(graphics_files
   "src/Graphics/Text/FontManager.cpp"
   "src/Graphics/Text/FontManager.h"
   "src/Graphics/Text/Text.h"
+  "src/Graphics/Models/ModelManager.h"
+  "src/Graphics/Models/ModelManager.cpp"
+  "src/Graphics/Models/StaticMesh.h"
+  "src/Graphics/Models/StaticMesh.cpp"
+  "src/Graphics/Models/Model.h"
+  "src/Graphics/Models/Model.cpp"
+  "src/Graphics/Models/Material.h"
+  "src/Graphics/Models/Material.cpp"
   "src/Graphics/BlendState.cpp"
   "src/Graphics/BlendState.h"
   "src/Graphics/ContentManager.h"
@@ -110,6 +118,7 @@ set(src_files
   "src/Application.h"
   "src/Engine.cpp"
   "src/Engine.h"
+  "src/Wraith.h"
   "src/Version.h")
 
 include("cmake/generate_version.cmake")

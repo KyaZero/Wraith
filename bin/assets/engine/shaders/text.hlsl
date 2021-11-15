@@ -3,6 +3,24 @@
 Texture2D<float3> AtlasTexture : register(t0);
 SamplerState LinearSampler : register(s0);
 
+struct VertexInput
+{
+    float2 position : POSITION;
+    float2 uv : TEXCOORD;
+};
+
+struct PixelInput
+{
+    float4 position : SV_POSITION;
+    float4 color : COLOR;
+    float2 uv : TEXCOORD;
+};
+
+struct PixelOutput
+{
+    float4 color : SV_TARGET;
+};
+
 cbuffer BufferData : register(b0) {
   float4x4 Projection;
   float PixelRange;

@@ -31,11 +31,11 @@ namespace Wraith
         m_Renderer->Submit(SetCameraCommand{ editor_camera, editor_camera->GetView() });
 
         {
-            const auto view = m_Registry.view<TransformComponent, SpriteComponent>();
-            for (const auto entity : view)
+            const auto sprites = m_Registry.view<TransformComponent, SpriteComponent>();
+            for (const auto entity : sprites)
             {
-                const auto [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
-                SpriteCommand sprite_cmd{
+                const auto [transform, sprite] = sprites.get<TransformComponent, SpriteComponent>(entity);
+                m_Renderer->Submit(SpriteCommand{
                     .texture = sprite.texture,
                     .color = sprite.color,
                     .position = { transform.position.x, transform.position.y },
@@ -44,9 +44,17 @@ namespace Wraith
                     .rotation = transform.rotation.z,
                     .layer = sprite.layer,
                     .world_space = sprite.world_space,
-                };
+                });
+            }
 
-                m_Renderer->Submit(sprite_cmd);
+            const auto models = m_Registry.view<TransformComponent, ModelComponent>();
+            for (const auto entity : models)
+            {
+                const auto [transform, model] = models.get<TransformComponent, ModelComponent>(entity);
+                m_Renderer->Submit(ModelCommand{
+                    .model = model.model_instance, 
+                    .transform = Mat4f::CreateTransform(transform.position, transform.rotation, transform.scale)
+                });
             }
         }
 
@@ -99,11 +107,11 @@ namespace Wraith
             m_Renderer->Submit(SetCameraCommand{ main_camera, Mat4f::FastInverse(camera_transform) });
 
             {
-                const auto view = m_Registry.view<TransformComponent, SpriteComponent>();
-                for (const auto entity : view)
+                const auto sprites = m_Registry.view<TransformComponent, SpriteComponent>();
+                for (const auto entity : sprites)
                 {
-                    const auto [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
-                    SpriteCommand sprite_cmd{
+                    const auto [transform, sprite] = sprites.get<TransformComponent, SpriteComponent>(entity);
+                    m_Renderer->Submit(SpriteCommand{
                         .texture = sprite.texture,
                         .color = sprite.color,
                         .position = { transform.position.x, transform.position.y },
@@ -112,9 +120,16 @@ namespace Wraith
                         .rotation = transform.rotation.z,
                         .layer = sprite.layer,
                         .world_space = sprite.world_space,
-                    };
+                    });
+                }
 
-                    m_Renderer->Submit(sprite_cmd);
+                const auto models = m_Registry.view<TransformComponent, ModelComponent>();
+                for (const auto entity : models)
+                {
+                    const auto [transform, model] = models.get<TransformComponent, ModelComponent>(entity);
+                    m_Renderer->Submit(ModelCommand{
+                        .model = model.model_instance,
+                        .transform = Mat4f::CreateTransform(transform.position, transform.rotation, transform.scale) });
                 }
             }
         }

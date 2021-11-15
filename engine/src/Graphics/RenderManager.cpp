@@ -19,6 +19,9 @@ namespace Wraith
         if (!m_TextRenderer.Init())
             return false;
 
+        if (!m_ForwardRenderer.Init())
+            return false;
+
         m_RenderTexture = std::make_unique<Texture>();
         m_RenderTexture->Create(m_Window.GetSize());
 
@@ -37,11 +40,19 @@ namespace Wraith
         {
             std::visit(variant_visitor{
                            [&](SpriteCommand sprite) { m_SpriteRenderer.Submit(sprite); },
-                           [&](SetCameraCommand camera) { m_SpriteRenderer.SetCamera(camera); },
+                           [&](SetCameraCommand camera) {
+                               m_SpriteRenderer.SetCamera(camera);
+                               m_ForwardRenderer.SetCamera(camera);
+                           },
                            [&](TextCommand text) { m_TextRenderer.Submit(text); },
+                           [&](ModelCommand model) { m_ForwardRenderer.Submit(model); },
                        },
                        command);
         }
+
+        Framework::BeginEvent("Render Meshes (Forward)");
+        m_ForwardRenderer.Render();
+        Framework::EndEvent();
 
         Framework::BeginEvent("Render Sprites");
         m_SpriteRenderer.Render();
@@ -64,5 +75,6 @@ namespace Wraith
         m_RenderCommands[NEXT_FRAME].clear();
         m_SpriteRenderer.Flip();
         m_TextRenderer.Flip();
+        m_ForwardRenderer.Flip();
     }
 }  // namespace Wraith

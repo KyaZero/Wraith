@@ -3,6 +3,7 @@
 #include "Core/Constants.h"
 #include "RenderCommand.h"
 #include "Window/Window.h"
+#include "Framework.h"
 
 namespace Wraith
 {

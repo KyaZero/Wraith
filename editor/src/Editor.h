@@ -2,9 +2,7 @@
 
 #include <memory>
 
-#include <Application.h>
-#include <Scene/Entity.h>
-#include <Scene/Scene.h>
+#include "Wraith.h"
 
 #include "Panels/PanelGroup.h"
 #include "Panels/ViewportPanel.h"

@@ -92,26 +92,26 @@ namespace Wraith
     {
         ASSERT_LOG(m_Data, "Buffer not Inititalized!");
 
-        auto* context = Framework::GetContext();
+        auto& context = Framework::GetContext();
         const u32 offset = 0;
 
         switch (m_Data->bindFlags)
         {
         case BufferType::Vertex:
-            context->IASetVertexBuffers(slot, 1, m_Data->buffer.GetAddressOf(), (UINT*)&m_Data->stride, &offset);
+            context.IASetVertexBuffers(slot, 1, m_Data->buffer.GetAddressOf(), (UINT*)&m_Data->stride, &offset);
             break;
 
         case BufferType::Index:
-            context->IASetIndexBuffer(m_Data->buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+            context.IASetIndexBuffer(m_Data->buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
             break;
 
         case BufferType::Constant:
-            context->VSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
-            context->PSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
-            context->GSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
+            context.VSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
+            context.PSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
+            context.GSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
             break;
         case BufferType::Structured:
-            context->VSSetShaderResources(1, 1, m_Data->resource_view.GetAddressOf());
+            context.VSSetShaderResources(1, 1, m_Data->resource_view.GetAddressOf());
             break;
         default:
             ASSERT_LOG(false, "No implemented BufferType");

@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "Core/StringID.h"
+#include "Models/Model.h"
 
 namespace Wraith
 {
@@ -38,10 +39,11 @@ namespace Wraith
         Vec2f screen_position;
     };
 
-    struct StaticMeshCommand
+    struct ModelCommand
     {
-        StringID mesh;
+        Model model;
+        Mat4f transform;
     };
 
-    using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand>;
+    using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand, ModelCommand>;
 }  // namespace Wraith

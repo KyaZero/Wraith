@@ -286,7 +286,7 @@ namespace Wraith
     {
         if (!s_Annot)
         {
-            GetContext()->QueryInterface(IID_PPV_ARGS(&s_Annot));
+            GetContext().QueryInterface(IID_PPV_ARGS(&s_Annot));
         }
 
         // little bit of a hack to convert from std::string to std::wstring using the std library!

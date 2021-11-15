@@ -127,10 +127,10 @@ namespace Wraith
         });
 
         HRESULT hr = Framework::GetDevice().CreateInputLayout(input_element_desciptions.data(),
-                                                               static_cast<UINT>(input_element_desciptions.size()),
-                                                               vs_blob->GetBufferPointer(),
-                                                               vs_blob->GetBufferSize(),
-                                                               &input_layout);
+                                                              static_cast<UINT>(input_element_desciptions.size()),
+                                                              vs_blob->GetBufferPointer(),
+                                                              vs_blob->GetBufferSize(),
+                                                              &input_layout);
 
         if (FailedCheck("Creating Input Layout", hr))
         {
@@ -200,12 +200,12 @@ namespace Wraith
             if (FailedCheck(CompileShader(path, "VSMain", "vs_5_0", vs_blob)))
                 return;
 
-            auto* device = Framework::GetDevice();
-            HRESULT hr = device->CreateVertexShader(
-                vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), NULL, &m_Data->vertex);
+            auto& device = Framework::GetDevice();
+            HRESULT hr =
+                device.CreateVertexShader(vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), NULL, &m_Data->vertex);
             if (FailedCheck("Creating Vertex Shader", hr))
             {
-                hr = device->GetDeviceRemovedReason();
+                hr = device.GetDeviceRemovedReason();
                 return;
             }
 
@@ -224,12 +224,12 @@ namespace Wraith
             if (FailedCheck(CompileShader(path, "GSMain", "gs_5_0", gs_blob)))
                 return;
 
-            auto* device = Framework::GetDevice();
-            HRESULT hr = device->CreateGeometryShader(
+            auto& device = Framework::GetDevice();
+            HRESULT hr = device.CreateGeometryShader(
                 gs_blob->GetBufferPointer(), gs_blob->GetBufferSize(), NULL, &m_Data->geometry);
             if (FailedCheck("Creating Geometry Shader", hr))
             {
-                hr = device->GetDeviceRemovedReason();
+                hr = device.GetDeviceRemovedReason();
                 return;
             }
         };
@@ -243,12 +243,12 @@ namespace Wraith
             if (FailedCheck(CompileShader(path, "PSMain", "ps_5_0", ps_blob)))
                 return;
 
-            auto* device = Framework::GetDevice();
+            auto& device = Framework::GetDevice();
             HRESULT hr =
-                device->CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), NULL, &m_Data->pixel);
+                device.CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), NULL, &m_Data->pixel);
             if (FailedCheck("Creating Pixel Shader", hr))
             {
-                hr = device->GetDeviceRemovedReason();
+                hr = device.GetDeviceRemovedReason();
                 return;
             }
 
@@ -270,43 +270,43 @@ namespace Wraith
 
     void Shader::Bind()
     {
-        auto* context = Framework::GetContext();
+        auto& context = Framework::GetContext();
 
         if (m_Data->type & ShaderType::Vertex && m_Data->vertex)
         {
-            context->IASetInputLayout(m_Data->input_layout.Get());
-            context->VSSetShader(m_Data->vertex.Get(), 0, 0);
+            context.IASetInputLayout(m_Data->input_layout.Get());
+            context.VSSetShader(m_Data->vertex.Get(), 0, 0);
         }
 
         if (m_Data->type & ShaderType::Geometry && m_Data->geometry)
         {
-            context->GSSetShader(m_Data->geometry.Get(), 0, 0);
+            context.GSSetShader(m_Data->geometry.Get(), 0, 0);
         }
 
         if (m_Data->type & ShaderType::Pixel && m_Data->pixel)
         {
-            context->PSSetShader(m_Data->pixel.Get(), 0, 0);
+            context.PSSetShader(m_Data->pixel.Get(), 0, 0);
         }
     }
 
     void Shader::Unbind()
     {
-        auto* context = Framework::GetContext();
+        auto& context = Framework::GetContext();
 
         if (m_Data->type & ShaderType::Vertex && m_Data->vertex)
         {
-            context->IASetInputLayout(nullptr);
-            context->VSSetShader(nullptr, 0, 0);
+            context.IASetInputLayout(nullptr);
+            context.VSSetShader(nullptr, 0, 0);
         }
 
         if (m_Data->type & ShaderType::Geometry && m_Data->geometry)
         {
-            context->GSSetShader(nullptr, 0, 0);
+            context.GSSetShader(nullptr, 0, 0);
         }
 
         if (m_Data->type & ShaderType::Pixel && m_Data->pixel)
         {
-            context->PSSetShader(nullptr, 0, 0);
+            context.PSSetShader(nullptr, 0, 0);
         }
     }
 }  // namespace Wraith

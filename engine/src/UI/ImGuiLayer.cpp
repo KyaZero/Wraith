@@ -25,7 +25,7 @@ namespace Wraith
         // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
         ImGui_ImplWin32_Init(m_Window.GetPlatformHandle());
-        ImGui_ImplDX11_Init(m_Framework.GetDevice(), m_Framework.GetContext());
+        ImGui_ImplDX11_Init(&m_Framework.GetDevice(), &m_Framework.GetContext());
 
         if (!std::filesystem::exists(INI_FILE_PATH))
         {

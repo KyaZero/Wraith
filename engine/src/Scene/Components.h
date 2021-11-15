@@ -4,6 +4,7 @@
 #include "Core/StringID.h"
 #include "Graphics/Camera.h"
 #include "Graphics/Text/Text.h"
+#include "Graphics/Models/Model.h"
 #include "ScriptableEntity.h"
 
 namespace Wraith
@@ -74,6 +75,11 @@ namespace Wraith
 
         void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> camera >> primary; }
         void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << camera << primary; }
+    };
+
+    struct ModelComponent
+    {
+        Model model_instance;
     };
 
     struct NativeScriptComponent

@@ -8,7 +8,7 @@
 namespace Wraith
 {
     using IDType = u64;
-    static constexpr IDType NullId = (IDType)-1;
+    static constexpr IDType NullID = (IDType)-1;
 
     class ContentManager : public Singleton<ContentManager>
     {

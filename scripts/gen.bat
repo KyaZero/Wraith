@@ -1,1 +1,1 @@
-cmake . -B.build %*
+cmake . -B.build -DWraith_BUILD_EDITOR=ON %*

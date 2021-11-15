@@ -2,10 +2,9 @@
 
 #include <memory>
 
-#include "Wraith.h"
-
 #include "Panels/PanelGroup.h"
 #include "Panels/ViewportPanel.h"
+#include "Wraith.h"
 
 namespace Wraith
 {

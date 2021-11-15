@@ -25,7 +25,8 @@ namespace Wraith
         , m_MultiThreaded(multiThreaded)
     {
 #ifdef _DEBUG
-        //This makes it easier to debug in case stuff like shaders or buffers fail to create, and you want to see what logging you've got.
+        // This makes it easier to debug in case stuff like shaders or buffers fail to create, and you want to see what
+        // logging you've got.
         m_MultiThreaded = false;
 #endif
 

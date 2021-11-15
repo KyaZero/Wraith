@@ -10,7 +10,7 @@ namespace Wraith
         if (cube_model.IsValid())
             return cube_model;
 
-	    /*
+        /*
             Vec4f position;
             Vec4f normal;
             Vec4f tangent;

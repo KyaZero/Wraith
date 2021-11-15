@@ -24,7 +24,7 @@ namespace Wraith
         } m_FrameBufferData;
 
         Buffer m_FrameBuffer;
-        
+
         struct ObjectBuffer
         {
             Mat4f transform;

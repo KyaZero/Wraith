@@ -3,8 +3,8 @@
 #include "Core/Math/Vec.h"
 #include "Core/StringID.h"
 #include "Graphics/Camera.h"
-#include "Graphics/Text/Text.h"
 #include "Graphics/Models/Model.h"
+#include "Graphics/Text/Text.h"
 #include "ScriptableEntity.h"
 
 namespace Wraith

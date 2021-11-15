@@ -10,11 +10,9 @@ namespace Wraith
     class ModelManager : public Singleton<ModelManager>
     {
     public:
-
         static Model& GetCube();
 
     private:
-
         std::unordered_map<StringID, Model> m_ModelMap;
     };
 }  // namespace Wraith

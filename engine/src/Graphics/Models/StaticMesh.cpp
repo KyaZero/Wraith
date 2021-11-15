@@ -16,11 +16,15 @@ namespace Wraith
 
     void StaticMesh::InitBuffers(std::vector<Vertex> vertices, std::vector<u32> indices)
     {
-        m_VertexBuffer.Init(
-            (u32)vertices.size() * sizeof(Vertex), BufferUsage::Immutable, BufferType::Vertex, sizeof(Vertex), vertices.data());
+        m_VertexBuffer.Init((u32)vertices.size() * sizeof(Vertex),
+                            BufferUsage::Immutable,
+                            BufferType::Vertex,
+                            sizeof(Vertex),
+                            vertices.data());
         m_VertexCount = (u32)vertices.size();
 
-        m_IndexBuffer.Init((u32)indices.size() * sizeof(u32), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices.data());
+        m_IndexBuffer.Init(
+            (u32)indices.size() * sizeof(u32), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices.data());
         m_IndexCount = (u32)indices.size();
     }
 

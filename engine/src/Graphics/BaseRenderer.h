@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Core/Constants.h"
+#include "Framework.h"
 #include "RenderCommand.h"
 #include "Window/Window.h"
-#include "Framework.h"
 
 namespace Wraith
 {

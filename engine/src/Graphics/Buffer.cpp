@@ -69,7 +69,7 @@ namespace Wraith
         subresource.pSysMem = data;
 
         if (FailedCheck("Creating Buffer",
-                        Framework::GetDevice()->CreateBuffer(&desc, (data) ? &subresource : nullptr, &m_Data->buffer)))
+                        Framework::GetDevice().CreateBuffer(&desc, (data) ? &subresource : nullptr, &m_Data->buffer)))
         {
             ASSERT_LOG(false);
         }
@@ -81,7 +81,7 @@ namespace Wraith
             srvDesc.Format = DXGI_FORMAT_UNKNOWN;
             srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
             srvDesc.Buffer.ElementWidth = size / stride;
-            Framework::GetDevice()->CreateShaderResourceView(m_Data->buffer.Get(), &srvDesc, &m_Data->resource_view);
+            Framework::GetDevice().CreateShaderResourceView(m_Data->buffer.Get(), &srvDesc, &m_Data->resource_view);
         }
 
         m_Data->bindFlags = flags;
@@ -136,7 +136,7 @@ namespace Wraith
         std::memset(&subres, 0, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
         if (FailedCheck("Mapping buffer",
-                        Framework::GetContext()->Map(m_Data->buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
+                        Framework::GetContext().Map(m_Data->buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
             return nullptr;
 
         return subres.pData;
@@ -149,6 +149,6 @@ namespace Wraith
             ERROR_LOG("Buffer not Inititalized!");
             return;
         }
-        Framework::GetContext()->Unmap(m_Data->buffer.Get(), 0);
+        Framework::GetContext().Unmap(m_Data->buffer.Get(), 0);
     }
 }  // namespace Wraith

@@ -126,7 +126,7 @@ namespace Wraith
             input_element_desciptions.push_back(element_desc);
         });
 
-        HRESULT hr = Framework::GetDevice()->CreateInputLayout(input_element_desciptions.data(),
+        HRESULT hr = Framework::GetDevice().CreateInputLayout(input_element_desciptions.data(),
                                                                static_cast<UINT>(input_element_desciptions.size()),
                                                                vs_blob->GetBufferPointer(),
                                                                vs_blob->GetBufferSize(),

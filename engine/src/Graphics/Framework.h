@@ -22,8 +22,8 @@ namespace Wraith
 
         void SetBackbufferAsActiveTarget();
 
-        static ID3D11Device* GetDevice();
-        static ID3D11DeviceContext* GetContext();
+        static ID3D11Device& GetDevice();
+        static ID3D11DeviceContext& GetContext();
         static void ReportLiveObjects();
 
         static void BeginEvent(std::string name);

@@ -51,8 +51,8 @@ namespace Wraith
 
     void SpriteRenderer::Render()
     {
-        auto* context = Framework::GetContext();
-        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        auto& context = Framework::GetContext();
+        context.IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
         UpdateConstantBuffer();
         m_ConstantBuffer.Bind(0);
 
@@ -112,7 +112,7 @@ namespace Wraith
                                          num_instances * sizeof(InstanceData));
                 m_InstanceBuffer.Bind(1);
 
-                context->DrawIndexedInstanced(6, num_instances, 0, 0, 0);
+                context.DrawIndexedInstanced(6, num_instances, 0, 0, 0);
             }
         }
 

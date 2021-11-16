@@ -48,12 +48,12 @@ namespace Wraith
         struct InstanceData
         {
             Vec4f color;
-            Vec2f position;
+            Vec4f position;
             Vec2f offset;
             Vec2f scale;
             Vec2f size;
             f32 rotation;
-            i32 world_space;
+            i32 screen_space;
         };
 
         void UpdateConstantBuffer();

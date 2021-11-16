@@ -26,6 +26,7 @@ namespace Wraith
 
     private:
         std::unique_ptr<Texture> m_RenderTexture;
+        std::unique_ptr<Texture> m_RenderDepth;
         Window& m_Window;
         SpriteRenderer m_SpriteRenderer;
         ForwardRenderer m_ForwardRenderer;

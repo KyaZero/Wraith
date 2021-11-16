@@ -4,6 +4,7 @@
 #include <random>
 
 #include "Core/Types.h"
+#include "Core/Math/Vec3.h"
 
 namespace Wraith
 {
@@ -11,7 +12,17 @@ namespace Wraith
 
     inline f32 Radians(f32 angle) { return angle * PI / 180.0f; }
 
+    inline Vec3f Radians(Vec3f vec) { return { Radians(vec.x), Radians(vec.y), Radians(vec.z) }; }
+
     inline f32 Degrees(f32 angle) { return angle * 180.0f / PI; }
+
+    inline Vec3f Degrees(Vec3f vec) { return { Degrees(vec.x), Degrees(vec.y), Degrees(vec.z) }; }
+
+    template <typename T>
+    int Sign(T val)
+    {
+        return (T(0) < val) - (val < T(0));
+    }
 
     template <typename T, typename U>
     inline T Max(const T& x, const U& y)

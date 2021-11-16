@@ -1,5 +1,6 @@
 #include "common.hlsl"
 
+Texture2D Texture : register(t0);
 SamplerState DefaultSampler : register(s0);
 
 struct VertexInput
@@ -48,5 +49,5 @@ void VSMain(in VertexInput input, out PixelInput output)
 
 void PSMain(in PixelInput input, out PixelOutput output)
 {
-    output.color = input.color;
+    output.color = TO_SRGB(input.color * TO_LINEAR(Texture.Sample(DefaultSampler, input.uv)));
 }

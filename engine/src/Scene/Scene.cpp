@@ -4,6 +4,7 @@
 #include "Components.h"
 #include "Entity.h"
 #include "Graphics/TextureManager.h"
+#include "Scene/EditorCamera.h"
 
 namespace Wraith
 {
@@ -26,9 +27,9 @@ namespace Wraith
         return entity;
     }
 
-    void Scene::UpdateEditor(f32 dt, OrthographicCamera* editor_camera)
+    void Scene::UpdateEditor(f32 dt, EditorCamera* editor_camera)
     {
-        m_Renderer->Submit(SetCameraCommand{ editor_camera, editor_camera->GetView() });
+        m_Renderer->Submit(SetCameraCommand{ editor_camera, editor_camera->GetViewMatrix() });
 
         {
             const auto sprites = m_Registry.view<TransformComponent, SpriteComponent>();
@@ -38,12 +39,12 @@ namespace Wraith
                 m_Renderer->Submit(SpriteCommand{
                     .texture = sprite.texture,
                     .color = sprite.color,
-                    .position = { transform.position.x, transform.position.y },
+                    .position = transform.position,
                     .origin = sprite.origin,
                     .scale = { transform.scale.x, transform.scale.y },
-                    .rotation = transform.rotation.z,
+                    .rotation = transform.rotation.GetEulerAngles().z,
                     .layer = sprite.layer,
-                    .world_space = sprite.world_space,
+                    .screen_space = sprite.screen_space,
                 });
             }
 
@@ -113,12 +114,12 @@ namespace Wraith
                     m_Renderer->Submit(SpriteCommand{
                         .texture = sprite.texture,
                         .color = sprite.color,
-                        .position = { transform.position.x, transform.position.y },
+                        .position = transform.position,
                         .origin = sprite.origin,
                         .scale = { transform.scale.x, transform.scale.y },
-                        .rotation = transform.rotation.z,
+                        .rotation = transform.rotation.GetEulerAngles().z,
                         .layer = sprite.layer,
-                        .world_space = sprite.world_space,
+                        .screen_space = sprite.screen_space,
                     });
                 }
 

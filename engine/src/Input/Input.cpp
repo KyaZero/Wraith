@@ -161,6 +161,8 @@ namespace Wraith
         }
     }
 
+    void Input::SetMouseState(f64 x_pos, f64 y_pos) { m_MouseState = { x_pos, y_pos }; }
+
     void Input::SetMouseButtonState(MouseButton button, bool is_down)
     {
         auto it = m_MouseButtons.find((i32)button);
@@ -176,9 +178,16 @@ namespace Wraith
 
     void Input::SetEnabled(bool value) { m_IsEnabled = value; }
 
+    f64 Input::GetMouseX() { return m_MouseState.x_pos; }
+
+    f64 Input::GetMouseY() { return m_MouseState.y_pos; }
+
+    Vec2f Input::GetMousePos() { return Vec2f((f32)GetMouseX(), (f32)GetMouseY()); }
+
     void Input::SetupInputs(Window* window)
     {
         glfwSetKeyCallback(window->GetHandle(), Input::KeyCallback);
+        glfwSetCursorPosCallback(window->GetHandle(), Input::MousePosCallback);
         glfwSetMouseButtonCallback(window->GetHandle(), Input::MouseButtonCallback);
         glfwSetScrollCallback(window->GetHandle(), Input::ScrollCallback);
     }
@@ -245,6 +254,13 @@ namespace Wraith
         for (Input* input : s_Instances)
         {
             input->SetKeyState((Key)key, action != GLFW_RELEASE);
+        }
+    }
+    void Input::MousePosCallback(GLFWwindow* window, f64 x_pos, f64 y_pos)
+    {
+        for (Input* input : s_Instances)
+        {
+            input->SetMouseState(x_pos, y_pos);
         }
     }
 }  // namespace Wraith

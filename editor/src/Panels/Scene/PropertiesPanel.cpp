@@ -36,13 +36,9 @@ namespace Wraith
 
                 ImGui::DragFloat3("Position", &transform.position.x, 0.01f);
                 ImGui::DragFloat3("Scale", &transform.scale.x, 0.001f, 0.001f, 10.0f);
-                Vec3f rotation_in_degrees = { Degrees(transform.rotation.x),
-                                              Degrees(transform.rotation.y),
-                                              Degrees(transform.rotation.z) };
+                Vec3f rotation_in_degrees = Degrees(Vec3f{ transform.rotation.GetEulerAngles() });
                 ImGui::DragFloat3("Rotation", &rotation_in_degrees.x, 0.1f);
-                transform.rotation = { Radians(rotation_in_degrees.x),
-                                       Radians(rotation_in_degrees.y),
-                                       Radians(rotation_in_degrees.z) };
+                transform.rotation.FromEuler(Radians(rotation_in_degrees));
             }
         }
 

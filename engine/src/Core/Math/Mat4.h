@@ -166,6 +166,24 @@ namespace Wraith
             return m_Numbers[index];
         }
 
+        static void DecomposeMatrixToComponents(const Mat4<T>& matrix, Vec3<T>* position, Quat<T>* rotation, Vec3<T>* scale)
+        {
+            Mat4<T> mat = matrix;
+            scale->x = mat.m_RightAxis.Length();
+            scale->y = mat.m_UpAxis.Length();
+            scale->z = mat.m_ForwardAxis.Length();
+
+            mat.m_RightAxis.Normalize();
+            mat.m_UpAxis.Normalize();
+            mat.m_ForwardAxis.Normalize();
+
+            *rotation = Quat<T>(mat);
+
+            position->x = mat.m_Position.x;
+            position->y = mat.m_Position.y;
+            position->z = mat.m_Position.z;
+        }
+
         static Mat4<T> CreateOrthographicProjection(T left, T right, T bottom, T top, T znear, T zfar)
         {
             f32 ReciprocalWidth = 1.0f / (right - left);
@@ -187,6 +205,15 @@ namespace Wraith
                             -(top + bottom) * ReciprocalHeight,
                             -fRange * znear,
                             1 };
+        }
+
+        inline static Mat4<T> CreateTranslation(const T x, const T y, const T z)
+        {
+            Mat4<T> result;
+            result.m_Position.x = x;
+            result.m_Position.y = y;
+            result.m_Position.z = z;
+            return result;
         }
 
         static Mat4<T> CreateOrthographicProjection(T width, T height, T znear, T zfar)
@@ -278,27 +305,17 @@ namespace Wraith
             return matrix * s;
         }
 
-        inline static Mat4<T> CreateTransform(const Vec3<T>& position, const Vec3<T>& rotation, const Vec3<T>& scale)
+        inline static Mat4<T> CreateTransform(const Vec3<T>& position, const Quat<T>& rotation, const Vec3<T>& scale)
         {
             Mat4<T> s = {
                 scale.x, 0, 0, 0, 0, scale.y, 0, 0, 0, 0, scale.z, 0, 0, 0, 0, 1,
             };
 
-            Mat4<T> r = CreateRotationAroundZ(rotation.z) * CreateRotationAroundY(rotation.y) *
-                        CreateRotationAroundX(rotation.x);
+            Mat4<T> r = rotation.GetMat4();
 
             Mat4<T> t = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, position.x, position.y, position.z, 1 };
 
             return s * r * t;
-        }
-
-        inline static Mat4<T> CreateTranslationMatrix(const T x, const T y, const T z)
-        {
-            Mat4<T> result;
-            result.m_Position.x = x;
-            result.m_Position.y = y;
-            result.m_Position.z = z;
-            return result;
         }
 
         inline static Mat4<T> CreateLookAt(const Vec3<T>& lookAt, const Vec3<T>& eye, const Vec3<T>& up)
@@ -485,13 +502,9 @@ namespace Wraith
 
         inline Mat4<T> GetInversed() const { return Inverse(*this); }
 
-        Vec3<T> GetRotation() const
+        Vec3<T> GetEulerAngles() const
         {
-            Vec3<T> output;
-            output.z = atan2(_21, _11);
-            output.y = -asin(_31);
-            output.x = atan2(_32, _33);
-            return output;
+            return Quat<T>(*this).GetEulerAngles();
         }
 
         friend inline Vec4<T> operator*(const Vec4<T>& vector, const Mat4<T>& matrix)
@@ -533,6 +546,10 @@ namespace Wraith
                 T m_ForwardW;
                 Vec3<T> m_Position;
                 T m_W;
+            };
+            struct
+            {
+                float m[4][4];
             };
             struct
             {

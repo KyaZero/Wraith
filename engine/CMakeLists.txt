@@ -54,8 +54,6 @@ set(graphics_files
   "src/Graphics/OrthographicCameraController.cpp"
   "src/Graphics/OrthographicCamera.h"
   "src/Graphics/OrthographicCamera.cpp"
-  "src/Graphics/EditorCamera.h"
-  "src/Graphics/EditorCamera.cpp"
   "src/Graphics/Camera.h"
   "src/Graphics/Sampler.h"
   "src/Graphics/Sampler.cpp"
@@ -106,6 +104,8 @@ set(scene_files
   "src/Scene/Entity.h"
   "src/Scene/Scene.cpp"
   "src/Scene/Scene.h"
+  "src/Scene/EditorCamera.h"
+  "src/Scene/EditorCamera.cpp"
   "src/Scene/ScriptableEntity.h")
     
 set(input_files
@@ -146,6 +146,7 @@ target_link_libraries(${target_name} PUBLIC
     dxguid
     d3dcompiler
     imgui
+    ImGuizmo
     EnTT
     stb
     glfw

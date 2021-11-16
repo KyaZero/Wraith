@@ -1,5 +1,7 @@
 #include "Shader.h"
 
+#include <comdef.h>
+
 #include "Core/Filewatcher.h"
 #include "DXUtil.h"
 #include "Framework.h"
@@ -44,7 +46,15 @@ namespace Wraith
         if (FailedCheck("D3DCompileFromFile: " + path + " | " + entry_point, hr))
         {
             if (error_blob)
+            {
                 ERROR_LOG("Shader Error:\n{}\n", static_cast<char*>(error_blob->GetBufferPointer()));
+            }
+            else
+            {
+                _com_error err(hr);
+                LPCTSTR errMsg = err.ErrorMessage();
+                ERROR_LOG("Shader Error:\n{}\n", std::filesystem::path(errMsg).string().c_str());
+            }
 
             return hr;
         }

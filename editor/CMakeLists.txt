@@ -32,11 +32,13 @@ set(all_files
 add_executable(${target_name} ${all_files})
 add_executable(${PROJECT_NAME}::${target_name} ALIAS ${target_name})
 
+target_include_directories(${target_name} PUBLIC "src")
 target_link_libraries(${target_name}
     compiler_features
     compiler_warnings
     Wraith::Engine
-    imgui)
+    imgui
+    ImGuizmo)
 
 target_include_directories(${target_name} PUBLIC "src")
 

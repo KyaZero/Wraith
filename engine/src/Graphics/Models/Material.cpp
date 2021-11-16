@@ -6,7 +6,7 @@ namespace Wraith
 
     Material::Material(Shader&& shader) { SetShader(std::forward<Shader>(shader)); }
 
-    void Material::AddTexture(u32 slot, const Texture& texture) { m_TextureList.push_back({ slot, texture }); }
+    void Material::AddTexture(u32 slot, const Texture* texture) { m_TextureList.push_back({ slot, texture }); }
 
     void Material::SetShader(const Shader& shader) { m_Shader = shader; }
 
@@ -17,7 +17,7 @@ namespace Wraith
         m_Shader.Bind();
         for (auto& [slot, texture] : m_TextureList)
         {
-            texture.Bind(slot);
+            texture->Bind(slot);
         }
     }
 
@@ -26,7 +26,7 @@ namespace Wraith
         m_Shader.Unbind();
         for (auto& [slot, texture] : m_TextureList)
         {
-            texture.Unbind(slot);
+            texture->Unbind(slot);
         }
     }
 }  // namespace Wraith

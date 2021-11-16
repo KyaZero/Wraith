@@ -1,6 +1,7 @@
 #pragma once
 
 #include <imgui/imgui.h>
+#include <ImGuizmo/ImGuizmo.h>
 
 #include "Graphics/Framework.h"
 #include "Window/Window.h"

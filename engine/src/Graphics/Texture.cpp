@@ -256,8 +256,16 @@ namespace Wraith
 
     void Texture::Resize(const Vec2u& size, ImageFormat format, void* data)
     {
+        bool depth = m_Data->is_depth;
         Release();
-        Create(size, format, data);
+        if (depth)
+        {
+            CreateDepth(size, format);
+        }
+        else
+        {
+            Create(size, format, data);
+        }
     }
 
     void Texture::UnsetActiveTarget() { Framework::GetContext().OMSetRenderTargets(0, nullptr, nullptr); }

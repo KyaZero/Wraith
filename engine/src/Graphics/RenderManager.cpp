@@ -25,6 +25,9 @@ namespace Wraith
         m_RenderTexture = std::make_unique<Texture>();
         m_RenderTexture->Create(m_Window.GetSize());
 
+        m_RenderDepth = std::make_unique<Texture>();
+        m_RenderDepth->CreateDepth(m_Window.GetSize());
+
         Window::RegisterResizeCallback(this, [&](auto w, auto h) { Resize(w, h); });
         return true;
     }
@@ -34,7 +37,8 @@ namespace Wraith
     void RenderManager::Render()
     {
         m_RenderTexture->Clear({ 0.0f, 0.0f, 0.0f, 1.0f });
-        m_RenderTexture->SetAsActiveTarget();
+        m_RenderDepth->ClearDepth();
+        m_RenderTexture->SetAsActiveTarget(m_RenderDepth.get());
 
         for (auto& command : m_RenderCommands[CURRENT_FRAME])
         {
@@ -67,7 +71,10 @@ namespace Wraith
 
     Texture& RenderManager::GetRenderTexture() { return *m_RenderTexture; }
 
-    void RenderManager::Resize(u32 width, u32 height) { m_RenderTexture->Resize({ width, height }); }
+    void RenderManager::Resize(u32 width, u32 height) { 
+        m_RenderTexture->Resize({ width, height });
+        m_RenderDepth->Resize({ width, height }); 
+    }
 
     void RenderManager::Flip()
     {

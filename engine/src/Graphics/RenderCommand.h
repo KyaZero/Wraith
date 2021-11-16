@@ -12,12 +12,12 @@ namespace Wraith
     {
         StringID texture;
         Vec4f color;
-        Vec2f position;
+        Vec4f position;
         Vec2f origin;
         Vec2f scale;
         f32 rotation;
         f32 layer;
-        bool world_space = true;
+        bool screen_space;
     };
 
     struct SetCameraCommand

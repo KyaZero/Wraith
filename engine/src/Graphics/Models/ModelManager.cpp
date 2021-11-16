@@ -1,4 +1,5 @@
 #include "ModelManager.h"
+#include "Graphics/TextureManager.h"
 
 namespace Wraith
 {
@@ -47,10 +48,11 @@ namespace Wraith
             7, 4, 6
         };
 
-        //std::reverse(indices.begin(), indices.end());
+        std::reverse(indices.begin(), indices.end());
         // clang-format on
 
         Material cube_material(Shader(Shader::Vertex | Shader::Pixel, "assets/engine/shaders/cube.hlsl"));
+        cube_material.AddTexture(0, &TextureManager::Get()->GetDefaultTexture());
         cube_model.AddMesh(std::make_shared<StaticMesh>(vertices, indices, cube_material));
         return cube_model;
     }

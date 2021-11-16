@@ -13,7 +13,7 @@ namespace Wraith
         Material(Shader&& shader);
         ~Material() = default;
 
-        void AddTexture(u32 slot, const Texture& texture);
+        void AddTexture(u32 slot, const Texture* texture);
         void SetShader(const Shader& shader);
         void SetShader(Shader&& shader);
 
@@ -26,7 +26,7 @@ namespace Wraith
         struct BindableTexture
         {
             u32 slot;
-            Texture texture;
+            const Texture* texture;
         };
 
         std::vector<BindableTexture> m_TextureList;

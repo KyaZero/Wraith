@@ -30,6 +30,8 @@ void Wraith::ForwardRenderer::Render()
     m_FrameBuffer.SetData(m_FrameBufferData);
     m_FrameBuffer.Bind();
 
+    m_Sampler.Bind(0);
+
     for (auto& models : commands)
     {
         m_ObjectBufferData.transform = models.transform;

@@ -68,7 +68,7 @@ namespace Wraith
         // edit: this could be fixed easily by using a perspective camera and just having a depth buffer/z position,
         // but may want to have layers for UI etc?
         std::sort(std::execution::par, commands.begin(), commands.end(), [](auto a, auto b) {
-            return a.texture > b.texture;
+            return a.screen_space > b.screen_space;
         });
 
         std::unordered_map<StringID, std::vector<InstanceData>> instances;
@@ -93,7 +93,7 @@ namespace Wraith
             data.rotation = -sprite.rotation;
             data.scale = sprite.scale;
             data.size = current_texture_size;
-            data.world_space = sprite.world_space;
+            data.screen_space = sprite.screen_space;
 
             instances[sprite.texture].push_back(data);
         }

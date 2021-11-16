@@ -31,12 +31,12 @@ cbuffer BufferData : register(b0)
 struct InstanceBuffer
 {
     float4 Color;
-    float2 Position;
+    float4 Position;
     float2 Offset;
     float2 Scale;
     float2 Size;
     float Rotation;
-    int WorldSpace;
+    int ScreenSpace;
 };
 StructuredBuffer<InstanceBuffer> InstanceData : register(t1);
 
@@ -56,8 +56,8 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     input.position *= InstanceData[instance_ID].Scale;
     input.position += InstanceData[instance_ID].Position;
 
-    output.position = InstanceData[instance_ID].WorldSpace ? mul(ViewProjection, float4(input.position.xy, 0, 1))
-                                                           : mul(Projection, float4(input.position.xy, 0, 1));
+    output.position = InstanceData[instance_ID].ScreenSpace ? mul(Projection, float4(input.position.xy, 0, 1)) : mul(ViewProjection, float4(input.position.xy, InstanceData[instance_ID].Position.z, 1));
+    
     output.color = InstanceData[instance_ID].Color;
     output.uv = input.uv;
 }

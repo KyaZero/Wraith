@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Panels/Panel.h"
 #include "Input/Input.h"
+#include "Panels/Panel.h"
 
 namespace Wraith
 {

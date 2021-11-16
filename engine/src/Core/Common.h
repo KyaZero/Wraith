@@ -3,8 +3,8 @@
 #include <cmath>
 #include <random>
 
-#include "Core/Types.h"
 #include "Core/Math/Vec3.h"
+#include "Core/Types.h"
 
 namespace Wraith
 {

@@ -89,7 +89,7 @@ namespace Wraith
     {
         if (m_Input.IsDown(Key::W))
         {
-            //TODO: implement
+            // TODO: implement
         }
     }
 

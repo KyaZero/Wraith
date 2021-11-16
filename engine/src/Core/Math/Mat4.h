@@ -166,7 +166,10 @@ namespace Wraith
             return m_Numbers[index];
         }
 
-        static void DecomposeMatrixToComponents(const Mat4<T>& matrix, Vec3<T>* position, Quat<T>* rotation, Vec3<T>* scale)
+        static void DecomposeMatrixToComponents(const Mat4<T>& matrix,
+                                                Vec3<T>* position,
+                                                Quat<T>* rotation,
+                                                Vec3<T>* scale)
         {
             Mat4<T> mat = matrix;
             scale->x = mat.m_RightAxis.Length();
@@ -502,10 +505,7 @@ namespace Wraith
 
         inline Mat4<T> GetInversed() const { return Inverse(*this); }
 
-        Vec3<T> GetEulerAngles() const
-        {
-            return Quat<T>(*this).GetEulerAngles();
-        }
+        Vec3<T> GetEulerAngles() const { return Quat<T>(*this).GetEulerAngles(); }
 
         friend inline Vec4<T> operator*(const Vec4<T>& vector, const Mat4<T>& matrix)
         {

@@ -1,4 +1,5 @@
 #include "ModelManager.h"
+
 #include "Graphics/TextureManager.h"
 
 namespace Wraith

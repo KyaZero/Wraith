@@ -13,6 +13,7 @@ namespace ${PROJECT_NAME}
     constexpr uint8_t VERSION_PATCH = ${Wraith_VERSION_PATCH};
     constexpr uint32_t VERSION = VERSION_MAJOR | (VERSION_MINOR << 8) | (VERSION_PATCH << 16);
     constexpr const char* VERSION_TEXT = \"${Wraith_VERSION}\";
-    constexpr const char* PROJECT_NAME = \"${PROJECT_NAME}\";
+    constexpr const char* ENGINE_NAME = \"${PROJECT_NAME}\";
+    constexpr const char* PROJECT_NAME = \"${CMAKE_PROJECT_NAME}\";
 }  // namespace ${PROJECT_NAME}
 ")

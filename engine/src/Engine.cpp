@@ -71,7 +71,6 @@ namespace Wraith
         // Render ImGui
         m_ImguiLayer->Begin();
         m_UIRenderCallback();
-        ThreadScheduler::Get()->RenderDebugInfo();
         m_ImguiLayer->End();
 
         Filewatcher::Get()->FlushChanges();

@@ -90,10 +90,38 @@ namespace Wraith
         }
     }
 
+    void ThreadScheduler::AddProcessingJob(std::shared_ptr<ProcessingJob> job) { m_ProcessingJobs.push_back(job); }
+
+    void ThreadScheduler::AddPersistentJob(std::shared_ptr<PersistentJob> job) { m_PersistentJobs.push_back(job); }
+
+    void ThreadScheduler::ScheduleFrame()
+    {
+        m_FrameIndex++;
+
+        std::sort(m_PersistentJobs.begin(),
+                  m_PersistentJobs.end(),
+                  [](const std::shared_ptr<PersistentJob> a, const std::shared_ptr<PersistentJob> b) {
+                      return a->GetAverageTime() < b->GetAverageTime();
+                  });
+
+        i32 thread_index = 0;
+        for (auto& job : m_PersistentJobs)
+        {
+            auto index = thread_index++ % m_NumThreads;
+            m_WorkerThreads[NEXT_FRAME][index]->Queue(job);
+        }
+
+        for (auto& job : m_ProcessingJobs)
+        {
+            auto index = thread_index++ % m_NumThreads;
+            m_ProcessingThreads[index]->Queue(job);
+        }
+        m_ProcessingJobs.clear();
+    }
+
+#ifdef WITH_EDITOR
     void ThreadScheduler::RenderDebugInfo()
     {
-        ImGui::Begin("ThreadScheduler Info");
-
         if (ImGui::Button("Spawn Test Processing Work"))
         {
             for (size_t i = 0; i < 200; i++)
@@ -153,36 +181,6 @@ namespace Wraith
             }
             ImGui::TreePop();
         }
-
-        ImGui::End();
     }
-
-    void ThreadScheduler::AddProcessingJob(std::shared_ptr<ProcessingJob> job) { m_ProcessingJobs.push_back(job); }
-
-    void ThreadScheduler::AddPersistentJob(std::shared_ptr<PersistentJob> job) { m_PersistentJobs.push_back(job); }
-
-    void ThreadScheduler::ScheduleFrame()
-    {
-        m_FrameIndex++;
-
-        std::sort(m_PersistentJobs.begin(),
-                  m_PersistentJobs.end(),
-                  [](const std::shared_ptr<PersistentJob> a, const std::shared_ptr<PersistentJob> b) {
-                      return a->GetAverageTime() < b->GetAverageTime();
-                  });
-
-        i32 thread_index = 0;
-        for (auto& job : m_PersistentJobs)
-        {
-            auto index = thread_index++ % m_NumThreads;
-            m_WorkerThreads[NEXT_FRAME][index]->Queue(job);
-        }
-
-        for (auto& job : m_ProcessingJobs)
-        {
-            auto index = thread_index++ % m_NumThreads;
-            m_ProcessingThreads[index]->Queue(job);
-        }
-        m_ProcessingJobs.clear();
-    }
+#endif
 }  // namespace Wraith

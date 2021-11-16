@@ -9,9 +9,20 @@ include("cmake/compiler_features.cmake")
 include("cmake/compiler_warnings.cmake")
 include("cmake/auto_group_sources.cmake")
 
-add_subdirectory("thirdparty")
+set(${PROJECT_NAME}_FOLDER
+    ${PROJECT_NAME}
+    CACHE STRING "The folder that ${PROJECT_NAME} projects will be placed in.")
 
-add_subdirectory("editor")
+option(${PROJECT_NAME}_BUILD_EDITOR
+    "If the editor target should be built."
+    OFF)
+
+add_subdirectory("thirdparty")
 add_subdirectory("engine")
+
+if(${${PROJECT_NAME}_BUILD_EDITOR})
+    add_subdirectory("editor")
+    target_compile_definitions(Engine PUBLIC WITH_EDITOR)
+endif()
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT "Editor")

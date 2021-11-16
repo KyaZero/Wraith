@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "Panels/PanelGroup.h"
-#include "Panels/ViewportPanel.h"
+#include "Panels/Play/ViewportPanel.h"
 #include "Wraith.h"
 
 namespace Wraith

@@ -4,11 +4,15 @@
 #include <shellapi.h>
 #include <tinyfd/tinyfiledialogs.h>
 
-#include "Panels/BarPanel.h"
-#include "Panels/DemoPanel.h"
+#include "Panels/Debug/DemoPanel.h"
+#include "Panels/Debug/ThreadSchedulerPanel.h"
 #include "Panels/PanelSettings.h"
-#include "Panels/PropertiesPanel.h"
-#include "Panels/SceneHierarchyPanel.h"
+#include "Panels/Play/BarPanel.h"
+#include "Panels/Scene/PropertiesPanel.h"
+#include "Panels/Scene/SceneHierarchyPanel.h"
+#include "Scene/Components.h"
+#include "Scene/Entity.h"
+#include "Scene/ScriptableEntity.h"
 
 namespace Wraith
 {
@@ -94,6 +98,7 @@ namespace Wraith
 
             auto debug_panels = m_PanelManager.CreateGroup("Debug");
             debug_panels->CreatePanel<DemoPanel>();
+            debug_panels->CreatePanel<ThreadSchedulerPanel>();
         }
 
         {
@@ -170,7 +175,8 @@ namespace Wraith
                 }
                 if (ImGui::MenuItem("About"))
                 {
-                    tinyfd_messageBox(PROJECT_NAME, VERSION_TEXT, "ok", "info", 1);
+                    tinyfd_messageBox(
+                        std::format("{}({})", PROJECT_NAME, ENGINE_NAME).c_str(), VERSION_TEXT, "ok", "info", 1);
                 }
                 ImGui::EndMenu();
             }

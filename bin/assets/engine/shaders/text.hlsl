@@ -1,4 +1,4 @@
-#include "common.hlsl"
+#include "common.hlsli"
 
 Texture2D<float3> AtlasTexture : register(t0);
 SamplerState LinearSampler : register(s0);

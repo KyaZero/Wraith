@@ -1,4 +1,4 @@
-#include "common.hlsl"
+#include "common.hlsli"
 
 Texture2D ColorTexture : register(t0);
 SamplerState DefaultSampler : register(s0);
@@ -56,7 +56,9 @@ void VSMain(in VertexInput input, out PixelInput output, uint instance_ID : SV_I
     input.position *= InstanceData[instance_ID].Scale;
     input.position += InstanceData[instance_ID].Position;
 
-    output.position = InstanceData[instance_ID].ScreenSpace ? mul(Projection, float4(input.position.xy, 0, 1)) : mul(ViewProjection, float4(input.position.xy, InstanceData[instance_ID].Position.z, 1));
+    float4 screen_pos = mul(Projection, float4(input.position.xy, 1, 1));
+    float4 world_pos = mul(ViewProjection, float4(input.position.xy, InstanceData[instance_ID].Position.z, 1));
+    output.position = InstanceData[instance_ID].ScreenSpace ? screen_pos : world_pos;
     
     output.color = InstanceData[instance_ID].Color;
     output.uv = input.uv;

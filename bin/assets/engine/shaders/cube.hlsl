@@ -1,4 +1,4 @@
-#include "common.hlsl"
+#include "common.hlsli"
 
 Texture2D Texture : register(t0);
 SamplerState DefaultSampler : register(s0);

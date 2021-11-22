@@ -2,10 +2,11 @@
 
 #include <memory>
 
-#include "Panels/PanelGroup.h"
-#include "Panels/Play/ViewportPanel.h"
 #include <Scene/EditorCamera.h>
 #include <Wraith.h>
+
+#include "Panels/PanelGroup.h"
+#include "Panels/Play/ViewportPanel.h"
 
 namespace Wraith
 {

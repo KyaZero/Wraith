@@ -24,6 +24,9 @@ namespace Wraith
         void SetGizmoOperation(ImGuizmo::OPERATION op) { m_GizmoOperation = op; }
         void SetGizmoSpace(ImGuizmo::MODE space) { m_OperationSpace = space; }
 
+        ImGuizmo::OPERATION GetGizmoOperation() const { return m_GizmoOperation; }
+        ImGuizmo::MODE GetGizmoSpace() const { return m_OperationSpace; }
+
         const EditorCamera& GetEditorCamera() const;
 
     private:
@@ -40,6 +43,6 @@ namespace Wraith
         Input m_Input;
 
         ImGuizmo::OPERATION m_GizmoOperation = ImGuizmo::OPERATION::TRANSLATE;
-        ImGuizmo::MODE m_OperationSpace = ImGuizmo::MODE::WORLD;
+        ImGuizmo::MODE m_OperationSpace = ImGuizmo::MODE::LOCAL;
     };
 }  // namespace Wraith

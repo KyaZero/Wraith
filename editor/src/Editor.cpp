@@ -186,6 +186,7 @@ namespace Wraith
         }
 
         // Gizmos
+        if (!m_IsScenePlaying)
         {
             ImGuizmo::SetOrthographic(false);
 

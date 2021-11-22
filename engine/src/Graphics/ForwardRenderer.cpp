@@ -17,7 +17,7 @@ bool Wraith::ForwardRenderer::Init()
 
 void Wraith::ForwardRenderer::SetCamera(const SetCameraCommand& command)
 {
-    m_CurrentCamera = { command.camera->GetProjection(), command.view };
+    m_CurrentCamera = { command.proj, command.view };
 }
 
 void Wraith::ForwardRenderer::Render()

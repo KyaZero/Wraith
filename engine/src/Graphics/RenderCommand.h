@@ -22,7 +22,7 @@ namespace Wraith
 
     struct SetCameraCommand
     {
-        Camera* camera;
+        Mat4f proj;
         Mat4f view;
     };
 

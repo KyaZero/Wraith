@@ -29,7 +29,7 @@ namespace Wraith
 
     void Scene::UpdateEditor(f32 dt, EditorCamera* editor_camera)
     {
-        m_Renderer->Submit(SetCameraCommand{ editor_camera, editor_camera->GetViewMatrix() });
+        m_Renderer->Submit(SetCameraCommand{ editor_camera->GetProjection(), editor_camera->GetViewMatrix() });
 
         {
             const auto sprites = m_Registry.view<TransformComponent, SpriteComponent>();
@@ -104,7 +104,7 @@ namespace Wraith
 
         if (main_camera)
         {
-            m_Renderer->Submit(SetCameraCommand{ main_camera, Mat4f::FastInverse(camera_transform) });
+            m_Renderer->Submit(SetCameraCommand{ main_camera->GetProjection(), Mat4f::FastInverse(camera_transform) });
 
             {
                 const auto sprites = m_Registry.view<TransformComponent, SpriteComponent>();

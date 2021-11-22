@@ -46,7 +46,7 @@ namespace Wraith
 
     void SpriteRenderer::SetCamera(const SetCameraCommand& command)
     {
-        m_CurrentCamera = std::make_unique<RenderCamera>(command.camera->GetProjection(), command.view);
+        m_CurrentCamera = std::make_unique<RenderCamera>(command.proj, command.view);
     }
 
     void SpriteRenderer::Render()

@@ -91,6 +91,29 @@ namespace Wraith
             }
         }
 
+        if (entity.HasComponent<SpriteComponent>())
+        {
+            if (ImGui::CollapsingHeader("Sprite Component", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                auto& sprite = entity.GetComponent<SpriteComponent>();
+                auto& current_tex = TextureManager::Get()->GetTexture(sprite.texture);
+                if (ImGui::ImageButton(current_tex.GetShaderResourceView(), { 64, 64 }))
+                {
+                    const char* filter = "*.png";
+                    auto path = tinyfd_openFileDialog("Load Texture", "", 1, &filter, nullptr, 0);
+                    if (path)
+                    {
+                        sprite.texture = StringID(path);
+                    }
+                }
+
+                ImGui::ColorEdit4("Color", &sprite.color.x);
+                ImGui::SliderFloat2("Origin", &sprite.origin.x, 0.0f, 1.0f);
+                ImGui::SliderFloat("Layer", &sprite.layer, 0.0f, 1.0f);
+                ImGui::Checkbox("Screen Space", &sprite.screen_space);
+            }
+        }
+
         if (entity.HasComponent<ModelComponent>())
         {
             if (ImGui::CollapsingHeader("Model Component", ImGuiTreeNodeFlags_DefaultOpen))
@@ -108,9 +131,9 @@ namespace Wraith
                     ImGui::Indent();
                     {
                         auto& material = mesh->GetMaterial();
-                        ImGui::Text("Shader");
+                        ImGui::Text("Shader: %s", material.GetShader().GetName().c_str());
                         ImGui::SameLine();
-                        if (ImGui::Button(std::format("{}", material.GetShader().GetName()).c_str()))
+                        if (ImGui::Button(std::format("Change").c_str()))
                         {
                             const char* filter = "*.hlsl";
                             auto path = tinyfd_openFileDialog("Select Shader", "", 1, &filter, nullptr, 0);
@@ -131,7 +154,7 @@ namespace Wraith
                             ImGui::SameLine();
                             ImGui::SliderInt(std::format("{}", (u64)&tex).c_str(), &slot, 0, 32);
                             tex.slot = slot;
-                            if (ImGui::ImageButton(tex.texture->GetShaderResourceView(), { 32, 32 }))
+                            if (ImGui::ImageButton(tex.texture->GetShaderResourceView(), { 64, 64 }))
                             {
                                 const char* filter = "*.png";
                                 auto path = tinyfd_openFileDialog("Select Image", "", 1, &filter, nullptr, 0);

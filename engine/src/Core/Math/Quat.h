@@ -226,6 +226,10 @@ namespace Wraith
             return Vec3<T>(1 - 2 * (y * y + z * z), 2 * (x * y + w * z), 2 * (x * z - w * y)).GetNormalized();
         }
 
+        inline T GetPitch() const { return atan2(2.0 * (y * z + w * x), w * w - x * x - y * y + z * z); }
+        inline T GetYaw() const { return asin(-2.0 * (x * z - w * y)); }
+        inline T GetRoll() const { return atan2(2.0 * (x * y + w * z), w * w + x * x - y * y - z * z); }
+
         inline static Quat<T> Slerp(const Quat<T>& a, const Quat<T>& b, const T& delta)
         {
             Quat<T> qz = b;

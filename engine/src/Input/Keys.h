@@ -111,7 +111,9 @@ namespace Wraith
         F11 = 0x7A,
         F12 = 0x7B,
 
-        LeftAlt = 342,
+        LSHIFT = 340,
+        LCONTROL = 341,
+        LALT = 342,
         Count
     };
 }  // namespace Wraith

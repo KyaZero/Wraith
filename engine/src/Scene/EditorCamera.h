@@ -8,7 +8,8 @@ namespace Wraith
     enum class CameraState
     {
         FreeCam,
-        ArcBall
+        ArcBall,
+        Idle
     };
 
     class EditorCamera : public Camera
@@ -31,24 +32,34 @@ namespace Wraith
         const Mat4f& GetViewMatrix() const { return m_ViewMatrix; }
         Mat4f GetViewProjection() const { return m_Projection * m_ViewMatrix; }
 
-        Vec3f GetForward() const { return Quatf(m_ViewMatrix).GetForwardVector(); }
-        Vec3f GetRight() const { return Quatf(m_ViewMatrix).GetRightVector(); }
+        Vec3f GetForward() const { return m_Orientation.GetForwardVector(); }
+        Vec3f GetRight() const { return m_Orientation.GetRightVector(); }
+        Vec3f GetUp() const { return m_Orientation.GetUpVector(); }
 
         CameraState GetCameraState() const;
 
     private:
-        void UpdateArcball(f32 dt, Vec2f mouse_pos);
-        void UpdateFreeCam(f32 dt, Vec2f mouse_pos);
+        void UpdateArcball(f32 dt, Vec2f mouse_delta);
+        void UpdateFreeCam(f32 dt, Vec2f mouse_delta);
 
         void UpdateProjection();
         void UpdateView();
 
         Input m_Input;
 
+        // Arcball variables
         Vec3f m_Eye;
         Vec3f m_TargetLookAt;
         Vec3f m_CurrentLookAt;
         Vec3f m_Up;
+
+        f32 m_CurrentDistance = 20.0f;
+        f32 m_TargetDistance = 20.0f;
+
+        // Freecam Variables
+        Quatf m_Orientation;
+        f32 m_Pitch;
+        f32 m_Yaw;
 
         Mat4f m_ViewMatrix;
 
@@ -60,9 +71,9 @@ namespace Wraith
         f32 m_NearClip = 0.1f;
         f32 m_FarClip = 1000.0f;
 
-        f32 m_CurrentDistance = 20.0f;
-        f32 m_TargetDistance = 20.0f;
+        f32 m_Speed = 3.0f;
+        f32 m_SpeedModifier = 1.0f;
 
-        CameraState m_CurrentState;
+        CameraState m_CurrentState = CameraState::Idle;
     };
 }  // namespace Wraith

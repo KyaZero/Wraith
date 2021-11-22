@@ -7,6 +7,7 @@
 
 namespace Wraith
 {
+    Window* Input::s_Window;
     std::vector<Input*> Input::s_Instances;
     bool Input::s_UIBlockEvents = false;
 
@@ -186,10 +187,15 @@ namespace Wraith
 
     void Input::SetupInputs(Window* window)
     {
-        glfwSetKeyCallback(window->GetHandle(), Input::KeyCallback);
-        glfwSetCursorPosCallback(window->GetHandle(), Input::MousePosCallback);
-        glfwSetMouseButtonCallback(window->GetHandle(), Input::MouseButtonCallback);
-        glfwSetScrollCallback(window->GetHandle(), Input::ScrollCallback);
+        s_Window = window;
+        glfwSetKeyCallback(s_Window->GetHandle(), Input::KeyCallback);
+        glfwSetCursorPosCallback(s_Window->GetHandle(), Input::MousePosCallback);
+        glfwSetMouseButtonCallback(s_Window->GetHandle(), Input::MouseButtonCallback);
+        glfwSetScrollCallback(s_Window->GetHandle(), Input::ScrollCallback);
+
+        if (glfwRawMouseMotionSupported())
+            glfwSetInputMode(s_Window->GetHandle(), GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+        glfwSetInputMode(s_Window->GetHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
     void Input::FlushState()
@@ -211,6 +217,12 @@ namespace Wraith
     }
 
     void Input::BlockUIEvents(bool should_block) { s_UIBlockEvents = should_block; }
+
+    void Input::SetCursorVisible(bool show_cursor)
+    {
+        glfwFocusWindow(s_Window->GetHandle());
+        glfwSetInputMode(s_Window->GetHandle(), GLFW_CURSOR, show_cursor ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+    }
 
     void Input::MouseButtonCallback(GLFWwindow* window, i32 button, i32 action, i32 mods)
     {

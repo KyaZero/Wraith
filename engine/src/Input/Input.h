@@ -47,6 +47,8 @@ namespace Wraith
         static void FlushState();
         static void BlockUIEvents(bool should_block);
 
+        static void SetCursorVisible(bool show_cursor);
+
     private:
         static void MouseButtonCallback(GLFWwindow* window, i32 button, i32 action, i32 mods);
         static void ScrollCallback(GLFWwindow* window, f64 x_offset, f64 y_offset);
@@ -69,6 +71,7 @@ namespace Wraith
         MouseState m_MouseState;
 
         bool m_IsEnabled;
+        static Window* s_Window;
         static bool s_UIBlockEvents;
     };
 }  // namespace Wraith

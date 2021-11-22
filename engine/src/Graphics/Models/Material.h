@@ -15,7 +15,6 @@ namespace Wraith
         };
 
     public:
-
         Material() = default;
         Material(const Shader& shader);
         Material(Shader&& shader);

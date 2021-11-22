@@ -23,8 +23,6 @@ namespace Wraith
         void OnUIRender() override;
         const char* GetName() const override { return "Scene Hierarchy"; }
 
-        Entity GetSelectedEntity() { return m_SelectedEntity; }
-
     private:
         void DrawEntityNode(Entity entity);
 

@@ -62,6 +62,9 @@ namespace Wraith
         m_SpriteRenderer.Render();
         Framework::EndEvent();
 
+        // Unset depth stencil
+        m_RenderTexture->SetAsActiveTarget();
+
         Framework::BeginEvent("Render Text");
         m_TextRenderer.Render(m_RenderTexture->GetSizef());
         Framework::EndEvent();

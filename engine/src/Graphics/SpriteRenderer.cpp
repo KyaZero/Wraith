@@ -15,7 +15,10 @@ namespace Wraith
     bool SpriteRenderer::Init()
     {
         if (!m_SpriteShader.Load(Shader::Vertex | Shader::Pixel, "assets/engine/shaders/sprite.hlsl"))
+        {
+            ERROR_LOG("Failed to load default sprite shader, Wraith cannot function correctly.");
             return false;
+        }
 
         m_ConstantBuffer.Init(
             sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
@@ -23,14 +26,14 @@ namespace Wraith
         // clang-format off
         f32 vertices[] = {
             // pos      // uv
-            0.0f, 0.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 1.0f,
-            1.0f, 1.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 0.0f,
         };
         // clang-format on
 
-        u32 indices[] = { 0, 1, 2, 1, 3, 2 };
+        u32 indices[] = { 2, 3, 1, 2, 1, 0 };
 
         m_VertexBuffer.Init(
             sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);

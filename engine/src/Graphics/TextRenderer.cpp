@@ -32,7 +32,7 @@ namespace Wraith
         };
         // clang-format on
 
-        u32 indices[] = { 0, 2, 1, 1, 2, 3 };
+        u32 indices[] = { 2, 3, 1, 2, 1, 0 };
 
         m_VertexBuffer.Init(
             sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);

@@ -71,7 +71,7 @@ namespace Wraith
             f32 delta_x = (2 * PI / m_ViewportSize.x);
             f32 delta_y = (PI / m_ViewportSize.y);
             f32 x_angle = -(m_LastMousePos.x - mouse_pos.x) * delta_x;
-            f32 y_angle = (m_LastMousePos.y - mouse_pos.y) * delta_y;
+            f32 y_angle = -(m_LastMousePos.y - mouse_pos.y) * delta_y;
 
             m_Yaw += x_angle;
             m_Pitch += y_angle;
@@ -99,7 +99,7 @@ namespace Wraith
         f32 delta_x = (2 * PI / m_ViewportSize.x);
         f32 delta_y = (PI / m_ViewportSize.y);
         f32 x_angle = -(m_LastMousePos.x - mouse_pos.x) * delta_x;
-        f32 y_angle = (m_LastMousePos.y - mouse_pos.y) * delta_y;
+        f32 y_angle = -(m_LastMousePos.y - mouse_pos.y) * delta_y;
 
         m_Yaw += x_angle;
         m_Pitch = Clamp(m_Pitch + y_angle, -PI / 2.0f, PI / 2.0f);
@@ -139,7 +139,7 @@ namespace Wraith
     void EditorCamera::UpdateProjection()
     {
         m_AspectRatio = m_ViewportSize.x / m_ViewportSize.y;
-        m_Projection = Mat4f::CreatePerspectiveProjection(m_Fov, -m_AspectRatio, m_NearClip, m_FarClip);
+        m_Projection = Mat4f::CreatePerspectiveProjection(m_Fov, m_AspectRatio, m_NearClip, m_FarClip);
     }
 
     void EditorCamera::UpdateView()

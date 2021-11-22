@@ -1,7 +1,10 @@
 #pragma once
 
-#include <ImGuizmo/ImGuizmo.h>
+// ImGuizmo is dependent on imgui being included before it.
+// clang-format off
 #include <imgui/imgui.h>
+#include <ImGuizmo/ImGuizmo.h>
+// clang-format on
 
 #include "Graphics/Framework.h"
 #include "Window/Window.h"

@@ -40,6 +40,9 @@ void Wraith::ForwardRenderer::Render()
 
         for (auto& mesh : models.model.GetMeshes())
         {
+            if (!mesh->IsValid())
+                continue;
+
             mesh->Bind();
             context.DrawIndexed(mesh->GetNumIndices(), 0, 0);
         }

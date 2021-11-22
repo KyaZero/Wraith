@@ -24,6 +24,8 @@ namespace Wraith
         void Bind();
         void Unbind();
 
+        bool IsValid() const;
+
         ShaderType GetType() const;
 
         std::string GetName() const;
@@ -33,5 +35,9 @@ namespace Wraith
 
         struct Data;
         std::unique_ptr<Data> m_Data;
+
+        std::string m_Path;
+        ShaderType m_Type;
+        bool m_IsValid;
     };
 }  // namespace Wraith

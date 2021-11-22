@@ -36,4 +36,6 @@ namespace Wraith
             texture->Unbind(slot);
         }
     }
+
+    bool Material::IsValid() const { return m_Shader.IsValid(); }
 }  // namespace Wraith

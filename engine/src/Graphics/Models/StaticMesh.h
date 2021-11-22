@@ -43,6 +43,8 @@ namespace Wraith
 
         u32 GetNumIndices() const;
 
+        bool IsValid() const;
+
         void Bind();
         void Unbind();
 

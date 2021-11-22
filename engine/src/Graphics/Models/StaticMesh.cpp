@@ -38,6 +38,8 @@ namespace Wraith
 
     u32 StaticMesh::GetNumIndices() const { return m_IndexCount; }
 
+    bool StaticMesh::IsValid() const { return m_Material.IsValid(); }
+
     void StaticMesh::Bind()
     {
         Framework::GetContext().IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)m_PrimitiveTopology);

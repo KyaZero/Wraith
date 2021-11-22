@@ -28,6 +28,8 @@ namespace Wraith
         void Bind();
         void Unbind();
 
+        bool IsValid() const;
+
         const Shader& GetShader() { return m_Shader; }
         std::vector<BindableTexture>& GetTextures() { return m_TextureList; }
 

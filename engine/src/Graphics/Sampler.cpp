@@ -68,14 +68,14 @@ namespace Wraith
         desc.MinLOD = 0;
         desc.MaxLOD = D3D11_FLOAT32_MAX;
 
-        FailedCheck("Creating Sampler State", Framework::GetDevice()->CreateSamplerState(&desc, &m_Data->sampler));
+        FailedCheck("Creating Sampler State", Framework::GetDevice().CreateSamplerState(&desc, &m_Data->sampler));
     }
 
-    void Sampler::Bind(u32 slot) { Framework::GetContext()->PSSetSamplers(slot, 1, m_Data->sampler.GetAddressOf()); }
+    void Sampler::Bind(u32 slot) { Framework::GetContext().PSSetSamplers(slot, 1, m_Data->sampler.GetAddressOf()); }
 
     void Sampler::Unbind(u32 slot)
     {
         ID3D11SamplerState* sampler = nullptr;
-        Framework::GetContext()->PSSetSamplers(slot, 1, &sampler);
+        Framework::GetContext().PSSetSamplers(slot, 1, &sampler);
     }
 }  // namespace Wraith

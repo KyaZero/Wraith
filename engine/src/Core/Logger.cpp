@@ -24,6 +24,12 @@ namespace Wraith
         , m_ShouldLogToFile(true)
         , m_MultiThreaded(multiThreaded)
     {
+#ifdef _DEBUG
+        // This makes it easier to debug in case stuff like shaders or buffers fail to create, and you want to see what
+        // logging you've got.
+        m_MultiThreaded = false;
+#endif
+
         if (m_MultiThreaded)
             m_Thread = std::jthread(Update, this, std::chrono::milliseconds(16));
 

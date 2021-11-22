@@ -1,18 +1,18 @@
 #pragma once
 
-#include <Graphics/OrthographicCameraController.h>
 #include <Graphics/RenderManager.h>
 
 #include "Panels/Panel.h"
+#include "Scene/EditorCamera.h"
 
 namespace Wraith
 {
     class ViewportPanel : public Panel
     {
     public:
-        ViewportPanel(RenderManager& render_manager, OrthographicCameraController& camera_controller)
+        ViewportPanel(RenderManager& render_manager, EditorCamera& editor_camera)
             : m_RenderManager(render_manager)
-            , m_CameraController(camera_controller)
+            , m_EditorCamera(editor_camera)
         { }
         virtual ~ViewportPanel() = default;
 
@@ -24,6 +24,6 @@ namespace Wraith
         Vec2f m_ViewportSize;
 
         RenderManager& m_RenderManager;
-        OrthographicCameraController& m_CameraController;
+        EditorCamera& m_EditorCamera;
     };
 }  // namespace Wraith

@@ -18,7 +18,7 @@ namespace Wraith
         catch (const std::exception&)
         { }
 
-        return NullId;
+        return NullID;
     }
 
     std::optional<std::filesystem::path> ContentManager::GetPath(IDType id)

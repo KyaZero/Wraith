@@ -54,6 +54,6 @@ namespace Wraith
         if (m_DefaultTexture.IsValid())
             return;
 
-        m_DefaultTexture.LoadFromFile("assets/textures/default.png");
+        m_DefaultTexture.LoadFromFile("assets/engine/textures/default.png");
     }
 }  // namespace Wraith

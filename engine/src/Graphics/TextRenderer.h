@@ -4,6 +4,7 @@
 #include <msdfgen/msdfgen-ext.h>
 #include <msdfgen/msdfgen.h>
 
+#include "BaseRenderer.h"
 #include "Graphics/BlendState.h"
 #include "Graphics/Buffer.h"
 #include "Graphics/RenderCommand.h"
@@ -14,7 +15,7 @@
 
 namespace Wraith
 {
-    class TextRenderer
+    class TextRenderer : public BaseRenderer<TextCommand>
     {
         constexpr static u32 MAX_INSTANCES = 1024;
         struct InstanceData
@@ -41,16 +42,11 @@ namespace Wraith
         TextRenderer();
         ~TextRenderer();
 
-        bool Init();
-
-        void Submit(const TextCommand& command);
+        bool Init() override;
 
         void Render(const Vec2f& viewport_size);
 
-        void Flip();
-
     private:
-        std::vector<TextCommand> m_TextCommands[FRAME_COUNT];
         std::vector<char> m_FontBlob;
 
         Shader m_TextShader;

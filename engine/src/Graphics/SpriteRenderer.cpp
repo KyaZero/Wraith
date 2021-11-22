@@ -15,7 +15,10 @@ namespace Wraith
     bool SpriteRenderer::Init()
     {
         if (!m_SpriteShader.Load(Shader::Vertex | Shader::Pixel, "assets/engine/shaders/sprite.hlsl"))
+        {
+            ERROR_LOG("Failed to load default sprite shader, Wraith cannot function correctly.");
             return false;
+        }
 
         m_ConstantBuffer.Init(
             sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
@@ -23,38 +26,36 @@ namespace Wraith
         // clang-format off
         f32 vertices[] = {
             // pos      // uv
-            0.0f, 0.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 1.0f,
-            1.0f, 1.0f, 1.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 0.0f,
         };
         // clang-format on
 
-        u32 indices[] = { 0, 1, 2, 1, 3, 2 };
+        u32 indices[] = { 2, 3, 1, 2, 1, 0 };
 
         m_VertexBuffer.Init(
             sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
         m_IndexBuffer.Init(
             sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
         m_InstanceBuffer.Init(
-            InstanceCount * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
+            MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
 
         m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
 
         return true;
     }
 
-    void SpriteRenderer::Submit(const SpriteCommand& sprite) { m_SpriteCommands[NEXT_FRAME].push_back(sprite); }
-
-    void SpriteRenderer::Submit(const SetCameraCommand& command)
+    void SpriteRenderer::SetCamera(const SetCameraCommand& command)
     {
-        m_CurrentCamera = std::make_unique<RenderCamera>(command.camera->GetProjection(), command.view);
+        m_CurrentCamera = std::make_unique<RenderCamera>(command.proj, command.view);
     }
 
     void SpriteRenderer::Render()
     {
-        auto* context = Framework::GetContext();
-        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        auto& context = Framework::GetContext();
+        context.IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
         UpdateConstantBuffer();
         m_ConstantBuffer.Bind(0);
 
@@ -63,14 +64,14 @@ namespace Wraith
         m_VertexBuffer.Bind();
         m_Sampler.Bind(0);
 
-        auto& commands = m_SpriteCommands[CURRENT_FRAME];
+        auto& commands = GetCurrentCommands();
 
         // Sort by texture, to reduce texture swaps during rendering.
         // TODO: Should add layer support too.
         // edit: this could be fixed easily by using a perspective camera and just having a depth buffer/z position,
         // but may want to have layers for UI etc?
         std::sort(std::execution::par, commands.begin(), commands.end(), [](auto a, auto b) {
-            return a.texture > b.texture;
+            return a.screen_space > b.screen_space;
         });
 
         std::unordered_map<StringID, std::vector<InstanceData>> instances;
@@ -95,26 +96,26 @@ namespace Wraith
             data.rotation = -sprite.rotation;
             data.scale = sprite.scale;
             data.size = current_texture_size;
-            data.world_space = sprite.world_space;
+            data.screen_space = sprite.screen_space;
 
             instances[sprite.texture].push_back(data);
         }
 
         for (auto& sprites : instances)
         {
-            u32 batches = 1 + ((u32)sprites.second.size() / InstanceCount);
+            u32 batches = 1 + ((u32)sprites.second.size() / MAX_INSTANCES);
             for (u32 i = 0; i < batches; ++i)
             {
                 auto& tex = TextureManager::Get()->GetTexture(sprites.first);
                 tex.Bind(0);
 
-                u32 num_instances = Min(InstanceCount, (u32)sprites.second.size() - (InstanceCount * i));
+                u32 num_instances = Min(MAX_INSTANCES, (u32)sprites.second.size() - (MAX_INSTANCES * i));
 
-                m_InstanceBuffer.SetData(&sprites.second[0] + (InstanceCount * i),
+                m_InstanceBuffer.SetData(&sprites.second[0] + (MAX_INSTANCES * i),
                                          num_instances * sizeof(InstanceData));
                 m_InstanceBuffer.Bind(1);
 
-                context->DrawIndexedInstanced(6, num_instances, 0, 0, 0);
+                context.DrawIndexedInstanced(6, num_instances, 0, 0, 0);
             }
         }
 
@@ -122,12 +123,6 @@ namespace Wraith
 
         m_SpriteShader.Unbind();
         m_Sampler.Unbind(0);
-    }
-
-    void SpriteRenderer::Flip()
-    {
-        std::swap(m_SpriteCommands[CURRENT_FRAME], m_SpriteCommands[NEXT_FRAME]);
-        m_SpriteCommands[NEXT_FRAME].clear();
     }
 
     void SpriteRenderer::UpdateConstantBuffer()

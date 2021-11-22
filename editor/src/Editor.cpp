@@ -18,13 +18,13 @@ namespace Wraith
 {
     Editor::Editor()
         : Application("Editor")
-        , m_CameraController(m_Engine->GetWindow().GetSize().x, m_Engine->GetWindow().GetSize().y, true)
+        , m_EditorCamera()
         , m_PanelManager("View")
     {
         m_ActiveScene = std::make_unique<Scene>();
         m_ActiveScene->Init(m_Engine->GetRenderer());
 
-        const i32 num = 10;
+        const i32 num = 2;
         const i32 half_num = num / 2;
 
         for (i32 y = -half_num; y < half_num; ++y)
@@ -40,7 +40,6 @@ namespace Wraith
                     Vec4f{ x / (f32)half_num, y / (f32)half_num, (x / (f32)half_num + y / (f32)half_num) / 2.0f, 1 } +
                     Vec4f{ 1.1f, 1.1f, 1.1f, 0.0f };
                 sprite.layer = y;
-                sprite.world_space = true;
 
                 auto& transform = e.GetComponent<TransformComponent>();
                 transform.position = { (f32)x, (f32)y, 0.0f };
@@ -52,6 +51,8 @@ namespace Wraith
         m_CameraEntity.AddComponent<CameraComponent>(
             Camera(Mat4f::CreatePerspectiveProjection(90.0f, -16.0f / 9.0f, 0.01f, 100.0f)));
         m_CameraEntity.GetComponent<TransformComponent>().position = { 0.0f, 0.0f, -10.0f };
+
+        m_EditorCamera = EditorCamera(90.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
 
         class CameraController : public ScriptableEntity
         {
@@ -87,14 +88,16 @@ namespace Wraith
         {
             auto play_panels = m_PanelManager.CreateGroup("Play");
 
-            play_panels->CreatePanel<BarPanel>([this] { OnScenePlay(); }, [this] { OnSceneEndPlay(); });
-            m_ViewportPanel = play_panels->CreatePanel<ViewportPanel>(*m_Engine->GetRenderer(), m_CameraController);
+            play_panels->CreatePanel<BarPanel>([this] { OnScenePlay(); }, [this] { OnSceneEndPlay(); }, *this);
+            m_ViewportPanel = play_panels->CreatePanel<ViewportPanel>(*m_Engine->GetRenderer(), m_EditorCamera);
 
             auto scene_panels = m_PanelManager.CreateGroup("Scene");
 
             auto properties_panel = scene_panels->CreatePanel<PropertiesPanel>();
-            scene_panels->CreatePanel<SceneHierarchyPanel>(
-                *m_ActiveScene, [=](auto entity) { properties_panel->SetSelectedEntity(entity); });
+            scene_panels->CreatePanel<SceneHierarchyPanel>(*m_ActiveScene, [=](Entity entity) {
+                properties_panel->SetSelectedEntity(entity);
+                m_SelectedEntity = entity;
+            });
 
             auto debug_panels = m_PanelManager.CreateGroup("Debug");
             debug_panels->CreatePanel<DemoPanel>();
@@ -102,8 +105,16 @@ namespace Wraith
         }
 
         {
-            auto textEntity = m_ActiveScene->CreateEntity("Text");
-            textEntity.AddComponent<TextComponent>();
+            auto text_entity = m_ActiveScene->CreateEntity("Text");
+            text_entity.AddComponent<TextComponent>();
+        }
+
+        {
+            auto cube_entity = m_ActiveScene->CreateEntity("Cube");
+            cube_entity.AddComponent<ModelComponent>(ModelManager::GetCube());
+            auto& transform = cube_entity.GetComponent<TransformComponent>();
+            transform.scale *= 0.1f;
+            transform.position.z -= 1.0f;
         }
 
         SettingsHandler::Register(&m_PanelManager);
@@ -121,9 +132,8 @@ namespace Wraith
             m_ActiveScene->UpdateRuntime(dt);
         else
         {
-            if (m_ViewportPanel->IsFocused())
-                m_CameraController.Update(dt);
-            m_ActiveScene->UpdateEditor(dt, m_CameraController.GetCamera());
+            m_EditorCamera.Update(dt, m_ViewportPanel->IsFocused());
+            m_ActiveScene->UpdateEditor(dt, &m_EditorCamera);
         }
     }
 
@@ -174,6 +184,34 @@ namespace Wraith
             }
             ImGui::EndMainMenuBar();
         }
+
+        // Gizmos
+        if (!m_IsScenePlaying)
+        {
+            ImGuizmo::SetOrthographic(false);
+
+            if (m_SelectedEntity)
+            {
+                auto& transform = m_SelectedEntity.GetComponent<TransformComponent>();
+
+                Mat4f matrix = Mat4f::CreateTransform(transform.position, transform.rotation, transform.scale);
+
+                ImGuizmo::Manipulate(&m_EditorCamera.GetViewMatrix().m[0][0],
+                                     &m_EditorCamera.GetProjection().m[0][0],
+                                     m_GizmoOperation,
+                                     m_OperationSpace,
+                                     &matrix.m_Numbers[0]);
+
+                Mat4f::DecomposeMatrixToComponents(matrix, &transform.position, &transform.rotation, &transform.scale);
+
+                // Focus on selected entity
+                if (m_Input.IsPressed(Key::F))
+                {
+                    m_EditorCamera.SetTarget(transform.position, transform.scale.Length());
+                }
+            }
+        }
+
         m_PanelManager.RenderWindows();
     }
 
@@ -188,4 +226,5 @@ namespace Wraith
         m_ActiveScene->EndPlay();
         m_IsScenePlaying = false;
     }
+    const EditorCamera& Editor::GetEditorCamera() const { return m_EditorCamera; }
 }  // namespace Wraith

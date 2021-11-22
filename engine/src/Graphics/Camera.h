@@ -20,4 +20,10 @@ namespace Wraith
     protected:
         Mat4f m_Projection;
     };
+
+    struct RenderCamera
+    {
+        Mat4f projection;
+        Mat4f view;
+    };
 }  // namespace Wraith

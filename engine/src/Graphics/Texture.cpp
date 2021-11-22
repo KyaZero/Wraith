@@ -139,7 +139,7 @@ namespace Wraith
 
         ComPtr<ID3D11Texture2D> texture;
         if (FailedCheck("Creating texture",
-                        Framework::GetDevice()->CreateTexture2D(&desc, info.data ? &initial_data : nullptr, &texture)))
+                        Framework::GetDevice().CreateTexture2D(&desc, info.data ? &initial_data : nullptr, &texture)))
         {
             Release();
             return;
@@ -160,7 +160,7 @@ namespace Wraith
         if (m_Data->is_rt)
         {
             if (FailedCheck("Creating Render Target View for texture",
-                            Framework::GetDevice()->CreateRenderTargetView(texture, nullptr, &m_Data->render_target)))
+                            Framework::GetDevice().CreateRenderTargetView(texture, nullptr, &m_Data->render_target)))
             {
                 // cleanup.
                 Release();
@@ -177,7 +177,7 @@ namespace Wraith
         }
         m_Data->texture = texture;
         if (FailedCheck("Creating Shader Resource View for texture",
-                        Framework::GetDevice()->CreateShaderResourceView(texture, nullptr, &m_Data->shader_resource)))
+                        Framework::GetDevice().CreateShaderResourceView(texture, nullptr, &m_Data->shader_resource)))
         {
             // cleanup.
             Release();
@@ -215,13 +215,13 @@ namespace Wraith
 
         ComPtr<ID3D11Texture2D> texture;
         if (FailedCheck("Creating Texture2D for depth texture",
-                        Framework::GetDevice()->CreateTexture2D(&desc, nullptr, &texture)))
+                        Framework::GetDevice().CreateTexture2D(&desc, nullptr, &texture)))
         {
             return;
         }
 
         if (FailedCheck("Creating Depth Stencil View for depth texture",
-                        Framework::GetDevice()->CreateDepthStencilView(texture.Get(), &dsv_desc, &m_Data->depth)))
+                        Framework::GetDevice().CreateDepthStencilView(texture.Get(), &dsv_desc, &m_Data->depth)))
         {
             // cleanup.
             Release();
@@ -230,7 +230,7 @@ namespace Wraith
 
         if (FailedCheck(
                 "Creating Shader Resource View for depth texture",
-                Framework::GetDevice()->CreateShaderResourceView(texture.Get(), &sr_desc, &m_Data->shader_resource)))
+                Framework::GetDevice().CreateShaderResourceView(texture.Get(), &sr_desc, &m_Data->shader_resource)))
         {
             // cleanup.
             Release();
@@ -245,31 +245,39 @@ namespace Wraith
 
     void Texture::Clear(const Vec4f& color)
     {
-        Framework::GetContext()->ClearRenderTargetView(m_Data->render_target.Get(), &color.x);
+        Framework::GetContext().ClearRenderTargetView(m_Data->render_target.Get(), &color.x);
     }
 
     void Texture::ClearDepth(f32 depth, u32 stencil)
     {
-        Framework::GetContext()->ClearDepthStencilView(
+        Framework::GetContext().ClearDepthStencilView(
             m_Data->depth.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, depth, (UINT8)stencil);
     }
 
     void Texture::Resize(const Vec2u& size, ImageFormat format, void* data)
     {
+        bool depth = m_Data->is_depth;
         Release();
-        Create(size, format, data);
+        if (depth)
+        {
+            CreateDepth(size, format);
+        }
+        else
+        {
+            Create(size, format, data);
+        }
     }
 
-    void Texture::UnsetActiveTarget() { Framework::GetContext()->OMSetRenderTargets(0, nullptr, nullptr); }
+    void Texture::UnsetActiveTarget() { Framework::GetContext().OMSetRenderTargets(0, nullptr, nullptr); }
 
     void Texture::SetAsActiveTarget(Texture* depth)
     {
-        Framework::GetContext()->OMSetRenderTargets(
+        Framework::GetContext().OMSetRenderTargets(
             1, m_Data->render_target.GetAddressOf(), depth ? depth->m_Data->depth.Get() : nullptr);
         SetViewport();
     }
 
-    void Texture::SetViewport() { Framework::GetContext()->RSSetViewports(1, &m_Data->viewport); }
+    void Texture::SetViewport() { Framework::GetContext().RSSetViewports(1, &m_Data->viewport); }
 
     void Texture::SetCustomViewport(f32 top_left_x, f32 top_left_y, f32 width, f32 height, f32 min_depth, f32 max_depth)
     {
@@ -281,15 +289,15 @@ namespace Wraith
         viewport.MinDepth = min_depth;
         viewport.MaxDepth = max_depth;
 
-        Framework::GetContext()->RSSetViewports(1, &viewport);
+        Framework::GetContext().RSSetViewports(1, &viewport);
     }
 
     void Texture::Bind(u32 slot) const
     {
-        Framework::GetContext()->PSSetShaderResources(slot, 1, m_Data->shader_resource.GetAddressOf());
+        Framework::GetContext().PSSetShaderResources(slot, 1, m_Data->shader_resource.GetAddressOf());
     }
 
-    void Texture::Unbind(u32 slot) const { Framework::GetContext()->PSGetShaderResources(slot, 1, NULL); }
+    void Texture::Unbind(u32 slot) const { Framework::GetContext().PSGetShaderResources(slot, 1, NULL); }
 
     void Texture::Release()
     {
@@ -323,6 +331,6 @@ namespace Wraith
         }
 
         CD3D11_BOX box(x, y, 0, x + w, y + h, 1);
-        Framework::GetContext()->UpdateSubresource(m_Data->texture.Get(), 0, &box, data, stride, 0);
+        Framework::GetContext().UpdateSubresource(m_Data->texture.Get(), 0, &box, data, stride, 0);
     }
 }  // namespace Wraith

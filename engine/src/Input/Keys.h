@@ -2,6 +2,12 @@
 
 namespace Wraith
 {
+    struct MouseState
+    {
+        f64 x_pos;
+        f64 y_pos;
+    };
+
     struct ScrollState
     {
         f64 x_offset;
@@ -104,6 +110,10 @@ namespace Wraith
         F10 = 0x79,
         F11 = 0x7A,
         F12 = 0x7B,
+
+        LSHIFT = 340,
+        LCONTROL = 341,
+        LALT = 342,
         Count
     };
 }  // namespace Wraith

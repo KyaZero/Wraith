@@ -33,35 +33,10 @@ namespace Wraith
             , y(y)
             , z(z)
         { }
-        Quat<T>(const T& yaw, const T& pitch, const T& roll)
-        {
-            T cy = cos(yaw * T(0.5));
-            T sy = sin(yaw * T(0.5));
-            T cr = cos(roll * T(0.5));
-            T sr = sin(roll * T(0.5));
-            T cp = cos(pitch * T(0.5));
-            T sp = sin(pitch * T(0.5));
+        Quat<T>(const T& pitch, const T& yaw, const T& roll) { FromEuler(pitch, yaw, roll); }
 
-            w = cy * cr * cp + sy * sr * sp;
-            x = cy * sr * cp - sy * cr * sp;
-            y = cy * cr * sp + sy * sr * cp;
-            z = sy * cr * cp - cy * sr * sp;
-        }
+        explicit Quat<T>(const Vec3<T>& euler) { FromEuler(euler); }
 
-        explicit Quat<T>(const Vec3<T>& yawPitchRoll)
-        {
-            T cx = cos(yawPitchRoll.x * T(0.5));
-            T cy = cos(yawPitchRoll.y * T(0.5));
-            T cz = cos(yawPitchRoll.z * T(0.5));
-            T sx = sin(yawPitchRoll.x * T(0.5));
-            T sy = sin(yawPitchRoll.y * T(0.5));
-            T sz = sin(yawPitchRoll.z * T(0.5));
-
-            w = cx * cy * cz + sx * sy * sz;
-            x = sx * cy * cz - cx * sy * sz;
-            y = cx * sy * cz + sx * cy * sz;
-            z = cx * cy * sz - sx * sy * cz;
-        }
         Quat<T>(const Vec3<T>& vector, const T angle)
         {
             T halfAngle = angle / T(2);
@@ -117,7 +92,9 @@ namespace Wraith
         inline Quat<T> GetConjugate() const { return Quat<T>(w, -x, -y, -z); }
 
         T Length() const { return sqrt(Length2()); }
+
         T Length2() const { return (x * x) + (y * y) + (z * z) + (w * w); }
+
         inline Vec3<T> GetEulerAngles() const
         {
             // roll (z-xis rotation)
@@ -145,7 +122,37 @@ namespace Wraith
             return Vec3<T>(roll, pitch, yaw);
         }
 
-        inline Mat3<T> GetRotationMatrix33() const
+        inline void FromEuler(T pitch, T yaw, T roll)
+        {
+            T cy = cos(pitch * T(0.5));
+            T sy = sin(pitch * T(0.5));
+            T cr = cos(roll * T(0.5));
+            T sr = sin(roll * T(0.5));
+            T cp = cos(yaw * T(0.5));
+            T sp = sin(yaw * T(0.5));
+
+            w = cy * cr * cp + sy * sr * sp;
+            x = cy * sr * cp - sy * cr * sp;
+            y = cy * cr * sp + sy * sr * cp;
+            z = sy * cr * cp - cy * sr * sp;
+        }
+
+        inline void FromEuler(Vec3<T> euler)
+        {
+            T cx = cos(euler.x * T(0.5));
+            T cy = cos(euler.y * T(0.5));
+            T cz = cos(euler.z * T(0.5));
+            T sx = sin(euler.x * T(0.5));
+            T sy = sin(euler.y * T(0.5));
+            T sz = sin(euler.z * T(0.5));
+
+            w = cx * cy * cz + sx * sy * sz;
+            x = sx * cy * cz - cx * sy * sz;
+            y = cx * sy * cz + sx * cy * sz;
+            z = cx * cy * sz - sx * sy * cz;
+        }
+
+        inline Mat3<T> GetMat3() const
         {
             Mat3<T> result;
             T qxx(x * x);
@@ -172,7 +179,7 @@ namespace Wraith
             return result;
         }
 
-        inline Mat4<T> GetRotationMatrix44() const
+        inline Mat4<T> GetMat4() const
         {
             Mat4<T> result;
             T qxx(x * x);
@@ -199,7 +206,7 @@ namespace Wraith
             result.m_Numbers[6] = T(2) * (qyz - qwx);
             result.m_Numbers[10] = T(1) - T(2) * (qxx + qyy);
 
-            return Mat4<T>::Transpose(result);
+            return result;
         }
 
         inline T Dot(const Quat<T>& quat) const { return x * quat.x + y * quat.y + z * quat.z + w * quat.w; }
@@ -218,6 +225,10 @@ namespace Wraith
         {
             return Vec3<T>(1 - 2 * (y * y + z * z), 2 * (x * y + w * z), 2 * (x * z - w * y)).GetNormalized();
         }
+
+        inline T GetPitch() const { return atan2(2.0 * (y * z + w * x), w * w - x * x - y * y + z * z); }
+        inline T GetYaw() const { return asin(-2.0 * (x * z - w * y)); }
+        inline T GetRoll() const { return atan2(2.0 * (x * y + w * z), w * w + x * x - y * y - z * z); }
 
         inline static Quat<T> Slerp(const Quat<T>& a, const Quat<T>& b, const T& delta)
         {
@@ -276,10 +287,10 @@ namespace Wraith
         template <class T>
         void operator*=(const Quat<T>& quat1)
         {
-            T w = (quat1.w * w) - (quat1.x * x) - (quat1.y * y) - (quat1.z * z);
-            T x = (quat1.w * x) + (quat1.x * w) + (quat1.y * z) - (quat1.z * y);
-            T y = (quat1.w * y) + (quat1.y * w) + (quat1.z * x) - (quat1.x * z);
-            T z = (quat1.w * z) + (quat1.z * w) + (quat1.x * y) - (quat1.y * x);
+            w = (quat1.w * w) - (quat1.x * x) - (quat1.y * y) - (quat1.z * z);
+            x = (quat1.w * x) + (quat1.x * w) + (quat1.y * z) - (quat1.z * y);
+            y = (quat1.w * y) + (quat1.y * w) + (quat1.z * x) - (quat1.x * z);
+            z = (quat1.w * z) + (quat1.z * w) + (quat1.x * y) - (quat1.y * x);
         }
 
         template <class T>
@@ -320,6 +331,9 @@ namespace Wraith
         {
             return !(*this == b);
         }
+
+        void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> w >> x >> y >> z; }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << w << x << y << z; }
 
         union
         {

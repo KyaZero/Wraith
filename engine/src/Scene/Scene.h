@@ -6,6 +6,7 @@
 #include "Graphics/RenderManager.h"
 #include "Scene/Archive.h"
 #include "Scene/Components.h"
+#include "Scene/EditorCamera.h"
 #include "Window/Window.h"
 
 namespace Wraith
@@ -24,7 +25,7 @@ namespace Wraith
 
         Entity CreateEntity(const std::string& name = std::string());
 
-        void UpdateEditor(f32 dt, OrthographicCamera* editor_camera);
+        void UpdateEditor(f32 dt, EditorCamera* editor_camera);
         void UpdateRuntime(f32 dt);
 
         void Play();

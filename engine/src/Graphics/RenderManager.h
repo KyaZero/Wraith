@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Constants.h"
+#include "ForwardRenderer.h"
 #include "RenderCommand.h"
 #include "SpriteRenderer.h"
 #include "TextRenderer.h"
@@ -25,8 +26,10 @@ namespace Wraith
 
     private:
         std::unique_ptr<Texture> m_RenderTexture;
+        std::unique_ptr<Texture> m_RenderDepth;
         Window& m_Window;
         SpriteRenderer m_SpriteRenderer;
+        ForwardRenderer m_ForwardRenderer;
         TextRenderer m_TextRenderer;
         std::vector<RenderCommand> m_RenderCommands[FRAME_COUNT];
     };

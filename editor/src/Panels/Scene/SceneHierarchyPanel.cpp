@@ -42,6 +42,7 @@ namespace Wraith
             ImGui::TreePop();
         }
     }
+
     void SceneHierarchyPanel::SelectEntity(Entity entity)
     {
         m_SelectedEntity = entity;

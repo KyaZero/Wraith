@@ -93,6 +93,7 @@ namespace Wraith
         inline Vec3 operator/(const Vec3& other) const { return { x / other.x, y / other.y, z / other.z }; }
         inline Vec3 operator*(const T& scalar) const { return { x * scalar, y * scalar, z * scalar }; }
         inline Vec3 operator/(const T& scalar) const { return { x / scalar, y / scalar, z / scalar }; }
+        inline Vec3 operator-() const { return { -x, -y, -z }; }
 
         inline void operator+=(const Vec3& other) { *this = *this + other; }
         inline void operator-=(const Vec3& other) { *this = *this - other; }

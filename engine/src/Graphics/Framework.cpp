@@ -165,9 +165,9 @@ namespace Wraith
         m_Data->context->OMSetRenderTargets(1, m_Data->back_buffer.GetAddressOf(), nullptr);
     }
 
-    ID3D11Device* Framework::GetDevice() { return s_Device; }
+    ID3D11Device& Framework::GetDevice() { return *s_Device; }
 
-    ID3D11DeviceContext* Framework::GetContext() { return s_Context; }
+    ID3D11DeviceContext& Framework::GetContext() { return *s_Context; }
 
     void Framework::ReportLiveObjects()
     {
@@ -286,7 +286,7 @@ namespace Wraith
     {
         if (!s_Annot)
         {
-            GetContext()->QueryInterface(IID_PPV_ARGS(&s_Annot));
+            GetContext().QueryInterface(IID_PPV_ARGS(&s_Annot));
         }
 
         // little bit of a hack to convert from std::string to std::wstring using the std library!

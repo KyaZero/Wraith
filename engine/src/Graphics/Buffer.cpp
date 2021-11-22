@@ -69,7 +69,7 @@ namespace Wraith
         subresource.pSysMem = data;
 
         if (FailedCheck("Creating Buffer",
-                        Framework::GetDevice()->CreateBuffer(&desc, (data) ? &subresource : nullptr, &m_Data->buffer)))
+                        Framework::GetDevice().CreateBuffer(&desc, (data) ? &subresource : nullptr, &m_Data->buffer)))
         {
             ASSERT_LOG(false);
         }
@@ -81,7 +81,7 @@ namespace Wraith
             srvDesc.Format = DXGI_FORMAT_UNKNOWN;
             srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
             srvDesc.Buffer.ElementWidth = size / stride;
-            Framework::GetDevice()->CreateShaderResourceView(m_Data->buffer.Get(), &srvDesc, &m_Data->resource_view);
+            Framework::GetDevice().CreateShaderResourceView(m_Data->buffer.Get(), &srvDesc, &m_Data->resource_view);
         }
 
         m_Data->bindFlags = flags;
@@ -92,26 +92,26 @@ namespace Wraith
     {
         ASSERT_LOG(m_Data, "Buffer not Inititalized!");
 
-        auto* context = Framework::GetContext();
+        auto& context = Framework::GetContext();
         const u32 offset = 0;
 
         switch (m_Data->bindFlags)
         {
         case BufferType::Vertex:
-            context->IASetVertexBuffers(slot, 1, m_Data->buffer.GetAddressOf(), (UINT*)&m_Data->stride, &offset);
+            context.IASetVertexBuffers(slot, 1, m_Data->buffer.GetAddressOf(), (UINT*)&m_Data->stride, &offset);
             break;
 
         case BufferType::Index:
-            context->IASetIndexBuffer(m_Data->buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+            context.IASetIndexBuffer(m_Data->buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
             break;
 
         case BufferType::Constant:
-            context->VSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
-            context->PSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
-            context->GSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
+            context.VSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
+            context.PSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
+            context.GSSetConstantBuffers(slot, 1, m_Data->buffer.GetAddressOf());
             break;
         case BufferType::Structured:
-            context->VSSetShaderResources(1, 1, m_Data->resource_view.GetAddressOf());
+            context.VSSetShaderResources(1, 1, m_Data->resource_view.GetAddressOf());
             break;
         default:
             ASSERT_LOG(false, "No implemented BufferType");
@@ -136,7 +136,7 @@ namespace Wraith
         std::memset(&subres, 0, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
         if (FailedCheck("Mapping buffer",
-                        Framework::GetContext()->Map(m_Data->buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
+                        Framework::GetContext().Map(m_Data->buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subres)))
             return nullptr;
 
         return subres.pData;
@@ -149,6 +149,6 @@ namespace Wraith
             ERROR_LOG("Buffer not Inititalized!");
             return;
         }
-        Framework::GetContext()->Unmap(m_Data->buffer.Get(), 0);
+        Framework::GetContext().Unmap(m_Data->buffer.Get(), 0);
     }
 }  // namespace Wraith

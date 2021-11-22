@@ -3,6 +3,7 @@
 #include "Core/Math/Vec.h"
 #include "Core/StringID.h"
 #include "Graphics/Camera.h"
+#include "Graphics/Models/Model.h"
 #include "Graphics/Text/Text.h"
 #include "ScriptableEntity.h"
 
@@ -11,8 +12,10 @@ namespace Wraith
     struct TransformComponent
     {
         Vec3f position{ 0.f, 0.f, 0.f };
+        Quatf rotation{ 1, 0, 0, 0 };
         Vec3f scale{ 1.f, 1.f, 1.f };
-        Vec3f rotation{ 0.f, 0.f, 0.f };
+
+        Mat4f GetTransform() { return Mat4f::CreateTransform(position, rotation, scale); }
 
         void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> position >> scale >> rotation; }
         void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << position << scale << rotation; }
@@ -32,15 +35,15 @@ namespace Wraith
         Vec4f color{ 1, 1, 1, 1 };
         Vec2f origin{ 0, 0 };
         f32 layer{ 0 };
-        bool world_space{ true };
+        bool screen_space{ false };
 
         void Serialize(dubu::serialize::ReadBuffer& buffer)
         {
-            buffer >> texture >> color >> origin >> layer >> world_space;
+            buffer >> texture >> color >> origin >> layer >> screen_space;
         }
         void Serialize(dubu::serialize::WriteBuffer& buffer) const
         {
-            buffer << texture << color << origin << layer << world_space;
+            buffer << texture << color << origin << layer << screen_space;
         }
     };
 
@@ -74,6 +77,11 @@ namespace Wraith
 
         void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> camera >> primary; }
         void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << camera << primary; }
+    };
+
+    struct ModelComponent
+    {
+        Model model_instance;
     };
 
     struct NativeScriptComponent

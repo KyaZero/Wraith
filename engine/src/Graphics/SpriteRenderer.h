@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BaseRenderer.h"
 #include "Buffer.h"
 #include "Core/Constants.h"
 #include "Core/Math/Mat4.h"
@@ -8,32 +9,25 @@
 #include "Sampler.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "Window/Window.h"
 
 namespace Wraith
 {
-    class SpriteRenderer
+    class SpriteRenderer : public BaseRenderer<SpriteCommand>
     {
+        // I found 1024 instances to be the best in terms of performance and drawcalls
+        constexpr static u32 MAX_INSTANCES = 1024;
+
     public:
         SpriteRenderer(Window& window);
-        ~SpriteRenderer();
+        virtual ~SpriteRenderer();
 
-        bool Init();
-
-        void Submit(const SpriteCommand& sprite);
-        void Submit(const SetCameraCommand& command);
+        bool Init() override;
         void Render();
 
-        void Flip();
+        void SetCamera(const SetCameraCommand& command);
 
     private:
         Window& m_Window;
-
-        struct RenderCamera
-        {
-            Mat4f projection;
-            Mat4f view;
-        };
 
         std::unique_ptr<RenderCamera> m_CurrentCamera;
 
@@ -54,19 +48,15 @@ namespace Wraith
         struct InstanceData
         {
             Vec4f color;
-            Vec2f position;
+            Vec4f position;
             Vec2f offset;
             Vec2f scale;
             Vec2f size;
             f32 rotation;
-            i32 world_space;
+            i32 screen_space;
         };
 
         void UpdateConstantBuffer();
-
-        // I found 1024 instances to be the best in terms of performance and drawcalls
-        constexpr static u32 InstanceCount = 1024;
-        std::vector<SpriteCommand> m_SpriteCommands[FRAME_COUNT];
 
         Sampler m_Sampler;
     };

@@ -10,6 +10,7 @@ include("dubu_rect_pack.cmake")
 # framework
 include("glfw.cmake")
 include("imgui.cmake")
+include("ImGuizmo.cmake")
 include("tinyfd.cmake")
 
 # scene

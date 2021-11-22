@@ -32,7 +32,7 @@ namespace Wraith
         };
         // clang-format on
 
-        u32 indices[] = { 0, 2, 1, 1, 2, 3 };
+        u32 indices[] = { 2, 3, 1, 2, 1, 0 };
 
         m_VertexBuffer.Init(
             sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
@@ -47,11 +47,10 @@ namespace Wraith
         return true;
     }
 
-    void TextRenderer::Submit(const TextCommand& command) { m_TextCommands[NEXT_FRAME].push_back(command); }
     void TextRenderer::Render(const Vec2f& viewport_size)
     {
         std::vector<InstanceData> instances;
-        for (const auto& command : m_TextCommands[CURRENT_FRAME])
+        for (const auto& command : GetCurrentCommands())
         {
             std::string_view text = command.text;
 
@@ -124,17 +123,11 @@ namespace Wraith
             m_InstanceBuffer.SetData(instances.data() + MAX_INSTANCES * i, num_instances * sizeof(InstanceData));
 
             m_InstanceBuffer.Bind(1);
-            Framework::GetContext()->DrawIndexedInstanced(6, num_instances, 0, 0, 0);
+            Framework::GetContext().DrawIndexedInstanced(6, num_instances, 0, 0, 0);
         }
 
         m_BlendState.Unbind();
         m_TextShader.Unbind();
         m_Sampler.Unbind(0);
-    }
-
-    void TextRenderer::Flip()
-    {
-        m_TextCommands[CURRENT_FRAME].clear();
-        std::swap(m_TextCommands[CURRENT_FRAME], m_TextCommands[NEXT_FRAME]);
     }
 }  // namespace Wraith

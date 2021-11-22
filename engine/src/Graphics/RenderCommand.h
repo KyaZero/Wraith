@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "Core/StringID.h"
+#include "Models/Model.h"
 
 namespace Wraith
 {
@@ -11,17 +12,17 @@ namespace Wraith
     {
         StringID texture;
         Vec4f color;
-        Vec2f position;
+        Vec4f position;
         Vec2f origin;
         Vec2f scale;
         f32 rotation;
         f32 layer;
-        bool world_space = true;
+        bool screen_space;
     };
 
     struct SetCameraCommand
     {
-        Camera* camera;
+        Mat4f proj;
         Mat4f view;
     };
 
@@ -38,5 +39,11 @@ namespace Wraith
         Vec2f screen_position;
     };
 
-    using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand>;
+    struct ModelCommand
+    {
+        Model model;
+        Mat4f transform;
+    };
+
+    using RenderCommand = std::variant<SpriteCommand, SetCameraCommand, TextCommand, ModelCommand>;
 }  // namespace Wraith

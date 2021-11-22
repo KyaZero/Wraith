@@ -116,8 +116,6 @@ namespace Wraith
             m_SpeedModifier = Clamp(m_SpeedModifier + m_Input.GetScrollState().y_offset / 40.0f, 0.1f, 4.0f);
         }
 
-        INFO_LOG("Speed modifier: {}", m_SpeedModifier);
-
         f32 speed = m_Speed * m_SpeedModifier;
 
         if (m_Input.IsDown(Key::LCONTROL))

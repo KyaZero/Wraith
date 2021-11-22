@@ -62,8 +62,7 @@ namespace Wraith
             if (ImGui::Button("Local"))
                 m_Editor.SetGizmoSpace(ImGuizmo::MODE::LOCAL);
 
-            // Check for rmb up, since otherwise we're in free cam and move with wasd
-            if (m_Editor.GetEditorCamera().GetCameraState() != CameraState::FreeCam)
+            if (m_Editor.GetEditorCamera().GetCameraState() != CameraState::FreeCam && !ImGuizmo::IsUsing())
             {
                 if (m_Input.IsPressed(Key::W))
                 {

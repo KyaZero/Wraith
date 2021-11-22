@@ -16,11 +16,12 @@ namespace Wraith
             ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
             auto& colors = ImGui::GetStyle().Colors;
-            const auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
+            const auto& button_hovered = colors[ImGuiCol_ButtonHovered];
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
-                                  ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, 0.5f));
-            const auto& buttonActive = colors[ImGuiCol_ButtonActive];
-            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
+                                  ImVec4(button_hovered.x, button_hovered.y, button_hovered.z, 0.5f));
+            const auto& button_active = colors[ImGuiCol_ButtonActive];
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive,
+                                  ImVec4(button_active.x, button_active.y, button_active.z, 0.5f));
 
             ImVec2 size = ImVec2(ImGui::GetWindowHeight() - 16.0f, ImGui::GetWindowHeight() - 16.0f);
             const Texture& tex = m_IsPlay ? TextureManager::Get()->GetTexture(m_PlayButton)
@@ -55,12 +56,9 @@ namespace Wraith
             }
 
             ImGui::SameLine();
-            if (ImGui::Button("World"))
-                m_Editor.SetGizmoSpace(ImGuizmo::MODE::WORLD);
-
-            ImGui::SameLine();
-            if (ImGui::Button("Local"))
-                m_Editor.SetGizmoSpace(ImGuizmo::MODE::LOCAL);
+            if (ImGui::Button(m_Editor.GetGizmoSpace() == ImGuizmo::MODE::WORLD ? "World" : "Local"))
+                m_Editor.SetGizmoSpace(m_Editor.GetGizmoSpace() == ImGuizmo::MODE::WORLD ? ImGuizmo::MODE::LOCAL
+                                                                                         : ImGuizmo::MODE::WORLD);
 
             if (m_Editor.GetEditorCamera().GetCameraState() != CameraState::FreeCam && !ImGuizmo::IsUsing())
             {

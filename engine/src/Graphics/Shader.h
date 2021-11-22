@@ -15,18 +15,22 @@ namespace Wraith
         Shader();
         Shader(std::underlying_type_t<ShaderType> shader_type, const std::string& path);
         Shader(const Shader& other);
-        Shader(Shader&& other);
         ~Shader();
 
         Shader& operator=(const Shader& other);
-        Shader& operator=(Shader&& other);
 
         bool Load(std::underlying_type_t<ShaderType> shader_type, const std::string& path);
 
         void Bind();
         void Unbind();
 
+        ShaderType GetType() const;
+
+        std::string GetName() const;
+
     private:
+        bool CompileShader();
+
         struct Data;
         std::unique_ptr<Data> m_Data;
     };

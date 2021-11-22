@@ -1,8 +1,10 @@
 #include "PropertiesPanel.h"
 
+#include <Graphics/TextureManager.h>
 #include <Scene/Components.h>
 #include <imgui/imgui.h>
 #include <imgui/misc/cpp/imgui_stdlib.h>
+#include <tinyfiledialogs.h>
 
 namespace Wraith
 {
@@ -30,7 +32,7 @@ namespace Wraith
 
         if (entity.HasComponent<TransformComponent>())
         {
-            if (ImGui::CollapsingHeader("Transform Component"))
+            if (ImGui::CollapsingHeader("Transform Component", ImGuiTreeNodeFlags_DefaultOpen))
             {
                 auto& transform = entity.GetComponent<TransformComponent>();
 
@@ -44,7 +46,7 @@ namespace Wraith
 
         if (entity.HasComponent<TextComponent>())
         {
-            if (ImGui::CollapsingHeader("Text Component"))
+            if (ImGui::CollapsingHeader("Text Component", ImGuiTreeNodeFlags_DefaultOpen))
             {
                 auto& text = entity.GetComponent<TextComponent>();
                 ImGui::InputTextMultiline("Text", &text.text);
@@ -82,9 +84,70 @@ namespace Wraith
 
         if (entity.HasComponent<CameraComponent>())
         {
-            if (ImGui::CollapsingHeader("Camera Component"))
+            if (ImGui::CollapsingHeader("Camera Component", ImGuiTreeNodeFlags_DefaultOpen))
             {
-                // auto& camera_component = entity.GetComponent<CameraComponent>();
+                auto& camera = entity.GetComponent<CameraComponent>();
+                ImGui::Checkbox("Primary Camera", &camera.primary);
+            }
+        }
+
+        if (entity.HasComponent<ModelComponent>())
+        {
+            if (ImGui::CollapsingHeader("Model Component", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                auto& model = entity.GetComponent<ModelComponent>();
+
+                ImGui::Text("Meshes: ");
+                ImGui::Indent();
+                i32 i = 0;
+                for (auto& mesh : model.model_instance.GetMeshes())
+                {
+                    ImGui::Text("Mesh %d", i);
+                    ImGui::Indent();
+                    ImGui::Text("Material", i);
+                    ImGui::Indent();
+                    {
+                        auto& material = mesh->GetMaterial();
+                        ImGui::Text("Shader");
+                        ImGui::SameLine();
+                        if (ImGui::Button(std::format("{}", material.GetShader().GetName()).c_str()))
+                        {
+                            const char* filter = "*.hlsl";
+                            auto path = tinyfd_openFileDialog("Select Shader", "", 1, &filter, nullptr, 0);
+                            if (path)
+                            {
+                                Shader s(material.GetShader().GetType(), path);
+                                material.SetShader(s);
+                            }
+                        }
+
+                        ImGui::Text("Textures: ");
+                        ImGui::Indent();
+                        auto& textures = material.GetTextures();
+                        for (auto& tex : textures)
+                        {
+                            i32 slot = (i32)tex.slot;
+                            ImGui::Text("Slot");
+                            ImGui::SameLine();
+                            ImGui::SliderInt(std::format("{}", (u64)&tex).c_str(), &slot, 0, 32);
+                            tex.slot = slot;
+                            if (ImGui::ImageButton(tex.texture->GetShaderResourceView(), { 32, 32 }))
+                            {
+                                const char* filter = "*.png";
+                                auto path = tinyfd_openFileDialog("Select Image", "", 1, &filter, nullptr, 0);
+                                if (path)
+                                {
+                                    tex = { tex.slot, &TextureManager::Get()->GetTexture(StringID(path)) };
+                                }
+                            }
+                        }
+
+                        if (ImGui::Button("Add Texture"))
+                        {
+                            material.AddTexture(0, &TextureManager::Get()->GetDefaultTexture());
+                        }
+                    }
+                }
             }
         }
     }

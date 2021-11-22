@@ -17,12 +17,14 @@ namespace Wraith
         ComPtr<ID3D11InputLayout> input_layout;
 
         ShaderType type;
+
+        std::string path;
     };
 
-    HRESULT CompileShader(const std::string& path,
-                          const std::string& entry_point,
-                          const std::string& profile,
-                          ComPtr<ID3DBlob>& blob)
+    HRESULT InternalCompileShader(const std::string& path,
+                                  const std::string& entry_point,
+                                  const std::string& profile,
+                                  ComPtr<ID3DBlob>& blob)
     {
         UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
@@ -176,8 +178,6 @@ namespace Wraith
         operator=(other);
     }
 
-    Shader::Shader(Shader&& other) { operator=(std::forward<Shader>(other)); }
-
     Shader::~Shader() { }
 
     Shader& Shader::operator=(const Shader& other)
@@ -187,93 +187,20 @@ namespace Wraith
         m_Data->geometry = other.m_Data->geometry;
         m_Data->input_layout = other.m_Data->input_layout;
         m_Data->type = other.m_Data->type;
+        m_Data->path = other.m_Data->path;
 
-        return *this;
-    }
+        Filewatcher::Get()->Watch(m_Data->path, [&]() { CompileShader(); });
 
-    Shader& Shader::operator=(Shader&& other)
-    {
-        m_Data = std::move(other.m_Data);
         return *this;
     }
 
     bool Shader::Load(std::underlying_type_t<ShaderType> shader_type, const std::string& path)
     {
         m_Data->type = static_cast<ShaderType>(shader_type);
+        m_Data->path = path;
 
-        const auto compile_vertex = [=]() {
-            if (!(m_Data->type & ShaderType::Vertex))
-                return;
-
-            ComPtr<ID3DBlob> vs_blob;
-
-            if (FailedCheck(CompileShader(path, "VSMain", "vs_5_0", vs_blob)))
-                return;
-
-            auto& device = Framework::GetDevice();
-            HRESULT hr =
-                device.CreateVertexShader(vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), NULL, &m_Data->vertex);
-            if (FailedCheck("Creating Vertex Shader", hr))
-            {
-                hr = device.GetDeviceRemovedReason();
-                return;
-            }
-
-            if (FailedCheck("Creating Input Layout", CreateInputLayout(vs_blob, m_Data->input_layout)))
-                return;
-
-            return;
-        };
-
-        const auto compile_geometry = [=]() {
-            if (!(m_Data->type & ShaderType::Geometry))
-                return;
-
-            ComPtr<ID3DBlob> gs_blob;
-
-            if (FailedCheck(CompileShader(path, "GSMain", "gs_5_0", gs_blob)))
-                return;
-
-            auto& device = Framework::GetDevice();
-            HRESULT hr = device.CreateGeometryShader(
-                gs_blob->GetBufferPointer(), gs_blob->GetBufferSize(), NULL, &m_Data->geometry);
-            if (FailedCheck("Creating Geometry Shader", hr))
-            {
-                hr = device.GetDeviceRemovedReason();
-                return;
-            }
-        };
-
-        const auto compile_pixel = [=]() {
-            if (!(m_Data->type & ShaderType::Pixel))
-                return;
-
-            ComPtr<ID3DBlob> ps_blob;
-
-            if (FailedCheck(CompileShader(path, "PSMain", "ps_5_0", ps_blob)))
-                return;
-
-            auto& device = Framework::GetDevice();
-            HRESULT hr =
-                device.CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), NULL, &m_Data->pixel);
-            if (FailedCheck("Creating Pixel Shader", hr))
-            {
-                hr = device.GetDeviceRemovedReason();
-                return;
-            }
-
-            CreateResourceBindings(ps_blob);
-        };
-
-        compile_vertex();
-        compile_geometry();
-        compile_pixel();
-
-        Filewatcher::Get()->Watch(path, [=]() {
-            compile_vertex();
-            compile_geometry();
-            compile_pixel();
-        });
+        CompileShader();
+        Filewatcher::Get()->Watch(m_Data->path, [&]() { CompileShader(); });
 
         return true;
     }
@@ -318,5 +245,82 @@ namespace Wraith
         {
             context.PSSetShader(nullptr, 0, 0);
         }
+    }
+
+    Shader::ShaderType Shader::GetType() const { return m_Data->type; }
+
+    std::string Shader::GetName() const { return std::filesystem::path(m_Data->path).filename().string(); }
+
+    bool Shader::CompileShader()
+    {
+        const auto compile_vertex = [=]() {
+            if (!(m_Data->type & ShaderType::Vertex))
+                return;
+
+            ComPtr<ID3DBlob> vs_blob;
+
+            if (FailedCheck(InternalCompileShader(m_Data->path, "VSMain", "vs_5_0", vs_blob)))
+                return;
+
+            auto& device = Framework::GetDevice();
+            HRESULT hr =
+                device.CreateVertexShader(vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), NULL, &m_Data->vertex);
+            if (FailedCheck("Creating Vertex Shader", hr))
+            {
+                hr = device.GetDeviceRemovedReason();
+                return;
+            }
+
+            if (FailedCheck("Creating Input Layout", CreateInputLayout(vs_blob, m_Data->input_layout)))
+                return;
+
+            return;
+        };
+
+        const auto compile_geometry = [=]() {
+            if (!(m_Data->type & ShaderType::Geometry))
+                return;
+
+            ComPtr<ID3DBlob> gs_blob;
+
+            if (FailedCheck(InternalCompileShader(m_Data->path, "GSMain", "gs_5_0", gs_blob)))
+                return;
+
+            auto& device = Framework::GetDevice();
+            HRESULT hr = device.CreateGeometryShader(
+                gs_blob->GetBufferPointer(), gs_blob->GetBufferSize(), NULL, &m_Data->geometry);
+            if (FailedCheck("Creating Geometry Shader", hr))
+            {
+                hr = device.GetDeviceRemovedReason();
+                return;
+            }
+        };
+
+        const auto compile_pixel = [=]() {
+            if (!(m_Data->type & ShaderType::Pixel))
+                return;
+
+            ComPtr<ID3DBlob> ps_blob;
+
+            if (FailedCheck(InternalCompileShader(m_Data->path, "PSMain", "ps_5_0", ps_blob)))
+                return;
+
+            auto& device = Framework::GetDevice();
+            HRESULT hr =
+                device.CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), NULL, &m_Data->pixel);
+            if (FailedCheck("Creating Pixel Shader", hr))
+            {
+                hr = device.GetDeviceRemovedReason();
+                return;
+            }
+
+            CreateResourceBindings(ps_blob);
+        };
+
+        compile_vertex();
+        compile_geometry();
+        compile_pixel();
+
+        return true;
     }
 }  // namespace Wraith

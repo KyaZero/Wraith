@@ -14,7 +14,7 @@ namespace Wraith
     class ImguiLayer
     {
     public:
-        ImguiLayer(Framework& engine, Window& window);
+        ImguiLayer(/*Framework& engine,*/ Window& window);
         ~ImguiLayer();
 
         void Begin();
@@ -26,7 +26,7 @@ namespace Wraith
     private:
         void SetStyle();
 
-        Framework& m_Framework;
+        //Framework& m_Framework;
         Window& m_Window;
         std::optional<std::filesystem::path> m_SettingsToLoad = std::nullopt;
 

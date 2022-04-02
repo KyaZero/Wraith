@@ -5,7 +5,9 @@
 
 namespace Wraith
 {
-    FontManager::FontManager() { }
+    FontManager::FontManager()
+        : m_FreetypeHandle(nullptr)
+    { }
 
     FontManager::~FontManager()
     {
@@ -27,13 +29,13 @@ namespace Wraith
         if (!m_DefaultFont->Init("assets/engine/fonts/roboto-regular.ttf"))
             return false;
 
-        m_Atlas.Create(TextureCreateInfo{
-            .size = { ATLAS_SIZE, ATLAS_SIZE },
-            .format = ImageFormat::R32G32B32A32_FLOAT,
-            .render_target = false,
-            .cpu_access = D3D11_CPU_ACCESS_WRITE,
-        });
-        SetDebugObjectName(m_Atlas.GetTexture(), "FontAtlas");
+        //m_Atlas.Create(TextureCreateInfo{
+        //    .size = { ATLAS_SIZE, ATLAS_SIZE },
+        //    .format = ImageFormat::R32G32B32A32_FLOAT,
+        //    .render_target = false,
+        //    .cpu_access = D3D11_CPU_ACCESS_WRITE,
+        //});
+        //SetDebugObjectName(m_Atlas.GetTexture(), "FontAtlas");
 
         m_Packer = std::make_unique<dubu::rect_pack::Packer>(ATLAS_SIZE, ATLAS_SIZE);
 

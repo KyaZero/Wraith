@@ -26,8 +26,8 @@ if(NOT imgui_POPULATED)
     "${imgui_SOURCE_DIR}/imstb_truetype.h"
     "${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.h"
     "${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.cpp"
-    "${imgui_SOURCE_DIR}/backends/imgui_impl_dx11.h"
-    "${imgui_SOURCE_DIR}/backends/imgui_impl_dx11.cpp"
+    "${imgui_SOURCE_DIR}/backends/imgui_impl_vulkan.h"
+    "${imgui_SOURCE_DIR}/backends/imgui_impl_vulkan.cpp"
     "${imgui_SOURCE_DIR}/backends/imgui_impl_win32.h"
     "${imgui_SOURCE_DIR}/backends/imgui_impl_win32.cpp")
 
@@ -38,4 +38,7 @@ if(NOT imgui_POPULATED)
     "${imgui_SOURCE_DIR}/..")
 
   set_target_properties(imgui PROPERTIES FOLDER "thirdparty/imgui")
+
+  # has '#include "vulkan/vulkan.h"', so we must link it to vulkan so it compiles.
+  target_link_libraries(imgui PUBLIC Vulkan::Vulkan)
 endif()

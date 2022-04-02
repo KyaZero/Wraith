@@ -39,12 +39,12 @@ namespace Wraith
 
             Input::BlockUIEvents(!IsFocused() && !IsHovered());
 
-            Texture& texture = m_RenderManager.GetRenderTexture();
+            //Texture& texture = m_RenderManager.GetRenderTexture();
             // Draw first
-            ImGui::Image(texture.GetShaderResourceView(),
-                         ImVec2{ m_ViewportSize.x, m_ViewportSize.y },
-                         ImVec2{ 0, 0 },
-                         ImVec2{ 1, 1 });
+            //ImGui::Image(texture.GetShaderResourceView(),
+            //             ImVec2{ m_ViewportSize.x, m_ViewportSize.y },
+            //             ImVec2{ 0, 0 },
+            //             ImVec2{ 1, 1 });
         }
         End();
 

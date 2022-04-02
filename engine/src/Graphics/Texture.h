@@ -2,10 +2,10 @@
 
 #include "ImageFormat.h"
 
-struct ID3D11Texture2D;
-struct ID3D11ShaderResourceView;
-struct ID3D11RenderTargetView;
-struct ID3D11DepthStencilView;
+//struct ID3D11Texture2D;
+//struct ID3D11ShaderResourceView;
+//struct ID3D11RenderTargetView;
+//struct ID3D11DepthStencilView;
 
 namespace Wraith
 {
@@ -57,10 +57,10 @@ namespace Wraith
         void Unbind(u32 slot) const;
         void Release();
 
-        ID3D11Texture2D* GetTexture() const;
-        ID3D11DepthStencilView* GetDepth() const;
-        ID3D11RenderTargetView* GetRenderTarget() const;
-        ID3D11ShaderResourceView* GetShaderResourceView() const;
+        //ID3D11Texture2D* GetTexture() const;
+        //ID3D11DepthStencilView* GetDepth() const;
+        //ID3D11RenderTargetView* GetRenderTarget() const;
+        //ID3D11ShaderResourceView* GetShaderResourceView() const;
         Vec2u GetSize() const;
         Vec2f GetSizef() const;
 

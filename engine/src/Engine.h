@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Timer.h"
-#include "Graphics/Framework.h"
+#include "Graphics/VkFramework.h"
 #include "Graphics/RenderManager.h"
 #include "Scene/Scene.h"
 #include "UI/ImGuiLayer.h"
@@ -25,12 +25,12 @@ namespace Wraith
 
         RenderManager* GetRenderer() { return &m_RenderManager; }
         Window& GetWindow() { return m_Window; }
-        Framework& GetFramework() { return m_Framework; }
+        VkFramework& GetFramework() { return m_Framework; }
         ImguiLayer& GetImguiLayer() { return *m_ImguiLayer; }
 
     private:
         Window& m_Window;
-        Framework m_Framework;
+        VkFramework m_Framework;
         RenderManager m_RenderManager;
         Scene m_Scene;
 

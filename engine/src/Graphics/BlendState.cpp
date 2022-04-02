@@ -7,7 +7,7 @@ namespace Wraith
 {
     struct BlendState::Data
     {
-        ComPtr<ID3D11BlendState> blend_state;
+        //ComPtr<ID3D11BlendState> blend_state;
     };
 
     BlendState::BlendState() { }
@@ -22,25 +22,26 @@ namespace Wraith
     {
         m_Data = std::make_unique<Data>();
 
-        D3D11_BLEND_DESC blend_desc{
-            .RenderTarget = { {
-                .BlendEnable = TRUE,
-                .SrcBlend = static_cast<D3D11_BLEND>(src_rgb),
-                .DestBlend = static_cast<D3D11_BLEND>(dest_rgb),
-                .BlendOp = static_cast<D3D11_BLEND_OP>(op_rgb),
-                .SrcBlendAlpha = static_cast<D3D11_BLEND>(src_alpha),
-                .DestBlendAlpha = static_cast<D3D11_BLEND>(dest_alpha),
-                .BlendOpAlpha = static_cast<D3D11_BLEND_OP>(op_alpha),
-                .RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL,
-            } },
-        };
+        //D3D11_BLEND_DESC blend_desc{
+        //    .RenderTarget = { {
+        //        .BlendEnable = TRUE,
+        //        .SrcBlend = static_cast<D3D11_BLEND>(src_rgb),
+        //        .DestBlend = static_cast<D3D11_BLEND>(dest_rgb),
+        //        .BlendOp = static_cast<D3D11_BLEND_OP>(op_rgb),
+        //        .SrcBlendAlpha = static_cast<D3D11_BLEND>(src_alpha),
+        //        .DestBlendAlpha = static_cast<D3D11_BLEND>(dest_alpha),
+        //        .BlendOpAlpha = static_cast<D3D11_BLEND_OP>(op_alpha),
+        //        .RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL,
+        //    } },
+        //};
 
-        return !FailedCheck(Framework::GetDevice().CreateBlendState(&blend_desc, &m_Data->blend_state));
+        //return !FailedCheck(Framework::GetDevice().CreateBlendState(&blend_desc, &m_Data->blend_state));
+        return false;
     }
     void BlendState::Bind()
     {
         const Vec4f blend_factor;
-        Framework::GetContext().OMSetBlendState(m_Data->blend_state.Get(), &blend_factor.x, 0xFFFFFFFF);
+        //Framework::GetContext().OMSetBlendState(m_Data->blend_state.Get(), &blend_factor.x, 0xFFFFFFFF);
     }
-    void BlendState::Unbind() { Framework::GetContext().OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF); }
+    void BlendState::Unbind() { /*Framework::GetContext().OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);*/ }
 }  // namespace Wraith

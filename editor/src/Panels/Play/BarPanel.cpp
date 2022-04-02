@@ -24,10 +24,10 @@ namespace Wraith
                                   ImVec4(button_active.x, button_active.y, button_active.z, 0.5f));
 
             ImVec2 size = ImVec2(ImGui::GetWindowHeight() - 16.0f, ImGui::GetWindowHeight() - 16.0f);
-            const Texture& tex = m_IsPlay ? TextureManager::Get()->GetTexture(m_PlayButton)
-                                          : TextureManager::Get()->GetTexture(m_PauseButton);
+            //const Texture& tex = m_IsPlay ? TextureManager::Get()->GetTexture(m_PlayButton)
+            //                              : TextureManager::Get()->GetTexture(m_PauseButton);
 
-            if (ImGui::ImageButton(tex.GetShaderResourceView(), size, ImVec2(0, 0), ImVec2(1, 1), 0))
+          /*  if (ImGui::ImageButton(tex.GetShaderResourceView(), size, ImVec2(0, 0), ImVec2(1, 1), 0))
             {
                 if (m_IsPlay)
                     m_OnBeginPlay();
@@ -53,7 +53,7 @@ namespace Wraith
             if (ImGui::ImageButton(TextureManager::Get()->GetTexture(m_ScaleButton).GetShaderResourceView(), size))
             {
                 m_Editor.SetGizmoOperation(ImGuizmo::OPERATION::SCALE);
-            }
+            }*/
 
             ImGui::SameLine();
             if (ImGui::Button(m_Editor.GetGizmoSpace() == ImGuizmo::MODE::WORLD ? "World" : "Local"))

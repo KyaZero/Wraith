@@ -45,7 +45,7 @@ namespace Wraith
         if (!m_RenderManager.Init())
             return false;
 
-        m_ImguiLayer = std::make_unique<ImguiLayer>(m_Framework, m_Window);
+        //m_ImguiLayer = std::make_unique<ImguiLayer>(m_Framework, m_Window);
 
         m_UIRenderCallback = ui_render_callback;
         m_UpdateCallback = update_callback;
@@ -69,9 +69,9 @@ namespace Wraith
         ThreadScheduler::Get()->Sync();
 
         // Render ImGui
-        m_ImguiLayer->Begin();
-        m_UIRenderCallback();
-        m_ImguiLayer->End();
+        //m_ImguiLayer->Begin();
+        //m_UIRenderCallback();
+        //m_ImguiLayer->End();
 
         Filewatcher::Get()->FlushChanges();
         Input::FlushState();
@@ -94,8 +94,8 @@ namespace Wraith
 
     void Engine::Render()
     {
-        m_RenderManager.Render();
-        m_Framework.SetBackbufferAsActiveTarget();
+        //m_RenderManager.Render();
+        //m_Framework.SetBackbufferAsActiveTarget();
     }
 
 }  // namespace Wraith

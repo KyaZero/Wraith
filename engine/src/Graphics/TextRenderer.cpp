@@ -123,7 +123,7 @@ namespace Wraith
             m_InstanceBuffer.SetData(instances.data() + MAX_INSTANCES * i, num_instances * sizeof(InstanceData));
 
             m_InstanceBuffer.Bind(1);
-            Framework::GetContext().DrawIndexedInstanced(6, num_instances, 0, 0, 0);
+            //Framework::GetContext().DrawIndexedInstanced(6, num_instances, 0, 0, 0);
         }
 
         m_BlendState.Unbind();

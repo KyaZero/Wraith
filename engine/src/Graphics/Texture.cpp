@@ -10,13 +10,13 @@ namespace Wraith
     struct Texture::Data
     {
         std::string path = "";
-        ComPtr<ID3D11DepthStencilView> depth;
-        ComPtr<ID3D11RenderTargetView> render_target;
-        ComPtr<ID3D11ShaderResourceView> shader_resource;
-        ComPtr<ID3D11Texture2D> texture;
+        // ComPtr<ID3D11DepthStencilView> depth;
+        // ComPtr<ID3D11RenderTargetView> render_target;
+        // ComPtr<ID3D11ShaderResourceView> shader_resource;
+        // ComPtr<ID3D11Texture2D> texture;
         Vec2u size = Vec2u();
-        D3D11_VIEWPORT viewport = {};
-        DXGI_FORMAT format;
+        // D3D11_VIEWPORT viewport = {};
+        // DXGI_FORMAT format;
         bool is_depth = false;
         bool is_rt = true;
     };
@@ -63,7 +63,7 @@ namespace Wraith
 
     bool Texture::IsValid()
     {
-        return m_Data && (m_Data->shader_resource || m_Data->texture || m_Data->depth || m_Data->render_target);
+        return !m_Data /*&& (m_Data->shader_resource || m_Data->texture || m_Data->depth || m_Data->render_target)*/;
     }
 
     bool Texture::LoadFromFile(const std::string& path)
@@ -112,40 +112,40 @@ namespace Wraith
             m_Data = std::make_unique<Data>();
 
         m_Data->is_rt = info.render_target;
-        m_Data->format = (DXGI_FORMAT)info.format;
+        // m_Data->format = (DXGI_FORMAT)info.format;
 
-        D3D11_TEXTURE2D_DESC desc = {};
-        desc.Width = (u32)info.size.x;
-        desc.Height = (u32)info.size.y;
-        desc.MipLevels = info.num_mips;
-        desc.ArraySize = 1;
-        desc.Format = m_Data->format;
-        desc.SampleDesc.Count = 1;
-        desc.SampleDesc.Quality = 0;
-        desc.Usage = static_cast<D3D11_USAGE>(info.usage);
+        // D3D11_TEXTURE2D_DESC desc = {};
+        // desc.Width = (u32)info.size.x;
+        // desc.Height = (u32)info.size.y;
+        // desc.MipLevels = info.num_mips;
+        // desc.ArraySize = 1;
+        // desc.Format = m_Data->format;
+        // desc.SampleDesc.Count = 1;
+        // desc.SampleDesc.Quality = 0;
+        // desc.Usage = static_cast<D3D11_USAGE>(info.usage);
 
-        if (m_Data->is_rt)
-            desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-        else
-            desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+        // if (m_Data->is_rt)
+        //    desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+        // else
+        //    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 
-        desc.CPUAccessFlags = info.cpu_access;
-        if (info.num_mips != 1)
-            desc.MiscFlags |= D3D11_RESOURCE_MISC_GENERATE_MIPS;
+        // desc.CPUAccessFlags = info.cpu_access;
+        // if (info.num_mips != 1)
+        //    desc.MiscFlags |= D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
-        D3D11_SUBRESOURCE_DATA initial_data = {};
-        initial_data.pSysMem = info.data;
-        initial_data.SysMemPitch = info.size.x * (sizeof(u8)) * 4;
+        // D3D11_SUBRESOURCE_DATA initial_data = {};
+        // initial_data.pSysMem = info.data;
+        // initial_data.SysMemPitch = info.size.x * (sizeof(u8)) * 4;
 
-        ComPtr<ID3D11Texture2D> texture;
-        if (FailedCheck("Creating texture",
-                        Framework::GetDevice().CreateTexture2D(&desc, info.data ? &initial_data : nullptr, &texture)))
-        {
-            Release();
-            return;
-        }
+        // ComPtr<ID3D11Texture2D> texture;
+        // if (FailedCheck("Creating texture",
+        //                Framework::GetDevice().CreateTexture2D(&desc, info.data ? &initial_data : nullptr, &texture)))
+        //{
+        //    Release();
+        //    return;
+        //}
 
-        CreateFromTexture(texture.Get());
+        // CreateFromTexture(texture.Get());
         m_Data->size = info.size;
     }
 
@@ -159,99 +159,99 @@ namespace Wraith
 
         if (m_Data->is_rt)
         {
-            if (FailedCheck("Creating Render Target View for texture",
-                            Framework::GetDevice().CreateRenderTargetView(texture, nullptr, &m_Data->render_target)))
-            {
-                // cleanup.
-                Release();
-                return;
-            }
+            // if (FailedCheck("Creating Render Target View for texture",
+            //                Framework::GetDevice().CreateRenderTargetView(texture, nullptr, &m_Data->render_target)))
+            //{
+            //    // cleanup.
+            //    Release();
+            //    return;
+            //}
         }
 
         if (texture)
         {
             D3D11_TEXTURE2D_DESC desc;
             texture->GetDesc(&desc);
-            m_Data->viewport = { 0.0f, 0.0f, (f32)desc.Width, (f32)desc.Height, 0.0f, 1.0f };
+            // m_Data->viewport = { 0.0f, 0.0f, (f32)desc.Width, (f32)desc.Height, 0.0f, 1.0f };
             m_Data->size = { (u32)desc.Width, (u32)desc.Height };
         }
-        m_Data->texture = texture;
-        if (FailedCheck("Creating Shader Resource View for texture",
-                        Framework::GetDevice().CreateShaderResourceView(texture, nullptr, &m_Data->shader_resource)))
-        {
-            // cleanup.
-            Release();
-            return;
-        }
+        // m_Data->texture = texture;
+        // if (FailedCheck("Creating Shader Resource View for texture",
+        //                Framework::GetDevice().CreateShaderResourceView(texture, nullptr, &m_Data->shader_resource)))
+        //{
+        //    // cleanup.
+        //    Release();
+        //    return;
+        //}
     }
 
     void Texture::CreateDepth(const Vec2u& size, ImageFormat format)
     {
-        D3D11_TEXTURE2D_DESC desc = {};
-        desc.Width = (u32)size.x;
-        desc.Height = (u32)size.y;
-        desc.MipLevels = 1;
-        desc.ArraySize = 1;
-        desc.Format = DXGI_FORMAT_R32_TYPELESS;
-        (DXGI_FORMAT) format;
-        desc.SampleDesc.Count = 1;
-        desc.SampleDesc.Quality = 0;
-        desc.Usage = D3D11_USAGE_DEFAULT;
-        desc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
-        desc.CPUAccessFlags = 0;
-        desc.MiscFlags = 0;
+        // D3D11_TEXTURE2D_DESC desc = {};
+        // desc.Width = (u32)size.x;
+        // desc.Height = (u32)size.y;
+        // desc.MipLevels = 1;
+        // desc.ArraySize = 1;
+        // desc.Format = DXGI_FORMAT_R32_TYPELESS;
+        //(DXGI_FORMAT) format;
+        // desc.SampleDesc.Count = 1;
+        // desc.SampleDesc.Quality = 0;
+        // desc.Usage = D3D11_USAGE_DEFAULT;
+        // desc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+        // desc.CPUAccessFlags = 0;
+        // desc.MiscFlags = 0;
 
-        D3D11_DEPTH_STENCIL_VIEW_DESC dsv_desc;
-        dsv_desc.Flags = 0;
-        dsv_desc.Format = DXGI_FORMAT_D32_FLOAT;
-        dsv_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-        dsv_desc.Texture2D.MipSlice = 0;
+        // D3D11_DEPTH_STENCIL_VIEW_DESC dsv_desc;
+        // dsv_desc.Flags = 0;
+        // dsv_desc.Format = DXGI_FORMAT_D32_FLOAT;
+        // dsv_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+        // dsv_desc.Texture2D.MipSlice = 0;
 
-        D3D11_SHADER_RESOURCE_VIEW_DESC sr_desc;
-        sr_desc.Format = DXGI_FORMAT_R32_FLOAT;
-        sr_desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-        sr_desc.Texture2D.MostDetailedMip = 0;
-        sr_desc.Texture2D.MipLevels = 1;
+        // D3D11_SHADER_RESOURCE_VIEW_DESC sr_desc;
+        // sr_desc.Format = DXGI_FORMAT_R32_FLOAT;
+        // sr_desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+        // sr_desc.Texture2D.MostDetailedMip = 0;
+        // sr_desc.Texture2D.MipLevels = 1;
 
-        ComPtr<ID3D11Texture2D> texture;
-        if (FailedCheck("Creating Texture2D for depth texture",
-                        Framework::GetDevice().CreateTexture2D(&desc, nullptr, &texture)))
-        {
-            return;
-        }
+        // ComPtr<ID3D11Texture2D> texture;
+        // if (FailedCheck("Creating Texture2D for depth texture",
+        //                Framework::GetDevice().CreateTexture2D(&desc, nullptr, &texture)))
+        //{
+        //    return;
+        //}
 
-        if (FailedCheck("Creating Depth Stencil View for depth texture",
-                        Framework::GetDevice().CreateDepthStencilView(texture.Get(), &dsv_desc, &m_Data->depth)))
-        {
-            // cleanup.
-            Release();
-            return;
-        }
+        // if (FailedCheck("Creating Depth Stencil View for depth texture",
+        //                Framework::GetDevice().CreateDepthStencilView(texture.Get(), &dsv_desc, &m_Data->depth)))
+        //{
+        //    // cleanup.
+        //    Release();
+        //    return;
+        //}
 
-        if (FailedCheck(
-                "Creating Shader Resource View for depth texture",
-                Framework::GetDevice().CreateShaderResourceView(texture.Get(), &sr_desc, &m_Data->shader_resource)))
-        {
-            // cleanup.
-            Release();
-            return;
-        }
+        // if (FailedCheck(
+        //        "Creating Shader Resource View for depth texture",
+        //        Framework::GetDevice().CreateShaderResourceView(texture.Get(), &sr_desc, &m_Data->shader_resource)))
+        //{
+        //    // cleanup.
+        //    Release();
+        //    return;
+        //}
 
-        m_Data->is_depth = true;
-        m_Data->texture = texture;
-        m_Data->viewport = { 0.0f, 0.0f, (f32)size.x, (f32)size.y, 0.0f, 1.0f };
-        m_Data->size = size;
+        // m_Data->is_depth = true;
+        // m_Data->texture = texture;
+        // m_Data->viewport = { 0.0f, 0.0f, (f32)size.x, (f32)size.y, 0.0f, 1.0f };
+        // m_Data->size = size;
     }
 
     void Texture::Clear(const Vec4f& color)
     {
-        Framework::GetContext().ClearRenderTargetView(m_Data->render_target.Get(), &color.x);
+        // Framework::GetContext().ClearRenderTargetView(m_Data->render_target.Get(), &color.x);
     }
 
     void Texture::ClearDepth(f32 depth, u32 stencil)
     {
-        Framework::GetContext().ClearDepthStencilView(
-            m_Data->depth.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, depth, (UINT8)stencil);
+        // Framework::GetContext().ClearDepthStencilView(
+        //    m_Data->depth.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, depth, (UINT8)stencil);
     }
 
     void Texture::Resize(const Vec2u& size, ImageFormat format, void* data)
@@ -268,16 +268,20 @@ namespace Wraith
         }
     }
 
-    void Texture::UnsetActiveTarget() { Framework::GetContext().OMSetRenderTargets(0, nullptr, nullptr); }
+    void Texture::UnsetActiveTarget()
+    { /*Framework::GetContext().OMSetRenderTargets(0, nullptr, nullptr);*/
+    }
 
     void Texture::SetAsActiveTarget(Texture* depth)
     {
-        Framework::GetContext().OMSetRenderTargets(
-            1, m_Data->render_target.GetAddressOf(), depth ? depth->m_Data->depth.Get() : nullptr);
-        SetViewport();
+        // Framework::GetContext().OMSetRenderTargets(
+        //    1, m_Data->render_target.GetAddressOf(), depth ? depth->m_Data->depth.Get() : nullptr);
+        // SetViewport();
     }
 
-    void Texture::SetViewport() { Framework::GetContext().RSSetViewports(1, &m_Data->viewport); }
+    void Texture::SetViewport()
+    { /*Framework::GetContext().RSSetViewports(1, &m_Data->viewport);*/
+    }
 
     void Texture::SetCustomViewport(f32 top_left_x, f32 top_left_y, f32 width, f32 height, f32 min_depth, f32 max_depth)
     {
@@ -289,34 +293,36 @@ namespace Wraith
         viewport.MinDepth = min_depth;
         viewport.MaxDepth = max_depth;
 
-        Framework::GetContext().RSSetViewports(1, &viewport);
+        // Framework::GetContext().RSSetViewports(1, &viewport);
     }
 
     void Texture::Bind(u32 slot) const
     {
-        Framework::GetContext().PSSetShaderResources(slot, 1, m_Data->shader_resource.GetAddressOf());
+        // Framework::GetContext().PSSetShaderResources(slot, 1, m_Data->shader_resource.GetAddressOf());
     }
 
-    void Texture::Unbind(u32 slot) const { Framework::GetContext().PSGetShaderResources(slot, 1, NULL); }
+    void Texture::Unbind(u32 slot) const
+    { /*Framework::GetContext().PSGetShaderResources(slot, 1, NULL);*/
+    }
 
     void Texture::Release()
     {
         if (m_Data)
         {
-            m_Data->depth.Reset();
-            m_Data->render_target.Reset();
-            m_Data->shader_resource.Reset();
-            m_Data->texture.Reset();
+            // m_Data->depth.Reset();
+            // m_Data->render_target.Reset();
+            // m_Data->shader_resource.Reset();
+            // m_Data->texture.Reset();
         }
     }
 
-    ID3D11Texture2D* Texture::GetTexture() const { return m_Data->texture.Get(); }
+    // ID3D11Texture2D* Texture::GetTexture() const { return m_Data->texture.Get(); }
 
-    ID3D11DepthStencilView* Texture::GetDepth() const { return m_Data->depth.Get(); }
+    // ID3D11DepthStencilView* Texture::GetDepth() const { return m_Data->depth.Get(); }
 
-    ID3D11RenderTargetView* Texture::GetRenderTarget() const { return m_Data->render_target.Get(); }
+    // ID3D11RenderTargetView* Texture::GetRenderTarget() const { return m_Data->render_target.Get(); }
 
-    ID3D11ShaderResourceView* Texture::GetShaderResourceView() const { return m_Data->shader_resource.Get(); }
+    // ID3D11ShaderResourceView* Texture::GetShaderResourceView() const { return m_Data->shader_resource.Get(); }
 
     Vec2u Texture::GetSize() const { return m_Data->size; }
 
@@ -330,7 +336,7 @@ namespace Wraith
             return;
         }
 
-        CD3D11_BOX box(x, y, 0, x + w, y + h, 1);
-        Framework::GetContext().UpdateSubresource(m_Data->texture.Get(), 0, &box, data, stride, 0);
+        // CD3D11_BOX box(x, y, 0, x + w, y + h, 1);
+        // Framework::GetContext().UpdateSubresource(m_Data->texture.Get(), 0, &box, data, stride, 0);
     }
 }  // namespace Wraith

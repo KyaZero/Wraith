@@ -77,6 +77,8 @@ set(graphics_files
   "src/Graphics/TextRenderer.cpp"
   "src/Graphics/Texture.h"
   "src/Graphics/Texture.cpp"
+  "src/Graphics/VkFramework.h"
+  "src/Graphics/VkFramework.cpp"
   "src/Graphics/Framework.h"
   "src/Graphics/Framework.cpp")
 
@@ -135,16 +137,15 @@ set(all_files
   ${math_files}
   ${src_files})
 
-add_library(${target_name} STATIC ${all_files})
+add_library(${target_name} STATIC ${all_files} ${SHADERS})
 add_library(${PROJECT_NAME}::${target_name} ALIAS ${target_name})
+compile_shaders(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/Shaders ${PROJECT_SOURCE_DIR}/bin/shaders)
 
 target_link_libraries(${target_name} PUBLIC
     compiler_features
     compiler_warnings
-    d3d11
-    dxgi
-    dxguid
-    d3dcompiler
+    Vulkan::Vulkan
+    # SHADERC_LIB
     imgui
     ImGuizmo
     EnTT

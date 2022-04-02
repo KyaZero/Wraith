@@ -117,13 +117,13 @@ namespace Wraith
             transform.position.z -= 1.0f;
         }
 
-        SettingsHandler::Register(&m_PanelManager);
+        //SettingsHandler::Register(&m_PanelManager);
     }
 
     Editor::~Editor()
     {
-        ImGui::SaveIniSettingsToDisk(ImGui::GetIO().IniFilename);
-        ImGui::GetIO().IniFilename = nullptr;
+        //ImGui::SaveIniSettingsToDisk(ImGui::GetIO().IniFilename);
+        //ImGui::GetIO().IniFilename = nullptr;
     }
 
     void Editor::OnUpdate(f32 dt)

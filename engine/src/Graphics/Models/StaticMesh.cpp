@@ -42,7 +42,7 @@ namespace Wraith
 
     void StaticMesh::Bind()
     {
-        Framework::GetContext().IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)m_PrimitiveTopology);
+        //Framework::GetContext().IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)m_PrimitiveTopology);
 
         m_VertexBuffer.Bind();
         m_IndexBuffer.Bind();

@@ -23,7 +23,7 @@ void Wraith::ForwardRenderer::SetCamera(const SetCameraCommand& command)
 void Wraith::ForwardRenderer::Render()
 {
     auto& commands = GetCurrentCommands();
-    auto& context = Framework::GetContext();
+    //auto& context = Framework::GetContext();
 
     m_FrameBufferData.projection = m_CurrentCamera.projection;
     m_FrameBufferData.view = m_CurrentCamera.view;
@@ -44,7 +44,7 @@ void Wraith::ForwardRenderer::Render()
                 continue;
 
             mesh->Bind();
-            context.DrawIndexed(mesh->GetNumIndices(), 0, 0);
+            //context.DrawIndexed(mesh->GetNumIndices(), 0, 0);
         }
     }
 }

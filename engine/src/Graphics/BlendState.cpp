@@ -7,22 +7,17 @@ namespace Wraith
 {
     struct BlendState::Data
     {
-        //ComPtr<ID3D11BlendState> blend_state;
+        // ComPtr<ID3D11BlendState> blend_state;
     };
 
     BlendState::BlendState() { }
     BlendState::~BlendState() { }
 
-    bool BlendState::Create(BlendMode src_rgb,
-                            BlendMode dest_rgb,
-                            BlendMode src_alpha,
-                            BlendMode dest_alpha,
-                            BlendOp op_rgb,
-                            BlendOp op_alpha)
+    bool BlendState::Create(BlendMode src_rgb, BlendMode dest_rgb, BlendMode src_alpha, BlendMode dest_alpha, BlendOp op_rgb, BlendOp op_alpha)
     {
         m_Data = std::make_unique<Data>();
 
-        //D3D11_BLEND_DESC blend_desc{
+        // D3D11_BLEND_DESC blend_desc{
         //    .RenderTarget = { {
         //        .BlendEnable = TRUE,
         //        .SrcBlend = static_cast<D3D11_BLEND>(src_rgb),
@@ -35,13 +30,15 @@ namespace Wraith
         //    } },
         //};
 
-        //return !FailedCheck(Framework::GetDevice().CreateBlendState(&blend_desc, &m_Data->blend_state));
+        // return !FailedCheck(Framework::GetDevice().CreateBlendState(&blend_desc, &m_Data->blend_state));
         return false;
     }
     void BlendState::Bind()
     {
         const Vec4f blend_factor;
-        //Framework::GetContext().OMSetBlendState(m_Data->blend_state.Get(), &blend_factor.x, 0xFFFFFFFF);
+        // Framework::GetContext().OMSetBlendState(m_Data->blend_state.Get(), &blend_factor.x, 0xFFFFFFFF);
     }
-    void BlendState::Unbind() { /*Framework::GetContext().OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);*/ }
+    void BlendState::Unbind()
+    { /*Framework::GetContext().OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);*/
+    }
 }  // namespace Wraith

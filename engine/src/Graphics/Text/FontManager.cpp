@@ -29,13 +29,13 @@ namespace Wraith
         if (!m_DefaultFont->Init("assets/engine/fonts/roboto-regular.ttf"))
             return false;
 
-        //m_Atlas.Create(TextureCreateInfo{
+        // m_Atlas.Create(TextureCreateInfo{
         //    .size = { ATLAS_SIZE, ATLAS_SIZE },
         //    .format = ImageFormat::R32G32B32A32_FLOAT,
         //    .render_target = false,
         //    .cpu_access = D3D11_CPU_ACCESS_WRITE,
         //});
-        //SetDebugObjectName(m_Atlas.GetTexture(), "FontAtlas");
+        // SetDebugObjectName(m_Atlas.GetTexture(), "FontAtlas");
 
         m_Packer = std::make_unique<dubu::rect_pack::Packer>(ATLAS_SIZE, ATLAS_SIZE);
 
@@ -54,15 +54,11 @@ namespace Wraith
             return it->second;
         }
 
-        const auto [it, inserted] =
-            m_Glyphs.emplace(std::make_pair(font_id, glyph_index.getIndex()), LoadGlyph(GetFont(font_id), glyph_index));
+        const auto [it, inserted] = m_Glyphs.emplace(std::make_pair(font_id, glyph_index.getIndex()), LoadGlyph(GetFont(font_id), glyph_index));
         return it->second;
     }
 
-    Font::DisplayData FontManager::ShapeText(StringID font_id, std::string_view text, i32 direction)
-    {
-        return GetFont(font_id).ShapeText(text, direction);
-    }
+    Font::DisplayData FontManager::ShapeText(StringID font_id, std::string_view text, i32 direction) { return GetFont(font_id).ShapeText(text, direction); }
 
     f32 FontManager::GetLineHeight(StringID font_id) { return GetFont(font_id).GetLineHeight(); }
 

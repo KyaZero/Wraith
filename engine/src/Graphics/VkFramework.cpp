@@ -148,7 +148,7 @@ namespace Wraith
         m_Data->device = HandleResult(m_Data->physicalDevice.createDeviceUnique(deviceInfo));
 
         u32 imageCount = 2;
-        
+
         Window::RegisterResizeCallback(this, [&](u32 width, u32 height) { ResizeBackbuffer(width, height); });
         INFO_LOG("Finished initializing Vulkan Framework!");
         return true;

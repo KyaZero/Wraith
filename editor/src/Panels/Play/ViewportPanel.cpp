@@ -15,10 +15,8 @@ namespace Wraith
         if (Begin())
         {
             ImGuizmo::SetDrawlist();
-            ImGuizmo::SetRect(m_ViewportBounds[0].x,
-                              m_ViewportBounds[0].y,
-                              m_ViewportBounds[1].x - m_ViewportBounds[0].x,
-                              m_ViewportBounds[1].y - m_ViewportBounds[0].y);
+            ImGuizmo::SetRect(
+                m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
             ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 
@@ -39,9 +37,9 @@ namespace Wraith
 
             Input::BlockUIEvents(!IsFocused() && !IsHovered());
 
-            //Texture& texture = m_RenderManager.GetRenderTexture();
+            // Texture& texture = m_RenderManager.GetRenderTexture();
             // Draw first
-            //ImGui::Image(texture.GetShaderResourceView(),
+            // ImGui::Image(texture.GetShaderResourceView(),
             //             ImVec2{ m_ViewportSize.x, m_ViewportSize.y },
             //             ImVec2{ 0, 0 },
             //             ImVec2{ 1, 1 });

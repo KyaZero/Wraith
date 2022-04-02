@@ -94,11 +94,9 @@ namespace Wraith
         }
         static T Determinant(const Mat3<T>& matrix)
         {
-            return (matrix.m_Numbers[0] * matrix.m_Numbers[4] * matrix.m_Numbers[8] +
-                    matrix.m_Numbers[1] * matrix.m_Numbers[5] * matrix.m_Numbers[6] +
+            return (matrix.m_Numbers[0] * matrix.m_Numbers[4] * matrix.m_Numbers[8] + matrix.m_Numbers[1] * matrix.m_Numbers[5] * matrix.m_Numbers[6] +
                     matrix.m_Numbers[3] * matrix.m_Numbers[7] * matrix.m_Numbers[2]) -
-                   (matrix.m_Numbers[2] * matrix.m_Numbers[4] * matrix.m_Numbers[6] +
-                    matrix.m_Numbers[5] * matrix.m_Numbers[7] * matrix.m_Numbers[0] +
+                   (matrix.m_Numbers[2] * matrix.m_Numbers[4] * matrix.m_Numbers[6] + matrix.m_Numbers[5] * matrix.m_Numbers[7] * matrix.m_Numbers[0] +
                     matrix.m_Numbers[1] * matrix.m_Numbers[3] * matrix.m_Numbers[8]);
         }
         static Mat3<T> Inverse(const Mat3<T>& matrix)
@@ -150,9 +148,8 @@ namespace Wraith
             {
                 for (size_t j = 0; j < 3; j++)
                 {
-                    result.m_Numbers[i + j] = m_Numbers[i] * matrix.m_Numbers[j] +
-                                              m_Numbers[1 + i] * matrix.m_Numbers[3 + j] +
-                                              m_Numbers[2 + i] * matrix.m_Numbers[6 + j];
+                    result.m_Numbers[i + j] =
+                        m_Numbers[i] * matrix.m_Numbers[j] + m_Numbers[1 + i] * matrix.m_Numbers[3 + j] + m_Numbers[2 + i] * matrix.m_Numbers[6 + j];
                 }
             }
             return result;

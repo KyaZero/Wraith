@@ -65,17 +65,11 @@ namespace Wraith
 
     void Window::PollEvents() { glfwPollEvents(); }
 
-    void Window::RegisterResizeCallback(Handle handle, ResizeCallback callback)
-    {
-        s_ResizeCallbacks.emplace(handle, callback);
-    }
+    void Window::RegisterResizeCallback(Handle handle, ResizeCallback callback) { s_ResizeCallbacks.emplace(handle, callback); }
 
     void Window::UnregisterResizeCallback(Handle handle) { s_ResizeCallbacks.erase(handle); }
 
-    void Window::RegisterContentScaleCallback(Handle handle, ContentScaleCallback callback)
-    {
-        s_ContentScaleCallbacks.emplace(handle, callback);
-    }
+    void Window::RegisterContentScaleCallback(Handle handle, ContentScaleCallback callback) { s_ContentScaleCallbacks.emplace(handle, callback); }
 
     void Window::UnregisterContentScaleCallback(Handle handle) { s_ContentScaleCallbacks.erase(handle); }
 

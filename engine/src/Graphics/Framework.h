@@ -4,10 +4,10 @@
 //#include "Texture.h"
 //#include "Window/Window.h"
 //
-//struct ID3D11Device;
-//struct ID3D11DeviceContext;
+// struct ID3D11Device;
+// struct ID3D11DeviceContext;
 //
-//namespace Wraith
+// namespace Wraith
 //{
 //    class Framework
 //    {

@@ -20,8 +20,7 @@ namespace Wraith
             return false;
         }
 
-        m_ConstantBuffer.Init(
-            sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
+        m_ConstantBuffer.Init(sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
 
         // clang-format off
         f32 vertices[] = {
@@ -35,27 +34,21 @@ namespace Wraith
 
         u32 indices[] = { 2, 3, 1, 2, 1, 0 };
 
-        m_VertexBuffer.Init(
-            sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
-        m_IndexBuffer.Init(
-            sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
-        m_InstanceBuffer.Init(
-            MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
+        m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
+        m_IndexBuffer.Init(sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
+        m_InstanceBuffer.Init(MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
 
         m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
 
         return true;
     }
 
-    void SpriteRenderer::SetCamera(const SetCameraCommand& command)
-    {
-        m_CurrentCamera = std::make_unique<RenderCamera>(command.proj, command.view);
-    }
+    void SpriteRenderer::SetCamera(const SetCameraCommand& command) { m_CurrentCamera = std::make_unique<RenderCamera>(command.proj, command.view); }
 
     void SpriteRenderer::Render()
     {
-        //auto& context = Framework::GetContext();
-        //context.IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        // auto& context = Framework::GetContext();
+        // context.IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
         UpdateConstantBuffer();
         m_ConstantBuffer.Bind(0);
 
@@ -70,9 +63,7 @@ namespace Wraith
         // TODO: Should add layer support too.
         // edit: this could be fixed easily by using a perspective camera and just having a depth buffer/z position,
         // but may want to have layers for UI etc?
-        std::sort(std::execution::par, commands.begin(), commands.end(), [](auto a, auto b) {
-            return a.screen_space > b.screen_space;
-        });
+        std::sort(std::execution::par, commands.begin(), commands.end(), [](auto a, auto b) { return a.screen_space > b.screen_space; });
 
         std::unordered_map<StringID, std::vector<InstanceData>> instances;
 
@@ -111,11 +102,10 @@ namespace Wraith
 
                 u32 num_instances = Min(MAX_INSTANCES, (u32)sprites.second.size() - (MAX_INSTANCES * i));
 
-                m_InstanceBuffer.SetData(&sprites.second[0] + (MAX_INSTANCES * i),
-                                         num_instances * sizeof(InstanceData));
+                m_InstanceBuffer.SetData(&sprites.second[0] + (MAX_INSTANCES * i), num_instances * sizeof(InstanceData));
                 m_InstanceBuffer.Bind(1);
 
-                //context.DrawIndexedInstanced(6, num_instances, 0, 0, 0);
+                // context.DrawIndexedInstanced(6, num_instances, 0, 0, 0);
             }
         }
 
@@ -137,8 +127,7 @@ namespace Wraith
         else
         {
             // For UI, should probably investigate a better solution if it's supposed to run at different resolutions :D
-            m_ConstantBufferData.view_projection =
-                Mat4f::CreateOrthographicProjection(0, m_Window.GetSize().x, m_Window.GetSize().y, 0, -1, 1);
+            m_ConstantBufferData.view_projection = Mat4f::CreateOrthographicProjection(0, m_Window.GetSize().x, m_Window.GetSize().y, 0, -1, 1);
         }
 
         m_ConstantBufferData.resolution = Vec2f(size.x, size.y);

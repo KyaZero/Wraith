@@ -13,10 +13,7 @@ namespace dubu::serialize::internal
             buffer >> id;
             entity = entt::entity{ id };
         }
-        void Write(dubu::serialize::WriteBuffer& buffer, const entt::entity& entity)
-        {
-            buffer << std::underlying_type_t<entt::entity>(entity);
-        }
+        void Write(dubu::serialize::WriteBuffer& buffer, const entt::entity& entity) { buffer << std::underlying_type_t<entt::entity>(entity); }
     };
 }  // namespace dubu::serialize::internal
 

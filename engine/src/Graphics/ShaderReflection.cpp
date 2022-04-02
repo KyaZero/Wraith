@@ -6,8 +6,7 @@ namespace Wraith
 {
     bool ShaderReflection::Reflect(ComPtr<ID3DBlob> blob)
     {
-        if (FailedCheck("Getting Shader Reflection Interface",
-                        D3DReflect(blob->GetBufferPointer(), blob->GetBufferSize(), IID_PPV_ARGS(&m_Reflection))))
+        if (FailedCheck("Getting Shader Reflection Interface", D3DReflect(blob->GetBufferPointer(), blob->GetBufferSize(), IID_PPV_ARGS(&m_Reflection))))
         {
             return false;
         }

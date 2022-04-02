@@ -2,10 +2,10 @@
 
 #include "ImageFormat.h"
 
-//struct ID3D11Texture2D;
-//struct ID3D11ShaderResourceView;
-//struct ID3D11RenderTargetView;
-//struct ID3D11DepthStencilView;
+// struct ID3D11Texture2D;
+// struct ID3D11ShaderResourceView;
+// struct ID3D11RenderTargetView;
+// struct ID3D11DepthStencilView;
 
 namespace Wraith
 {
@@ -50,17 +50,16 @@ namespace Wraith
         void UnsetActiveTarget();
         void SetAsActiveTarget(Texture* depth = nullptr);
         void SetViewport();
-        void SetCustomViewport(
-            f32 top_left_x, f32 top_left_y, f32 width, f32 height, f32 min_depth = 0.0f, f32 max_depth = 0.0f);
+        void SetCustomViewport(f32 top_left_x, f32 top_left_y, f32 width, f32 height, f32 min_depth = 0.0f, f32 max_depth = 0.0f);
 
         void Bind(u32 slot) const;
         void Unbind(u32 slot) const;
         void Release();
 
-        //ID3D11Texture2D* GetTexture() const;
-        //ID3D11DepthStencilView* GetDepth() const;
-        //ID3D11RenderTargetView* GetRenderTarget() const;
-        //ID3D11ShaderResourceView* GetShaderResourceView() const;
+        // ID3D11Texture2D* GetTexture() const;
+        // ID3D11DepthStencilView* GetDepth() const;
+        // ID3D11RenderTargetView* GetRenderTarget() const;
+        // ID3D11ShaderResourceView* GetShaderResourceView() const;
         Vec2u GetSize() const;
         Vec2f GetSizef() const;
 

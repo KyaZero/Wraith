@@ -6,7 +6,7 @@
 //#include "DXUtil.h"
 //#include "Texture.h"
 //
-//namespace Wraith
+// namespace Wraith
 //{
 //    // for getters, should figure out a better way to do this
 //    static ID3D11Device* s_Device;

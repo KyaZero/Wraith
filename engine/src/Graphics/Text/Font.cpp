@@ -105,8 +105,7 @@ namespace Wraith
 
         GlyphData glyph_data;
         glyph_data.stride = shape_data.width * sizeof(float) * 4;
-        glyph_data.bitmap = std::vector<u8>(reinterpret_cast<u8*>(msdf(0, 0)),
-                                            reinterpret_cast<u8*>(msdf(0, 0)) + shape_data.height * glyph_data.stride);
+        glyph_data.bitmap = std::vector<u8>(reinterpret_cast<u8*>(msdf(0, 0)), reinterpret_cast<u8*>(msdf(0, 0)) + shape_data.height * glyph_data.stride);
         return glyph_data;
     }
 
@@ -115,10 +114,8 @@ namespace Wraith
         m_FriBidi.logical.resize(text.size() * 2);
         m_FriBidi.visual.resize(text.size() * 2);
 
-        FriBidiStrIndex len = fribidi_charset_to_unicode(FriBidiCharSet::FRIBIDI_CHAR_SET_UTF8,
-                                                         text.data(),
-                                                         static_cast<FriBidiStrIndex>(text.size()),
-                                                         m_FriBidi.logical.data());
+        FriBidiStrIndex len =
+            fribidi_charset_to_unicode(FriBidiCharSet::FRIBIDI_CHAR_SET_UTF8, text.data(), static_cast<FriBidiStrIndex>(text.size()), m_FriBidi.logical.data());
         FriBidiParType par_type = (direction == Direction::LTR) ? FRIBIDI_TYPE_LTR : FRIBIDI_TYPE_RTL;
         fribidi_log2vis(m_FriBidi.logical.data(), len, &par_type, m_FriBidi.visual.data(), nullptr, nullptr, nullptr);
 

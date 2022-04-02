@@ -62,10 +62,7 @@ namespace Wraith
 
         inline T Dot(const Vec3& other) const { return x * other.x + y * other.y + z * other.z; }
 
-        inline Vec3 Cross(const Vec3& other) const
-        {
-            return { y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x };
-        }
+        inline Vec3 Cross(const Vec3& other) const { return { y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x }; }
 
         inline T LengthSqr() const { return Dot(*this); }
 

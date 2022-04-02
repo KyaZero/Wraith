@@ -38,12 +38,8 @@ namespace Wraith
         BlendState();
         ~BlendState();
 
-        bool Create(BlendMode src_rgb,
-                    BlendMode dest_rgb,
-                    BlendMode src_alpha,
-                    BlendMode dest_alpha,
-                    BlendOp op_rgb = BlendOp::Add,
-                    BlendOp op_alpha = BlendOp::Add);
+        bool Create(
+            BlendMode src_rgb, BlendMode dest_rgb, BlendMode src_alpha, BlendMode dest_alpha, BlendOp op_rgb = BlendOp::Add, BlendOp op_alpha = BlendOp::Add);
 
         void Bind();
         void Unbind();

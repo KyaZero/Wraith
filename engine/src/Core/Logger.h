@@ -1,21 +1,15 @@
 #pragma once
 
-#define VERBOSE_LOG(...) \
-    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define INFO_LOG(...) \
-    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define WARNING_LOG(...) \
-    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Warning, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
-#define ERROR_LOG(...) \
-    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define VERBOSE_LOG(...) Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Verbose, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define INFO_LOG(...) Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Info, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define WARNING_LOG(...) Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Warning, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
+#define ERROR_LOG(...) Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Error, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__);
 
 #ifdef NDEBUG
 #define ASSERT_LOG(...) ((void)0)
 #else
-#define ___ASSERT_LOG(...) \
-    Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), abort()
-#define ASSERT_LOG(expression, ...) \
-    (void)((!!(expression)) || (___ASSERT_LOG("Assertion failed: {}", (#expression " " #__VA_ARGS__)), 0))
+#define ___ASSERT_LOG(...) Wraith::Logger::Get()->Log(::Wraith::Logger::Level::Fatal, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__), abort()
+#define ASSERT_LOG(expression, ...) (void)((!!(expression)) || (___ASSERT_LOG("Assertion failed: {}", (#expression " " #__VA_ARGS__)), 0))
 #endif
 
 #include <mutex>

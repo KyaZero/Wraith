@@ -98,11 +98,9 @@ namespace Wraith
     {
         m_FrameIndex++;
 
-        std::sort(m_PersistentJobs.begin(),
-                  m_PersistentJobs.end(),
-                  [](const std::shared_ptr<PersistentJob> a, const std::shared_ptr<PersistentJob> b) {
-                      return a->GetAverageTime() < b->GetAverageTime();
-                  });
+        std::sort(m_PersistentJobs.begin(), m_PersistentJobs.end(), [](const std::shared_ptr<PersistentJob> a, const std::shared_ptr<PersistentJob> b) {
+            return a->GetAverageTime() < b->GetAverageTime();
+        });
 
         i32 thread_index = 0;
         for (auto& job : m_PersistentJobs)

@@ -36,10 +36,7 @@ namespace Wraith
             return nullptr;
         return reinterpret_cast<void*>(1);
     }
-    void SettingsHandler::ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void* entry, const char* line)
-    {
-        s_VisiblePanels.insert(line);
-    }
+    void SettingsHandler::ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void* entry, const char* line) { s_VisiblePanels.insert(line); }
     void SettingsHandler::WriteAll(ImGuiContext* imgui_ctx, ImGuiSettingsHandler* handler, ImGuiTextBuffer* buf)
     {
         buf->appendf("[%s][Data]\n", handler->TypeName);

@@ -166,10 +166,7 @@ namespace Wraith
             return m_Numbers[index];
         }
 
-        static void DecomposeMatrixToComponents(const Mat4<T>& matrix,
-                                                Vec3<T>* position,
-                                                Quat<T>* rotation,
-                                                Vec3<T>* scale)
+        static void DecomposeMatrixToComponents(const Mat4<T>& matrix, Vec3<T>* position, Quat<T>* rotation, Vec3<T>* scale)
         {
             Mat4<T> mat = matrix;
             scale->x = mat.m_RightAxis.Length();
@@ -286,8 +283,8 @@ namespace Wraith
 
         inline static Mat4<T> Rotate(const Mat4<T>& matrix, f32 angle, Vec3<T> rotation_axis)
         {
-            Mat4<T> r = CreateRotationAroundZ(angle * rotation_axis.z) *
-                        CreateRotationAroundY(angle * rotation_axis.y) * CreateRotationAroundX(angle * rotation_axis.x);
+            Mat4<T> r = CreateRotationAroundZ(angle * rotation_axis.z) * CreateRotationAroundY(angle * rotation_axis.y) *
+                        CreateRotationAroundX(angle * rotation_axis.x);
 
             return matrix * r;
         }
@@ -357,30 +354,26 @@ namespace Wraith
 
         inline static T Determinant(const Mat4<T>& matrix)
         {
-            return matrix.m_Numbers[0] * ((matrix.m_Numbers[5] * matrix.m_Numbers[10] * matrix.m_Numbers[15] +
-                                           matrix.m_Numbers[6] * matrix.m_Numbers[11] * matrix.m_Numbers[13] +
-                                           matrix.m_Numbers[9] * matrix.m_Numbers[14] * matrix.m_Numbers[7]) -
-                                          (matrix.m_Numbers[7] * matrix.m_Numbers[10] * matrix.m_Numbers[13] +
-                                           matrix.m_Numbers[11] * matrix.m_Numbers[14] * matrix.m_Numbers[5] +
-                                           matrix.m_Numbers[6] * matrix.m_Numbers[9] * matrix.m_Numbers[15])) -
-                   matrix.m_Numbers[1] * ((matrix.m_Numbers[4] * matrix.m_Numbers[10] * matrix.m_Numbers[15] +
-                                           matrix.m_Numbers[6] * matrix.m_Numbers[11] * matrix.m_Numbers[12] +
-                                           matrix.m_Numbers[8] * matrix.m_Numbers[14] * matrix.m_Numbers[7]) -
-                                          (matrix.m_Numbers[7] * matrix.m_Numbers[10] * matrix.m_Numbers[12] +
-                                           matrix.m_Numbers[11] * matrix.m_Numbers[14] * matrix.m_Numbers[4] +
-                                           matrix.m_Numbers[6] * matrix.m_Numbers[8] * matrix.m_Numbers[15])) +
-                   matrix.m_Numbers[2] * ((matrix.m_Numbers[4] * matrix.m_Numbers[9] * matrix.m_Numbers[15] +
-                                           matrix.m_Numbers[5] * matrix.m_Numbers[11] * matrix.m_Numbers[12] +
-                                           matrix.m_Numbers[8] * matrix.m_Numbers[13] * matrix.m_Numbers[7]) -
-                                          (matrix.m_Numbers[7] * matrix.m_Numbers[9] * matrix.m_Numbers[12] +
-                                           matrix.m_Numbers[11] * matrix.m_Numbers[13] * matrix.m_Numbers[4] +
-                                           matrix.m_Numbers[5] * matrix.m_Numbers[8] * matrix.m_Numbers[15])) -
-                   matrix.m_Numbers[3] * ((matrix.m_Numbers[4] * matrix.m_Numbers[9] * matrix.m_Numbers[14] +
-                                           matrix.m_Numbers[5] * matrix.m_Numbers[10] * matrix.m_Numbers[12] +
-                                           matrix.m_Numbers[8] * matrix.m_Numbers[13] * matrix.m_Numbers[6]) -
-                                          (matrix.m_Numbers[6] * matrix.m_Numbers[9] * matrix.m_Numbers[12] +
-                                           matrix.m_Numbers[10] * matrix.m_Numbers[13] * matrix.m_Numbers[4] +
-                                           matrix.m_Numbers[5] * matrix.m_Numbers[8] * matrix.m_Numbers[14]));
+            return matrix.m_Numbers[0] *
+                       ((matrix.m_Numbers[5] * matrix.m_Numbers[10] * matrix.m_Numbers[15] + matrix.m_Numbers[6] * matrix.m_Numbers[11] * matrix.m_Numbers[13] +
+                         matrix.m_Numbers[9] * matrix.m_Numbers[14] * matrix.m_Numbers[7]) -
+                        (matrix.m_Numbers[7] * matrix.m_Numbers[10] * matrix.m_Numbers[13] + matrix.m_Numbers[11] * matrix.m_Numbers[14] * matrix.m_Numbers[5] +
+                         matrix.m_Numbers[6] * matrix.m_Numbers[9] * matrix.m_Numbers[15])) -
+                   matrix.m_Numbers[1] *
+                       ((matrix.m_Numbers[4] * matrix.m_Numbers[10] * matrix.m_Numbers[15] + matrix.m_Numbers[6] * matrix.m_Numbers[11] * matrix.m_Numbers[12] +
+                         matrix.m_Numbers[8] * matrix.m_Numbers[14] * matrix.m_Numbers[7]) -
+                        (matrix.m_Numbers[7] * matrix.m_Numbers[10] * matrix.m_Numbers[12] + matrix.m_Numbers[11] * matrix.m_Numbers[14] * matrix.m_Numbers[4] +
+                         matrix.m_Numbers[6] * matrix.m_Numbers[8] * matrix.m_Numbers[15])) +
+                   matrix.m_Numbers[2] *
+                       ((matrix.m_Numbers[4] * matrix.m_Numbers[9] * matrix.m_Numbers[15] + matrix.m_Numbers[5] * matrix.m_Numbers[11] * matrix.m_Numbers[12] +
+                         matrix.m_Numbers[8] * matrix.m_Numbers[13] * matrix.m_Numbers[7]) -
+                        (matrix.m_Numbers[7] * matrix.m_Numbers[9] * matrix.m_Numbers[12] + matrix.m_Numbers[11] * matrix.m_Numbers[13] * matrix.m_Numbers[4] +
+                         matrix.m_Numbers[5] * matrix.m_Numbers[8] * matrix.m_Numbers[15])) -
+                   matrix.m_Numbers[3] *
+                       ((matrix.m_Numbers[4] * matrix.m_Numbers[9] * matrix.m_Numbers[14] + matrix.m_Numbers[5] * matrix.m_Numbers[10] * matrix.m_Numbers[12] +
+                         matrix.m_Numbers[8] * matrix.m_Numbers[13] * matrix.m_Numbers[6]) -
+                        (matrix.m_Numbers[6] * matrix.m_Numbers[9] * matrix.m_Numbers[12] + matrix.m_Numbers[10] * matrix.m_Numbers[13] * matrix.m_Numbers[4] +
+                         matrix.m_Numbers[5] * matrix.m_Numbers[8] * matrix.m_Numbers[14]));
         }
 
         inline static Mat4<T> Inverse(const Mat4<T>& matrix)
@@ -389,117 +382,85 @@ namespace Wraith
             assert(det != 0 && "Non-invertible matrix");
 
             Mat4<T> result;
-            result.m_Numbers[0] = matrix.m_Numbers[5] * matrix.m_Numbers[10] * matrix.m_Numbers[15] -
-                                  matrix.m_Numbers[5] * matrix.m_Numbers[11] * matrix.m_Numbers[14] -
-                                  matrix.m_Numbers[9] * matrix.m_Numbers[6] * matrix.m_Numbers[15] +
-                                  matrix.m_Numbers[9] * matrix.m_Numbers[7] * matrix.m_Numbers[14] +
-                                  matrix.m_Numbers[13] * matrix.m_Numbers[6] * matrix.m_Numbers[11] -
-                                  matrix.m_Numbers[13] * matrix.m_Numbers[7] * matrix.m_Numbers[10];
+            result.m_Numbers[0] =
+                matrix.m_Numbers[5] * matrix.m_Numbers[10] * matrix.m_Numbers[15] - matrix.m_Numbers[5] * matrix.m_Numbers[11] * matrix.m_Numbers[14] -
+                matrix.m_Numbers[9] * matrix.m_Numbers[6] * matrix.m_Numbers[15] + matrix.m_Numbers[9] * matrix.m_Numbers[7] * matrix.m_Numbers[14] +
+                matrix.m_Numbers[13] * matrix.m_Numbers[6] * matrix.m_Numbers[11] - matrix.m_Numbers[13] * matrix.m_Numbers[7] * matrix.m_Numbers[10];
 
-            result.m_Numbers[4] = -matrix.m_Numbers[4] * matrix.m_Numbers[10] * matrix.m_Numbers[15] +
-                                  matrix.m_Numbers[4] * matrix.m_Numbers[11] * matrix.m_Numbers[14] +
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[6] * matrix.m_Numbers[15] -
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[7] * matrix.m_Numbers[14] -
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[6] * matrix.m_Numbers[11] +
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[7] * matrix.m_Numbers[10];
+            result.m_Numbers[4] =
+                -matrix.m_Numbers[4] * matrix.m_Numbers[10] * matrix.m_Numbers[15] + matrix.m_Numbers[4] * matrix.m_Numbers[11] * matrix.m_Numbers[14] +
+                matrix.m_Numbers[8] * matrix.m_Numbers[6] * matrix.m_Numbers[15] - matrix.m_Numbers[8] * matrix.m_Numbers[7] * matrix.m_Numbers[14] -
+                matrix.m_Numbers[12] * matrix.m_Numbers[6] * matrix.m_Numbers[11] + matrix.m_Numbers[12] * matrix.m_Numbers[7] * matrix.m_Numbers[10];
 
-            result.m_Numbers[8] = matrix.m_Numbers[4] * matrix.m_Numbers[9] * matrix.m_Numbers[15] -
-                                  matrix.m_Numbers[4] * matrix.m_Numbers[11] * matrix.m_Numbers[13] -
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[5] * matrix.m_Numbers[15] +
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[7] * matrix.m_Numbers[13] +
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[5] * matrix.m_Numbers[11] -
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[7] * matrix.m_Numbers[9];
+            result.m_Numbers[8] =
+                matrix.m_Numbers[4] * matrix.m_Numbers[9] * matrix.m_Numbers[15] - matrix.m_Numbers[4] * matrix.m_Numbers[11] * matrix.m_Numbers[13] -
+                matrix.m_Numbers[8] * matrix.m_Numbers[5] * matrix.m_Numbers[15] + matrix.m_Numbers[8] * matrix.m_Numbers[7] * matrix.m_Numbers[13] +
+                matrix.m_Numbers[12] * matrix.m_Numbers[5] * matrix.m_Numbers[11] - matrix.m_Numbers[12] * matrix.m_Numbers[7] * matrix.m_Numbers[9];
 
-            result.m_Numbers[12] = -matrix.m_Numbers[4] * matrix.m_Numbers[9] * matrix.m_Numbers[14] +
-                                   matrix.m_Numbers[4] * matrix.m_Numbers[10] * matrix.m_Numbers[13] +
-                                   matrix.m_Numbers[8] * matrix.m_Numbers[5] * matrix.m_Numbers[14] -
-                                   matrix.m_Numbers[8] * matrix.m_Numbers[6] * matrix.m_Numbers[13] -
-                                   matrix.m_Numbers[12] * matrix.m_Numbers[5] * matrix.m_Numbers[10] +
-                                   matrix.m_Numbers[12] * matrix.m_Numbers[6] * matrix.m_Numbers[9];
+            result.m_Numbers[12] =
+                -matrix.m_Numbers[4] * matrix.m_Numbers[9] * matrix.m_Numbers[14] + matrix.m_Numbers[4] * matrix.m_Numbers[10] * matrix.m_Numbers[13] +
+                matrix.m_Numbers[8] * matrix.m_Numbers[5] * matrix.m_Numbers[14] - matrix.m_Numbers[8] * matrix.m_Numbers[6] * matrix.m_Numbers[13] -
+                matrix.m_Numbers[12] * matrix.m_Numbers[5] * matrix.m_Numbers[10] + matrix.m_Numbers[12] * matrix.m_Numbers[6] * matrix.m_Numbers[9];
 
-            result.m_Numbers[1] = -matrix.m_Numbers[1] * matrix.m_Numbers[10] * matrix.m_Numbers[15] +
-                                  matrix.m_Numbers[1] * matrix.m_Numbers[11] * matrix.m_Numbers[14] +
-                                  matrix.m_Numbers[9] * matrix.m_Numbers[2] * matrix.m_Numbers[15] -
-                                  matrix.m_Numbers[9] * matrix.m_Numbers[3] * matrix.m_Numbers[14] -
-                                  matrix.m_Numbers[13] * matrix.m_Numbers[2] * matrix.m_Numbers[11] +
-                                  matrix.m_Numbers[13] * matrix.m_Numbers[3] * matrix.m_Numbers[10];
+            result.m_Numbers[1] =
+                -matrix.m_Numbers[1] * matrix.m_Numbers[10] * matrix.m_Numbers[15] + matrix.m_Numbers[1] * matrix.m_Numbers[11] * matrix.m_Numbers[14] +
+                matrix.m_Numbers[9] * matrix.m_Numbers[2] * matrix.m_Numbers[15] - matrix.m_Numbers[9] * matrix.m_Numbers[3] * matrix.m_Numbers[14] -
+                matrix.m_Numbers[13] * matrix.m_Numbers[2] * matrix.m_Numbers[11] + matrix.m_Numbers[13] * matrix.m_Numbers[3] * matrix.m_Numbers[10];
 
-            result.m_Numbers[5] = matrix.m_Numbers[0] * matrix.m_Numbers[10] * matrix.m_Numbers[15] -
-                                  matrix.m_Numbers[0] * matrix.m_Numbers[11] * matrix.m_Numbers[14] -
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[2] * matrix.m_Numbers[15] +
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[3] * matrix.m_Numbers[14] +
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[2] * matrix.m_Numbers[11] -
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[3] * matrix.m_Numbers[10];
+            result.m_Numbers[5] =
+                matrix.m_Numbers[0] * matrix.m_Numbers[10] * matrix.m_Numbers[15] - matrix.m_Numbers[0] * matrix.m_Numbers[11] * matrix.m_Numbers[14] -
+                matrix.m_Numbers[8] * matrix.m_Numbers[2] * matrix.m_Numbers[15] + matrix.m_Numbers[8] * matrix.m_Numbers[3] * matrix.m_Numbers[14] +
+                matrix.m_Numbers[12] * matrix.m_Numbers[2] * matrix.m_Numbers[11] - matrix.m_Numbers[12] * matrix.m_Numbers[3] * matrix.m_Numbers[10];
 
-            result.m_Numbers[9] = -matrix.m_Numbers[0] * matrix.m_Numbers[9] * matrix.m_Numbers[15] +
-                                  matrix.m_Numbers[0] * matrix.m_Numbers[11] * matrix.m_Numbers[13] +
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[1] * matrix.m_Numbers[15] -
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[3] * matrix.m_Numbers[13] -
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[1] * matrix.m_Numbers[11] +
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[3] * matrix.m_Numbers[9];
+            result.m_Numbers[9] =
+                -matrix.m_Numbers[0] * matrix.m_Numbers[9] * matrix.m_Numbers[15] + matrix.m_Numbers[0] * matrix.m_Numbers[11] * matrix.m_Numbers[13] +
+                matrix.m_Numbers[8] * matrix.m_Numbers[1] * matrix.m_Numbers[15] - matrix.m_Numbers[8] * matrix.m_Numbers[3] * matrix.m_Numbers[13] -
+                matrix.m_Numbers[12] * matrix.m_Numbers[1] * matrix.m_Numbers[11] + matrix.m_Numbers[12] * matrix.m_Numbers[3] * matrix.m_Numbers[9];
 
-            result.m_Numbers[13] = matrix.m_Numbers[0] * matrix.m_Numbers[9] * matrix.m_Numbers[14] -
-                                   matrix.m_Numbers[0] * matrix.m_Numbers[10] * matrix.m_Numbers[13] -
-                                   matrix.m_Numbers[8] * matrix.m_Numbers[1] * matrix.m_Numbers[14] +
-                                   matrix.m_Numbers[8] * matrix.m_Numbers[2] * matrix.m_Numbers[13] +
-                                   matrix.m_Numbers[12] * matrix.m_Numbers[1] * matrix.m_Numbers[10] -
-                                   matrix.m_Numbers[12] * matrix.m_Numbers[2] * matrix.m_Numbers[9];
+            result.m_Numbers[13] =
+                matrix.m_Numbers[0] * matrix.m_Numbers[9] * matrix.m_Numbers[14] - matrix.m_Numbers[0] * matrix.m_Numbers[10] * matrix.m_Numbers[13] -
+                matrix.m_Numbers[8] * matrix.m_Numbers[1] * matrix.m_Numbers[14] + matrix.m_Numbers[8] * matrix.m_Numbers[2] * matrix.m_Numbers[13] +
+                matrix.m_Numbers[12] * matrix.m_Numbers[1] * matrix.m_Numbers[10] - matrix.m_Numbers[12] * matrix.m_Numbers[2] * matrix.m_Numbers[9];
 
-            result.m_Numbers[2] = matrix.m_Numbers[1] * matrix.m_Numbers[6] * matrix.m_Numbers[15] -
-                                  matrix.m_Numbers[1] * matrix.m_Numbers[7] * matrix.m_Numbers[14] -
-                                  matrix.m_Numbers[5] * matrix.m_Numbers[2] * matrix.m_Numbers[15] +
-                                  matrix.m_Numbers[5] * matrix.m_Numbers[3] * matrix.m_Numbers[14] +
-                                  matrix.m_Numbers[13] * matrix.m_Numbers[2] * matrix.m_Numbers[7] -
-                                  matrix.m_Numbers[13] * matrix.m_Numbers[3] * matrix.m_Numbers[6];
+            result.m_Numbers[2] =
+                matrix.m_Numbers[1] * matrix.m_Numbers[6] * matrix.m_Numbers[15] - matrix.m_Numbers[1] * matrix.m_Numbers[7] * matrix.m_Numbers[14] -
+                matrix.m_Numbers[5] * matrix.m_Numbers[2] * matrix.m_Numbers[15] + matrix.m_Numbers[5] * matrix.m_Numbers[3] * matrix.m_Numbers[14] +
+                matrix.m_Numbers[13] * matrix.m_Numbers[2] * matrix.m_Numbers[7] - matrix.m_Numbers[13] * matrix.m_Numbers[3] * matrix.m_Numbers[6];
 
-            result.m_Numbers[6] = -matrix.m_Numbers[0] * matrix.m_Numbers[6] * matrix.m_Numbers[15] +
-                                  matrix.m_Numbers[0] * matrix.m_Numbers[7] * matrix.m_Numbers[14] +
-                                  matrix.m_Numbers[4] * matrix.m_Numbers[2] * matrix.m_Numbers[15] -
-                                  matrix.m_Numbers[4] * matrix.m_Numbers[3] * matrix.m_Numbers[14] -
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[2] * matrix.m_Numbers[7] +
-                                  matrix.m_Numbers[12] * matrix.m_Numbers[3] * matrix.m_Numbers[6];
+            result.m_Numbers[6] =
+                -matrix.m_Numbers[0] * matrix.m_Numbers[6] * matrix.m_Numbers[15] + matrix.m_Numbers[0] * matrix.m_Numbers[7] * matrix.m_Numbers[14] +
+                matrix.m_Numbers[4] * matrix.m_Numbers[2] * matrix.m_Numbers[15] - matrix.m_Numbers[4] * matrix.m_Numbers[3] * matrix.m_Numbers[14] -
+                matrix.m_Numbers[12] * matrix.m_Numbers[2] * matrix.m_Numbers[7] + matrix.m_Numbers[12] * matrix.m_Numbers[3] * matrix.m_Numbers[6];
 
-            result.m_Numbers[10] = matrix.m_Numbers[0] * matrix.m_Numbers[5] * matrix.m_Numbers[15] -
-                                   matrix.m_Numbers[0] * matrix.m_Numbers[7] * matrix.m_Numbers[13] -
-                                   matrix.m_Numbers[4] * matrix.m_Numbers[1] * matrix.m_Numbers[15] +
-                                   matrix.m_Numbers[4] * matrix.m_Numbers[3] * matrix.m_Numbers[13] +
-                                   matrix.m_Numbers[12] * matrix.m_Numbers[1] * matrix.m_Numbers[7] -
-                                   matrix.m_Numbers[12] * matrix.m_Numbers[3] * matrix.m_Numbers[5];
+            result.m_Numbers[10] =
+                matrix.m_Numbers[0] * matrix.m_Numbers[5] * matrix.m_Numbers[15] - matrix.m_Numbers[0] * matrix.m_Numbers[7] * matrix.m_Numbers[13] -
+                matrix.m_Numbers[4] * matrix.m_Numbers[1] * matrix.m_Numbers[15] + matrix.m_Numbers[4] * matrix.m_Numbers[3] * matrix.m_Numbers[13] +
+                matrix.m_Numbers[12] * matrix.m_Numbers[1] * matrix.m_Numbers[7] - matrix.m_Numbers[12] * matrix.m_Numbers[3] * matrix.m_Numbers[5];
 
-            result.m_Numbers[14] = -matrix.m_Numbers[0] * matrix.m_Numbers[5] * matrix.m_Numbers[14] +
-                                   matrix.m_Numbers[0] * matrix.m_Numbers[6] * matrix.m_Numbers[13] +
-                                   matrix.m_Numbers[4] * matrix.m_Numbers[1] * matrix.m_Numbers[14] -
-                                   matrix.m_Numbers[4] * matrix.m_Numbers[2] * matrix.m_Numbers[13] -
-                                   matrix.m_Numbers[12] * matrix.m_Numbers[1] * matrix.m_Numbers[6] +
-                                   matrix.m_Numbers[12] * matrix.m_Numbers[2] * matrix.m_Numbers[5];
+            result.m_Numbers[14] =
+                -matrix.m_Numbers[0] * matrix.m_Numbers[5] * matrix.m_Numbers[14] + matrix.m_Numbers[0] * matrix.m_Numbers[6] * matrix.m_Numbers[13] +
+                matrix.m_Numbers[4] * matrix.m_Numbers[1] * matrix.m_Numbers[14] - matrix.m_Numbers[4] * matrix.m_Numbers[2] * matrix.m_Numbers[13] -
+                matrix.m_Numbers[12] * matrix.m_Numbers[1] * matrix.m_Numbers[6] + matrix.m_Numbers[12] * matrix.m_Numbers[2] * matrix.m_Numbers[5];
 
-            result.m_Numbers[3] = -matrix.m_Numbers[1] * matrix.m_Numbers[6] * matrix.m_Numbers[11] +
-                                  matrix.m_Numbers[1] * matrix.m_Numbers[7] * matrix.m_Numbers[10] +
-                                  matrix.m_Numbers[5] * matrix.m_Numbers[2] * matrix.m_Numbers[11] -
-                                  matrix.m_Numbers[5] * matrix.m_Numbers[3] * matrix.m_Numbers[10] -
-                                  matrix.m_Numbers[9] * matrix.m_Numbers[2] * matrix.m_Numbers[7] +
-                                  matrix.m_Numbers[9] * matrix.m_Numbers[3] * matrix.m_Numbers[6];
+            result.m_Numbers[3] =
+                -matrix.m_Numbers[1] * matrix.m_Numbers[6] * matrix.m_Numbers[11] + matrix.m_Numbers[1] * matrix.m_Numbers[7] * matrix.m_Numbers[10] +
+                matrix.m_Numbers[5] * matrix.m_Numbers[2] * matrix.m_Numbers[11] - matrix.m_Numbers[5] * matrix.m_Numbers[3] * matrix.m_Numbers[10] -
+                matrix.m_Numbers[9] * matrix.m_Numbers[2] * matrix.m_Numbers[7] + matrix.m_Numbers[9] * matrix.m_Numbers[3] * matrix.m_Numbers[6];
 
-            result.m_Numbers[7] = matrix.m_Numbers[0] * matrix.m_Numbers[6] * matrix.m_Numbers[11] -
-                                  matrix.m_Numbers[0] * matrix.m_Numbers[7] * matrix.m_Numbers[10] -
-                                  matrix.m_Numbers[4] * matrix.m_Numbers[2] * matrix.m_Numbers[11] +
-                                  matrix.m_Numbers[4] * matrix.m_Numbers[3] * matrix.m_Numbers[10] +
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[2] * matrix.m_Numbers[7] -
-                                  matrix.m_Numbers[8] * matrix.m_Numbers[3] * matrix.m_Numbers[6];
+            result.m_Numbers[7] =
+                matrix.m_Numbers[0] * matrix.m_Numbers[6] * matrix.m_Numbers[11] - matrix.m_Numbers[0] * matrix.m_Numbers[7] * matrix.m_Numbers[10] -
+                matrix.m_Numbers[4] * matrix.m_Numbers[2] * matrix.m_Numbers[11] + matrix.m_Numbers[4] * matrix.m_Numbers[3] * matrix.m_Numbers[10] +
+                matrix.m_Numbers[8] * matrix.m_Numbers[2] * matrix.m_Numbers[7] - matrix.m_Numbers[8] * matrix.m_Numbers[3] * matrix.m_Numbers[6];
 
-            result.m_Numbers[11] = -matrix.m_Numbers[0] * matrix.m_Numbers[5] * matrix.m_Numbers[11] +
-                                   matrix.m_Numbers[0] * matrix.m_Numbers[7] * matrix.m_Numbers[9] +
-                                   matrix.m_Numbers[4] * matrix.m_Numbers[1] * matrix.m_Numbers[11] -
-                                   matrix.m_Numbers[4] * matrix.m_Numbers[3] * matrix.m_Numbers[9] -
-                                   matrix.m_Numbers[8] * matrix.m_Numbers[1] * matrix.m_Numbers[7] +
-                                   matrix.m_Numbers[8] * matrix.m_Numbers[3] * matrix.m_Numbers[5];
+            result.m_Numbers[11] =
+                -matrix.m_Numbers[0] * matrix.m_Numbers[5] * matrix.m_Numbers[11] + matrix.m_Numbers[0] * matrix.m_Numbers[7] * matrix.m_Numbers[9] +
+                matrix.m_Numbers[4] * matrix.m_Numbers[1] * matrix.m_Numbers[11] - matrix.m_Numbers[4] * matrix.m_Numbers[3] * matrix.m_Numbers[9] -
+                matrix.m_Numbers[8] * matrix.m_Numbers[1] * matrix.m_Numbers[7] + matrix.m_Numbers[8] * matrix.m_Numbers[3] * matrix.m_Numbers[5];
 
-            result.m_Numbers[15] = matrix.m_Numbers[0] * matrix.m_Numbers[5] * matrix.m_Numbers[10] -
-                                   matrix.m_Numbers[0] * matrix.m_Numbers[6] * matrix.m_Numbers[9] -
-                                   matrix.m_Numbers[4] * matrix.m_Numbers[1] * matrix.m_Numbers[10] +
-                                   matrix.m_Numbers[4] * matrix.m_Numbers[2] * matrix.m_Numbers[9] +
-                                   matrix.m_Numbers[8] * matrix.m_Numbers[1] * matrix.m_Numbers[6] -
-                                   matrix.m_Numbers[8] * matrix.m_Numbers[2] * matrix.m_Numbers[5];
+            result.m_Numbers[15] =
+                matrix.m_Numbers[0] * matrix.m_Numbers[5] * matrix.m_Numbers[10] - matrix.m_Numbers[0] * matrix.m_Numbers[6] * matrix.m_Numbers[9] -
+                matrix.m_Numbers[4] * matrix.m_Numbers[1] * matrix.m_Numbers[10] + matrix.m_Numbers[4] * matrix.m_Numbers[2] * matrix.m_Numbers[9] +
+                matrix.m_Numbers[8] * matrix.m_Numbers[1] * matrix.m_Numbers[6] - matrix.m_Numbers[8] * matrix.m_Numbers[2] * matrix.m_Numbers[5];
             return result * (1 / det);
         }
 
@@ -509,25 +470,18 @@ namespace Wraith
 
         friend inline Vec4<T> operator*(const Vec4<T>& vector, const Mat4<T>& matrix)
         {
-            return Vec4<T>(vector.x * matrix.m_Numbers[0] + vector.y * matrix.m_Numbers[4] +
-                               vector.z * matrix.m_Numbers[8] + vector.w * matrix.m_Numbers[12],
-                           vector.x * matrix.m_Numbers[1] + vector.y * matrix.m_Numbers[5] +
-                               vector.z * matrix.m_Numbers[9] + vector.w * matrix.m_Numbers[13],
-                           vector.x * matrix.m_Numbers[2] + vector.y * matrix.m_Numbers[6] +
-                               vector.z * matrix.m_Numbers[10] + vector.w * matrix.m_Numbers[14],
-                           vector.x * matrix.m_Numbers[3] + vector.y * matrix.m_Numbers[7] +
-                               vector.z * matrix.m_Numbers[11] + vector.w * matrix.m_Numbers[15]);
+            return Vec4<T>(vector.x * matrix.m_Numbers[0] + vector.y * matrix.m_Numbers[4] + vector.z * matrix.m_Numbers[8] + vector.w * matrix.m_Numbers[12],
+                           vector.x * matrix.m_Numbers[1] + vector.y * matrix.m_Numbers[5] + vector.z * matrix.m_Numbers[9] + vector.w * matrix.m_Numbers[13],
+                           vector.x * matrix.m_Numbers[2] + vector.y * matrix.m_Numbers[6] + vector.z * matrix.m_Numbers[10] + vector.w * matrix.m_Numbers[14],
+                           vector.x * matrix.m_Numbers[3] + vector.y * matrix.m_Numbers[7] + vector.z * matrix.m_Numbers[11] + vector.w * matrix.m_Numbers[15]);
         }
         friend inline void operator*=(Vec4<T>& vector, const Mat4<T>& matrix) { vector = vector * matrix; };
 
         friend inline Vec3<T> operator*(const Vec3<T>& vector, const Mat4<T>& matrix)
         {
-            return Vec3<T>(vector.x * matrix.m_Numbers[0] + vector.y * matrix.m_Numbers[4] +
-                               vector.z * matrix.m_Numbers[8] + matrix.m_Numbers[12],
-                           vector.x * matrix.m_Numbers[1] + vector.y * matrix.m_Numbers[5] +
-                               vector.z * matrix.m_Numbers[9] + matrix.m_Numbers[13],
-                           vector.x * matrix.m_Numbers[2] + vector.y * matrix.m_Numbers[6] +
-                               vector.z * matrix.m_Numbers[10] + matrix.m_Numbers[14]);
+            return Vec3<T>(vector.x * matrix.m_Numbers[0] + vector.y * matrix.m_Numbers[4] + vector.z * matrix.m_Numbers[8] + matrix.m_Numbers[12],
+                           vector.x * matrix.m_Numbers[1] + vector.y * matrix.m_Numbers[5] + vector.z * matrix.m_Numbers[9] + matrix.m_Numbers[13],
+                           vector.x * matrix.m_Numbers[2] + vector.y * matrix.m_Numbers[6] + vector.z * matrix.m_Numbers[10] + matrix.m_Numbers[14]);
         }
         friend inline void operator*=(Vec3<T>& vector, const Mat4<T>& matrix) { vector = vector * matrix; };
 

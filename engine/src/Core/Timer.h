@@ -22,10 +22,8 @@ namespace Wraith
             m_OldTime = m_NewTime;
             m_NewTime = std::chrono::high_resolution_clock::now();
 
-            m_DeltaTime =
-                std::chrono::duration_cast<std::chrono::duration<f32, std::ratio<1>>>(m_NewTime - m_OldTime).count();
-            m_TotalTime =
-                std::chrono::duration_cast<std::chrono::duration<f32, std::ratio<1>>>(m_NewTime - m_Time).count();
+            m_DeltaTime = std::chrono::duration_cast<std::chrono::duration<f32, std::ratio<1>>>(m_NewTime - m_OldTime).count();
+            m_TotalTime = std::chrono::duration_cast<std::chrono::duration<f32, std::ratio<1>>>(m_NewTime - m_Time).count();
         }
 
         f32 GetDeltaTime() { return m_DeltaTime; }

@@ -10,10 +10,7 @@ namespace Wraith
 
     void Material::AddTexture(u32 slot, const Texture* texture) { m_TextureList.push_back({ slot, texture }); }
 
-    void Material::AddTexture(u32 slot, StringID texture)
-    {
-        m_TextureList.push_back({ slot, &TextureManager::Get()->GetTexture(texture) });
-    }
+    void Material::AddTexture(u32 slot, StringID texture) { m_TextureList.push_back({ slot, &TextureManager::Get()->GetTexture(texture) }); }
 
     void Material::SetShader(const Shader& shader) { m_Shader = shader; }
 

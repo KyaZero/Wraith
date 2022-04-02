@@ -37,14 +37,8 @@ namespace Wraith
         f32 layer{ 0 };
         bool screen_space{ false };
 
-        void Serialize(dubu::serialize::ReadBuffer& buffer)
-        {
-            buffer >> texture >> color >> origin >> layer >> screen_space;
-        }
-        void Serialize(dubu::serialize::WriteBuffer& buffer) const
-        {
-            buffer << texture << color << origin << layer << screen_space;
-        }
+        void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> texture >> color >> origin >> layer >> screen_space; }
+        void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << texture << color << origin << layer << screen_space; }
     };
 
     struct TextComponent
@@ -100,10 +94,7 @@ namespace Wraith
 
         void DestroyScript() { instance.reset(); }
 
-        void Serialize(dubu::serialize::ReadBuffer& buffer)
-        {
-            buffer.Read(reinterpret_cast<char*>(&InstantiateScript), sizeof(InstantiateScript));
-        }
+        void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer.Read(reinterpret_cast<char*>(&InstantiateScript), sizeof(InstantiateScript)); }
         void Serialize(dubu::serialize::WriteBuffer& buffer) const
         {
             buffer.Write(reinterpret_cast<const char*>(&InstantiateScript), sizeof(InstantiateScript));

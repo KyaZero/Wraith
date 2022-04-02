@@ -61,10 +61,7 @@ namespace Wraith
 
     Texture::~Texture() { Release(); }
 
-    bool Texture::IsValid()
-    {
-        return !m_Data /*&& (m_Data->shader_resource || m_Data->texture || m_Data->depth || m_Data->render_target)*/;
-    }
+    bool Texture::IsValid() { return !m_Data /*&& (m_Data->shader_resource || m_Data->texture || m_Data->depth || m_Data->render_target)*/; }
 
     bool Texture::LoadFromFile(const std::string& path)
     {

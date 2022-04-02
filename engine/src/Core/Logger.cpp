@@ -140,8 +140,7 @@ namespace Wraith
 
     void Logger::VerifyLogPath()
     {
-        m_LogPath =
-            std::format("{}/logs/log_{:%F}.txt", TEMP_DIRECTORY.generic_string(), std::chrono::utc_clock::now());
+        m_LogPath = std::format("{}/logs/log_{:%F}.txt", TEMP_DIRECTORY.generic_string(), std::chrono::utc_clock::now());
 
         fs::create_directories(m_LogPath.parent_path());
 
@@ -187,8 +186,7 @@ namespace Wraith
     {
 #ifdef _WIN32
         auto dyed = dye::grey("[") + GetLevelString(entry.level) + dye::grey("]") + " " +
-                    dye::grey(entry.filename + ":" + std::to_string(entry.line) + ":" + entry.function + ": ") +
-                    dye::bright_white(entry.msg) + "\n";
+                    dye::grey(entry.filename + ":" + std::to_string(entry.line) + ":" + entry.function + ": ") + dye::bright_white(entry.msg) + "\n";
         std::cout << dyed;
 
         std::stringstream sstr;
@@ -197,8 +195,7 @@ namespace Wraith
         if (instance->m_ShouldLogToFile)
             instance->LogToFile(sstr.str());
 #else
-        auto log = "[" + GetLevelString(entry.level) + "]" + " " + entry.filename + ":" + std::to_string(entry.line) +
-                   ":" + entry.function + ": " + entry.msg;
+        auto log = "[" + GetLevelString(entry.level) + "]" + " " + entry.filename + ":" + std::to_string(entry.line) + ":" + entry.function + ": " + entry.msg;
         puts(log.c_str());
 
         if (instance->m_ShouldLogToFile)

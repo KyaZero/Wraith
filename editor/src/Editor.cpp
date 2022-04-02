@@ -31,14 +31,12 @@ namespace Wraith
         {
             for (i32 x = -half_num; x < half_num; ++x)
             {
-                auto e =
-                    m_ActiveScene->CreateEntity("Sprite_" + std::to_string((x + half_num) + ((y + half_num) * num)));
+                auto e = m_ActiveScene->CreateEntity("Sprite_" + std::to_string((x + half_num) + ((y + half_num) * num)));
                 auto& sprite = e.AddComponent<SpriteComponent>();
                 sprite.texture = StringID("assets/engine/textures/default.png");
                 sprite.origin = { 0.5f, 0.5f };
                 sprite.color =
-                    Vec4f{ x / (f32)half_num, y / (f32)half_num, (x / (f32)half_num + y / (f32)half_num) / 2.0f, 1 } +
-                    Vec4f{ 1.1f, 1.1f, 1.1f, 0.0f };
+                    Vec4f{ x / (f32)half_num, y / (f32)half_num, (x / (f32)half_num + y / (f32)half_num) / 2.0f, 1 } + Vec4f{ 1.1f, 1.1f, 1.1f, 0.0f };
                 sprite.layer = y;
 
                 auto& transform = e.GetComponent<TransformComponent>();
@@ -48,8 +46,7 @@ namespace Wraith
         }
 
         m_CameraEntity = m_ActiveScene->CreateEntity("Runtime Camera");
-        m_CameraEntity.AddComponent<CameraComponent>(
-            Camera(Mat4f::CreatePerspectiveProjection(90.0f, -16.0f / 9.0f, 0.01f, 100.0f)));
+        m_CameraEntity.AddComponent<CameraComponent>(Camera(Mat4f::CreatePerspectiveProjection(90.0f, -16.0f / 9.0f, 0.01f, 100.0f)));
         m_CameraEntity.GetComponent<TransformComponent>().position = { 0.0f, 0.0f, -10.0f };
 
         m_EditorCamera = EditorCamera(90.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
@@ -117,13 +114,13 @@ namespace Wraith
             transform.position.z -= 1.0f;
         }
 
-        //SettingsHandler::Register(&m_PanelManager);
+        // SettingsHandler::Register(&m_PanelManager);
     }
 
     Editor::~Editor()
     {
-        //ImGui::SaveIniSettingsToDisk(ImGui::GetIO().IniFilename);
-        //ImGui::GetIO().IniFilename = nullptr;
+        // ImGui::SaveIniSettingsToDisk(ImGui::GetIO().IniFilename);
+        // ImGui::GetIO().IniFilename = nullptr;
     }
 
     void Editor::OnUpdate(f32 dt)
@@ -177,8 +174,7 @@ namespace Wraith
                 }
                 if (ImGui::MenuItem("About"))
                 {
-                    tinyfd_messageBox(
-                        std::format("{}({})", PROJECT_NAME, ENGINE_NAME).c_str(), VERSION_TEXT, "ok", "info", 1);
+                    tinyfd_messageBox(std::format("{}({})", PROJECT_NAME, ENGINE_NAME).c_str(), VERSION_TEXT, "ok", "info", 1);
                 }
                 ImGui::EndMenu();
             }
@@ -196,11 +192,8 @@ namespace Wraith
 
                 Mat4f matrix = Mat4f::CreateTransform(transform.position, transform.rotation, transform.scale);
 
-                ImGuizmo::Manipulate(&m_EditorCamera.GetViewMatrix().m[0][0],
-                                     &m_EditorCamera.GetProjection().m[0][0],
-                                     m_GizmoOperation,
-                                     m_OperationSpace,
-                                     &matrix.m_Numbers[0]);
+                ImGuizmo::Manipulate(
+                    &m_EditorCamera.GetViewMatrix().m[0][0], &m_EditorCamera.GetProjection().m[0][0], m_GizmoOperation, m_OperationSpace, &matrix.m_Numbers[0]);
 
                 Mat4f::DecomposeMatrixToComponents(matrix, &transform.position, &transform.rotation, &transform.scale);
 

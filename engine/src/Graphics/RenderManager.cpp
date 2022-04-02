@@ -13,20 +13,20 @@ namespace Wraith
 
     bool RenderManager::Init()
     {
-        //if (!m_SpriteRenderer.Init())
+        // if (!m_SpriteRenderer.Init())
         //    return false;
 
-        //if (!m_TextRenderer.Init())
+        // if (!m_TextRenderer.Init())
         //    return false;
 
-        //if (!m_ForwardRenderer.Init())
+        // if (!m_ForwardRenderer.Init())
         //    return false;
 
-        //m_RenderTexture = std::make_unique<Texture>();
-        //m_RenderTexture->Create(m_Window.GetSize());
+        // m_RenderTexture = std::make_unique<Texture>();
+        // m_RenderTexture->Create(m_Window.GetSize());
 
-        //m_RenderDepth = std::make_unique<Texture>();
-        //m_RenderDepth->CreateDepth(m_Window.GetSize());
+        // m_RenderDepth = std::make_unique<Texture>();
+        // m_RenderDepth->CreateDepth(m_Window.GetSize());
 
         Window::RegisterResizeCallback(this, [&](auto w, auto h) { Resize(w, h); });
         return true;
@@ -36,11 +36,11 @@ namespace Wraith
 
     void RenderManager::Render()
     {
-        //m_RenderTexture->Clear({ 0.0f, 0.0f, 0.0f, 1.0f });
-        //m_RenderDepth->ClearDepth();
-        //m_RenderTexture->SetAsActiveTarget(m_RenderDepth.get());
+        // m_RenderTexture->Clear({ 0.0f, 0.0f, 0.0f, 1.0f });
+        // m_RenderDepth->ClearDepth();
+        // m_RenderTexture->SetAsActiveTarget(m_RenderDepth.get());
 
-        //for (auto& command : m_RenderCommands[CURRENT_FRAME])
+        // for (auto& command : m_RenderCommands[CURRENT_FRAME])
         //{
         //    std::visit(variant_visitor{
         //                   [&](SpriteCommand sprite) { m_SpriteRenderer.Submit(sprite); },
@@ -54,22 +54,22 @@ namespace Wraith
         //               command);
         //}
 
-        //Framework::BeginEvent("Render Meshes (Forward)");
-        //m_ForwardRenderer.Render();
-        //Framework::EndEvent();
+        // Framework::BeginEvent("Render Meshes (Forward)");
+        // m_ForwardRenderer.Render();
+        // Framework::EndEvent();
 
-        //Framework::BeginEvent("Render Sprites");
-        //m_SpriteRenderer.Render();
-        //Framework::EndEvent();
+        // Framework::BeginEvent("Render Sprites");
+        // m_SpriteRenderer.Render();
+        // Framework::EndEvent();
 
         //// Unset depth stencil
-        //m_RenderTexture->SetAsActiveTarget();
+        // m_RenderTexture->SetAsActiveTarget();
 
-        //Framework::BeginEvent("Render Text");
-        //m_TextRenderer.Render(m_RenderTexture->GetSizef());
-        //Framework::EndEvent();
+        // Framework::BeginEvent("Render Text");
+        // m_TextRenderer.Render(m_RenderTexture->GetSizef());
+        // Framework::EndEvent();
 
-        //m_RenderTexture->UnsetActiveTarget();
+        // m_RenderTexture->UnsetActiveTarget();
     }
 
     Texture& RenderManager::GetRenderTexture() { return *m_RenderTexture; }

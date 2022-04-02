@@ -70,10 +70,7 @@ namespace Wraith
 
         inline T Dot(const Vec4& other) const { return x * other.x + y * other.y + z * other.z + w * other.w; }
 
-        inline Vec4 Cross(const Vec4& other) const
-        {
-            return { y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x, 0 };
-        }
+        inline Vec4 Cross(const Vec4& other) const { return { y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x, 0 }; }
 
         inline T LengthSqr() const { return Dot(*this); }
 
@@ -91,32 +88,14 @@ namespace Wraith
 
         inline void Normalize() { *this = GetNormalized(); }
 
-        inline bool operator==(const Vec4& other) const
-        {
-            return x == other.x && y == other.y && z == other.z && w == other.w;
-        }
+        inline bool operator==(const Vec4& other) const { return x == other.x && y == other.y && z == other.z && w == other.w; }
 
-        inline bool operator!=(const Vec4& other) const
-        {
-            return x != other.x && y != other.y && z != other.z && w != other.w;
-        }
+        inline bool operator!=(const Vec4& other) const { return x != other.x && y != other.y && z != other.z && w != other.w; }
 
-        inline Vec4 operator+(const Vec4& other) const
-        {
-            return { x + other.x, y + other.y, z + other.z, w + other.w };
-        }
-        inline Vec4 operator-(const Vec4& other) const
-        {
-            return { x - other.x, y - other.y, z - other.z, w - other.w };
-        }
-        inline Vec4 operator*(const Vec4& other) const
-        {
-            return { x * other.x, y * other.y, z * other.z, w * other.w };
-        }
-        inline Vec4 operator/(const Vec4& other) const
-        {
-            return { x / other.x, y / other.y, z / other.z, w / other.w };
-        }
+        inline Vec4 operator+(const Vec4& other) const { return { x + other.x, y + other.y, z + other.z, w + other.w }; }
+        inline Vec4 operator-(const Vec4& other) const { return { x - other.x, y - other.y, z - other.z, w - other.w }; }
+        inline Vec4 operator*(const Vec4& other) const { return { x * other.x, y * other.y, z * other.z, w * other.w }; }
+        inline Vec4 operator/(const Vec4& other) const { return { x / other.x, y / other.y, z / other.z, w / other.w }; }
 
         inline Vec4 operator*(const T& scalar) const { return { x * scalar, y * scalar, z * scalar, w * scalar }; }
         inline Vec4 operator/(const T& scalar) const { return { x / scalar, y / scalar, z / scalar, w / scalar }; }

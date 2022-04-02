@@ -34,12 +34,9 @@ namespace Wraith
 
         u32 indices[] = { 2, 3, 1, 2, 1, 0 };
 
-        m_VertexBuffer.Init(
-            sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
-        m_IndexBuffer.Init(
-            sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
-        m_InstanceBuffer.Init(
-            MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
+        m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
+        m_IndexBuffer.Init(sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
+        m_InstanceBuffer.Init(MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
         m_ConstantBuffer.Init(sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant);
 
         m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
@@ -58,8 +55,7 @@ namespace Wraith
             while (!text.empty())
             {
                 auto split_pos = text.find('\n');
-                displayData.push_back(
-                    m_FontManager.ShapeText(command.font_id, text.substr(0, split_pos), command.direction));
+                displayData.push_back(m_FontManager.ShapeText(command.font_id, text.substr(0, split_pos), command.direction));
 
                 if (split_pos == text.npos)
                     break;
@@ -88,9 +84,8 @@ namespace Wraith
                         .glyph_uv_offset = glyph->uv_offset,
                         .glyph_uv_size = glyph->uv_scale,
                         .baseline_offset = glyph->offset,
-                        .character_position =
-                            sg.position - Vec2f(size.x * command.justification, baseline) +
-                            Vec2f(total_width * command.justification, total_height * command.alignment),
+                        .character_position = sg.position - Vec2f(size.x * command.justification, baseline) +
+                                              Vec2f(total_width * command.justification, total_height * command.alignment),
                         .screen_position = command.screen_position,
                         .text_scale = static_cast<f32>(command.font_size),
                         .blend_mode = command.blend_mode,
@@ -123,7 +118,7 @@ namespace Wraith
             m_InstanceBuffer.SetData(instances.data() + MAX_INSTANCES * i, num_instances * sizeof(InstanceData));
 
             m_InstanceBuffer.Bind(1);
-            //Framework::GetContext().DrawIndexedInstanced(6, num_instances, 0, 0, 0);
+            // Framework::GetContext().DrawIndexedInstanced(6, num_instances, 0, 0, 0);
         }
 
         m_BlendState.Unbind();

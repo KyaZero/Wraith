@@ -12,8 +12,7 @@ namespace Wraith
         {
             if (m_Instance)
             {
-                throw std::runtime_error(
-                    std::format("Trying to create a {} when it's already been created!", typeid(T).name()));
+                throw std::runtime_error(std::format("Trying to create a {} when it's already been created!", typeid(T).name()));
             }
             m_Instance = std::make_unique<T>(std::forward<Args>(args)...);
         }

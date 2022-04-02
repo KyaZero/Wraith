@@ -50,18 +50,10 @@ namespace Wraith
         template <typename U>
         Quat<T>(const Mat4<U>& matrix)
         {
-            w = std::sqrt(
-                    std::max(T(0), T(1) + (T)matrix.m_Numbers[0] + (T)matrix.m_Numbers[5] + (T)matrix.m_Numbers[10])) *
-                T(0.5);
-            x = std::sqrt(
-                    std::max(T(0), T(1) + (T)matrix.m_Numbers[0] - (T)matrix.m_Numbers[5] - (T)matrix.m_Numbers[10])) *
-                T(0.5);
-            y = std::sqrt(
-                    std::max(T(0), T(1) - (T)matrix.m_Numbers[0] + (T)matrix.m_Numbers[5] - (T)matrix.m_Numbers[10])) *
-                T(0.5);
-            z = std::sqrt(
-                    std::max(T(0), T(1) - (T)matrix.m_Numbers[0] - (T)matrix.m_Numbers[5] + (T)matrix.m_Numbers[10])) *
-                T(0.5);
+            w = std::sqrt(std::max(T(0), T(1) + (T)matrix.m_Numbers[0] + (T)matrix.m_Numbers[5] + (T)matrix.m_Numbers[10])) * T(0.5);
+            x = std::sqrt(std::max(T(0), T(1) + (T)matrix.m_Numbers[0] - (T)matrix.m_Numbers[5] - (T)matrix.m_Numbers[10])) * T(0.5);
+            y = std::sqrt(std::max(T(0), T(1) - (T)matrix.m_Numbers[0] + (T)matrix.m_Numbers[5] - (T)matrix.m_Numbers[10])) * T(0.5);
+            z = std::sqrt(std::max(T(0), T(1) - (T)matrix.m_Numbers[0] - (T)matrix.m_Numbers[5] + (T)matrix.m_Numbers[10])) * T(0.5);
             x = std::copysign(x, (T)matrix.m_Numbers[9] - (T)matrix.m_Numbers[6]);
             y = std::copysign(y, (T)matrix.m_Numbers[2] - (T)matrix.m_Numbers[8]);
             z = std::copysign(z, (T)matrix.m_Numbers[4] - (T)matrix.m_Numbers[1]);
@@ -211,20 +203,11 @@ namespace Wraith
 
         inline T Dot(const Quat<T>& quat) const { return x * quat.x + y * quat.y + z * quat.z + w * quat.w; }
 
-        inline Vec3<T> GetForwardVector() const
-        {
-            return Vec3<T>(2 * (x * z + w * y), 2 * (y * z - w * x), 1 - 2 * (x * x + y * y)).GetNormalized();
-        }
+        inline Vec3<T> GetForwardVector() const { return Vec3<T>(2 * (x * z + w * y), 2 * (y * z - w * x), 1 - 2 * (x * x + y * y)).GetNormalized(); }
 
-        inline Vec3<T> GetUpVector() const
-        {
-            return Vec3<T>(2 * (x * y - w * z), 1 - 2 * (x * x + z * z), 2 * (y * z + w * x)).GetNormalized();
-        }
+        inline Vec3<T> GetUpVector() const { return Vec3<T>(2 * (x * y - w * z), 1 - 2 * (x * x + z * z), 2 * (y * z + w * x)).GetNormalized(); }
 
-        inline Vec3<T> GetRightVector() const
-        {
-            return Vec3<T>(1 - 2 * (y * y + z * z), 2 * (x * y + w * z), 2 * (x * z - w * y)).GetNormalized();
-        }
+        inline Vec3<T> GetRightVector() const { return Vec3<T>(1 - 2 * (y * y + z * z), 2 * (x * y + w * z), 2 * (x * z - w * y)).GetNormalized(); }
 
         inline T GetPitch() const { return atan2(2.0 * (y * z + w * x), w * w - x * x - y * y + z * z); }
         inline T GetYaw() const { return asin(-2.0 * (x * z - w * y)); }

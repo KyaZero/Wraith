@@ -5,7 +5,7 @@ if(NOT TARGET compiler_warnings)
 
     if (MSVC)
         target_compile_options(compiler_warnings INTERFACE 
-            # /WX                     # treat warnings as errors
+            /WX                     # treat warnings as errors
             /W4						# warning level 4
             /permissive-			# standards conformance https://docs.microsoft.com/en-us/cpp/build/reference/permissive-standards-conformance?view=vs-2017
             /w14242					# 'identfier': conversion from 'type1' to 'type1', possible loss of data

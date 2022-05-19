@@ -2,7 +2,9 @@
 
 #include "Core/Math/Vec4.h"
 #include "Texture.h"
+#include "VkUtil.h"
 #include "Window/Window.h"
+#include "VkPipeline.h"
 
 namespace Wraith
 {
@@ -24,7 +26,22 @@ namespace Wraith
         void ResizeBackbuffer(u32 width, u32 height);
 
         Window& m_Window;
-        struct Data;
-        std::unique_ptr<Data> m_Data;
+
+        vk::UniqueInstance m_Instance;
+        vk::UniqueSurfaceKHR m_Surface;
+        vk::PhysicalDevice m_PhysicalDevice;
+        vk::UniqueDevice m_Device;
+        vk::UniqueSwapchainKHR m_SwapChain;
+        vk::UniqueSemaphore m_ImageAvailableSemaphore;
+        vk::UniqueSemaphore m_RenderFinishedSemaphore;
+        vk::UniqueCommandPool m_CommandPool;
+        vk::Queue m_GraphicsQueue, m_PresentQueue;
+        vk::UniqueRenderPass m_RenderPass;
+        
+        Pipeline m_Pipeline;
+
+        std::vector<vk::UniqueImageView> m_ImageViews;
+        std::vector<vk::UniqueFramebuffer> m_Framebuffers;
+        std::vector<vk::UniqueCommandBuffer> m_CommandBuffers;
     };
 }  // namespace Wraith

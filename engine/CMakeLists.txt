@@ -69,6 +69,9 @@ set(graphics_files
   "src/Graphics/ShaderReflection.cpp"
   "src/Graphics/Shader.h"
   "src/Graphics/Shader.cpp"
+  "src/Graphics/VkShader.h"
+  "src/Graphics/VkShader.cpp"
+  "src/Graphics/VkUtil.h"
   "src/Graphics/Buffer.h"
   "src/Graphics/Buffer.cpp"
   "src/Graphics/DXUtil.h"
@@ -80,7 +83,9 @@ set(graphics_files
   "src/Graphics/VkFramework.h"
   "src/Graphics/VkFramework.cpp"
   "src/Graphics/Framework.h"
-  "src/Graphics/Framework.cpp")
+  "src/Graphics/Framework.cpp"
+  "src/Graphics/VkPipeline.h"
+  "src/Graphics/VkPipeline.cpp")
 
 set(math_files
   "src/Core/Math/Vec.h"
@@ -137,15 +142,17 @@ set(all_files
   ${math_files}
   ${src_files})
 
-add_library(${target_name} STATIC ${all_files} ${SHADERS})
+add_library(${target_name} STATIC ${all_files})
 add_library(${PROJECT_NAME}::${target_name} ALIAS ${target_name})
-compile_shaders(${target_name} ${CMAKE_CURRENT_SOURCE_DIR}/src/Shaders ${PROJECT_SOURCE_DIR}/bin/shaders)
 
 target_link_libraries(${target_name} PUBLIC
     compiler_features
     compiler_warnings
     Vulkan::Vulkan
-    # SHADERC_LIB
+    $<$<CONFIG:Debug>:${SHADERC_LIBD}>
+    $<$<CONFIG:RelWithDebInfo>:${SHADERC_LIB}>
+    $<$<CONFIG:Release>:${SHADERC_LIB}>
+    $<$<CONFIG:MinSizeRel>:${SHADERC_LIB}>
     imgui
     ImGuizmo
     EnTT

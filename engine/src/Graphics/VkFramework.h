@@ -2,9 +2,11 @@
 
 #include "Core/Math/Vec4.h"
 #include "Texture.h"
+#include "VkDevice.h"
+#include "VkPipeline.h"
+#include "VkSwapchain.h"
 #include "VkUtil.h"
 #include "Window/Window.h"
-#include "VkPipeline.h"
 
 namespace Wraith
 {
@@ -16,32 +18,44 @@ namespace Wraith
 
         bool Init();
 
-        void BeginFrame(const Vec4f& clear_color);
+        vk::RenderPass GetSwapChainRenderPass() const { return m_SwapChain->GetRenderPass(); }
+        bool IsFrameInProgress() const { return m_IsFrameStarted; }
+
+        vk::CommandBuffer GetCurrentCommandBuffer() const
+        {
+            ASSERT_LOG(m_IsFrameStarted, "Cannot get command buffer when frame not in progress!");
+            return m_CommandBuffers[m_CurrentFrameIndex];
+        }
+
+        int GetFrameIndex() const
+        {
+            ASSERT_LOG(m_IsFrameStarted, "Cannot get frame index when frame not in progress!");
+            return m_CurrentFrameIndex;
+        }
+
+        vk::CommandBuffer BeginFrame();
         void EndFrame();
+
+        void BeginSwapChainRenderPass(vk::CommandBuffer command_buffer);
+        void EndSwapChainRenderPass(vk::CommandBuffer command_buffer);
 
         static void BeginEvent(std::string name);
         static void EndEvent();
 
     private:
-        void ResizeBackbuffer(u32 width, u32 height);
+        void RecreateSwapChain();
+        void CreateCommandBuffers();
+        void FreeCommandBuffers();
 
         Window& m_Window;
 
-        vk::UniqueInstance m_Instance;
-        vk::UniqueSurfaceKHR m_Surface;
-        vk::PhysicalDevice m_PhysicalDevice;
-        vk::UniqueDevice m_Device;
-        vk::UniqueSwapchainKHR m_SwapChain;
-        vk::UniqueSemaphore m_ImageAvailableSemaphore;
-        vk::UniqueSemaphore m_RenderFinishedSemaphore;
-        vk::UniqueCommandPool m_CommandPool;
-        vk::Queue m_GraphicsQueue, m_PresentQueue;
-        vk::UniqueRenderPass m_RenderPass;
-        
-        Pipeline m_Pipeline;
+        std::unique_ptr<Device> m_Device;
+        std::unique_ptr<Pipeline> m_Pipeline;
+        std::unique_ptr<SwapChain> m_SwapChain;
+        std::vector<vk::CommandBuffer> m_CommandBuffers;
 
-        std::vector<vk::UniqueImageView> m_ImageViews;
-        std::vector<vk::UniqueFramebuffer> m_Framebuffers;
-        std::vector<vk::UniqueCommandBuffer> m_CommandBuffers;
+        u32 m_CurrentImageIndex;
+        i32 m_CurrentFrameIndex;
+        bool m_IsFrameStarted;
     };
 }  // namespace Wraith

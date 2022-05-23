@@ -8,6 +8,7 @@ set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "predefined")
 include("cmake/compiler_features.cmake")
 include("cmake/compiler_warnings.cmake")
 include("cmake/auto_group_sources.cmake")
+include("cmake/compile_shaders.cmake")
 
 message("-- Finding Vulkan")
 find_package(Vulkan REQUIRED)

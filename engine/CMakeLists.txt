@@ -85,7 +85,11 @@ set(graphics_files
   "src/Graphics/Framework.h"
   "src/Graphics/Framework.cpp"
   "src/Graphics/VkPipeline.h"
-  "src/Graphics/VkPipeline.cpp")
+  "src/Graphics/VkPipeline.cpp"
+  "src/Graphics/VkDevice.h"
+  "src/Graphics/VkDevice.cpp"
+  "src/Graphics/VkSwapchain.cpp"
+  "src/Graphics/VkSwapchain.h")
 
 set(math_files
   "src/Core/Math/Vec.h"
@@ -142,8 +146,9 @@ set(all_files
   ${math_files}
   ${src_files})
 
-add_library(${target_name} STATIC ${all_files})
+add_library(${target_name} STATIC ${all_files} ${SHADERS})
 add_library(${PROJECT_NAME}::${target_name} ALIAS ${target_name})
+compile_shaders(${target_name} ${PROJECT_SOURCE_DIR}/bin/assets/engine/shaders ${PROJECT_SOURCE_DIR}/bin/assets/engine/shaders)
 
 target_link_libraries(${target_name} PUBLIC
     compiler_features

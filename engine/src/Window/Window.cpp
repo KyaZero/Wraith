@@ -37,11 +37,12 @@ namespace Wraith
             ASSERT_LOG(false, "Failed to initialize GLFW.");
         }
 
+        m_FramebufferResized = false;
         m_Resolution = resolution;
         m_CurrentTitle = title;
 
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        m_Handle = glfwCreateWindow(m_Resolution.x, m_Resolution.y, "2DGE", nullptr, nullptr);
+        m_Handle = glfwCreateWindow(m_Resolution.x, m_Resolution.y, "Wraith", nullptr, nullptr);
         if (m_Handle == nullptr)
         {
             glfwTerminate();
@@ -93,10 +94,8 @@ namespace Wraith
 
     void Window::HandleResize(GLFWwindow* handle, int width, int height)
     {
-        if (width == 0 || height == 0)
-            return;
-
         auto window = (Window*)glfwGetWindowUserPointer(handle);
+        window->m_FramebufferResized = true;
         window->m_Resolution = { (u32)width, (u32)height };
         for (const auto& [h, callback] : s_ResizeCallbacks)
         {

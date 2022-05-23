@@ -76,8 +76,8 @@ namespace Wraith
 
     void RenderManager::Resize(u32 width, u32 height)
     {
-        m_RenderTexture->Resize({ width, height });
-        m_RenderDepth->Resize({ width, height });
+        //m_RenderTexture->Resize({ width, height });
+        //m_RenderDepth->Resize({ width, height });
     }
 
     void RenderManager::Flip()

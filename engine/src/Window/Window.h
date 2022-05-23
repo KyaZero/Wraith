@@ -38,12 +38,16 @@ namespace Wraith
 
         const std::string& GetTitle() const;
 
+        void ResetResizedFlag() { m_FramebufferResized = false; }
+        bool WasResized() const { return m_FramebufferResized; }
+
     private:
         static void HandleResize(GLFWwindow* handle, int width, int height);
         static void HandleContentScale(GLFWwindow* handle, float scaleX, float scaleY);
 
         Vec2u m_Resolution;
         Vec2f m_ContentScale;
+        bool m_FramebufferResized;
 
         GLFWwindow* m_Handle;
 

@@ -6,6 +6,9 @@ namespace Wraith
         : m_Window()
         , m_Name(name)
     {
+        Logger::Create();
+        Logger::SetLevel(Logger::Level::Info);
+
         m_Window = std::make_unique<Window>(Vec2u(1600, 900), m_Name);
         m_Engine = std::make_unique<Engine>(*m_Window);
 
@@ -15,7 +18,7 @@ namespace Wraith
         }
     }
 
-    Application::~Application() { }
+    Application::~Application() { Logger::Destroy(); }
 
     bool Application::Run()
     {
@@ -28,6 +31,7 @@ namespace Wraith
             // Window events such as resizing, input, etc..
             m_Window->PollEvents();
         }
+
         return true;
     }
 }  // namespace Wraith

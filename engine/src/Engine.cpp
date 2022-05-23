@@ -15,8 +15,6 @@ namespace Wraith
         , m_Framework(window)
         , m_RenderManager(window)
     {
-        Logger::Create();
-        Logger::SetLevel(Logger::Level::Info);
         Filewatcher::Create();
         ContentManager::Create();
         TextureManager::Create();
@@ -33,7 +31,6 @@ namespace Wraith
         TextureManager::Destroy();
         ContentManager::Destroy();
         Filewatcher::Destroy();
-        Logger::Destroy();
     }
 
     bool Engine::Init(std::function<void()> ui_render_callback, std::function<void(f32)> update_callback)
@@ -52,7 +49,7 @@ namespace Wraith
         return true;
     }
 
-    void Engine::BeginFrame() { m_Framework.BeginFrame({ 0.2f, 0.2f, 0.2f, 1 }); }
+    void Engine::BeginFrame() { m_Framework.BeginFrame(); }
 
     void Engine::EndFrame()
     {

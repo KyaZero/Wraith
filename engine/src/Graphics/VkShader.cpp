@@ -4,6 +4,11 @@
 
 Wraith::VkShader::VkShader(vk::UniqueDevice& device, std::underlying_type_t<ShaderType> shader_type, const std::string& shader_path)
 {
+    m_ShaderType = shader_type;
+
+    if (LoadSpvIfExists(device, shader_path))
+        return;
+
     std::ifstream file(shader_path);
     if (!file.is_open())
     {
@@ -24,8 +29,6 @@ Wraith::VkShader::VkShader(vk::UniqueDevice& device, std::underlying_type_t<Shad
 
 bool Wraith::VkShader::Compile(vk::UniqueDevice& device, std::underlying_type_t<ShaderType> shader_type, const std::string& source, const std::string& name)
 {
-    m_ShaderType = shader_type;
-
     shaderc::Compiler compiler;
     shaderc::CompileOptions options;
     options.SetOptimizationLevel(shaderc_optimization_level_performance);
@@ -50,4 +53,47 @@ vk::PipelineShaderStageCreateInfo Wraith::VkShader::GetShaderStageInfo()
 {
     vk::ShaderStageFlagBits flags = m_ShaderType == ShaderType::Pixel ? vk::ShaderStageFlagBits::eFragment : vk::ShaderStageFlagBits::eVertex;
     return vk::PipelineShaderStageCreateInfo{ {}, flags, *m_ShaderModule, "main" };
+}
+
+bool Wraith::VkShader::IsFileTimestampNewer(const std::string& a, const std::string& b)
+{
+    auto a_timestamp = std::filesystem::last_write_time(a);
+    auto b_timestamp = std::filesystem::last_write_time(b);
+
+    if (a_timestamp >= b_timestamp)
+        return true;
+
+    return false;
+}
+
+bool Wraith::VkShader::LoadSpvIfExists(vk::UniqueDevice& device, const std::string& shader_path)
+{
+    std::string spv_path = shader_path + ".spv";
+
+    if (!std::filesystem::exists(spv_path))
+        return false;
+
+    if (!IsFileTimestampNewer(spv_path, shader_path))
+        return false;
+
+    std::ifstream file{ spv_path, std::ios::ate | std::ios::binary };
+
+    if (!file.is_open())
+    {
+        ERROR_LOG("failed to open file: {}", spv_path);
+        return false;
+    }
+
+    size_t shader_size = static_cast<size_t>(file.tellg());
+    std::vector<char> shader_code(shader_size);
+
+    file.seekg(0);
+    file.read(shader_code.data(), shader_size);
+
+    file.close();
+
+    vk::ShaderModuleCreateInfo shader_create_info({}, shader_size, (u32*)shader_code.data());
+    m_ShaderModule = HandleResult(device->createShaderModuleUnique(shader_create_info));
+
+    return true;
 }

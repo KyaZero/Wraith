@@ -14,7 +14,7 @@ namespace Wraith
         Device(Device&&) = delete;
         Device& operator=(Device&&) = delete;
         ~Device();
-        
+
         struct SwapChainSupportDetails
         {
             vk::SurfaceCapabilitiesKHR capabilities{};
@@ -40,7 +40,6 @@ namespace Wraith
                                  vk::MemoryPropertyFlags properties,
                                  vk::UniqueImage& image,
                                  vk::UniqueDeviceMemory& image_memory);
-
 
         vk::PhysicalDeviceProperties& GetProperties() { return m_Properties; }
         vk::UniqueCommandPool& GetCommandPool() { return m_CommandPool; }

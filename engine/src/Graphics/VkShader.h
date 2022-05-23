@@ -1,6 +1,7 @@
 #pragma once
-#include <Core/Types.h>
 #include <string>
+
+#include <Core/Types.h>
 
 #include "VkUtil.h"
 

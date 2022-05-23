@@ -90,7 +90,7 @@ namespace Wraith
         ASSERT_LOG(m_Data, "Buffer not Inititalized!");
 
         // auto& context = Framework::GetContext();
-        //const u32 offset = 0;
+        // const u32 offset = 0;
 
         switch (m_Data->bindFlags)
         {

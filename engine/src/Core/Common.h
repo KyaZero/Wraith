@@ -69,6 +69,14 @@ namespace Wraith
 
     inline f32 Rand() { return RandomRange(0.0f, 1.0f); }
     inline f32 Rand11() { return RandomRange(-1.0f, 1.0f); }
+
+    // from: https://stackoverflow.com/a/57595105
+    template <typename T, typename... Rest>
+    void HashCombine(std::size_t& seed, const T& v, const Rest&... rest)
+    {
+        seed ^= std::hash<T>{}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        (HashCombine(seed, rest), ...);
+    };
 }  // namespace Wraith
 
 // Variant helper

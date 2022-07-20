@@ -119,3 +119,12 @@ namespace Wraith
     using Vec3i = Vec3<i32>;
     using Vec3u = Vec3<u32>;
 }  // namespace Wraith
+
+namespace std
+{
+    template <typename T>
+    struct hash<Wraith::Vec3<T>>
+    {
+        std::size_t operator()(const Wraith::Vec3<T>& vec) const { return std::hash<T>()(vec.x) ^ std::hash<T>()(vec.y) ^ std::hash<T>()(vec.z); }
+    };
+}  // namespace std

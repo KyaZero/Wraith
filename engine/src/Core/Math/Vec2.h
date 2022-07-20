@@ -96,3 +96,12 @@ namespace Wraith
     using Vec2i = Vec2<i32>;
     using Vec2u = Vec2<u32>;
 }  // namespace Wraith
+
+namespace std
+{
+    template <typename T>
+    struct hash<Wraith::Vec2<T>>
+    {
+        std::size_t operator()(const Wraith::Vec2<T>& vec) const { return std::hash<T>()(vec.x) ^ std::hash<T>()(vec.y); }
+    };
+}  // namespace std

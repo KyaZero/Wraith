@@ -4,7 +4,8 @@
 
 #include "Camera.h"
 #include "Core/StringID.h"
-#include "Models/Model.h"
+//#include "Models/Model.h"
+#include "VkModel.h"
 
 namespace Wraith
 {
@@ -41,7 +42,8 @@ namespace Wraith
 
     struct ModelCommand
     {
-        Model model;
+        //Model model;
+        std::string model_name;
         Mat4f transform;
     };
 

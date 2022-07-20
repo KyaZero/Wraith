@@ -106,13 +106,13 @@ namespace Wraith
             text_entity.AddComponent<TextComponent>();
         }
 
-        {
+        /*{
             auto cube_entity = m_ActiveScene->CreateEntity("Cube");
             cube_entity.AddComponent<ModelComponent>(ModelManager::GetCube());
             auto& transform = cube_entity.GetComponent<TransformComponent>();
             transform.scale *= 0.1f;
             transform.position.z -= 1.0f;
-        }
+        }*/
 
         // SettingsHandler::Register(&m_PanelManager);
     }

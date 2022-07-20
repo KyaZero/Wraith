@@ -52,8 +52,8 @@ namespace Wraith
             for (const auto entity : models)
             {
                 const auto [transform, model] = models.get<TransformComponent, ModelComponent>(entity);
-                m_Renderer->Submit(ModelCommand{ .model = model.model_instance,
-                                                 .transform = Mat4f::CreateTransform(transform.position, transform.rotation, transform.scale) });
+                /*m_Renderer->Submit(ModelCommand{ .model = model.model_instance,
+                                                 .transform = Mat4f::CreateTransform(transform.position, transform.rotation, transform.scale) });*/
             }
         }
 
@@ -126,8 +126,8 @@ namespace Wraith
                 for (const auto entity : models)
                 {
                     const auto [transform, model] = models.get<TransformComponent, ModelComponent>(entity);
-                    m_Renderer->Submit(ModelCommand{ .model = model.model_instance,
-                                                     .transform = Mat4f::CreateTransform(transform.position, transform.rotation, transform.scale) });
+                    /*m_Renderer->Submit(ModelCommand{ .model = model.model_instance,
+                                                     .transform = Mat4f::CreateTransform(transform.position, transform.rotation, transform.scale) });*/
                 }
             }
         }

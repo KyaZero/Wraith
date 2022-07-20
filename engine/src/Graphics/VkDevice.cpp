@@ -103,6 +103,70 @@ void Wraith::Device::CreateImageWithInfo(const vk::ImageCreateInfo& image_info,
     }
 }
 
+void Wraith::Device::CreateBuffer(
+    vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties, vk::UniqueBuffer& buffer, vk::UniqueDeviceMemory& buffer_memory)
+{
+    vk::BufferCreateInfo buffer_info({}, size, usage, vk::SharingMode::eExclusive);
+    buffer = HandleResult(m_Device->createBufferUnique(buffer_info));
+
+    vk::MemoryRequirements requirements = m_Device->getBufferMemoryRequirements(*buffer);
+
+    vk::MemoryAllocateInfo alloc_info(requirements.size, FindMemoryType(requirements.memoryTypeBits, properties));
+    buffer_memory = HandleResult(m_Device->allocateMemoryUnique(alloc_info));
+
+    if (m_Device->bindBufferMemory(*buffer, *buffer_memory, 0) != vk::Result::eSuccess)
+    {
+        ASSERT_LOG(false, "Failed to bind buffer memory!");
+    }
+}
+
+void Wraith::Device::CopyBuffer(vk::Buffer src_buffer, vk::Buffer dst_buffer, vk::DeviceSize size)
+{
+    vk::CommandBuffer command_buffer = BeginSingleTimeCommands();
+
+    vk::BufferCopy copy_region(0, 0, size);
+    command_buffer.copyBuffer(src_buffer, dst_buffer, copy_region);
+
+    EndSingleTimeCommands(command_buffer);
+}
+
+vk::CommandBuffer Wraith::Device::BeginSingleTimeCommands()
+{
+    vk::CommandBufferAllocateInfo alloc_info(*m_CommandPool, vk::CommandBufferLevel::ePrimary, 1);
+    vk::CommandBuffer command_buffer = HandleResult(m_Device->allocateCommandBuffers(alloc_info)).front();
+    vk::CommandBufferBeginInfo begin_info(vk::CommandBufferUsageFlagBits::eOneTimeSubmit);
+    vk::Result result = command_buffer.begin(begin_info);
+    if (result != vk::Result::eSuccess)
+    {
+        ERROR_LOG("Failed to start single time command!");
+    }
+
+    return command_buffer;
+}
+
+void Wraith::Device::EndSingleTimeCommands(vk::CommandBuffer command_buffer)
+{
+    vk::Result result = command_buffer.end();
+    if (result != vk::Result::eSuccess)
+    {
+        ERROR_LOG("Failed to end single time command!");
+    }
+
+    vk::SubmitInfo submit_info({}, {}, command_buffer);
+    result = m_GraphicsQueue.submit(submit_info);
+    if (result != vk::Result::eSuccess)
+    {
+        ERROR_LOG("Failed to submit single time command!");
+    }
+    result = m_GraphicsQueue.waitIdle();
+    if (result != vk::Result::eSuccess)
+    {
+        ERROR_LOG("Failed to waitIdle!");
+    }
+
+    m_Device->freeCommandBuffers(*m_CommandPool, command_buffer);
+}
+
 void Wraith::Device::CreateInstance()
 {
     if (GetValidationLayersEnabled() && !CheckValidationLayerSupport())

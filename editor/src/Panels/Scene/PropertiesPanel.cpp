@@ -114,64 +114,64 @@ namespace Wraith
             }
         }
 
-        if (entity.HasComponent<ModelComponent>())
-        {
-            if (ImGui::CollapsingHeader("Model Component", ImGuiTreeNodeFlags_DefaultOpen))
-            {
-                auto& model = entity.GetComponent<ModelComponent>();
+        //if (entity.HasComponent<ModelComponent>())
+        //{
+        //    if (ImGui::CollapsingHeader("Model Component", ImGuiTreeNodeFlags_DefaultOpen))
+        //    {
+        //        auto& model = entity.GetComponent<ModelComponent>();
 
-                ImGui::Text("Meshes: ");
-                ImGui::Indent();
-                i32 i = 0;
-                for (auto& mesh : model.model_instance.GetMeshes())
-                {
-                    ImGui::Text("Mesh %d", i);
-                    ImGui::Indent();
-                    ImGui::Text("Material", i);
-                    ImGui::Indent();
-                    {
-                        auto& material = mesh->GetMaterial();
-                        ImGui::Text("Shader: %s", material.GetShader().GetName().c_str());
-                        ImGui::SameLine();
-                        if (ImGui::Button(std::format("Change").c_str()))
-                        {
-                            const char* filter = "*.hlsl";
-                            auto path = tinyfd_openFileDialog("Select Shader", "", 1, &filter, nullptr, 0);
-                            if (path)
-                            {
-                                Shader s(material.GetShader().GetType(), path);
-                                material.SetShader(s);
-                            }
-                        }
+        //        ImGui::Text("Meshes: ");
+        //        ImGui::Indent();
+        //        i32 i = 0;
+        //        for (auto& mesh : model.model_instance.GetMeshes())
+        //        {
+        //            ImGui::Text("Mesh %d", i);
+        //            ImGui::Indent();
+        //            ImGui::Text("Material", i);
+        //            ImGui::Indent();
+        //            {
+        //                auto& material = mesh->GetMaterial();
+        //                ImGui::Text("Shader: %s", material.GetShader().GetName().c_str());
+        //                ImGui::SameLine();
+        //                if (ImGui::Button(std::format("Change").c_str()))
+        //                {
+        //                    const char* filter = "*.hlsl";
+        //                    auto path = tinyfd_openFileDialog("Select Shader", "", 1, &filter, nullptr, 0);
+        //                    if (path)
+        //                    {
+        //                        Shader s(material.GetShader().GetType(), path);
+        //                        material.SetShader(s);
+        //                    }
+        //                }
 
-                        ImGui::Text("Textures: ");
-                        ImGui::Indent();
-                        auto& textures = material.GetTextures();
-                        for (auto& tex : textures)
-                        {
-                            i32 slot = (i32)tex.slot;
-                            ImGui::Text("Slot");
-                            ImGui::SameLine();
-                            ImGui::SliderInt(std::format("{}", (u64)&tex).c_str(), &slot, 0, 32);
-                            tex.slot = slot;
-                            // if (ImGui::ImageButton(tex.texture->GetShaderResourceView(), { 64, 64 }))
-                            {
-                                // const char* filter = "*.png";
-                                // auto path = tinyfd_openFileDialog("Select Image", "", 1, &filter, nullptr, 0);
-                                // if (path)
-                                //{
-                                //    tex = { tex.slot, &TextureManager::Get()->GetTexture(StringID(path)) };
-                                //}
-                            }
-                        }
+        //                ImGui::Text("Textures: ");
+        //                ImGui::Indent();
+        //                auto& textures = material.GetTextures();
+        //                for (auto& tex : textures)
+        //                {
+        //                    i32 slot = (i32)tex.slot;
+        //                    ImGui::Text("Slot");
+        //                    ImGui::SameLine();
+        //                    ImGui::SliderInt(std::format("{}", (u64)&tex).c_str(), &slot, 0, 32);
+        //                    tex.slot = slot;
+        //                    // if (ImGui::ImageButton(tex.texture->GetShaderResourceView(), { 64, 64 }))
+        //                    {
+        //                        // const char* filter = "*.png";
+        //                        // auto path = tinyfd_openFileDialog("Select Image", "", 1, &filter, nullptr, 0);
+        //                        // if (path)
+        //                        //{
+        //                        //    tex = { tex.slot, &TextureManager::Get()->GetTexture(StringID(path)) };
+        //                        //}
+        //                    }
+        //                }
 
-                        if (ImGui::Button("Add Texture"))
-                        {
-                            material.AddTexture(0, &TextureManager::Get()->GetDefaultTexture());
-                        }
-                    }
-                }
-            }
-        }
+        //                if (ImGui::Button("Add Texture"))
+        //                {
+        //                    material.AddTexture(0, &TextureManager::Get()->GetDefaultTexture());
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 }  // namespace Wraith

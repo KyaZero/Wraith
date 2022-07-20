@@ -38,13 +38,13 @@ void Wraith::ForwardRenderer::Render()
         //m_ObjectBuffer.SetData(m_ObjectBufferData);
         //m_ObjectBuffer.Bind(1);
 
-        for (auto& mesh : models.model.GetMeshes())
-        {
-            if (!mesh->IsValid())
-                continue;
+        //for (auto& mesh : models.model.GetMeshes())
+        //{
+        //    if (!mesh->IsValid())
+        //        continue;
 
-            mesh->Bind();
-            // context.DrawIndexed(mesh->GetNumIndices(), 0, 0);
-        }
+        //    mesh->Bind();
+        //    // context.DrawIndexed(mesh->GetNumIndices(), 0, 0);
+        //}
     }
 }

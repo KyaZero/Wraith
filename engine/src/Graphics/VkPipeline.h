@@ -8,6 +8,9 @@ namespace Wraith
 {
     struct PipelineConfig
     {
+        std::vector<vk::VertexInputBindingDescription> binding_descriptions{};
+        std::vector<vk::VertexInputAttributeDescription> attribute_descriptions{};
+
         vk::PipelineViewportStateCreateInfo viewport_state;
         vk::PipelineInputAssemblyStateCreateInfo input_assembly;
         vk::PipelineRasterizationStateCreateInfo rasterization;
@@ -38,11 +41,11 @@ namespace Wraith
         static PipelineConfig GetDefaultConfig();
 
         void Create(PipelineConfig& config, ShaderStages shader_stages, vk::UniqueDevice& device);
+        void Bind(vk::CommandBuffer command_buffer);
 
         vk::UniquePipeline& GetPipeline() { return m_Pipeline; }
 
     private:
-        vk::UniquePipelineLayout m_PipelineLayout;
         vk::UniquePipeline m_Pipeline;
     };
 }  // namespace Wraith

@@ -44,6 +44,9 @@ set(graphics_files
   "src/Graphics/Models/Model.cpp"
   "src/Graphics/Models/Material.h"
   "src/Graphics/Models/Material.cpp"
+  "src/Graphics/TestRenderSystem.h"
+  "src/Graphics/TestRenderSystem.cpp"
+  "src/Graphics/FrameInfo.h"
   "src/Graphics/BlendState.cpp"
   "src/Graphics/BlendState.h"
   "src/Graphics/ContentManager.h"
@@ -58,6 +61,7 @@ set(graphics_files
   "src/Graphics/Sampler.h"
   "src/Graphics/Sampler.cpp"
   "src/Graphics/RenderCommand.h"
+  "src/Graphics/RenderSystem.h"
   "src/Graphics/BaseRenderer.h"
   "src/Graphics/SpriteRenderer.h"
   "src/Graphics/SpriteRenderer.cpp"
@@ -88,6 +92,10 @@ set(graphics_files
   "src/Graphics/VkPipeline.cpp"
   "src/Graphics/VkDevice.h"
   "src/Graphics/VkDevice.cpp"
+  "src/Graphics/VkModel.h"
+  "src/Graphics/VkModel.cpp"
+  "src/Graphics/VkBuffer.h"
+  "src/Graphics/VkBuffer.cpp"
   "src/Graphics/VkSwapchain.cpp"
   "src/Graphics/VkSwapchain.h")
 
@@ -163,11 +171,13 @@ target_link_libraries(${target_name} PUBLIC
     EnTT
     stb
     glfw
+    glm
     color-console
     dubu_serialize
     dubu::rect_pack
     fribidi
     harfbuzz
+    tinyobjloader
     msdfgen::msdfgen
     msdfgen::msdfgen-ext
     tinyfd)

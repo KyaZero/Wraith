@@ -12,6 +12,8 @@ include("glfw.cmake")
 include("imgui.cmake")
 include("ImGuizmo.cmake")
 include("tinyfd.cmake")
+include("glm.cmake")
+include("tinyobjloader.cmake")
 
 # scene
 include("entt.cmake")

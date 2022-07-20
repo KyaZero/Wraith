@@ -41,6 +41,18 @@ namespace Wraith
                                  vk::UniqueImage& image,
                                  vk::UniqueDeviceMemory& image_memory);
 
+        void CreateBuffer(vk::DeviceSize size,
+                          vk::BufferUsageFlags usage,
+                          vk::MemoryPropertyFlags properties,
+                          vk::UniqueBuffer& buffer,
+                          vk::UniqueDeviceMemory& buffer_memory);
+
+        void CopyBuffer(vk::Buffer src_buffer, vk::Buffer dst_buffer, vk::DeviceSize size);
+
+        
+        vk::CommandBuffer BeginSingleTimeCommands();
+        void EndSingleTimeCommands(vk::CommandBuffer command_buffer);
+
         vk::PhysicalDeviceProperties& GetProperties() { return m_Properties; }
         vk::UniqueCommandPool& GetCommandPool() { return m_CommandPool; }
         vk::UniqueDevice& GetDevice() { return m_Device; }

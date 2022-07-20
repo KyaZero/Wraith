@@ -9,10 +9,10 @@ namespace Wraith
     VkFramework::VkFramework(Window& window)
         : m_Window(window)
         , m_Device(std::make_unique<Device>(window))
-        , m_Pipeline(std::make_unique<Pipeline>())
         , m_IsFrameStarted(false)
         , m_CurrentFrameIndex(0)
         , m_CurrentImageIndex(0)
+        , m_TestSystem(*m_Device)
     { }
 
     VkFramework::~VkFramework()
@@ -26,14 +26,7 @@ namespace Wraith
         RecreateSwapChain();
         CreateCommandBuffers();
 
-        VkShader vertex_shader(m_Device->GetDevice(), VkShader::ShaderType::Vertex, "assets/engine/shaders/triangle.vert");
-        VkShader fragment_shader(m_Device->GetDevice(), VkShader::ShaderType::Pixel, "assets/engine/shaders/triangle.frag");
-
-        PipelineConfig config = Pipeline::GetDefaultConfig();
-        config.render_pass = m_SwapChain->GetRenderPass();
-        config.rasterization.setPolygonMode(vk::PolygonMode::eLine);
-
-        m_Pipeline->Create(config, { vertex_shader.GetShaderStageInfo(), fragment_shader.GetShaderStageInfo() }, m_Device->GetDevice());
+        m_TestSystem.Init(m_SwapChain->GetRenderPass());
 
         INFO_LOG("Finished initializing Vulkan Framework!");
         return true;
@@ -65,6 +58,10 @@ namespace Wraith
         }
 
         BeginSwapChainRenderPass(command_buffer);
+
+        FrameInfo info;
+        info.command_buffer = command_buffer;
+        m_TestSystem.Render(info);
 
         return command_buffer;
     }
@@ -122,9 +119,6 @@ namespace Wraith
         vk::Rect2D scissor{ { 0, 0 }, m_SwapChain->GetExtent() };
         command_buffer.setViewport(0, 1, &viewport);
         command_buffer.setScissor(0, 1, &scissor);
-
-        command_buffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *m_Pipeline->GetPipeline());
-        command_buffer.draw(3, 1, 0, 0);
     }
 
     void VkFramework::EndSwapChainRenderPass(vk::CommandBuffer command_buffer)

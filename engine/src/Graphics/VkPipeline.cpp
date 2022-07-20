@@ -31,15 +31,10 @@ Wraith::PipelineConfig Wraith::Pipeline::GetDefaultConfig()
 
 void Wraith::Pipeline::Create(PipelineConfig& config, ShaderStages shader_stages, vk::UniqueDevice& device)
 {
-    m_PipelineLayout = HandleResult(device->createPipelineLayoutUnique({}, nullptr));
-
-    vk::PipelineVertexInputStateCreateInfo vertex_input_info({}, 0u, nullptr, 0u, nullptr);
+    vk::PipelineVertexInputStateCreateInfo vertex_input_info({}, config.binding_descriptions, config.attribute_descriptions);
 
     // To avoid the pointer being invalid, it's set to nullptr earlier, and here we set it
     config.color_blend.pAttachments = &config.color_blend_attachment;
-
-    // Pipeline layout should be set outside of this function later on
-    config.pipeline_layout = *m_PipelineLayout;
 
     vk::GraphicsPipelineCreateInfo pipeline_create_info({},
                                                         shader_stages,
@@ -57,4 +52,9 @@ void Wraith::Pipeline::Create(PipelineConfig& config, ShaderStages shader_stages
                                                         config.subpass);
 
     m_Pipeline = HandleResult(device->createGraphicsPipelineUnique({}, pipeline_create_info));
+}
+
+void Wraith::Pipeline::Bind(vk::CommandBuffer command_buffer)
+{
+    command_buffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *GetPipeline());
 }

@@ -7,6 +7,7 @@
 #include "VkSwapchain.h"
 #include "VkUtil.h"
 #include "Window/Window.h"
+#include "TestRenderSystem.h"
 
 namespace Wraith
 {
@@ -50,9 +51,10 @@ namespace Wraith
         Window& m_Window;
 
         std::unique_ptr<Device> m_Device;
-        std::unique_ptr<Pipeline> m_Pipeline;
         std::unique_ptr<SwapChain> m_SwapChain;
         std::vector<vk::CommandBuffer> m_CommandBuffers;
+
+        TestRenderSystem m_TestSystem;
 
         u32 m_CurrentImageIndex;
         i32 m_CurrentFrameIndex;

@@ -33,9 +33,9 @@ namespace Wraith
 
         Shader m_SpriteShader;
 
-        Buffer m_IndexBuffer;
-        Buffer m_VertexBuffer;
-        Buffer m_InstanceBuffer;
+        //Buffer m_IndexBuffer;
+        //Buffer m_VertexBuffer;
+        //Buffer m_InstanceBuffer;
 
         struct ConstantBufferData
         {
@@ -43,7 +43,7 @@ namespace Wraith
             Mat4f projection;
             Vec2f resolution;
         } m_ConstantBufferData;
-        Buffer m_ConstantBuffer;
+        //Buffer m_ConstantBuffer;
 
         struct InstanceData
         {

@@ -23,14 +23,14 @@ namespace Wraith
             Mat4f view;
         } m_FrameBufferData;
 
-        Buffer m_FrameBuffer;
+        //Buffer m_FrameBuffer;
 
         struct ObjectBuffer
         {
             Mat4f transform;
         } m_ObjectBufferData;
 
-        Buffer m_ObjectBuffer;
+        //Buffer m_ObjectBuffer;
 
         Sampler m_Sampler;
 

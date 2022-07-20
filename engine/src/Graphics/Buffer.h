@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Wraith
-{
+{/*
     enum class BufferUsage
     {
         Immutable,
@@ -42,5 +42,5 @@ namespace Wraith
     inline void Buffer::SetData(T&& data)
     {
         SetData(&data, sizeof(data));
-    }
+    }*/
 }  // namespace Wraith

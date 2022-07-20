@@ -34,10 +34,10 @@ namespace Wraith
 
         u32 indices[] = { 2, 3, 1, 2, 1, 0 };
 
-        m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
-        m_IndexBuffer.Init(sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
-        m_InstanceBuffer.Init(MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
-        m_ConstantBuffer.Init(sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant);
+        //m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
+        //m_IndexBuffer.Init(sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
+        //m_InstanceBuffer.Init(MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
+        //m_ConstantBuffer.Init(sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant);
 
         m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
 
@@ -95,29 +95,29 @@ namespace Wraith
             }
         }
 
-        m_ConstantBuffer.SetData(ConstantBufferData{
-            .projection = Mat4f::CreateOrthographicProjection(0, viewport_size.x, -viewport_size.y, 0, 0.f, 1.f),
-            .pixel_range = Font::SDF_RANGE,
-            .font_size = Font::FONT_SIZE,
-            .atlas_size = FontManager::ATLAS_SIZE,
-        });
+        //m_ConstantBuffer.SetData(ConstantBufferData{
+        //    .projection = Mat4f::CreateOrthographicProjection(0, viewport_size.x, -viewport_size.y, 0, 0.f, 1.f),
+        //    .pixel_range = Font::SDF_RANGE,
+        //    .font_size = Font::FONT_SIZE,
+        //    .atlas_size = FontManager::ATLAS_SIZE,
+        //});
 
-        m_ConstantBuffer.Bind(0);
+        //m_ConstantBuffer.Bind(0);
         m_TextShader.Bind();
         m_Sampler.Bind(0);
         m_FontManager.GetAtlas().Bind(0);
-        m_IndexBuffer.Bind();
-        m_VertexBuffer.Bind();
+        //m_IndexBuffer.Bind();
+        //m_VertexBuffer.Bind();
         m_BlendState.Bind();
 
         const u32 batches = (static_cast<u32>(instances.size()) / MAX_INSTANCES) + 1;
         for (u32 i = 0u; i < batches; ++i)
         {
-            const auto num_instances = std::min(MAX_INSTANCES, static_cast<u32>(instances.size()) - MAX_INSTANCES * i);
+            //const auto num_instances = std::min(MAX_INSTANCES, static_cast<u32>(instances.size()) - MAX_INSTANCES * i);
 
-            m_InstanceBuffer.SetData(instances.data() + MAX_INSTANCES * i, num_instances * sizeof(InstanceData));
+            //m_InstanceBuffer.SetData(instances.data() + MAX_INSTANCES * i, num_instances * sizeof(InstanceData));
 
-            m_InstanceBuffer.Bind(1);
+            //m_InstanceBuffer.Bind(1);
             // Framework::GetContext().DrawIndexedInstanced(6, num_instances, 0, 0, 0);
         }
 

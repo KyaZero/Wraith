@@ -4,7 +4,7 @@
 
 namespace Wraith
 {
-    //Model& ModelManager::GetCube()
+    // Model& ModelManager::GetCube()
     //{
     //    static Model cube_model;
 
@@ -31,27 +31,27 @@ namespace Wraith
     //    vertices.push_back({ Vec4f(0.5f, 0.5f, -0.5f, 1.0f),   Vec4f(0.0f, 1.0f, 0.0f, 0.0f),  tangent, bitangent, color, Vec2f(0.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(0.5f, 0.5f,  0.5f, 1.0f),   Vec4f(0.0f, 1.0f, 0.0f, 0.0f),  tangent, bitangent, color, Vec2f(0.0f, 1.0f) });
     //    vertices.push_back({ Vec4f(-0.5f, 0.5f,  0.5f, 1.0f),  Vec4f(0.0f, 1.0f, 0.0f, 0.0f),  tangent, bitangent, color, Vec2f(1.0f, 1.0f) });
-    //                                                                                           
+    //
     //    vertices.push_back({ Vec4f(-0.5f, -0.5f,  0.5f, 1.0f), Vec4f(0.0f, -1.0f, 0.0f, 0.0f), tangent, bitangent, color, Vec2f(1.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(0.5f, -0.5f,  0.5f, 1.0f),  Vec4f(0.0f, -1.0f, 0.0f, 0.0f), tangent, bitangent, color, Vec2f(0.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(0.5f, -0.5f, -0.5f, 1.0f),  Vec4f(0.0f, -1.0f, 0.0f, 0.0f), tangent, bitangent, color, Vec2f(0.0f, 1.0f) });
     //    vertices.push_back({ Vec4f(-0.5f, -0.5f, -0.5f, 1.0f), Vec4f(0.0f, -1.0f, 0.0f, 0.0f), tangent, bitangent, color, Vec2f(1.0f, 1.0f) });
-    //                                                                                           
+    //
     //    vertices.push_back({ Vec4f(0.5f,  0.5f,  0.5f, 1.0f),  Vec4f(1.0f, 0.0f, 0.0f, 0.0f),  tangent, bitangent, color, Vec2f(1.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(0.5f,  0.5f, -0.5f, 1.0f),  Vec4f(1.0f, 0.0f, 0.0f, 0.0f),  tangent, bitangent, color, Vec2f(0.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(0.5f, -0.5f, -0.5f, 1.0f),  Vec4f(1.0f, 0.0f, 0.0f, 0.0f),  tangent, bitangent, color, Vec2f(0.0f, 1.0f) });
     //    vertices.push_back({ Vec4f(0.5f, -0.5f,  0.5f, 1.0f),  Vec4f(1.0f, 0.0f, 0.0f, 0.0f),  tangent, bitangent, color, Vec2f(1.0f, 1.0f) });
-    //                                                                                           
+    //
     //    vertices.push_back({ Vec4f(-0.5f,  0.5f, -0.5f, 1.0f), Vec4f(-1.0f, 0.0f, 0.0f, 0.0f), tangent, bitangent, color, Vec2f(1.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(-0.5f,  0.5f,  0.5f, 1.0f), Vec4f(-1.0f, 0.0f, 0.0f, 0.0f), tangent, bitangent, color, Vec2f(0.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(-0.5f, -0.5f,  0.5f, 1.0f), Vec4f(-1.0f, 0.0f, 0.0f, 0.0f), tangent, bitangent, color, Vec2f(0.0f, 1.0f) });
     //    vertices.push_back({ Vec4f(-0.5f, -0.5f, -0.5f, 1.0f), Vec4f(-1.0f, 0.0f, 0.0f, 0.0f), tangent, bitangent, color, Vec2f(1.0f, 1.0f) });
-    //                                                                                           
+    //
     //    vertices.push_back({ Vec4f(-0.5f,  0.5f, 0.5f, 1.0f),  Vec4f(0.0f, 0.0f, 1.0f, 0.0f),  tangent, bitangent, color, Vec2f(1.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(0.5f,  0.5f, 0.5f, 1.0f),   Vec4f(0.0f, 0.0f, 1.0f, 0.0f),  tangent, bitangent, color, Vec2f(0.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(0.5f, -0.5f, 0.5f, 1.0f),   Vec4f(0.0f, 0.0f, 1.0f, 0.0f),  tangent, bitangent, color, Vec2f(0.0f, 1.0f) });
     //    vertices.push_back({ Vec4f(-0.5f, -0.5f, 0.5f, 1.0f),  Vec4f(0.0f, 0.0f, 1.0f, 0.0f),  tangent, bitangent, color, Vec2f(1.0f, 1.0f) });
-    //                                                                                           
+    //
     //    vertices.push_back({ Vec4f(0.5f,  0.5f, -0.5f, 1.0f),  Vec4f(0.0f, 0.0f, -1.0f, 0.0f), tangent, bitangent, color, Vec2f(1.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(-0.5f,  0.5f, -0.5f, 1.0f), Vec4f(0.0f, 0.0f, -1.0f, 0.0f), tangent, bitangent, color, Vec2f(0.0f, 0.0f) });
     //    vertices.push_back({ Vec4f(-0.5f, -0.5f, -0.5f, 1.0f), Vec4f(0.0f, 0.0f, -1.0f, 0.0f), tangent, bitangent, color, Vec2f(0.0f, 1.0f) });

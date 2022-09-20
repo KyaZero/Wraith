@@ -102,12 +102,11 @@ void Wraith::Device::CreateImageWithInfo(const vk::ImageCreateInfo& image_info,
     }
 }
 
-void Wraith::Device::CreateBuffer(
-    const vk::DeviceSize size,
-    const vk::BufferUsageFlags usage,
-    const vk::MemoryPropertyFlags properties,
-    vk::UniqueBuffer& buffer,
-    vk::UniqueDeviceMemory& buffer_memory)
+void Wraith::Device::CreateBuffer(const vk::DeviceSize size,
+                                  const vk::BufferUsageFlags usage,
+                                  const vk::MemoryPropertyFlags properties,
+                                  vk::UniqueBuffer& buffer,
+                                  vk::UniqueDeviceMemory& buffer_memory)
 {
     const vk::BufferCreateInfo buffer_info({}, size, usage, vk::SharingMode::eExclusive);
     buffer = HandleResult(m_Device->createBufferUnique(buffer_info));
@@ -274,7 +273,7 @@ void Wraith::Device::CreateLogicalDevice()
     QueueFamilyIndices indices = FindQueueFamilies(m_PhysicalDevice);
 
     std::vector<vk::DeviceQueueCreateInfo> queue_create_infos;
-    std::set<u32> unique_queue_families = { indices.graphics_family,indices.present_family };
+    std::set<u32> unique_queue_families = { indices.graphics_family, indices.present_family };
 
     f32 queue_priority = 1.0f;
     for (u32 queue_family : unique_queue_families)

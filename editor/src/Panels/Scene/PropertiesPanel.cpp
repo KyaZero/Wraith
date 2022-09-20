@@ -114,7 +114,7 @@ namespace Wraith
             }
         }
 
-        //if (entity.HasComponent<ModelComponent>())
+        // if (entity.HasComponent<ModelComponent>())
         //{
         //    if (ImGui::CollapsingHeader("Model Component", ImGuiTreeNodeFlags_DefaultOpen))
         //    {

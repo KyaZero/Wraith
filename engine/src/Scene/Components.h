@@ -3,8 +3,8 @@
 #include "Core/Math/Vec.h"
 #include "Core/StringID.h"
 #include "Graphics/Camera.h"
-#include "Graphics/VkModel.h"
 #include "Graphics/Text/Text.h"
+#include "Graphics/VkModel.h"
 #include "ScriptableEntity.h"
 
 namespace Wraith
@@ -75,7 +75,7 @@ namespace Wraith
 
     struct ModelComponent
     {
-        //Model model_instance;
+        // Model model_instance;
         std::string model_name;
     };
 

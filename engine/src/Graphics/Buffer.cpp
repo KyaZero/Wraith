@@ -5,7 +5,7 @@
 
 namespace Wraith
 {
-    //struct Buffer::Data
+    // struct Buffer::Data
     //{
     //    // ComPtr<ID3D11Buffer> buffer;
     //    // ComPtr<ID3D11ShaderResourceView> resource_view;
@@ -13,15 +13,15 @@ namespace Wraith
     //    u32 stride;
     //};
 
-    //Buffer::Buffer()
+    // Buffer::Buffer()
     //    : m_Data(nullptr)
     //{ }
 
-    //Buffer::Buffer(u32 size, BufferUsage usage, BufferType flags, u32 stride, const void* data) { Init(size, usage, flags, stride, data); }
+    // Buffer::Buffer(u32 size, BufferUsage usage, BufferType flags, u32 stride, const void* data) { Init(size, usage, flags, stride, data); }
 
-    //Buffer::~Buffer() { }
+    // Buffer::~Buffer() { }
 
-    //void Buffer::Init(u32 size, BufferUsage usage, BufferType flags, u32 stride, const void* data)
+    // void Buffer::Init(u32 size, BufferUsage usage, BufferType flags, u32 stride, const void* data)
     //{
     //    m_Data = std::make_unique<Data>();
 
@@ -85,7 +85,7 @@ namespace Wraith
     //    m_Data->stride = stride;
     //}
 
-    //void Buffer::Bind(i32 slot) const
+    // void Buffer::Bind(i32 slot) const
     //{
     //    ASSERT_LOG(m_Data, "Buffer not Inititalized!");
 
@@ -116,13 +116,13 @@ namespace Wraith
     //    }
     //}
 
-    //void Buffer::SetData(const void* data, u32 size)
+    // void Buffer::SetData(const void* data, u32 size)
     //{
     //    std::memcpy(Map(), data, size);
     //    Unmap();
     //}
 
-    //void* Buffer::Map()
+    // void* Buffer::Map()
     //{
     //    if (!m_Data)
     //    {
@@ -140,7 +140,7 @@ namespace Wraith
     //    return nullptr;
     //}
 
-    //void Buffer::Unmap()
+    // void Buffer::Unmap()
     //{
     //    if (!m_Data)
     //    {

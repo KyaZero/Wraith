@@ -50,10 +50,10 @@ namespace Wraith
         std::vector<char> m_FontBlob;
 
         Shader m_TextShader;
-        //Buffer m_IndexBuffer;
-        //Buffer m_VertexBuffer;
-        //Buffer m_InstanceBuffer;
-        //Buffer m_ConstantBuffer;
+        // Buffer m_IndexBuffer;
+        // Buffer m_VertexBuffer;
+        // Buffer m_InstanceBuffer;
+        // Buffer m_ConstantBuffer;
         Sampler m_Sampler;
         BlendState m_BlendState;
 

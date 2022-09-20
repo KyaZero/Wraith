@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Core/Math/Vec4.h"
+#include "TestRenderSystem.h"
 #include "Texture.h"
 #include "VkDevice.h"
 #include "VkPipeline.h"
 #include "VkSwapchain.h"
 #include "VkUtil.h"
 #include "Window/Window.h"
-#include "TestRenderSystem.h"
 
 namespace Wraith
 {

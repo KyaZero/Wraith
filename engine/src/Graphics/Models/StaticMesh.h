@@ -38,8 +38,8 @@ namespace Wraith
         void SetMaterial(const Material& material);
 
         Material& GetMaterial();
-        //Buffer& GetVertexBuffer();
-        //Buffer& GetIndexBuffer();
+        // Buffer& GetVertexBuffer();
+        // Buffer& GetIndexBuffer();
 
         u32 GetNumIndices() const;
 
@@ -49,8 +49,8 @@ namespace Wraith
         void Unbind();
 
     private:
-        //Buffer m_IndexBuffer;
-        //Buffer m_VertexBuffer;
+        // Buffer m_IndexBuffer;
+        // Buffer m_VertexBuffer;
         Material m_Material;
         u32 m_VertexCount;
         u32 m_IndexCount;

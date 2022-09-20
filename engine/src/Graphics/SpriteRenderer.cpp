@@ -7,7 +7,8 @@ namespace Wraith
 {
     SpriteRenderer::SpriteRenderer(Window& window)
         : m_CurrentCamera()
-          , m_Window(window) { }
+        , m_Window(window)
+    { }
 
     SpriteRenderer::~SpriteRenderer() { }
 
@@ -19,7 +20,7 @@ namespace Wraith
             return false;
         }
 
-        //m_ConstantBuffer.Init(sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
+        // m_ConstantBuffer.Init(sizeof(ConstantBufferData), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ConstantBufferData);
 
         // clang-format off
         f32 vertices[] = {
@@ -33,9 +34,9 @@ namespace Wraith
 
         u32 indices[] = { 2, 3, 1, 2, 1, 0 };
 
-        //m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
-        //m_IndexBuffer.Init(sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
-        //m_InstanceBuffer.Init(MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
+        // m_VertexBuffer.Init(sizeof(f32) * sizeof(vertices), BufferUsage::Immutable, BufferType::Vertex, sizeof(f32) * 4, vertices);
+        // m_IndexBuffer.Init(sizeof(u32) * sizeof(indices), BufferUsage::Immutable, BufferType::Index, sizeof(u32), indices);
+        // m_InstanceBuffer.Init(MAX_INSTANCES * sizeof(InstanceData), BufferUsage::Dynamic, BufferType::Structured, sizeof(InstanceData));
 
         m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
 
@@ -49,11 +50,11 @@ namespace Wraith
         // auto& context = Framework::GetContext();
         // context.IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
         UpdateConstantBuffer();
-        //m_ConstantBuffer.Bind(0);
+        // m_ConstantBuffer.Bind(0);
 
         m_SpriteShader.Bind();
-        //m_IndexBuffer.Bind();
-        //m_VertexBuffer.Bind();
+        // m_IndexBuffer.Bind();
+        // m_VertexBuffer.Bind();
         m_Sampler.Bind(0);
 
         auto& commands = GetCurrentCommands();
@@ -99,10 +100,10 @@ namespace Wraith
                 auto& tex = TextureManager::Get()->GetTexture(sprites.first);
                 tex.Bind(0);
 
-                //u32 num_instances = Min(MAX_INSTANCES, (u32)sprites.second.size() - (MAX_INSTANCES * i));
+                // u32 num_instances = Min(MAX_INSTANCES, (u32)sprites.second.size() - (MAX_INSTANCES * i));
 
-                //m_InstanceBuffer.SetData(&sprites.second[0] + (MAX_INSTANCES * i), num_instances * sizeof(InstanceData));
-                //m_InstanceBuffer.Bind(1);
+                // m_InstanceBuffer.SetData(&sprites.second[0] + (MAX_INSTANCES * i), num_instances * sizeof(InstanceData));
+                // m_InstanceBuffer.Bind(1);
 
                 // context.DrawIndexedInstanced(6, num_instances, 0, 0, 0);
             }
@@ -131,6 +132,6 @@ namespace Wraith
 
         m_ConstantBufferData.resolution = Vec2f(size.x, size.y);
 
-        //m_ConstantBuffer.SetData(m_ConstantBufferData);
+        // m_ConstantBuffer.SetData(m_ConstantBufferData);
     }
-} // namespace Wraith
+}  // namespace Wraith

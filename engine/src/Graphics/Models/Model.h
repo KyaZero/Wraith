@@ -3,9 +3,9 @@
 
 namespace Wraith
 {
-    //class Model
+    // class Model
     //{
-    //public:
+    // public:
     //    Model();
     //    ~Model();
 
@@ -14,7 +14,7 @@ namespace Wraith
     //    void AddMesh(std::shared_ptr<StaticMesh> mesh);
     //    bool IsValid() const;
 
-    //private:
+    // private:
     //    std::vector<std::shared_ptr<StaticMesh>> m_StaticMeshes;
     //};
 }  // namespace Wraith

@@ -49,7 +49,6 @@ namespace Wraith
 
         void CopyBuffer(vk::Buffer src_buffer, vk::Buffer dst_buffer, vk::DeviceSize size);
 
-        
         vk::CommandBuffer BeginSingleTimeCommands();
         void EndSingleTimeCommands(vk::CommandBuffer command_buffer);
 

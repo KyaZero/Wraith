@@ -42,7 +42,7 @@ namespace Wraith
 
     struct ModelCommand
     {
-        //Model model;
+        // Model model;
         std::string model_name;
         Mat4f transform;
     };

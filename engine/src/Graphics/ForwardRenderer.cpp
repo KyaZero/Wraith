@@ -6,8 +6,8 @@ Wraith::ForwardRenderer::~ForwardRenderer() { }
 
 bool Wraith::ForwardRenderer::Init()
 {
-    //m_FrameBuffer.Init(sizeof(FrameBuffer), BufferUsage::Dynamic, BufferType::Constant, 0, &m_FrameBufferData);
-    //m_ObjectBuffer.Init(sizeof(ObjectBuffer), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ObjectBufferData);
+    // m_FrameBuffer.Init(sizeof(FrameBuffer), BufferUsage::Dynamic, BufferType::Constant, 0, &m_FrameBufferData);
+    // m_ObjectBuffer.Init(sizeof(ObjectBuffer), BufferUsage::Dynamic, BufferType::Constant, 0, &m_ObjectBufferData);
 
     // TODO: Perhaps move this to the Material, to allow for per-material sampling.
     m_Sampler.Init(Sampler::Filter::Linear, Sampler::Address::Clamp);
@@ -27,18 +27,18 @@ void Wraith::ForwardRenderer::Render()
 
     m_FrameBufferData.projection = m_CurrentCamera.projection;
     m_FrameBufferData.view = m_CurrentCamera.view;
-    //m_FrameBuffer.SetData(m_FrameBufferData);
-    //m_FrameBuffer.Bind();
+    // m_FrameBuffer.SetData(m_FrameBufferData);
+    // m_FrameBuffer.Bind();
 
     m_Sampler.Bind(0);
 
     for (const auto& models : commands)
     {
         m_ObjectBufferData.transform = models.transform;
-        //m_ObjectBuffer.SetData(m_ObjectBufferData);
-        //m_ObjectBuffer.Bind(1);
+        // m_ObjectBuffer.SetData(m_ObjectBufferData);
+        // m_ObjectBuffer.Bind(1);
 
-        //for (auto& mesh : models.model.GetMeshes())
+        // for (auto& mesh : models.model.GetMeshes())
         //{
         //    if (!mesh->IsValid())
         //        continue;

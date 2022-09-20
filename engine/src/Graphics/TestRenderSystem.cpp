@@ -2,7 +2,8 @@
 
 Wraith::TestRenderSystem::TestRenderSystem(Device& device)
     : RenderSystem("Test System", device)
-      , m_Model(device) { }
+    , m_Model(device)
+{ }
 
 bool Wraith::TestRenderSystem::Init(vk::RenderPass render_pass)
 {
@@ -13,7 +14,7 @@ bool Wraith::TestRenderSystem::Init(vk::RenderPass render_pass)
     vertices.push_back(Model::Vertex{ .position = { 0.0f, -0.5f, 0 }, .color = { 1.0f, 0.0f, 0.0f }, .normal = {}, .uv = {} });
     m_Model.Create(vertices, { 0, 1, 2 });
 
-    //m_Model.LoadFromFile("assets/teapot.obj");
+    // m_Model.LoadFromFile("assets/teapot.obj");
 
     return RenderSystem::Init(render_pass);
 }

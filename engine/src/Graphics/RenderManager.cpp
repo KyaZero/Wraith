@@ -72,7 +72,7 @@ namespace Wraith
         // m_RenderTexture->UnsetActiveTarget();
     }
 
-    Texture& RenderManager::GetRenderTexture() { return *m_RenderTexture; }
+    Texture& RenderManager::GetRenderTexture() const { return *m_RenderTexture; }
 
     void RenderManager::Resize(u32 width, u32 height)
     {

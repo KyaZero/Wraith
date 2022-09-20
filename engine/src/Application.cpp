@@ -20,7 +20,7 @@ namespace Wraith
 
     Application::~Application() { Logger::Destroy(); }
 
-    bool Application::Run()
+    bool Application::Run() const
     {
         while (!m_Window->ShouldClose())
         {

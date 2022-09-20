@@ -203,7 +203,7 @@ namespace Wraith
         return m_IsValid;
     }
 
-    void Shader::Bind()
+    void Shader::Bind() const
     {
         // auto& context = Framework::GetContext();
 
@@ -224,7 +224,7 @@ namespace Wraith
         }
     }
 
-    void Shader::Unbind()
+    void Shader::Unbind() const
     {
         // auto& context = Framework::GetContext();
 
@@ -251,7 +251,7 @@ namespace Wraith
 
     std::string Shader::GetName() const { return std::filesystem::path(m_Path).filename().string(); }
 
-    bool Shader::CompileShader()
+    bool Shader::CompileShader() const
     {
         // ComPtr<ID3D11VertexShader> vertex_shader;
         // ComPtr<ID3D11InputLayout> input_layout;

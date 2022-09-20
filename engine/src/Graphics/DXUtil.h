@@ -28,7 +28,7 @@ namespace Wraith
     {
 #ifdef _DEBUG
         static int id = 0;
-        std::string n = std::format("#{}::{}[{}]", PROJECT_NAME, name, ++id);
+        const std::string n = std::format("#{}::{}[{}]", PROJECT_NAME, name, ++id);
         resource->SetPrivateData(WKPDID_D3DDebugObjectName, static_cast<u32>(n.size()), n.data());
 #endif
     }

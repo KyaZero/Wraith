@@ -61,7 +61,7 @@ namespace Wraith
 
     Texture::~Texture() { Release(); }
 
-    bool Texture::IsValid() { return !m_Data /*&& (m_Data->shader_resource || m_Data->texture || m_Data->depth || m_Data->render_target)*/; }
+    bool Texture::IsValid() const { return !m_Data /*&& (m_Data->shader_resource || m_Data->texture || m_Data->depth || m_Data->render_target)*/; }
 
     bool Texture::LoadFromFile(const std::string& path)
     {
@@ -146,7 +146,7 @@ namespace Wraith
         m_Data->size = info.size;
     }
 
-    void Texture::CreateFromTexture(ID3D11Texture2D* texture)
+    void Texture::CreateFromTexture(ID3D11Texture2D* texture) const
     {
         if (!texture)
         {
@@ -253,7 +253,7 @@ namespace Wraith
 
     void Texture::Resize(const Vec2u& size, ImageFormat format, void* data)
     {
-        bool depth = m_Data->is_depth;
+        const bool depth = m_Data->is_depth;
         Release();
         if (depth)
         {
@@ -293,16 +293,16 @@ namespace Wraith
         // Framework::GetContext().RSSetViewports(1, &viewport);
     }
 
-    void Texture::Bind(u32 slot) const
+    void Texture::Bind(u32 slot)
     {
         // Framework::GetContext().PSSetShaderResources(slot, 1, m_Data->shader_resource.GetAddressOf());
     }
 
-    void Texture::Unbind(u32 slot) const
+    void Texture::Unbind(u32 slot)
     { /*Framework::GetContext().PSGetShaderResources(slot, 1, NULL);*/
     }
 
-    void Texture::Release()
+    void Texture::Release() const
     {
         if (m_Data)
         {
@@ -325,7 +325,7 @@ namespace Wraith
 
     Vec2f Texture::GetSizef() const { return { (f32)m_Data->size.x, (f32)m_Data->size.y }; }
 
-    void Texture::Blit(const u8* data, i32 x, i32 y, i32 w, i32 h, i32 stride)
+    void Texture::Blit(const u8* data, i32 x, i32 y, i32 w, i32 h, i32 stride) const
     {
         if (!m_Data)
         {

@@ -28,13 +28,13 @@ namespace Wraith
             uint32_t present_family = 0;
             bool has_graphics = false;
             bool has_present = false;
-            bool IsComplete() { return has_graphics && has_present; }
+            bool IsComplete() const { return has_graphics && has_present; }
         };
 
         SwapChainSupportDetails GetSwapChainSupport() { return QuerySwapChainSupport(m_PhysicalDevice); }
-        u32 FindMemoryType(u32 type_filter, vk::MemoryPropertyFlags properties);
+        u32 FindMemoryType(u32 type_filter, vk::MemoryPropertyFlags properties) const;
         QueueFamilyIndices FindPhysicalQueueFamilies() { return FindQueueFamilies(m_PhysicalDevice); }
-        vk::Format FindSupportedFormat(const std::vector<vk::Format>& candidates, vk::ImageTiling tiling, vk::FormatFeatureFlags features);
+        vk::Format FindSupportedFormat(const std::vector<vk::Format>& candidates, vk::ImageTiling tiling, vk::FormatFeatureFlags features) const;
 
         void CreateImageWithInfo(const vk::ImageCreateInfo& image_info,
                                  vk::MemoryPropertyFlags properties,
@@ -60,7 +60,7 @@ namespace Wraith
         vk::Queue& GraphicsQueue() { return m_GraphicsQueue; }
         vk::Queue& PresentQueue() { return m_PresentQueue; }
 
-        bool GetValidationLayersEnabled()
+        static bool GetValidationLayersEnabled()
         {
 #ifdef NDEBUG
             return false;
@@ -78,15 +78,15 @@ namespace Wraith
         void CreateLogicalDevice();
         void CreateCommandPool();
 
-        bool CheckValidationLayerSupport();
-        std::vector<const char*> GetValidationLayers();
-        std::vector<const char*> GetRequiredExtensions();
-        std::vector<const char*> GetDeviceExtensions();
+        bool CheckValidationLayerSupport() const;
+        static std::vector<const char*> GetValidationLayers();
+        static std::vector<const char*> GetRequiredExtensions();
+        static std::vector<const char*> GetDeviceExtensions();
 
         bool IsSuitableDevice(vk::PhysicalDevice device);
         bool IsPreferredDevice(vk::PhysicalDevice device);
         QueueFamilyIndices FindQueueFamilies(vk::PhysicalDevice device);
-        void HasGLFWRequiredInstanceExtensions();
+        void HasGlfwRequiredInstanceExtensions() const;
         bool CheckDeviceExtensionSupport(vk::PhysicalDevice device);
         SwapChainSupportDetails QuerySwapChainSupport(vk::PhysicalDevice device);
 

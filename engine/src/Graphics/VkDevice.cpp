@@ -50,9 +50,9 @@ Wraith::Device::~Device()
     DestroyDebugMessenger();
 }
 
-u32 Wraith::Device::FindMemoryType(u32 type_filter, vk::MemoryPropertyFlags properties)
+u32 Wraith::Device::FindMemoryType(const u32 type_filter, const vk::MemoryPropertyFlags properties) const
 {
-    vk::PhysicalDeviceMemoryProperties mem_props = m_PhysicalDevice.getMemoryProperties();
+    const vk::PhysicalDeviceMemoryProperties mem_props = m_PhysicalDevice.getMemoryProperties();
     for (u32 i = 0; i < mem_props.memoryTypeCount; ++i)
     {
         if ((type_filter & (1 << i)) && (mem_props.memoryTypes[i].propertyFlags & properties) == properties)
@@ -65,20 +65,19 @@ u32 Wraith::Device::FindMemoryType(u32 type_filter, vk::MemoryPropertyFlags prop
     return {};
 }
 
-vk::Format Wraith::Device::FindSupportedFormat(const std::vector<vk::Format>& candidates, vk::ImageTiling tiling, vk::FormatFeatureFlags features)
+vk::Format Wraith::Device::FindSupportedFormat(const std::vector<vk::Format>& candidates,
+                                               const vk::ImageTiling tiling,
+                                               const vk::FormatFeatureFlags features) const
 {
-    for (vk::Format format : candidates)
+    for (const vk::Format format : candidates)
     {
-        vk::FormatProperties props = m_PhysicalDevice.getFormatProperties(format);
+        const vk::FormatProperties props = m_PhysicalDevice.getFormatProperties(format);
 
         if (tiling == vk::ImageTiling::eLinear && (props.linearTilingFeatures & features) == features)
-        {
             return format;
-        }
-        else if (tiling == vk::ImageTiling::eOptimal && (props.optimalTilingFeatures & features) == features)
-        {
+
+        if (tiling == vk::ImageTiling::eOptimal && (props.optimalTilingFeatures & features) == features)
             return format;
-        }
     }
 
     ASSERT_LOG(false, "Failed to find supported format!");
@@ -92,8 +91,8 @@ void Wraith::Device::CreateImageWithInfo(const vk::ImageCreateInfo& image_info,
 {
     image = HandleResult(m_Device->createImageUnique(image_info));
 
-    vk::MemoryRequirements requirements = m_Device->getImageMemoryRequirements(*image);
-    vk::MemoryAllocateInfo alloc_info(requirements.size, FindMemoryType(requirements.memoryTypeBits, properties));
+    const vk::MemoryRequirements requirements = m_Device->getImageMemoryRequirements(*image);
+    const vk::MemoryAllocateInfo alloc_info(requirements.size, FindMemoryType(requirements.memoryTypeBits, properties));
 
     image_memory = HandleResult(m_Device->allocateMemoryUnique(alloc_info));
 
@@ -104,14 +103,18 @@ void Wraith::Device::CreateImageWithInfo(const vk::ImageCreateInfo& image_info,
 }
 
 void Wraith::Device::CreateBuffer(
-    vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties, vk::UniqueBuffer& buffer, vk::UniqueDeviceMemory& buffer_memory)
+    const vk::DeviceSize size,
+    const vk::BufferUsageFlags usage,
+    const vk::MemoryPropertyFlags properties,
+    vk::UniqueBuffer& buffer,
+    vk::UniqueDeviceMemory& buffer_memory)
 {
-    vk::BufferCreateInfo buffer_info({}, size, usage, vk::SharingMode::eExclusive);
+    const vk::BufferCreateInfo buffer_info({}, size, usage, vk::SharingMode::eExclusive);
     buffer = HandleResult(m_Device->createBufferUnique(buffer_info));
 
-    vk::MemoryRequirements requirements = m_Device->getBufferMemoryRequirements(*buffer);
+    const vk::MemoryRequirements requirements = m_Device->getBufferMemoryRequirements(*buffer);
 
-    vk::MemoryAllocateInfo alloc_info(requirements.size, FindMemoryType(requirements.memoryTypeBits, properties));
+    const vk::MemoryAllocateInfo alloc_info(requirements.size, FindMemoryType(requirements.memoryTypeBits, properties));
     buffer_memory = HandleResult(m_Device->allocateMemoryUnique(alloc_info));
 
     if (m_Device->bindBufferMemory(*buffer, *buffer_memory, 0) != vk::Result::eSuccess)
@@ -120,9 +123,9 @@ void Wraith::Device::CreateBuffer(
     }
 }
 
-void Wraith::Device::CopyBuffer(vk::Buffer src_buffer, vk::Buffer dst_buffer, vk::DeviceSize size)
+void Wraith::Device::CopyBuffer(const vk::Buffer src_buffer, const vk::Buffer dst_buffer, const vk::DeviceSize size)
 {
-    vk::CommandBuffer command_buffer = BeginSingleTimeCommands();
+    const vk::CommandBuffer command_buffer = BeginSingleTimeCommands();
 
     vk::BufferCopy copy_region(0, 0, size);
     command_buffer.copyBuffer(src_buffer, dst_buffer, copy_region);
@@ -132,10 +135,10 @@ void Wraith::Device::CopyBuffer(vk::Buffer src_buffer, vk::Buffer dst_buffer, vk
 
 vk::CommandBuffer Wraith::Device::BeginSingleTimeCommands()
 {
-    vk::CommandBufferAllocateInfo alloc_info(*m_CommandPool, vk::CommandBufferLevel::ePrimary, 1);
-    vk::CommandBuffer command_buffer = HandleResult(m_Device->allocateCommandBuffers(alloc_info)).front();
-    vk::CommandBufferBeginInfo begin_info(vk::CommandBufferUsageFlagBits::eOneTimeSubmit);
-    vk::Result result = command_buffer.begin(begin_info);
+    const vk::CommandBufferAllocateInfo alloc_info(*m_CommandPool, vk::CommandBufferLevel::ePrimary, 1);
+    const vk::CommandBuffer command_buffer = HandleResult(m_Device->allocateCommandBuffers(alloc_info)).front();
+    const vk::CommandBufferBeginInfo begin_info(vk::CommandBufferUsageFlagBits::eOneTimeSubmit);
+    const vk::Result result = command_buffer.begin(begin_info);
     if (result != vk::Result::eSuccess)
     {
         ERROR_LOG("Failed to start single time command!");
@@ -174,13 +177,13 @@ void Wraith::Device::CreateInstance()
         ASSERT_LOG(false, "Validation layers requested, but not available!");
     }
 
-    vk::ApplicationInfo app_info("Wraith", VK_MAKE_VERSION(1, 0, 0), "Wraith Engine", VK_MAKE_VERSION(1, 0, 0), VK_API_VERSION_1_2);
+    constexpr vk::ApplicationInfo app_info("Wraith", VK_MAKE_VERSION(1, 0, 0), "Wraith Engine", VK_MAKE_VERSION(1, 0, 0), VK_API_VERSION_1_2);
 
-    auto required_extensions = GetRequiredExtensions();
+    const auto required_extensions = GetRequiredExtensions();
 
     vk::InstanceCreateInfo instance_info({}, &app_info, 0, nullptr, (u32)required_extensions.size(), required_extensions.data());
 
-    auto validation_layers = GetValidationLayers();
+    const auto validation_layers = GetValidationLayers();
     if (GetValidationLayersEnabled())
     {
         instance_info.enabledLayerCount = (u32)validation_layers.size();
@@ -189,7 +192,7 @@ void Wraith::Device::CreateInstance()
 
     m_Instance = HandleResult(vk::createInstanceUnique(instance_info));
 
-    HasGLFWRequiredInstanceExtensions();
+    HasGlfwRequiredInstanceExtensions();
 }
 
 void Wraith::Device::SetupDebugMessenger()
@@ -197,14 +200,14 @@ void Wraith::Device::SetupDebugMessenger()
     if (!GetValidationLayersEnabled())
         return;
 
-    auto severity_flags = vk::DebugUtilsMessageSeverityFlagBitsEXT::eError | vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
-                          vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose | vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo;
+    const auto severity_flags = vk::DebugUtilsMessageSeverityFlagBitsEXT::eError | vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
+                                vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose | vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo;
 
-    auto type_flags =
+    const auto type_flags =
         vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral | vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation | vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance;
 
-    vk::DispatchLoaderDynamic dispatch_loader(*m_Instance, vkGetInstanceProcAddr);
-    vk::DebugUtilsMessengerCreateInfoEXT messenger_create_info({}, severity_flags, type_flags, DebugCallback);
+    const vk::DispatchLoaderDynamic dispatch_loader(*m_Instance, vkGetInstanceProcAddr);
+    const vk::DebugUtilsMessengerCreateInfoEXT messenger_create_info({}, severity_flags, type_flags, DebugCallback);
     m_DebugMessenger = HandleResult(m_Instance->createDebugUtilsMessengerEXT(messenger_create_info, nullptr, dispatch_loader));
 }
 
@@ -212,7 +215,7 @@ void Wraith::Device::DestroyDebugMessenger()
 {
     if (!GetValidationLayersEnabled())
         return;
-    vk::DispatchLoaderDynamic dispatch_loader(*m_Instance, vkGetInstanceProcAddr);
+    const vk::DispatchLoaderDynamic dispatch_loader(*m_Instance, vkGetInstanceProcAddr);
     m_Instance->destroyDebugUtilsMessengerEXT(m_DebugMessenger, nullptr, dispatch_loader);
 }
 
@@ -230,7 +233,7 @@ void Wraith::Device::CreateSurface()
 
 void Wraith::Device::PickPhysicalDevice()
 {
-    std::vector<vk::PhysicalDevice> physical_devices = HandleResult(m_Instance->enumeratePhysicalDevices());
+    const std::vector<vk::PhysicalDevice> physical_devices = HandleResult(m_Instance->enumeratePhysicalDevices());
 
     VERBOSE_LOG("Available Physical Devices: ");
     for (auto& device : physical_devices)
@@ -271,7 +274,7 @@ void Wraith::Device::CreateLogicalDevice()
     QueueFamilyIndices indices = FindQueueFamilies(m_PhysicalDevice);
 
     std::vector<vk::DeviceQueueCreateInfo> queue_create_infos;
-    std::set<u32> unique_queue_families = { indices.graphics_family, indices.present_family };
+    std::set<u32> unique_queue_families = { indices.graphics_family,indices.present_family };
 
     f32 queue_priority = 1.0f;
     for (u32 queue_family : unique_queue_families)
@@ -297,25 +300,24 @@ void Wraith::Device::CreateLogicalDevice()
 
 void Wraith::Device::CreateCommandPool()
 {
-    QueueFamilyIndices queue_family_indices = FindPhysicalQueueFamilies();
+    const QueueFamilyIndices queue_family_indices = FindPhysicalQueueFamilies();
 
-    vk::CommandPoolCreateInfo pool_info(vk::CommandPoolCreateFlagBits::eTransient | vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
-                                        queue_family_indices.graphics_family);
+    const vk::CommandPoolCreateInfo pool_info(vk::CommandPoolCreateFlagBits::eTransient | vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
+                                              queue_family_indices.graphics_family);
 
     m_CommandPool = HandleResult(m_Device->createCommandPoolUnique(pool_info));
 }
 
 std::vector<const char*> Wraith::Device::GetValidationLayers()
 {
-    const std::vector<const char*> validation_layers = { "VK_LAYER_KHRONOS_validation" };
+    std::vector<const char*> validation_layers = { "VK_LAYER_KHRONOS_validation" };
     return validation_layers;
 }
 
 std::vector<const char*> Wraith::Device::GetRequiredExtensions()
 {
     uint32_t glfw_extension_count = 0;
-    const char** glfw_extensions;
-    glfw_extensions = glfwGetRequiredInstanceExtensions(&glfw_extension_count);
+    const char** glfw_extensions = glfwGetRequiredInstanceExtensions(&glfw_extension_count);
 
     std::vector<const char*> required_extensions(glfw_extensions, glfw_extensions + glfw_extension_count);
 
@@ -327,7 +329,7 @@ std::vector<const char*> Wraith::Device::GetRequiredExtensions()
 
 std::vector<const char*> Wraith::Device::GetDeviceExtensions()
 {
-    const std::vector<const char*> device_extensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+    std::vector<const char*> device_extensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     return device_extensions;
 }
 
@@ -358,7 +360,7 @@ bool Wraith::Device::IsPreferredDevice(vk::PhysicalDevice device)
         return false;
     }
 
-    vk::PhysicalDeviceProperties properties = device.getProperties();
+    const vk::PhysicalDeviceProperties properties = device.getProperties();
 
     return properties.deviceType == vk::PhysicalDeviceType::eDiscreteGpu;
 }
@@ -366,7 +368,7 @@ bool Wraith::Device::IsPreferredDevice(vk::PhysicalDevice device)
 Wraith::Device::QueueFamilyIndices Wraith::Device::FindQueueFamilies(vk::PhysicalDevice device)
 {
     QueueFamilyIndices indices;
-    std::vector<vk::QueueFamilyProperties> queue_families = device.getQueueFamilyProperties();
+    const std::vector<vk::QueueFamilyProperties> queue_families = device.getQueueFamilyProperties();
 
     i32 i = 0;
     for (const auto& family : queue_families)
@@ -377,7 +379,7 @@ Wraith::Device::QueueFamilyIndices Wraith::Device::FindQueueFamilies(vk::Physica
             indices.has_graphics = true;
         }
 
-        vk::Bool32 present_support = HandleResult(device.getSurfaceSupportKHR(i, *m_Surface));
+        const vk::Bool32 present_support = HandleResult(device.getSurfaceSupportKHR(i, *m_Surface));
         if (family.queueCount > 0 && present_support)
         {
             indices.present_family = i;
@@ -393,9 +395,9 @@ Wraith::Device::QueueFamilyIndices Wraith::Device::FindQueueFamilies(vk::Physica
     return indices;
 }
 
-void Wraith::Device::HasGLFWRequiredInstanceExtensions()
+void Wraith::Device::HasGlfwRequiredInstanceExtensions() const
 {
-    std::vector<vk::ExtensionProperties> extensions = HandleResult(vk::enumerateInstanceExtensionProperties());
+    const std::vector<vk::ExtensionProperties> extensions = HandleResult(vk::enumerateInstanceExtensionProperties());
 
     VERBOSE_LOG("Available Vulkan Instance Extensions: ");
 
@@ -407,11 +409,11 @@ void Wraith::Device::HasGLFWRequiredInstanceExtensions()
     }
 
     VERBOSE_LOG("Required Extensions: ");
-    auto required_extensions = GetRequiredExtensions();
+    const auto required_extensions = GetRequiredExtensions();
     for (const auto& required : required_extensions)
     {
         VERBOSE_LOG("\t {}", required);
-        if (available.find(required) == available.end())
+        if (!available.contains(required))
         {
             VERBOSE_LOG("Missing required glfw extension");
         }
@@ -420,7 +422,7 @@ void Wraith::Device::HasGLFWRequiredInstanceExtensions()
 
 bool Wraith::Device::CheckDeviceExtensionSupport(vk::PhysicalDevice device)
 {
-    std::vector<vk::ExtensionProperties> available_extensions = HandleResult(device.enumerateDeviceExtensionProperties());
+    const std::vector<vk::ExtensionProperties> available_extensions = HandleResult(device.enumerateDeviceExtensionProperties());
 
     auto device_extensions = GetDeviceExtensions();
     std::set<std::string> required_extensions(device_extensions.begin(), device_extensions.end());
@@ -442,9 +444,9 @@ Wraith::Device::SwapChainSupportDetails Wraith::Device::QuerySwapChainSupport(vk
     return details;
 }
 
-bool Wraith::Device::CheckValidationLayerSupport()
+bool Wraith::Device::CheckValidationLayerSupport() const
 {
-    std::vector<vk::LayerProperties> available_layers = HandleResult(vk::enumerateInstanceLayerProperties());
+    const std::vector<vk::LayerProperties> available_layers = HandleResult(vk::enumerateInstanceLayerProperties());
 
     for (const char* layer_name : GetValidationLayers())
     {

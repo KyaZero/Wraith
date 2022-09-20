@@ -49,7 +49,7 @@ namespace Wraith
             return std::nullopt;
         }
 
-        if (auto it = m_Glyphs.find({ font_id, glyph_index.getIndex() }); it != m_Glyphs.end())
+        if (const auto it = m_Glyphs.find({ font_id, glyph_index.getIndex() }); it != m_Glyphs.end())
         {
             return it->second;
         }
@@ -64,7 +64,7 @@ namespace Wraith
 
     Font& FontManager::GetFont(StringID font_id)
     {
-        if (auto it = m_Fonts.find(font_id); it == m_Fonts.end())
+        if (const auto it = m_Fonts.find(font_id); it == m_Fonts.end())
         {
             if (!LoadFont(font_id))
             {
@@ -75,7 +75,7 @@ namespace Wraith
     }
     bool FontManager::LoadFont(StringID font_id)
     {
-        auto path = ContentManager::Get()->GetPath(font_id);
+        const auto path = ContentManager::Get()->GetPath(font_id);
 
         if (!path || !std::filesystem::exists(*path))
             return false;

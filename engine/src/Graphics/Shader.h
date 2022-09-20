@@ -21,8 +21,8 @@ namespace Wraith
 
         bool Load(std::underlying_type_t<ShaderType> shader_type, const std::string& path);
 
-        void Bind();
-        void Unbind();
+        void Bind() const;
+        void Unbind() const;
 
         bool IsValid() const;
 
@@ -31,7 +31,7 @@ namespace Wraith
         std::string GetName() const;
 
     private:
-        bool CompileShader();
+        bool CompileShader() const;
 
         struct Data;
         std::unique_ptr<Data> m_Data;

@@ -16,7 +16,7 @@ namespace Wraith
         { }
         StringID(const std::string& path)
         {
-            IDType id = ContentManager::Get()->Register(path);
+            const IDType id = ContentManager::Get()->Register(path);
             m_Hash = id;
         }
 

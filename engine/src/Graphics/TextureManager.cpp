@@ -9,7 +9,7 @@ namespace Wraith
         auto it = m_TextureMap.find(id);
         if (it == m_TextureMap.end())
         {
-            auto path = ContentManager::Get()->GetPath(id);
+            const auto path = ContentManager::Get()->GetPath(id);
 
             if (!path)
             {

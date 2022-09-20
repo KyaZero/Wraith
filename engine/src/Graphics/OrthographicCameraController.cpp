@@ -70,7 +70,7 @@ namespace Wraith
 
         if (m_Input.IsScrolling())
         {
-            auto scroll = m_Input.GetScrollState();
+            const auto scroll = m_Input.GetScrollState();
             m_ZoomLevel -= scroll.y_offset * 0.0025f;
             m_ZoomLevel = Max(m_ZoomLevel, 0.0025f);
             SetProjection(m_Bounds.x, m_Bounds.y);

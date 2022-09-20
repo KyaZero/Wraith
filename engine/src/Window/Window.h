@@ -19,8 +19,8 @@ namespace Wraith
 
         void Create(Vec2u resolution, const std::string& title);
 
-        bool ShouldClose();
-        void PollEvents();
+        bool ShouldClose() const;
+        static void PollEvents();
 
         static void RegisterResizeCallback(Handle handle, ResizeCallback callback);
         static void UnregisterResizeCallback(Handle handle);
@@ -33,7 +33,7 @@ namespace Wraith
         GLFWwindow* GetHandle() const;
         void* GetPlatformHandle() const;
 
-        void SetSize(const Vec2u& size);
+        void SetSize(const Vec2u& size) const;
         void SetTitle(const std::string& title);
 
         const std::string& GetTitle() const;

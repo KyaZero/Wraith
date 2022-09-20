@@ -26,7 +26,7 @@ namespace Wraith
         vk::PipelineShaderStageCreateInfo GetShaderStageInfo();
 
     private:
-        bool IsFileTimestampNewer(const std::string& a, const std::string& b);
+        bool IsFileTimestampNewer(const std::string& a, const std::string& b) const;
         bool LoadSpvIfExists(vk::UniqueDevice& device, const std::string& shader_path);
         vk::UniqueShaderModule m_ShaderModule;
         std::underlying_type_t<ShaderType> m_ShaderType;

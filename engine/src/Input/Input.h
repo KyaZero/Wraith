@@ -35,11 +35,11 @@ namespace Wraith
         bool IsScrolling() const;
         ScrollState GetScrollState() const;
 
-        bool IsEnabled();
+        bool IsEnabled() const;
         void SetEnabled(bool value);
 
-        f64 GetMouseX();
-        f64 GetMouseY();
+        f64 GetMouseX() const;
+        f64 GetMouseY() const;
 
         Vec2f GetMousePos();
 

@@ -36,7 +36,7 @@ namespace Wraith
     {
         ASSERT_LOG(!m_IsFrameStarted, "Can't call BeginFrame while frame already in progress!");
 
-        vk::Result result = m_SwapChain->AcquireNextImage(m_CurrentImageIndex);
+        const vk::Result result = m_SwapChain->AcquireNextImage(m_CurrentImageIndex);
         if (result == vk::Result::eErrorOutOfDateKHR)
         {
             RecreateSwapChain();
@@ -50,7 +50,7 @@ namespace Wraith
 
         m_IsFrameStarted = true;
 
-        auto command_buffer = GetCurrentCommandBuffer();
+        const auto command_buffer = GetCurrentCommandBuffer();
 
         if (command_buffer.begin(vk::CommandBufferBeginInfo{}) != vk::Result::eSuccess)
         {
@@ -70,7 +70,7 @@ namespace Wraith
     {
         ASSERT_LOG(m_IsFrameStarted, "Can't call EndFrame while frame is not in progress!");
 
-        auto command_buffer = GetCurrentCommandBuffer();
+        const auto command_buffer = GetCurrentCommandBuffer();
 
         EndSwapChainRenderPass(command_buffer);
 
@@ -79,7 +79,7 @@ namespace Wraith
             ASSERT_LOG(false, "Failed to record Command Buffer!");
         }
 
-        vk::Result result = m_SwapChain->SubmitCommandBuffers(command_buffer, m_CurrentImageIndex);
+        const vk::Result result = m_SwapChain->SubmitCommandBuffers(command_buffer, m_CurrentImageIndex);
         if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR || m_Window.WasResized())
         {
             m_Window.ResetResizedFlag();
@@ -94,7 +94,7 @@ namespace Wraith
         m_CurrentFrameIndex = (m_CurrentFrameIndex + 1) % SwapChain::GetMaxFramesInFlight();
     }
 
-    void VkFramework::BeginSwapChainRenderPass(vk::CommandBuffer command_buffer)
+    void VkFramework::BeginSwapChainRenderPass(vk::CommandBuffer command_buffer) const
     {
         ASSERT_LOG(m_IsFrameStarted, "Can't call BeginSwapChainRenderPass if frame is not in progress!");
         ASSERT_LOG(command_buffer == GetCurrentCommandBuffer() && "Can't begin render pass on command buffer from a different frame");
@@ -103,7 +103,7 @@ namespace Wraith
         clear_values[0].color = std::array<f32, 4>{ 0.01f, 0.01f, 0.01f, 1.0f };
         clear_values[1].depthStencil = vk::ClearDepthStencilValue({ 1.0f, 1 });
 
-        vk::RenderPassBeginInfo render_pass_info(
+        const vk::RenderPassBeginInfo render_pass_info(
             m_SwapChain->GetRenderPass(), m_SwapChain->GetFrameBuffer(m_CurrentImageIndex), vk::Rect2D({ 0, 0 }, m_SwapChain->GetExtent()), clear_values);
 
         command_buffer.beginRenderPass(render_pass_info, vk::SubpassContents::eInline);
@@ -116,12 +116,12 @@ namespace Wraith
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
 
-        vk::Rect2D scissor{ { 0, 0 }, m_SwapChain->GetExtent() };
+        const vk::Rect2D scissor{ { 0, 0 }, m_SwapChain->GetExtent() };
         command_buffer.setViewport(0, 1, &viewport);
         command_buffer.setScissor(0, 1, &scissor);
     }
 
-    void VkFramework::EndSwapChainRenderPass(vk::CommandBuffer command_buffer)
+    void VkFramework::EndSwapChainRenderPass(vk::CommandBuffer command_buffer) const
     {
         ASSERT_LOG(m_IsFrameStarted, "Can't call EndSwapChainRenderPass if frame is not in progress!");
         ASSERT_LOG(command_buffer == GetCurrentCommandBuffer() && "Can't end render pass on command buffer from a different frame");
@@ -150,11 +150,11 @@ namespace Wraith
         }
         else
         {
-            std::shared_ptr<SwapChain> oldSwapChain = std::move(m_SwapChain);
+            std::shared_ptr<SwapChain> old_swap_chain = std::move(m_SwapChain);
 
-            m_SwapChain = std::make_unique<SwapChain>(*m_Device, extent, oldSwapChain);
+            m_SwapChain = std::make_unique<SwapChain>(*m_Device, extent, old_swap_chain);
 
-            if (!oldSwapChain->CompareFormats(*m_SwapChain.get()))
+            if (!old_swap_chain->CompareFormats(*m_SwapChain))
             {
                 ASSERT_LOG(false, "Swap chain image(or depth) format has changed!");
             }
@@ -165,7 +165,7 @@ namespace Wraith
     {
         m_CommandBuffers.resize(SwapChain::GetMaxFramesInFlight());
 
-        vk::CommandBufferAllocateInfo alloc_info(*m_Device->GetCommandPool(), vk::CommandBufferLevel::ePrimary, (u32)m_CommandBuffers.size());
+        const vk::CommandBufferAllocateInfo alloc_info(*m_Device->GetCommandPool(), vk::CommandBufferLevel::ePrimary, (u32)m_CommandBuffers.size());
         m_CommandBuffers = HandleResult(m_Device->GetDevice()->allocateCommandBuffers(alloc_info));
     }
 

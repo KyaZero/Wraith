@@ -8,7 +8,7 @@ namespace Wraith
         : m_FrameIndex(0)
     {
         // Leaving atleast one thread for the main loop
-        i32 num_logical_cores = std::thread::hardware_concurrency() - 1;
+        const i32 num_logical_cores = std::thread::hardware_concurrency() - 1;
 
         // Half the threads for persistent jobs, and half for processing jobs
         i32 num_threads = std::max(num_logical_cores / 2, 1);
@@ -69,7 +69,7 @@ namespace Wraith
         }
     }
 
-    void ThreadScheduler::Sync()
+    void ThreadScheduler::Sync() const
     {
         bool done = false;
         while (!done)
@@ -103,15 +103,15 @@ namespace Wraith
         });
 
         i32 thread_index = 0;
-        for (auto& job : m_PersistentJobs)
+        for (const auto& job : m_PersistentJobs)
         {
-            auto index = thread_index++ % m_NumThreads;
+            const auto index = thread_index++ % m_NumThreads;
             m_WorkerThreads[NEXT_FRAME][index]->Queue(job);
         }
 
-        for (auto& job : m_ProcessingJobs)
+        for (const auto& job : m_ProcessingJobs)
         {
-            auto index = thread_index++ % m_NumThreads;
+            const auto index = thread_index++ % m_NumThreads;
             m_ProcessingThreads[index]->Queue(job);
         }
         m_ProcessingJobs.clear();
@@ -137,7 +137,7 @@ namespace Wraith
         if (ImGui::TreeNodeEx("Persistent Jobs: ", ImGuiTreeNodeFlags_DefaultOpen))
         {
             f32 total_time = 0.0f;
-            for (auto& job : m_PersistentJobs)
+            for (const auto& job : m_PersistentJobs)
             {
                 ImGui::Text(std::format("\t{}: {:.3f}ms", job->GetID(), job->GetAverageTime()).c_str());
                 total_time += job->GetAverageTime();
@@ -147,7 +147,7 @@ namespace Wraith
 
         if (ImGui::TreeNodeEx("Processing Jobs: ", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            for (auto& thread : m_ProcessingThreads)
+            for (const auto& thread : m_ProcessingThreads)
             {
                 if (!thread->HasWork())
                     continue;
@@ -162,7 +162,7 @@ namespace Wraith
 
         if (ImGui::TreeNodeEx("Threads: ", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            for (auto& thread : m_WorkerThreads[NEXT_FRAME])
+            for (const auto& thread : m_WorkerThreads[NEXT_FRAME])
             {
                 if (thread->GetProjectedTime() <= 0.0f && !show_all)
                     continue;
@@ -170,7 +170,7 @@ namespace Wraith
                 ImGui::Text(std::format("\t{}: {:.3f}ms", thread->GetID(), thread->GetProjectedTime()).c_str());
             }
 
-            for (auto& thread : m_ProcessingThreads)
+            for (const auto& thread : m_ProcessingThreads)
             {
                 if (!thread->HasWork() && !show_all)
                     continue;

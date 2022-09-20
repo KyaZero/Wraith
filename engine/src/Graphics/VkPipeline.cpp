@@ -31,25 +31,25 @@ Wraith::PipelineConfig Wraith::Pipeline::GetDefaultConfig()
 
 void Wraith::Pipeline::Create(PipelineConfig& config, ShaderStages shader_stages, vk::UniqueDevice& device)
 {
-    vk::PipelineVertexInputStateCreateInfo vertex_input_info({}, config.binding_descriptions, config.attribute_descriptions);
+    const vk::PipelineVertexInputStateCreateInfo vertex_input_info({}, config.binding_descriptions, config.attribute_descriptions);
 
     // To avoid the pointer being invalid, it's set to nullptr earlier, and here we set it
     config.color_blend.pAttachments = &config.color_blend_attachment;
 
-    vk::GraphicsPipelineCreateInfo pipeline_create_info({},
-                                                        shader_stages,
-                                                        &vertex_input_info,
-                                                        &config.input_assembly,
-                                                        nullptr,
-                                                        &config.viewport_state,
-                                                        &config.rasterization,
-                                                        &config.multisample,
-                                                        &config.depth_stencil,
-                                                        &config.color_blend,
-                                                        &config.dynamic_state,
-                                                        config.pipeline_layout,
-                                                        config.render_pass,
-                                                        config.subpass);
+    const vk::GraphicsPipelineCreateInfo pipeline_create_info({},
+                                                              shader_stages,
+                                                              &vertex_input_info,
+                                                              &config.input_assembly,
+                                                              nullptr,
+                                                              &config.viewport_state,
+                                                              &config.rasterization,
+                                                              &config.multisample,
+                                                              &config.depth_stencil,
+                                                              &config.color_blend,
+                                                              &config.dynamic_state,
+                                                              config.pipeline_layout,
+                                                              config.render_pass,
+                                                              config.subpass);
 
     m_Pipeline = HandleResult(device->createGraphicsPipelineUnique({}, pipeline_create_info));
 }

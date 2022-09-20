@@ -21,7 +21,7 @@ namespace Wraith
         m_Job();
         m_Timer.Update();
 
-        f32 time_taken = m_Timer.GetDeltaTime() * 1000.0f;
+        const f32 time_taken = m_Timer.GetDeltaTime() * 1000.0f;
         f32 total_time = time_taken;
         for (u32 i = 1; i < TimeLogSize; ++i)
         {

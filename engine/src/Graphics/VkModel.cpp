@@ -60,7 +60,7 @@ void Wraith::Model::Create(const std::vector<Vertex>& vertices, const std::vecto
     CreateIndexBuffers(indices);
 }
 
-void Wraith::Model::Bind(vk::CommandBuffer cmd)
+void Wraith::Model::Bind(vk::CommandBuffer cmd) const
 {
     cmd.bindVertexBuffers(0, m_VertexBuffer->GetBuffer(), { 0 });
 
@@ -70,7 +70,7 @@ void Wraith::Model::Bind(vk::CommandBuffer cmd)
     }
 }
 
-void Wraith::Model::Draw(vk::CommandBuffer cmd)
+void Wraith::Model::Draw(vk::CommandBuffer cmd) const
 {
     if (m_HasIndexBuffer)
     {
@@ -154,7 +154,7 @@ void Wraith::Model::CreateVertexBuffers(const std::vector<Vertex>& vertices)
     m_VertexCount = (u32)vertices.size();
     ASSERT_LOG(m_VertexCount >= 3, "Vertex count must be at least 3!");
 
-    vk::DeviceSize buffer_size = sizeof(vertices[0]) * m_VertexCount;
+    const vk::DeviceSize buffer_size = sizeof(vertices[0]) * m_VertexCount;
     u32 vertex_size = sizeof(vertices[0]);
 
     Buffer staging_buffer(m_Device,
@@ -185,7 +185,7 @@ void Wraith::Model::CreateIndexBuffers(const std::vector<u32>& indices)
         return;
     }
 
-    vk::DeviceSize buffer_size = sizeof(indices[0]) * m_IndexCount;
+    const vk::DeviceSize buffer_size = sizeof(indices[0]) * m_IndexCount;
     u32 index_size = sizeof(indices[0]);
 
     Buffer staging_buffer(m_Device,

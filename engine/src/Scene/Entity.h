@@ -17,7 +17,7 @@ namespace Wraith
         Entity(const Entity& other) = default;
 
         template <typename T>
-        bool HasComponent()
+        bool HasComponent() const
         {
             return m_Registry->all_of<T>(m_Handle);
         }
@@ -37,7 +37,7 @@ namespace Wraith
         }
 
         template <typename T>
-        void RemoveComponent()
+        void RemoveComponent() const
         {
             ASSERT_LOG(HasComponent<T>(), "Entity doesn't have component!");
             m_Registry->remove<T>(m_Handle);
@@ -46,7 +46,7 @@ namespace Wraith
         operator bool() const { return m_Handle != entt::null; }
         operator uint32_t() const { return (uint32_t)m_Handle; }
 
-        bool operator==(const Entity& other) { return (m_Handle == other.m_Handle) && (m_Registry == other.m_Registry); }
+        bool operator==(const Entity& other) const { return (m_Handle == other.m_Handle) && (m_Registry == other.m_Registry); }
         bool operator!=(const Entity& other) { return !(*this == other); }
 
     private:

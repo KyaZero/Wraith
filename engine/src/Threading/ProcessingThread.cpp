@@ -46,7 +46,7 @@ namespace Wraith
             }
             else
             {
-                std::shared_ptr<ProcessingJob> work = m_QueuedJobs.front();
+                const std::shared_ptr<ProcessingJob> work = m_QueuedJobs.front();
                 m_QueuedJobs.pop_front();
                 queue_lock.unlock();
 

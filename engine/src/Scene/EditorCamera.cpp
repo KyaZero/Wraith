@@ -20,7 +20,7 @@ namespace Wraith
     void EditorCamera::Update(f32 dt, bool accept_input)
     {
         m_Input.SetEnabled(accept_input);
-        auto mouse_pos = m_Input.GetMousePos();
+        const auto mouse_pos = m_Input.GetMousePos();
 
         // left alt
         if (m_Input.IsDown(MouseButton::Right))
@@ -38,7 +38,7 @@ namespace Wraith
             m_TargetDistance += -(m_Input.GetScrollState().y_offset * ((m_Eye - m_CurrentLookAt).Length() / 20.0f));
         }
 
-        f32 transition_speed = 32.0f;
+        const f32 transition_speed = 32.0f;
         m_CurrentDistance = Lerp(m_CurrentDistance, m_TargetDistance, dt * transition_speed);
         m_CurrentLookAt = Lerp(m_CurrentLookAt, m_TargetLookAt, dt * transition_speed);
 
@@ -96,16 +96,16 @@ namespace Wraith
 
     void EditorCamera::UpdateFreeCam(f32 dt, Vec2f mouse_pos)
     {
-        f32 delta_x = (2 * PI / m_ViewportSize.x);
-        f32 delta_y = (PI / m_ViewportSize.y);
-        f32 x_angle = -(m_LastMousePos.x - mouse_pos.x) * delta_x;
-        f32 y_angle = -(m_LastMousePos.y - mouse_pos.y) * delta_y;
+        const f32 delta_x = (2 * PI / m_ViewportSize.x);
+        const f32 delta_y = (PI / m_ViewportSize.y);
+        const f32 x_angle = -(m_LastMousePos.x - mouse_pos.x) * delta_x;
+        const f32 y_angle = -(m_LastMousePos.y - mouse_pos.y) * delta_y;
 
         m_Yaw += x_angle;
         m_Pitch = Clamp(m_Pitch + y_angle, -PI / 2.0f, PI / 2.0f);
 
         Quatf qp(Vec3f(1, 0, 0), m_Pitch);
-        Quatf qy(Vec3f(0, 1, 0), m_Yaw);
+        const Quatf qy(Vec3f(0, 1, 0), m_Yaw);
 
         m_Orientation = (qp * qy);
         m_Orientation.Normalize();

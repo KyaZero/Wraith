@@ -37,8 +37,8 @@ namespace Wraith
 
         void Create(const std::vector<Vertex>& vertices, const std::vector<u32>& indices);
 
-        void Bind(vk::CommandBuffer cmd);
-        void Draw(vk::CommandBuffer cmd);
+        void Bind(vk::CommandBuffer cmd) const;
+        void Draw(vk::CommandBuffer cmd) const;
         void LoadFromFile(const std::string& filepath);
 
     private:

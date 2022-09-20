@@ -37,8 +37,8 @@ namespace Wraith
         vk::CommandBuffer BeginFrame();
         void EndFrame();
 
-        void BeginSwapChainRenderPass(vk::CommandBuffer command_buffer);
-        void EndSwapChainRenderPass(vk::CommandBuffer command_buffer);
+        void BeginSwapChainRenderPass(vk::CommandBuffer command_buffer) const;
+        void EndSwapChainRenderPass(vk::CommandBuffer command_buffer) const;
 
         static void BeginEvent(std::string name);
         static void EndEvent();

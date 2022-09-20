@@ -68,7 +68,7 @@ namespace Wraith
         }
     }
 
-    std::optional<Font::ShapeData> Font::LoadShape(msdfgen::GlyphIndex glyph_index)
+    std::optional<Font::ShapeData> Font::LoadShape(msdfgen::GlyphIndex glyph_index) const
     {
         msdfgen::Shape shape;
         if (!msdfgen::loadGlyph(shape, m_Freetype.font_handle, glyph_index))
@@ -114,7 +114,7 @@ namespace Wraith
         m_FriBidi.logical.resize(text.size() * 2);
         m_FriBidi.visual.resize(text.size() * 2);
 
-        FriBidiStrIndex len =
+        const FriBidiStrIndex len =
             fribidi_charset_to_unicode(FriBidiCharSet::FRIBIDI_CHAR_SET_UTF8, text.data(), static_cast<FriBidiStrIndex>(text.size()), m_FriBidi.logical.data());
         FriBidiParType par_type = (direction == Direction::LTR) ? FRIBIDI_TYPE_LTR : FRIBIDI_TYPE_RTL;
         fribidi_log2vis(m_FriBidi.logical.data(), len, &par_type, m_FriBidi.visual.data(), nullptr, nullptr, nullptr);
@@ -128,8 +128,8 @@ namespace Wraith
         hb_shape(m_HarfBuzz.font, m_HarfBuzz.buffer, nullptr, 0);
 
         u32 glyph_count;
-        hb_glyph_info_t* glyph_info = hb_buffer_get_glyph_infos(m_HarfBuzz.buffer, &glyph_count);
-        hb_glyph_position_t* glyph_pos = hb_buffer_get_glyph_positions(m_HarfBuzz.buffer, &glyph_count);
+        const hb_glyph_info_t* glyph_info = hb_buffer_get_glyph_infos(m_HarfBuzz.buffer, &glyph_count);
+        const hb_glyph_position_t* glyph_pos = hb_buffer_get_glyph_positions(m_HarfBuzz.buffer, &glyph_count);
 
         std::vector<ShapedGlyph> shapedGlyphs;
         shapedGlyphs.reserve(glyph_count);

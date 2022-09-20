@@ -7,8 +7,7 @@ namespace Wraith
 {
     SpriteRenderer::SpriteRenderer(Window& window)
         : m_CurrentCamera()
-        , m_Window(window)
-    { }
+          , m_Window(window) { }
 
     SpriteRenderer::~SpriteRenderer() { }
 
@@ -94,7 +93,7 @@ namespace Wraith
 
         for (auto& sprites : instances)
         {
-            u32 batches = 1 + ((u32)sprites.second.size() / MAX_INSTANCES);
+            const u32 batches = 1 + ((u32)sprites.second.size() / MAX_INSTANCES);
             for (u32 i = 0; i < batches; ++i)
             {
                 auto& tex = TextureManager::Get()->GetTexture(sprites.first);
@@ -117,7 +116,7 @@ namespace Wraith
 
     void SpriteRenderer::UpdateConstantBuffer()
     {
-        auto size = m_Window.GetSize();
+        const auto size = m_Window.GetSize();
 
         if (m_CurrentCamera)
         {
@@ -134,4 +133,4 @@ namespace Wraith
 
         //m_ConstantBuffer.SetData(m_ConstantBufferData);
     }
-}  // namespace Wraith
+} // namespace Wraith

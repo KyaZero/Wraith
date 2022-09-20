@@ -18,15 +18,15 @@ namespace Wraith
             std::function<void()> ui_render_callback = []() {}, std::function<void(f32)> update_callback = [](auto) {});
         void Update();
 
-        void Render();
+        static void Render();
 
         void BeginFrame();
         void EndFrame();
 
         RenderManager* GetRenderer() { return &m_RenderManager; }
-        Window& GetWindow() { return m_Window; }
+        Window& GetWindow() const { return m_Window; }
         VkFramework& GetFramework() { return m_Framework; }
-        ImguiLayer& GetImguiLayer() { return *m_ImguiLayer; }
+        ImguiLayer& GetImguiLayer() const { return *m_ImguiLayer; }
 
     private:
         Window& m_Window;

@@ -17,10 +17,10 @@ namespace Wraith
         bool Init();
 
         void Submit(const RenderCommand& command);
-        void Render();
+        static void Render();
 
-        Texture& GetRenderTexture();
-        void Resize(u32 width, u32 height);
+        Texture& GetRenderTexture() const;
+        static void Resize(u32 width, u32 height);
 
         void Flip();
 

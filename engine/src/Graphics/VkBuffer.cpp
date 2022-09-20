@@ -26,7 +26,7 @@ Wraith::Buffer::~Buffer()
 vk::Result Wraith::Buffer::Map(vk::DeviceSize size, vk::DeviceSize offset)
 {
     ASSERT_LOG(m_Buffer && m_Memory, "Called Map on buffer before creation!");
-    auto res_value = m_Device.GetDevice()->mapMemory(*m_Memory, offset, size);
+    const auto res_value = m_Device.GetDevice()->mapMemory(*m_Memory, offset, size);
     m_Mapped = res_value.value;
     return res_value.result;
 }
@@ -40,7 +40,7 @@ void Wraith::Buffer::Unmap()
     }
 }
 
-void Wraith::Buffer::SetData(void* data, vk::DeviceSize size, vk::DeviceSize offset)
+void Wraith::Buffer::SetData(void* data, vk::DeviceSize size, vk::DeviceSize offset) const
 {
     ASSERT_LOG(m_Mapped != nullptr, "Cannot copy to unmapped buffer");
 

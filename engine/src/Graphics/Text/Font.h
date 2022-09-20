@@ -43,7 +43,7 @@ namespace Wraith
         bool Init(std::filesystem::path fontPath);
         void Release();
 
-        std::optional<ShapeData> LoadShape(msdfgen::GlyphIndex glyph_index);
+        std::optional<ShapeData> LoadShape(msdfgen::GlyphIndex glyph_index) const;
         std::optional<GlyphData> GenerateGlyph(ShapeData& shape_data);
 
         DisplayData ShapeText(std::string_view text, i32 direction);

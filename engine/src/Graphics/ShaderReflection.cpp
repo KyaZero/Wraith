@@ -16,7 +16,7 @@ namespace Wraith
         return true;
     }
 
-    void ShaderReflection::ProcessInputParameters(std::function<void(D3D11_SIGNATURE_PARAMETER_DESC)> visitor)
+    void ShaderReflection::ProcessInputParameters(std::function<void(D3D11_SIGNATURE_PARAMETER_DESC)> visitor) const
     {
         for (u32 i = 0; i < m_ShaderDesc.InputParameters; ++i)
         {
@@ -27,7 +27,7 @@ namespace Wraith
         }
     }
 
-    void ShaderReflection::ProcessBoundResources(std::function<void(D3D11_SHADER_INPUT_BIND_DESC)> visitor)
+    void ShaderReflection::ProcessBoundResources(std::function<void(D3D11_SHADER_INPUT_BIND_DESC)> visitor) const
     {
         for (u32 i = 0; i < m_ShaderDesc.InputParameters; ++i)
         {

@@ -13,7 +13,7 @@ namespace Wraith
         ~ThreadScheduler();
 
         void Start();
-        void Sync();
+        void Sync() const;
 
         void AddProcessingJob(std::shared_ptr<ProcessingJob> job);
         void AddPersistentJob(std::shared_ptr<PersistentJob> job);

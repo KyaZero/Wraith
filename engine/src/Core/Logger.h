@@ -47,7 +47,7 @@ namespace Wraith
 
     private:
         void VerifyLogPath();
-        void LogToFile(const std::string& msg);
+        void LogToFile(const std::string& msg) const;
         static void Update(Logger* instance, std::chrono::duration<double, std::milli> interval);
 
         void LogInternal(Level level, const char* file, u32 line, const char* function, std::string text);

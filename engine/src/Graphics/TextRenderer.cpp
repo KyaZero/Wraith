@@ -54,7 +54,7 @@ namespace Wraith
             std::vector<Font::DisplayData> displayData;
             while (!text.empty())
             {
-                auto split_pos = text.find('\n');
+                const auto split_pos = text.find('\n');
                 displayData.push_back(m_FontManager.ShapeText(command.font_id, text.substr(0, split_pos), command.direction));
 
                 if (split_pos == text.npos)

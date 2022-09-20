@@ -9,18 +9,18 @@ Wraith::VkShader::VkShader(vk::UniqueDevice& device, std::underlying_type_t<Shad
     if (LoadSpvIfExists(device, shader_path))
         return;
 
-    std::ifstream file(shader_path);
+    const std::ifstream file(shader_path);
     if (!file.is_open())
     {
         ERROR_LOG("Failed to open '{}', not compiling shader.", shader_path);
         return;
     }
 
-    auto filename = std::filesystem::path(shader_path).filename();
+    const auto filename = std::filesystem::path(shader_path).filename();
 
     std::stringstream buffer;
     buffer << file.rdbuf();
-    bool result = Compile(device, shader_type, buffer.str(), filename.string());
+    const bool result = Compile(device, shader_type, buffer.str(), filename.string());
     if (!result)
     {
         ERROR_LOG("Failed to compile shader!");
@@ -29,36 +29,36 @@ Wraith::VkShader::VkShader(vk::UniqueDevice& device, std::underlying_type_t<Shad
 
 bool Wraith::VkShader::Compile(vk::UniqueDevice& device, std::underlying_type_t<ShaderType> shader_type, const std::string& source, const std::string& name)
 {
-    shaderc::Compiler compiler;
+    const shaderc::Compiler compiler;
     shaderc::CompileOptions options;
     options.SetOptimizationLevel(shaderc_optimization_level_performance);
 
     // TODO: Support more shader types.
     const shaderc_shader_kind kind = m_ShaderType == ShaderType::Pixel ? shaderc_fragment_shader : shaderc_vertex_shader;
 
-    shaderc::SpvCompilationResult shader_compilation_result = compiler.CompileGlslToSpv(source, kind, name.c_str(), options);
+    const shaderc::SpvCompilationResult shader_compilation_result = compiler.CompileGlslToSpv(source, kind, name.c_str(), options);
     if (shader_compilation_result.GetCompilationStatus() != shaderc_compilation_status_success)
     {
         ERROR_LOG("Shader Compilation Error: '{}'", shader_compilation_result.GetErrorMessage());
     }
 
     std::vector<uint32_t> shader_code = { shader_compilation_result.cbegin(), shader_compilation_result.cend() };
-    std::ptrdiff_t shader_size = std::distance(shader_code.begin(), shader_code.end());
-    vk::ShaderModuleCreateInfo shader_create_info({}, shader_size * sizeof(uint32_t), shader_code.data());
+    const std::ptrdiff_t shader_size = std::distance(shader_code.begin(), shader_code.end());
+    const vk::ShaderModuleCreateInfo shader_create_info({}, shader_size * sizeof(uint32_t), shader_code.data());
     m_ShaderModule = HandleResult(device->createShaderModuleUnique(shader_create_info));
     return true;
 }
 
 vk::PipelineShaderStageCreateInfo Wraith::VkShader::GetShaderStageInfo()
 {
-    vk::ShaderStageFlagBits flags = m_ShaderType == ShaderType::Pixel ? vk::ShaderStageFlagBits::eFragment : vk::ShaderStageFlagBits::eVertex;
+    const vk::ShaderStageFlagBits flags = m_ShaderType == ShaderType::Pixel ? vk::ShaderStageFlagBits::eFragment : vk::ShaderStageFlagBits::eVertex;
     return vk::PipelineShaderStageCreateInfo{ {}, flags, *m_ShaderModule, "main" };
 }
 
-bool Wraith::VkShader::IsFileTimestampNewer(const std::string& a, const std::string& b)
+bool Wraith::VkShader::IsFileTimestampNewer(const std::string& a, const std::string& b) const
 {
-    auto a_timestamp = std::filesystem::last_write_time(a);
-    auto b_timestamp = std::filesystem::last_write_time(b);
+    const auto a_timestamp = std::filesystem::last_write_time(a);
+    const auto b_timestamp = std::filesystem::last_write_time(b);
 
     if (a_timestamp >= b_timestamp)
         return true;
@@ -84,7 +84,7 @@ bool Wraith::VkShader::LoadSpvIfExists(vk::UniqueDevice& device, const std::stri
         return false;
     }
 
-    size_t shader_size = static_cast<size_t>(file.tellg());
+    const size_t shader_size = static_cast<size_t>(file.tellg());
     std::vector<char> shader_code(shader_size);
 
     file.seekg(0);
@@ -92,7 +92,7 @@ bool Wraith::VkShader::LoadSpvIfExists(vk::UniqueDevice& device, const std::stri
 
     file.close();
 
-    vk::ShaderModuleCreateInfo shader_create_info({}, shader_size, (u32*)shader_code.data());
+    const vk::ShaderModuleCreateInfo shader_create_info({}, shader_size, (u32*)shader_code.data());
     m_ShaderModule = HandleResult(device->createShaderModuleUnique(shader_create_info));
 
     return true;

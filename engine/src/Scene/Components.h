@@ -15,7 +15,7 @@ namespace Wraith
         Quatf rotation{ 1, 0, 0, 0 };
         Vec3f scale{ 1.f, 1.f, 1.f };
 
-        Mat4f GetTransform() { return Mat4f::CreateTransform(position, rotation, scale); }
+        Mat4f GetTransform() const { return Mat4f::CreateTransform(position, rotation, scale); }
 
         void Serialize(dubu::serialize::ReadBuffer& buffer) { buffer >> position >> scale >> rotation; }
         void Serialize(dubu::serialize::WriteBuffer& buffer) const { buffer << position << scale << rotation; }

@@ -19,14 +19,14 @@ namespace Wraith
             RecalculateViewMatrix();
         }
 
-        f32 GetRotation() { return m_Rotation; }
+        f32 GetRotation() const { return m_Rotation; }
         void SetRotation(f32 rotation)
         {
             m_Rotation = rotation;
             RecalculateViewMatrix();
         }
 
-        f32 GetScale() { return m_Scale; }
+        f32 GetScale() const { return m_Scale; }
         void SetScale(f32 scale)
         {
             m_Scale = scale;

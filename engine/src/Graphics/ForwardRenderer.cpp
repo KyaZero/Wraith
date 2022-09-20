@@ -22,7 +22,7 @@ void Wraith::ForwardRenderer::SetCamera(const SetCameraCommand& command)
 
 void Wraith::ForwardRenderer::Render()
 {
-    auto& commands = GetCurrentCommands();
+    const auto& commands = GetCurrentCommands();
     // auto& context = Framework::GetContext();
 
     m_FrameBufferData.projection = m_CurrentCamera.projection;
@@ -32,7 +32,7 @@ void Wraith::ForwardRenderer::Render()
 
     m_Sampler.Bind(0);
 
-    for (auto& models : commands)
+    for (const auto& models : commands)
     {
         m_ObjectBufferData.transform = models.transform;
         //m_ObjectBuffer.SetData(m_ObjectBufferData);

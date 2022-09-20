@@ -55,7 +55,7 @@ namespace Wraith
 
         if (m_IsEnabled)
         {
-            auto it = m_Keys.find((i32)key);
+            const auto it = m_Keys.find((i32)key);
             if (it != m_Keys.end())
             {
                 result = m_Keys[(i32)key];
@@ -71,7 +71,7 @@ namespace Wraith
 
         if (m_IsEnabled)
         {
-            auto it = m_MouseButtons.find((i32)button);
+            const auto it = m_MouseButtons.find((i32)button);
             if (it != m_MouseButtons.end())
             {
                 result = m_MouseButtons[(i32)button];
@@ -91,7 +91,7 @@ namespace Wraith
 
         if (m_IsEnabled)
         {
-            auto it = m_Keys.find((i32)key);
+            const auto it = m_Keys.find((i32)key);
             if (it != m_Keys.end())
             {
                 result = (m_Keys[(i32)key] && !m_KeysPrevious[(i32)key]);
@@ -107,7 +107,7 @@ namespace Wraith
 
         if (m_IsEnabled)
         {
-            auto it = m_MouseButtons.find((i32)button);
+            const auto it = m_MouseButtons.find((i32)button);
             if (it != m_MouseButtons.end())
             {
                 result = (m_MouseButtons[(i32)button] && !m_MouseButtonsPrevious[(i32)button]);
@@ -123,7 +123,7 @@ namespace Wraith
 
         if (m_IsEnabled)
         {
-            auto it = m_Keys.find((i32)key);
+            const auto it = m_Keys.find((i32)key);
             if (it != m_Keys.end())
             {
                 result = (!m_Keys[(i32)key] && m_KeysPrevious[(i32)key]);
@@ -139,7 +139,7 @@ namespace Wraith
 
         if (m_IsEnabled)
         {
-            auto it = m_MouseButtons.find((i32)button);
+            const auto it = m_MouseButtons.find((i32)button);
             if (it != m_MouseButtons.end())
             {
                 result = (!m_MouseButtons[(i32)button] && m_MouseButtonsPrevious[(i32)button]);
@@ -155,7 +155,7 @@ namespace Wraith
 
     void Input::SetKeyState(Key key, bool is_down)
     {
-        auto it = m_Keys.find((i32)key);
+        const auto it = m_Keys.find((i32)key);
         if (it != m_Keys.end())
         {
             m_Keys[(i32)key] = is_down;
@@ -166,7 +166,7 @@ namespace Wraith
 
     void Input::SetMouseButtonState(MouseButton button, bool is_down)
     {
-        auto it = m_MouseButtons.find((i32)button);
+        const auto it = m_MouseButtons.find((i32)button);
         if (it != m_MouseButtons.end())
         {
             m_MouseButtons[(i32)button] = is_down;
@@ -175,13 +175,13 @@ namespace Wraith
 
     void Input::SetScrollState(f64 x_offset, f64 y_offset) { m_ScrollState = { x_offset, y_offset }; }
 
-    bool Input::IsEnabled() { return m_IsEnabled; }
+    bool Input::IsEnabled() const { return m_IsEnabled; }
 
     void Input::SetEnabled(bool value) { m_IsEnabled = value; }
 
-    f64 Input::GetMouseX() { return m_MouseState.x_pos; }
+    f64 Input::GetMouseX() const { return m_MouseState.x_pos; }
 
-    f64 Input::GetMouseY() { return m_MouseState.y_pos; }
+    f64 Input::GetMouseY() const { return m_MouseState.y_pos; }
 
     Vec2f Input::GetMousePos() { return Vec2f((f32)GetMouseX(), (f32)GetMouseY()); }
 
@@ -228,7 +228,7 @@ namespace Wraith
     {
         if (s_UIBlockEvents)
         {
-            ImGuiIO& io = ImGui::GetIO();
+            const ImGuiIO& io = ImGui::GetIO();
             if (io.WantCaptureMouse)
                 return;
         }
@@ -243,7 +243,7 @@ namespace Wraith
     {
         if (s_UIBlockEvents)
         {
-            ImGuiIO& io = ImGui::GetIO();
+            const ImGuiIO& io = ImGui::GetIO();
             if (io.WantCaptureMouse)
                 return;
         }
@@ -258,7 +258,7 @@ namespace Wraith
     {
         if (s_UIBlockEvents)
         {
-            ImGuiIO& io = ImGui::GetIO();
+            const ImGuiIO& io = ImGui::GetIO();
             if (io.WantCaptureKeyboard)
                 return;
         }

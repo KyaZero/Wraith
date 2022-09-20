@@ -62,7 +62,7 @@ namespace Wraith
         Input::SetupInputs(this);
     }
 
-    bool Window::ShouldClose() { return glfwWindowShouldClose(m_Handle); }
+    bool Window::ShouldClose() const { return glfwWindowShouldClose(m_Handle); }
 
     void Window::PollEvents() { glfwPollEvents(); }
 
@@ -82,7 +82,7 @@ namespace Wraith
 
     void* Window::GetPlatformHandle() const { return glfwGetWin32Window(m_Handle); }
 
-    void Window::SetSize(const Vec2u& size) { glfwSetWindowSize(m_Handle, size.x, size.y); }
+    void Window::SetSize(const Vec2u& size) const { glfwSetWindowSize(m_Handle, size.x, size.y); }
 
     void Window::SetTitle(const std::string& title)
     {
@@ -94,7 +94,7 @@ namespace Wraith
 
     void Window::HandleResize(GLFWwindow* handle, int width, int height)
     {
-        auto window = (Window*)glfwGetWindowUserPointer(handle);
+        const auto window = (Window*)glfwGetWindowUserPointer(handle);
         window->m_FramebufferResized = true;
         window->m_Resolution = { (u32)width, (u32)height };
         for (const auto& [h, callback] : s_ResizeCallbacks)
@@ -104,7 +104,7 @@ namespace Wraith
     }
     void Window::HandleContentScale(GLFWwindow* handle, float scaleX, float scaleY)
     {
-        auto window = (Window*)glfwGetWindowUserPointer(handle);
+        const auto window = (Window*)glfwGetWindowUserPointer(handle);
         window->m_ContentScale = { scaleX, scaleY };
         for (const auto& [h, callback] : s_ContentScaleCallbacks)
         {

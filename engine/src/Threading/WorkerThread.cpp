@@ -51,7 +51,7 @@ namespace Wraith
                 return;
 
             f32 accumulated_time = 0.0f;
-            for (auto& job : m_QueuedJobs)
+            for (const auto& job : m_QueuedJobs)
                 accumulated_time += job->Execute();
 
             SetActive(false);

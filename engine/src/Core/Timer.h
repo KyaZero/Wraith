@@ -26,9 +26,9 @@ namespace Wraith
             m_TotalTime = std::chrono::duration_cast<std::chrono::duration<f32, std::ratio<1>>>(m_NewTime - m_Time).count();
         }
 
-        f32 GetDeltaTime() { return m_DeltaTime; }
+        f32 GetDeltaTime() const { return m_DeltaTime; }
 
-        f32 GetTotalTime() { return m_TotalTime; }
+        f32 GetTotalTime() const { return m_TotalTime; }
 
     private:
         f32 m_DeltaTime;

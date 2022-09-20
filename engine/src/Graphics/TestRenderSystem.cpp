@@ -2,8 +2,7 @@
 
 Wraith::TestRenderSystem::TestRenderSystem(Device& device)
     : RenderSystem("Test System", device)
-    , m_Model(device)
-{ }
+      , m_Model(device) { }
 
 bool Wraith::TestRenderSystem::Init(vk::RenderPass render_pass)
 {
@@ -21,7 +20,7 @@ bool Wraith::TestRenderSystem::Init(vk::RenderPass render_pass)
 
 void Wraith::TestRenderSystem::Render(FrameInfo& frame_info)
 {
-    vk::CommandBuffer& cmd = frame_info.command_buffer;
+    const vk::CommandBuffer& cmd = frame_info.command_buffer;
     m_Pipeline->Bind(cmd);
 
     m_Model.Bind(cmd);

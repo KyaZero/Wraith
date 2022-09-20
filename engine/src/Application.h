@@ -13,7 +13,7 @@ namespace Wraith
         Application(const std::string& name = "Application");
         virtual ~Application();
 
-        bool Run();
+        bool Run() const;
 
         virtual void OnUpdate(f32 dt) { }
         virtual void OnUIRender() { }

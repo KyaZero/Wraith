@@ -37,7 +37,7 @@ namespace Wraith
 
 #ifdef _WIN32
         // Customize Console a little bit
-        HWND hwnd = GetConsoleWindow();
+        const HWND hwnd = GetConsoleWindow();
         SetConsoleTitleW(L"Engine Console");
         SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_LAYERED);
         SetLayeredWindowAttributes(hwnd, 0, 245, LWA_ALPHA);
@@ -65,12 +65,12 @@ namespace Wraith
         if (level == Level::All || level == Level::Count)
             return;
 
-        std::string filename = fs::path(file).filename().string();
+        const std::string filename = fs::path(file).filename().string();
         std::string func(function);
         if (func.find("lambda") != std::string::npos)
             func = func.substr(0, func.find("lambda") + 6) + ">";
 
-        if (u64 pos = func.find_last_of(":"); pos != std::string::npos)
+        if (const u64 pos = func.find_last_of(":"); pos != std::string::npos)
         {
             func = func.substr(pos + 1);
         }
@@ -152,7 +152,7 @@ namespace Wraith
         std::ofstream ofs(m_LogPath.c_str(), std::ios_base::out);
     }
 
-    void Logger::LogToFile(const std::string& msg)
+    void Logger::LogToFile(const std::string& msg) const
     {
         std::ofstream ofs(m_LogPath, std::ios_base::out | std::ios_base::app);
         ofs << std::format("[{:%F %H:%M:%OS}]\t", std::chrono::utc_clock::now()) << msg;
@@ -185,8 +185,8 @@ namespace Wraith
     void Logger::Print(Logger* instance, const LogEntry& entry)
     {
 #ifdef _WIN32
-        auto dyed = dye::grey("[") + GetLevelString(entry.level) + dye::grey("]") + " " +
-                    dye::grey(entry.filename + ":" + std::to_string(entry.line) + ":" + entry.function + ": ") + dye::bright_white(entry.msg) + "\n";
+        const auto dyed = dye::grey("[") + GetLevelString(entry.level) + dye::grey("]") + " " +
+                          dye::grey(entry.filename + ":" + std::to_string(entry.line) + ":" + entry.function + ": ") + dye::bright_white(entry.msg) + "\n";
         std::cout << dyed;
 
         std::stringstream sstr;

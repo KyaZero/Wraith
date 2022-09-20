@@ -7,6 +7,14 @@ layout(location = 3) in vec2 uv;
 
 layout(location = 0) out vec3 fragColor;
 
+layout(set = 0, binding = 0) uniform GlobalBuffer
+{
+    mat4 projection;
+    mat4 view;
+    vec4 color;
+}
+globals;
+
 out gl_PerVertex
 {
     vec4 gl_Position;

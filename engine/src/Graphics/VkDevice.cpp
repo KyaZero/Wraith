@@ -278,7 +278,7 @@ void Wraith::Device::CreateLogicalDevice()
     f32 queue_priority = 1.0f;
     for (u32 queue_family : unique_queue_families)
     {
-        vk::DeviceQueueCreateInfo create_info({}, queue_family, queue_priority);
+        vk::DeviceQueueCreateInfo create_info({}, queue_family);
         create_info.queueCount = 1;
         create_info.pQueuePriorities = &queue_priority;
         queue_create_infos.push_back(create_info);

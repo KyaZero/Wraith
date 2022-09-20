@@ -9,11 +9,10 @@ namespace Wraith
     VkFramework::VkFramework(Window& window)
         : m_Window(window)
         , m_Device(std::make_unique<Device>(window))
-        , m_IsFrameStarted(false)
-        , m_CurrentFrameIndex(0)
-        , m_CurrentImageIndex(0)
         , m_TestSystem(*m_Device)
-    { }
+        , m_CurrentImageIndex(0)
+        , m_CurrentFrameIndex(0)
+        , m_IsFrameStarted(false) { }
 
     VkFramework::~VkFramework()
     {
@@ -26,7 +25,37 @@ namespace Wraith
         RecreateSwapChain();
         CreateCommandBuffers();
 
-        m_TestSystem.Init(m_SwapChain->GetRenderPass());
+        m_GlobalBuffers.resize(m_SwapChain->GetMaxFramesInFlight());
+        for (auto& buffer : m_GlobalBuffers)
+        {
+            buffer = std::make_unique<Buffer>(*m_Device,
+                                              sizeof(GlobalBuffer),
+                                              1,
+                                              vk::BufferUsageFlagBits::eUniformBuffer,
+                                              vk::MemoryPropertyFlagBits::eHostVisible);
+            buffer->Map();
+        }
+
+        m_GlobalPool = DescriptorPool::Builder(*m_Device)
+                       .SetMaxSets(m_SwapChain->GetMaxFramesInFlight())
+                       .AddPoolSize(vk::DescriptorType::eUniformBuffer, m_SwapChain->GetMaxFramesInFlight())
+                       .Build();
+
+        m_GlobalSetLayout = DescriptorSetLayout::Builder(*m_Device)
+                            .AddBinding(0, vk::DescriptorType::eUniformBuffer, vk::ShaderStageFlagBits::eAllGraphics)
+                            .Build();
+
+        m_GlobalDescriptorSets.resize(m_SwapChain->GetMaxFramesInFlight());
+        for (u32 i = 0; auto& descriptor_set : m_GlobalDescriptorSets)
+        {
+            vk::DescriptorBufferInfo buffer_info = m_GlobalBuffers[i]->DescriptorInfo();
+            DescriptorWriter(*m_GlobalSetLayout, *m_GlobalPool)
+                .WriteBuffer(0, buffer_info)
+                .Build(descriptor_set);
+            ++i;
+        }
+
+        m_TestSystem.Init(m_SwapChain->GetRenderPass(), m_GlobalSetLayout->GetLayout());
 
         INFO_LOG("Finished initializing Vulkan Framework!");
         return true;
@@ -61,6 +90,15 @@ namespace Wraith
 
         FrameInfo info;
         info.command_buffer = command_buffer;
+        info.frame_index = GetFrameIndex();
+        info.global_descriptor_set = m_GlobalDescriptorSets[info.frame_index];
+
+        GlobalBuffer global_buffer{};
+        global_buffer.color = { 1,1,0,0 };
+
+        m_GlobalBuffers[info.frame_index]->SetData(&global_buffer);
+        m_GlobalBuffers[info.frame_index]->Flush();
+
         m_TestSystem.Render(info);
 
         return command_buffer;
@@ -100,11 +138,14 @@ namespace Wraith
         ASSERT_LOG(command_buffer == GetCurrentCommandBuffer() && "Can't begin render pass on command buffer from a different frame");
 
         std::array<vk::ClearValue, 2> clear_values = {};
-        clear_values[0].color = std::array<f32, 4>{ 0.01f, 0.01f, 0.01f, 1.0f };
-        clear_values[1].depthStencil = vk::ClearDepthStencilValue({ 1.0f, 1 });
+        clear_values[0].color = std::array<f32, 4>{ 0.01f,0.01f,0.01f,1.0f };
+        clear_values[1].depthStencil = vk::ClearDepthStencilValue({ 1.0f,1 });
 
         const vk::RenderPassBeginInfo render_pass_info(
-            m_SwapChain->GetRenderPass(), m_SwapChain->GetFrameBuffer(m_CurrentImageIndex), vk::Rect2D({ 0, 0 }, m_SwapChain->GetExtent()), clear_values);
+            m_SwapChain->GetRenderPass(),
+            m_SwapChain->GetFrameBuffer(m_CurrentImageIndex),
+            vk::Rect2D({ 0,0 }, m_SwapChain->GetExtent()),
+            clear_values);
 
         command_buffer.beginRenderPass(render_pass_info, vk::SubpassContents::eInline);
 
@@ -116,7 +157,7 @@ namespace Wraith
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
 
-        const vk::Rect2D scissor{ { 0, 0 }, m_SwapChain->GetExtent() };
+        const vk::Rect2D scissor{ { 0,0 },m_SwapChain->GetExtent() };
         command_buffer.setViewport(0, 1, &viewport);
         command_buffer.setScissor(0, 1, &scissor);
     }
@@ -170,5 +211,4 @@ namespace Wraith
     }
 
     void VkFramework::FreeCommandBuffers() { m_Device->GetDevice()->freeCommandBuffers(*m_Device->GetCommandPool(), m_CommandBuffers); }
-
 }  // namespace Wraith

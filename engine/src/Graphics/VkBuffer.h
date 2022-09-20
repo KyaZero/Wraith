@@ -21,7 +21,9 @@ namespace Wraith
         vk::Result Map(vk::DeviceSize size = VK_WHOLE_SIZE, vk::DeviceSize offset = 0);
         void Unmap();
 
+        vk::DescriptorBufferInfo DescriptorInfo(vk::DeviceSize size = VK_WHOLE_SIZE, vk::DeviceSize offset = 0);
         void SetData(void* data, vk::DeviceSize size = VK_WHOLE_SIZE, vk::DeviceSize offset = 0) const;
+        vk::Result Flush(vk::DeviceSize size = VK_WHOLE_SIZE, vk::DeviceSize offset = 0);
 
         vk::Buffer GetBuffer() const { return *m_Buffer; }
         void* GetMappedMemory() const { return m_Mapped; }

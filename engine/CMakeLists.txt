@@ -90,6 +90,8 @@ set(graphics_files
   "src/Graphics/Framework.cpp"
   "src/Graphics/VkPipeline.h"
   "src/Graphics/VkPipeline.cpp"
+  "src/Graphics/VkDescriptors.h"
+  "src/Graphics/VkDescriptors.cpp"
   "src/Graphics/VkDevice.h"
   "src/Graphics/VkDevice.cpp"
   "src/Graphics/VkModel.h"

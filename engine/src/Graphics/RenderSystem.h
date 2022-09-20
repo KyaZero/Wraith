@@ -27,9 +27,9 @@ namespace Wraith
 
         virtual void Submit(const Command& command) { m_Commands.push_back(command); }
 
-        virtual bool Init(vk::RenderPass render_pass /*, vk::DescriptorSetLayout global_set_layout*/)
+        virtual bool Init(vk::RenderPass render_pass , vk::DescriptorSetLayout global_set_layout)
         {
-            CreatePipelineLayout(/*global_set_layout*/);
+            CreatePipelineLayout(global_set_layout);
             CreatePipeline(render_pass);
             return true;
         }
@@ -37,7 +37,7 @@ namespace Wraith
         virtual void Render(FrameInfo& frameInfo) = 0;
 
     protected:
-        virtual void CreatePipelineLayout(/* [[maybe_unused]] vk::DescriptorSetLayout global_set_layout*/) { }
+        virtual void CreatePipelineLayout([[maybe_unused]] vk::DescriptorSetLayout global_set_layout) { }
         virtual void CreatePipeline([[maybe_unused]] vk::RenderPass render_pass) { }
 
         Device& m_Device;

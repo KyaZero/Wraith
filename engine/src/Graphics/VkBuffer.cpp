@@ -8,8 +8,8 @@ Wraith::Buffer::Buffer(Device& device,
                        vk::DeviceSize min_offset_alignment)
     : m_Device(device)
     , m_Mapped(nullptr)
-    , m_InstanceSize(instance_size)
     , m_InstanceCount(instance_count)
+    , m_InstanceSize(instance_size)
     , m_UsageFlags(usage_flags)
     , m_MemoryPropertyFlags(memory_property_flags)
 {
@@ -39,6 +39,10 @@ void Wraith::Buffer::Unmap()
         m_Mapped = nullptr;
     }
 }
+vk::DescriptorBufferInfo Wraith::Buffer::DescriptorInfo(vk::DeviceSize size, vk::DeviceSize offset)
+{
+    return { *m_Buffer,offset,size };
+}
 
 void Wraith::Buffer::SetData(void* data, vk::DeviceSize size, vk::DeviceSize offset) const
 {
@@ -54,6 +58,11 @@ void Wraith::Buffer::SetData(void* data, vk::DeviceSize size, vk::DeviceSize off
         mem_offset += offset;
         memcpy(mem_offset, data, size);
     }
+}
+vk::Result Wraith::Buffer::Flush(vk::DeviceSize size, vk::DeviceSize offset)
+{
+    const vk::MappedMemoryRange mapped_range(*m_Memory, offset, size);
+    return m_Device.GetDevice()->flushMappedMemoryRanges(mapped_range);
 }
 
 vk::DeviceSize Wraith::Buffer::GetAlignment(vk::DeviceSize instance_size, vk::DeviceSize min_offset_alignment)

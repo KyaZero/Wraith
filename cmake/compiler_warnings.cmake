@@ -29,6 +29,7 @@ if(NOT TARGET compiler_warnings)
             /w14906					# string literal cast to 'LPWSTR'
             /w14928
             /wd4244
+            /wd4996
             /wd4201					# nonstandard extension used : nameless struct/union
             /wd4555                 # result of expression not used
             /wd4324                 # structure was padded due to alignment specifier

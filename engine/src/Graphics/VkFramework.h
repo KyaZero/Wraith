@@ -1,9 +1,9 @@
 #pragma once
 
 #include "TestRenderSystem.h"
+#include "VkDescriptors.h"
 #include "VkDevice.h"
 #include "VkSwapchain.h"
-#include "VkDescriptors.h"
 #include "VkUtil.h"
 #include "Window/Window.h"
 
@@ -51,12 +51,12 @@ namespace Wraith
         std::unique_ptr<Device> m_Device;
         std::unique_ptr<SwapChain> m_SwapChain;
         std::vector<vk::CommandBuffer> m_CommandBuffers;
-        
+
         std::unique_ptr<DescriptorPool> m_GlobalPool;
         std::unique_ptr<DescriptorSetLayout> m_GlobalSetLayout;
         std::vector<vk::DescriptorSet> m_GlobalDescriptorSets;
         std::vector<std::unique_ptr<Buffer>> m_GlobalBuffers;
-        
+
         TestRenderSystem m_TestSystem;
 
         u32 m_CurrentImageIndex;

@@ -10,7 +10,7 @@ namespace Wraith
         Mat4f view;
         Vec4f color;
     };
-    
+
     struct FrameInfo
     {
         i32 frame_index{};

@@ -2,16 +2,17 @@
 
 Wraith::TestRenderSystem::TestRenderSystem(Device& device)
     : RenderSystem("Test System", device)
-    , m_Model(device) { }
+    , m_Model(device)
+{ }
 
 bool Wraith::TestRenderSystem::Init(vk::RenderPass render_pass, vk::DescriptorSetLayout global_set_layout)
 {
     // Shitty triangle
     std::vector<Model::Vertex> vertices;
-    vertices.push_back(Model::Vertex{ .position = { -0.5f,0.5f,0 },.color = { 0.0f,0.0f,1.0f },.normal = {},.uv = {} });
-    vertices.push_back(Model::Vertex{ .position = { 0.5f,0.5f,0 },.color = { 0.0f,1.0f,0.0f },.normal = {},.uv = {} });
-    vertices.push_back(Model::Vertex{ .position = { 0.0f,-0.5f,0 },.color = { 1.0f,0.0f,0.0f },.normal = {},.uv = {} });
-    m_Model.Create(vertices, { 0,1,2 });
+    vertices.push_back(Model::Vertex{ .position = { -0.5f, 0.5f, 0 }, .color = { 0.0f, 0.0f, 1.0f }, .normal = {}, .uv = {} });
+    vertices.push_back(Model::Vertex{ .position = { 0.5f, 0.5f, 0 }, .color = { 0.0f, 1.0f, 0.0f }, .normal = {}, .uv = {} });
+    vertices.push_back(Model::Vertex{ .position = { 0.0f, -0.5f, 0 }, .color = { 1.0f, 0.0f, 0.0f }, .normal = {}, .uv = {} });
+    m_Model.Create(vertices, { 0, 1, 2 });
 
     // m_Model.LoadFromFile("assets/teapot.obj");
 
@@ -48,5 +49,5 @@ void Wraith::TestRenderSystem::CreatePipeline(vk::RenderPass render_pass)
     config.attribute_descriptions = Model::Vertex::GetAttributeDescription();
     config.binding_descriptions = Model::Vertex::GetBindingDescription();
 
-    m_Pipeline->Create(config, { vertex_shader.GetShaderStageInfo(),fragment_shader.GetShaderStageInfo() }, m_Device.GetDevice());
+    m_Pipeline->Create(config, { vertex_shader.GetShaderStageInfo(), fragment_shader.GetShaderStageInfo() }, m_Device.GetDevice());
 }

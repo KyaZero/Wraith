@@ -19,7 +19,8 @@ namespace Wraith
         {
         public:
             Builder(Device& device)
-                : m_Device(device) { }
+                : m_Device(device)
+            { }
 
             Builder& AddBinding(u32 binding, vk::DescriptorType descriptor_type, vk::ShaderStageFlags shader_stage_flags, u32 count = 1);
             std::unique_ptr<DescriptorSetLayout> Build() const;
@@ -33,18 +34,14 @@ namespace Wraith
         Device& m_Device;
         vk::UniqueDescriptorSetLayout m_DescriptorSetLayout;
         std::unordered_map<u32, vk::DescriptorSetLayoutBinding> m_Bindings{};
-        
+
         friend class DescriptorWriter;
     };
 
     class DescriptorPool
     {
     public:
-        DescriptorPool(
-            Device& device,
-            uint32_t max_sets,
-            vk::DescriptorPoolCreateFlags pool_flags,
-            const std::vector<vk::DescriptorPoolSize>& pool_sizes);
+        DescriptorPool(Device& device, uint32_t max_sets, vk::DescriptorPoolCreateFlags pool_flags, const std::vector<vk::DescriptorPoolSize>& pool_sizes);
         ~DescriptorPool() = default;
         DescriptorPool(const DescriptorPool&) = delete;
         DescriptorPool& operator=(const DescriptorPool&) = delete;
@@ -53,12 +50,13 @@ namespace Wraith
         void FreeDescriptors(std::vector<vk::DescriptorSet>& descriptor_sets);
 
         void ResetPool();
-        
+
         class Builder
         {
         public:
             Builder(Device& device)
-                : m_Device(device) {}
+                : m_Device(device)
+            { }
 
             Builder& AddPoolSize(const vk::DescriptorType descriptor_type, const u32 count);
             Builder& SetPoolFlags(const vk::DescriptorPoolCreateFlags flags);
@@ -76,7 +74,7 @@ namespace Wraith
     private:
         Device& m_Device;
         vk::UniqueDescriptorPool m_DescriptorPool;
-        
+
         friend class DescriptorWriter;
     };
 
@@ -90,10 +88,10 @@ namespace Wraith
 
         bool Build(vk::DescriptorSet& set);
         void Overwrite(const vk::DescriptorSet& set);
-        
+
     private:
         DescriptorSetLayout& m_DescriptorSetLayout;
         DescriptorPool& m_DescriptorPool;
         std::vector<vk::WriteDescriptorSet> m_Writes;
     };
-}
+}  // namespace Wraith

@@ -9,7 +9,7 @@ namespace Wraith
     public:
         TestRenderSystem(Device& device);
 
-        bool Init(vk::RenderPass render_pass , vk::DescriptorSetLayout global_set_layout) override;
+        bool Init(vk::RenderPass render_pass, vk::DescriptorSetLayout global_set_layout) override;
         void Render(FrameInfo& frame_info) override;
 
     private:

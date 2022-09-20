@@ -41,7 +41,7 @@ void Wraith::Buffer::Unmap()
 }
 vk::DescriptorBufferInfo Wraith::Buffer::DescriptorInfo(vk::DeviceSize size, vk::DeviceSize offset)
 {
-    return { *m_Buffer,offset,size };
+    return { *m_Buffer, offset, size };
 }
 
 void Wraith::Buffer::SetData(void* data, vk::DeviceSize size, vk::DeviceSize offset) const

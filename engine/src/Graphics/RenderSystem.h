@@ -27,7 +27,7 @@ namespace Wraith
 
         virtual void Submit(const Command& command) { m_Commands.push_back(command); }
 
-        virtual bool Init(vk::RenderPass render_pass , vk::DescriptorSetLayout global_set_layout)
+        virtual bool Init(vk::RenderPass render_pass, vk::DescriptorSetLayout global_set_layout)
         {
             CreatePipelineLayout(global_set_layout);
             CreatePipeline(render_pass);

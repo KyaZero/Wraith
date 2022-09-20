@@ -1,7 +1,8 @@
 ﻿#include "VkDescriptors.h"
 
 Wraith::DescriptorSetLayout::DescriptorSetLayout(Device& device, const std::unordered_map<u32, vk::DescriptorSetLayoutBinding>& bindings)
-    : m_Device(device), m_Bindings(bindings)
+    : m_Device(device)
+    , m_Bindings(bindings)
 {
     std::vector<vk::DescriptorSetLayoutBinding> set_layout_bindings{};
     for (auto [key, value] : bindings)
@@ -89,7 +90,9 @@ std::unique_ptr<Wraith::DescriptorPool> Wraith::DescriptorPool::Builder::Build()
     return std::make_unique<DescriptorPool>(m_Device, m_MaxSets, m_PoolCreateFlags, m_PoolSizes);
 }
 Wraith::DescriptorWriter::DescriptorWriter(DescriptorSetLayout& set_layout, DescriptorPool& pool)
-    : m_DescriptorSetLayout(set_layout), m_DescriptorPool(pool) { }
+    : m_DescriptorSetLayout(set_layout)
+    , m_DescriptorPool(pool)
+{ }
 
 Wraith::DescriptorWriter& Wraith::DescriptorWriter::WriteBuffer(const u32 binding, vk::DescriptorBufferInfo& buffer_info)
 {
@@ -141,6 +144,6 @@ void Wraith::DescriptorWriter::Overwrite(const vk::DescriptorSet& set)
     {
         write.dstSet = set;
     }
-    
+
     m_DescriptorPool.m_Device.GetDevice()->updateDescriptorSets(m_Writes, {});
 }

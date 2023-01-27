@@ -170,6 +170,7 @@ target_link_libraries(${target_name} PUBLIC
     $<$<CONFIG:MinSizeRel>:${SHADERC_LIB}>
     imgui
     ImGuizmo
+    spirv_reflect
     EnTT
     stb
     glfw

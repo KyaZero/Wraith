@@ -14,6 +14,7 @@ include("ImGuizmo.cmake")
 include("tinyfd.cmake")
 include("glm.cmake")
 include("tinyobjloader.cmake")
+include("spirv_reflect.cmake")
 
 # scene
 include("entt.cmake")
